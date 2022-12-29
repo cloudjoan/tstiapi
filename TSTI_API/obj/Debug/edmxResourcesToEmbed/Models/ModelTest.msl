@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TESTModelStoreContainer" CdmEntityContainer="TESTEntities">
+    <EntitySetMapping Name="TB_MVC_CUST">
+      <EntityTypeMapping TypeName="TESTModel.TB_MVC_CUST">
+        <MappingFragment StoreEntitySet="TB_MVC_CUST">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CUST_NAME" ColumnName="CUST_NAME" />
+          <ScalarProperty Name="CUST_TEL" ColumnName="CUST_TEL" />
+          <ScalarProperty Name="CUST_EMAIL" ColumnName="CUST_EMAIL" />
+          <ScalarProperty Name="Column1" ColumnName="Column1" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
