@@ -7,7 +7,6 @@ using TSTI_API.Models;
 
 namespace TSTI_API.Controllers
 {
-    [Authorize]
     public class APIController : Controller
     {
         TESTEntities testDB = new TESTEntities();
@@ -26,9 +25,16 @@ namespace TSTI_API.Controllers
         {
 
             testDB.TB_MVC_CUST.Add(bean);
-            testDB.SaveChanges();
+            var result = testDB.SaveChanges();
 
-            return Json(bean);
+            if (result == 1)
+            {
+                return Json("Finsih");
+            }
+            else
+            {
+                return Json("Fail");
+            }
 
             //if (Request.Headers["X-MBX-APIKEY"] == API_KEY)
             //{
@@ -36,10 +42,29 @@ namespace TSTI_API.Controllers
             //    testDB.SaveChanges();
 
             //    return Json(bean);
-            //}else
-            //{
-            //    return Json("What do you want!?");
             //}
+            //else
+            //{
+            //    return Json("Fail!");
+            //}
+
+        }
+
+        [HttpPost]
+        public ActionResult SaveDatas(List<TB_MVC_CUST> beans)
+        {
+
+            //testDB.TB_MVC_CUST.Add(beans);
+            var result = testDB.SaveChanges();
+
+            if(result > 0)
+            {
+                return Json("Finsih");
+            }
+            else
+            {
+                return Json("Fail");
+            }
             
         }
 
@@ -48,5 +73,6 @@ namespace TSTI_API.Controllers
         {
             return Json(string.Format("{0} Email:{1}", data["userNames"] ?? "逢金", data["email"] ?? "沒有"));
         }
+
     }
 }
