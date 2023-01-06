@@ -122,8 +122,33 @@ namespace TSTI_API.Controllers
         /// <returns></returns>
         public SRMain_GENERALSR_OUTPUT SaveGenerallySR(SRMain_GENERALSR_INPUT bean, string tType)
         {
-            SRMain_GENERALSR_OUTPUT SROUT = new SRMain_GENERALSR_OUTPUT();
-            
+            #region Json範列格式，一筆(建立GENERALSR_CREATEByAPI)
+            //{
+            // "IV_LOGINACCOUNT": "etatung\\elvis.chang",
+            // "IV_CUSTOMER": "D03251108",
+            // "IV_REPAIRNAME": "王炯凱",
+            // "IV_SRTEAM": "SRV.12211000",
+            // "IV_RKIND": "Z01",
+            // "IV_PATHWAY": "Z01",
+            // "IV_DESC": "Test20230106",
+            // "IV_LTXT": "Test20230106詳細說明",
+            // "IV_MKIND1": "ZA01",
+            // "IV_MKIND2": "ZB0101",
+            // "IV_MKIND3": "ZC010101",
+            // "IV_CONTNAME": "周可斌",
+            // "IV_CONTTEL": "(02)6638-6888EXT.13104",
+            // "IV_CONTADDR": "信義區菸廠路88號12樓",
+            // "IV_CONTEMAIL": "AlexChou@taiwanmobile.com",
+            // "IV_EMPNO": "10001567",
+            // "IV_SQEMPID": "ZC103",
+            // "IV_SERIAL": "SGH33223R6;SGH33223R0",
+            // "IV_SNPID": "G-654081B21-057;G-654081B21-057",
+            // "IV_WTY": "SGH33223R6;OM363636",
+            // "IV_REFIX": "N"
+            //}
+            #endregion
+
+            SRMain_GENERALSR_OUTPUT SROUT = new SRMain_GENERALSR_OUTPUT();            
             
             string pLoginName = string.Empty;
             string pSRID = string.Empty;
@@ -325,7 +350,16 @@ namespace TSTI_API.Controllers
 
                     foreach(var beanSR in QueryToList)
                     {
-                        TB_ONE_SRDetail_Warranty beanD = new TB_ONE_SRDetail_Warranty();                        
+                        TB_ONE_SRDetail_Warranty beanD = new TB_ONE_SRDetail_Warranty();
+
+                        string tSerialID = string.Empty;
+                        string tWTYID = string.Empty;
+
+                        if (IV_WTY.Trim() != "")
+                        {
+                            tSerialID = IV_WTY.Trim().Split(';')[0];
+                            tWTYID = IV_WTY.Trim().Split(';')[1];
+                        }
 
                         beanD.cSRID = pSRID;
                         beanD.cSerialID = beanSR.cSerialID;
@@ -348,7 +382,7 @@ namespace TSTI_API.Controllers
                         beanD.cBPMFormNo = beanSR.cBPMFormNo;
 
                         #region 判斷是否有指定使用
-                        if (beanSR.cWTYID == IV_WTY.Trim())
+                        if (beanSR.cSerialID == tSerialID && beanSR.cWTYID == tWTYID)
                         {
                             beanD.cUsed = "Y";
                         }
