@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MCSWorkflowModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="36" Nullable="false" />
+    <Property Name="ParentID" Type="varchar" MaxLength="36" />
+    <Property Name="DisplayOrder" Type="int" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name2" Type="nvarchar" MaxLength="50" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="100" />
+    <Property Name="FullName2" Type="nvarchar" MaxLength="100" />
+    <Property Name="LocationID" Type="nvarchar" MaxLength="10" />
+    <Property Name="IsCostCenter" Type="bit" Nullable="false" />
+    <Property Name="IsVirtual" Type="bit" Nullable="false" />
+    <Property Name="EMail" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManagerID" Type="varchar" MaxLength="50" />
+    <Property Name="DeptCode1" Type="varchar" MaxLength="36" />
+    <Property Name="DeptCode2" Type="varchar" MaxLength="36" />
+    <Property Name="DeptCode3" Type="varchar" MaxLength="36" />
+    <Property Name="DeptCode4" Type="varchar" MaxLength="36" />
+    <Property Name="DeptCode5" Type="varchar" MaxLength="36" />
+    <Property Name="PrintNum" Type="varchar" MaxLength="20" />
+    <Property Name="Level" Type="int" Nullable="false" />
+    <Property Name="VisitStore" Type="bit" />
+    <Property Name="VisitStoreUnit" Type="varchar" MaxLength="36" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="JDE_Dept_No" Type="varchar" MaxLength="50" />
+    <Property Name="JDE_Dept_Nm" Type="varchar" MaxLength="30" />
+    <Property Name="CR_USER" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="CR_DATE" Type="datetime" />
+    <Property Name="USERSTAMP" Type="varchar" MaxLength="50" />
+    <Property Name="DATESTAMP" Type="datetime" />
+    <Property Name="IsBusinessUnit" Type="bit" Nullable="false" />
+    <Property Name="ProfitCenterID" Type="nvarchar" MaxLength="10" />
+    <Property Name="CostCenterID" Type="nvarchar" MaxLength="30" />
+    <Property Name="Comp_Cde" Type="char" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Alias" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="100" />
+    <Property Name="Name2" Type="nvarchar" MaxLength="100" />
+    <Property Name="DeptID" Type="varchar" MaxLength="100" />
+    <Property Name="TitleID" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="TitleName" Type="nvarchar" MaxLength="100" />
+    <Property Name="Level" Type="int" Nullable="false" />
+    <Property Name="PositionCode" Type="int" Nullable="false" />
+    <Property Name="AgentID" Type="varchar" MaxLength="10" />
+    <Property Name="AgentStartTime" Type="datetime" />
+    <Property Name="AgentEndTime" Type="datetime" />
+    <Property Name="Away" Type="bit" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="100" />
+    <Property Name="Mobile" Type="nvarchar" MaxLength="100" />
+    <Property Name="CostCenter" Type="nvarchar" MaxLength="20" />
+    <Property Name="NotifyType" Type="int" Nullable="false" />
+    <Property Name="Pluralism" Type="bit" Nullable="false" />
+    <Property Name="PositionCode2" Type="varchar" MaxLength="8" />
+    <Property Name="Manager" Type="bit" />
+    <Property Name="IsDeptManager" Type="bit" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="PID" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Birthday" Type="datetime" Nullable="false" />
+    <Property Name="Constellation" Type="varchar" MaxLength="12" />
+    <Property Name="Sex" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="Job_Status" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="Regest_Date" Type="datetime" />
+    <Property Name="CallIn_Date" Type="datetime" />
+    <Property Name="CallOut_Date" Type="datetime" />
+    <Property Name="Replace_Date" Type="datetime" />
+    <Property Name="Leave_Date" Type="datetime" />
+    <Property Name="Leave_Reason" Type="nvarchar" MaxLength="100" />
+    <Property Name="Comp_Cde" Type="char" MaxLength="10" />
+    <Property Name="Area_Cde" Type="char" MaxLength="10" />
+    <Property Name="Job_Type" Type="char" MaxLength="10" />
+    <Property Name="Title1" Type="char" MaxLength="10" />
+    <Property Name="Title2" Type="char" MaxLength="10" />
+    <Property Name="Capital_Position1" Type="char" MaxLength="10" />
+    <Property Name="Capital_Position2" Type="char" MaxLength="10" />
+    <Property Name="Cp_Date" Type="datetime" />
+    <Property Name="Position1" Type="char" MaxLength="10" />
+    <Property Name="Position2" Type="char" MaxLength="10" />
+    <Property Name="Position_Date" Type="datetime" />
+    <Property Name="Comp_Phone" Type="varchar" MaxLength="20" />
+    <Property Name="Extension" Type="varchar" MaxLength="20" />
+    <Property Name="Nationality" Type="char" MaxLength="10" />
+    <Property Name="Blood_Type" Type="char" MaxLength="2" />
+    <Property Name="CR_USER" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="CR_DATE" Type="datetime" Nullable="false" />
+    <Property Name="USERSTAMP" Type="varchar" MaxLength="50" />
+    <Property Name="DATESTAMP" Type="datetime" />
+    <Property Name="Work_Place" Type="nchar" MaxLength="100" />
+    <Property Name="ERP_ID" Type="nvarchar" MaxLength="10" />
+    <Property Name="Workers" Type="nvarchar" MaxLength="50" />
+    <Property Name="Center" Type="char" MaxLength="20" />
+    <Property Name="Account" Type="nvarchar" MaxLength="108" StoreGeneratedPattern="Computed" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="MCSWorkflowModelStoreContainer">
+    <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

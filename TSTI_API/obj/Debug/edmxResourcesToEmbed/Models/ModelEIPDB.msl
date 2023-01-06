@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MCSWorkflowModelStoreContainer" CdmEntityContainer="MCSWorkflowEntities">
+    <EntitySetMapping Name="Department">
+      <EntityTypeMapping TypeName="MCSWorkflowModel.Department">
+        <MappingFragment StoreEntitySet="Department">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Name2" ColumnName="Name2" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="FullName2" ColumnName="FullName2" />
+          <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+          <ScalarProperty Name="IsCostCenter" ColumnName="IsCostCenter" />
+          <ScalarProperty Name="IsVirtual" ColumnName="IsVirtual" />
+          <ScalarProperty Name="EMail" ColumnName="EMail" />
+          <ScalarProperty Name="ManagerID" ColumnName="ManagerID" />
+          <ScalarProperty Name="DeptCode1" ColumnName="DeptCode1" />
+          <ScalarProperty Name="DeptCode2" ColumnName="DeptCode2" />
+          <ScalarProperty Name="DeptCode3" ColumnName="DeptCode3" />
+          <ScalarProperty Name="DeptCode4" ColumnName="DeptCode4" />
+          <ScalarProperty Name="DeptCode5" ColumnName="DeptCode5" />
+          <ScalarProperty Name="PrintNum" ColumnName="PrintNum" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="VisitStore" ColumnName="VisitStore" />
+          <ScalarProperty Name="VisitStoreUnit" ColumnName="VisitStoreUnit" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="JDE_Dept_No" ColumnName="JDE_Dept_No" />
+          <ScalarProperty Name="JDE_Dept_Nm" ColumnName="JDE_Dept_Nm" />
+          <ScalarProperty Name="CR_USER" ColumnName="CR_USER" />
+          <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+          <ScalarProperty Name="USERSTAMP" ColumnName="USERSTAMP" />
+          <ScalarProperty Name="DATESTAMP" ColumnName="DATESTAMP" />
+          <ScalarProperty Name="IsBusinessUnit" ColumnName="IsBusinessUnit" />
+          <ScalarProperty Name="ProfitCenterID" ColumnName="ProfitCenterID" />
+          <ScalarProperty Name="CostCenterID" ColumnName="CostCenterID" />
+          <ScalarProperty Name="Comp_Cde" ColumnName="Comp_Cde" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Person">
+      <EntityTypeMapping TypeName="MCSWorkflowModel.Person">
+        <MappingFragment StoreEntitySet="Person">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Alias" ColumnName="Alias" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Name2" ColumnName="Name2" />
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+          <ScalarProperty Name="TitleID" ColumnName="TitleID" />
+          <ScalarProperty Name="TitleName" ColumnName="TitleName" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="PositionCode" ColumnName="PositionCode" />
+          <ScalarProperty Name="AgentID" ColumnName="AgentID" />
+          <ScalarProperty Name="AgentStartTime" ColumnName="AgentStartTime" />
+          <ScalarProperty Name="AgentEndTime" ColumnName="AgentEndTime" />
+          <ScalarProperty Name="Away" ColumnName="Away" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+          <ScalarProperty Name="NotifyType" ColumnName="NotifyType" />
+          <ScalarProperty Name="Pluralism" ColumnName="Pluralism" />
+          <ScalarProperty Name="PositionCode2" ColumnName="PositionCode2" />
+          <ScalarProperty Name="Manager" ColumnName="Manager" />
+          <ScalarProperty Name="IsDeptManager" ColumnName="IsDeptManager" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="PID" ColumnName="PID" />
+          <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+          <ScalarProperty Name="Constellation" ColumnName="Constellation" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="Job_Status" ColumnName="Job_Status" />
+          <ScalarProperty Name="Regest_Date" ColumnName="Regest_Date" />
+          <ScalarProperty Name="CallIn_Date" ColumnName="CallIn_Date" />
+          <ScalarProperty Name="CallOut_Date" ColumnName="CallOut_Date" />
+          <ScalarProperty Name="Replace_Date" ColumnName="Replace_Date" />
+          <ScalarProperty Name="Leave_Date" ColumnName="Leave_Date" />
+          <ScalarProperty Name="Leave_Reason" ColumnName="Leave_Reason" />
+          <ScalarProperty Name="Comp_Cde" ColumnName="Comp_Cde" />
+          <ScalarProperty Name="Area_Cde" ColumnName="Area_Cde" />
+          <ScalarProperty Name="Job_Type" ColumnName="Job_Type" />
+          <ScalarProperty Name="Title1" ColumnName="Title1" />
+          <ScalarProperty Name="Title2" ColumnName="Title2" />
+          <ScalarProperty Name="Capital_Position1" ColumnName="Capital_Position1" />
+          <ScalarProperty Name="Capital_Position2" ColumnName="Capital_Position2" />
+          <ScalarProperty Name="Cp_Date" ColumnName="Cp_Date" />
+          <ScalarProperty Name="Position1" ColumnName="Position1" />
+          <ScalarProperty Name="Position2" ColumnName="Position2" />
+          <ScalarProperty Name="Position_Date" ColumnName="Position_Date" />
+          <ScalarProperty Name="Comp_Phone" ColumnName="Comp_Phone" />
+          <ScalarProperty Name="Extension" ColumnName="Extension" />
+          <ScalarProperty Name="Nationality" ColumnName="Nationality" />
+          <ScalarProperty Name="Blood_Type" ColumnName="Blood_Type" />
+          <ScalarProperty Name="CR_USER" ColumnName="CR_USER" />
+          <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+          <ScalarProperty Name="USERSTAMP" ColumnName="USERSTAMP" />
+          <ScalarProperty Name="DATESTAMP" ColumnName="DATESTAMP" />
+          <ScalarProperty Name="Work_Place" ColumnName="Work_Place" />
+          <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+          <ScalarProperty Name="Workers" ColumnName="Workers" />
+          <ScalarProperty Name="Center" ColumnName="Center" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PSIPModelStoreContainer" CdmEntityContainer="PSIPEntities">
+    <EntitySetMapping Name="TB_PIS_INSTALLMaterial">
+      <EntityTypeMapping TypeName="PSIPModel.TB_PIS_INSTALLMaterial">
+        <MappingFragment StoreEntitySet="TB_PIS_INSTALLMaterial">
+          <ScalarProperty Name="SRID" ColumnName="SRID" />
+          <ScalarProperty Name="MaterialID" ColumnName="MaterialID" />
+          <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+          <ScalarProperty Name="SRSerial" ColumnName="SRSerial" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_SysParameter">
+      <EntityTypeMapping TypeName="PSIPModel.TB_ONE_SysParameter">
+        <MappingFragment StoreEntitySet="TB_ONE_SysParameter">
+          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+          <ScalarProperty Name="cDescription" ColumnName="cDescription" />
+          <ScalarProperty Name="cValue" ColumnName="cValue" />
+          <ScalarProperty Name="cNo" ColumnName="cNo" />
+          <ScalarProperty Name="cCompanyID" ColumnName="cCompanyID" />
+          <ScalarProperty Name="cFunctionID" ColumnName="cFunctionID" />
+          <ScalarProperty Name="cOperationID" ColumnName="cOperationID" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

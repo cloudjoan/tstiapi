@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ERP_PROXY_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="F4501">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Comp_Cde" Type="nchar" MaxLength="10" />
+    <Property Name="Nature" Type="varchar" MaxLength="2" />
+    <Property Name="NO" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Year" Type="varchar" MaxLength="4" />
+    <Property Name="CType" Type="varchar" MaxLength="5" />
+    <Property Name="Target" Type="nvarchar" MaxLength="500" />
+    <Property Name="CDate" Type="datetime" />
+    <Property Name="StrDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+    <Property Name="CAmt" Type="int" />
+    <Property Name="CRNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="CName" Type="nvarchar" MaxLength="500" />
+    <Property Name="CContent" Type="nvarchar(max)" />
+    <Property Name="Remark" Type="nvarchar(max)" />
+    <Property Name="Sales" Type="nvarchar" MaxLength="30" />
+    <Property Name="CPIC" Type="nvarchar" MaxLength="30" />
+    <Property Name="OCPIC" Type="nvarchar" MaxLength="1000" />
+    <Property Name="CDept" Type="varchar" MaxLength="12" />
+    <Property Name="Classified" Type="varchar" MaxLength="1" />
+    <Property Name="First" Type="varchar" MaxLength="1" />
+    <Property Name="BPMNo" Type="varchar" MaxLength="20" />
+    <Property Name="CtypeOther" Type="nvarchar" MaxLength="500" />
+    <Property Name="Flag" Type="varchar" MaxLength="1" />
+    <Property Name="ADate" Type="datetime" />
+    <Property Name="AEID" Type="int" />
+    <Property Name="ASAPID" Type="varchar" MaxLength="10" />
+    <Property Name="ATitle" Type="nvarchar" MaxLength="30" />
+    <Property Name="AAccount" Type="varchar" MaxLength="60" />
+    <Property Name="ADept" Type="nvarchar" MaxLength="200" />
+    <Property Name="ADeptID" Type="varchar" MaxLength="36" />
+    <Property Name="APC" Type="varchar" MaxLength="10" />
+    <Property Name="ACC" Type="varchar" MaxLength="10" />
+    <Property Name="AWP" Type="nvarchar" MaxLength="50" />
+    <Property Name="FEID" Type="int" />
+    <Property Name="FSAPID" Type="varchar" MaxLength="50" />
+    <Property Name="FTitle" Type="nvarchar" MaxLength="30" />
+    <Property Name="FAccount" Type="varchar" MaxLength="60" />
+    <Property Name="FDept" Type="nvarchar" MaxLength="200" />
+    <Property Name="FDeptID" Type="varchar" MaxLength="36" />
+    <Property Name="FPC" Type="varchar" MaxLength="50" />
+    <Property Name="FCC" Type="varchar" MaxLength="50" />
+    <Property Name="FWP" Type="nvarchar" MaxLength="50" />
+    <Property Name="AppType" Type="nvarchar" MaxLength="10" />
+    <Property Name="BS" Type="nvarchar" MaxLength="10" />
+    <Property Name="SS" Type="nvarchar" MaxLength="10" />
+    <Property Name="Sign" Type="nvarchar" MaxLength="10" />
+    <Property Name="OS" Type="nvarchar" MaxLength="10" />
+    <Property Name="SP" Type="nvarchar" MaxLength="10" />
+    <Property Name="CS" Type="nvarchar" MaxLength="10" />
+    <Property Name="IDCard" Type="nvarchar" MaxLength="10" />
+    <Property Name="Pts" Type="nvarchar" MaxLength="10" />
+    <Property Name="CSD" Type="nvarchar" MaxLength="1000" />
+    <Property Name="BC" Type="nvarchar" MaxLength="1000" />
+    <Property Name="CP" Type="nvarchar" MaxLength="1000" />
+    <Property Name="FO" Type="nvarchar" MaxLength="1000" />
+    <Property Name="DP" Type="nvarchar" MaxLength="1000" />
+    <Property Name="DPlace" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Extend" Type="datetime" />
+    <Property Name="WP" Type="nvarchar" MaxLength="150" />
+    <Property Name="CounterSign" Type="nvarchar" MaxLength="100" />
+    <Property Name="TaxAmt" Type="int" />
+    <Property Name="CloseDate" Type="datetime" />
+    <Property Name="ECSApplyNo" Type="nvarchar" MaxLength="10" />
+    <Property Name="CVR" Type="nvarchar" MaxLength="100" />
+    <Property Name="UploadFiles" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Vendor" Type="nvarchar" MaxLength="300" />
+    <Property Name="CR_USER" Type="nvarchar" MaxLength="50" />
+    <Property Name="CR_DATE" Type="datetime" />
+    <Property Name="USERSTAMP" Type="nvarchar" MaxLength="50" />
+    <Property Name="DATESTAMP" Type="datetime" />
+    <Property Name="CrmOppNo" Type="nvarchar" MaxLength="20" />
+    <Property Name="BILLABLE_TIME" Type="nvarchar(max)" />
+    <Property Name="ERP_ASSID" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="MATERIAL">
+    <Key>
+      <PropertyRef Name="MARA_MATNR" />
+      <PropertyRef Name="MARD_WERKS" />
+      <PropertyRef Name="MARD_LGORT" />
+      <PropertyRef Name="MVKE_VKORG" />
+      <PropertyRef Name="MVKE_VTWEG" />
+    </Key>
+    <Property Name="MARA_MATNR" Type="nvarchar" MaxLength="18" Nullable="false" />
+    <Property Name="MARD_WERKS" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="MARD_LGORT" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="MVKE_VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="MVKE_VTWEG" Type="nvarchar" MaxLength="2" Nullable="false" />
+    <Property Name="MARA_MFRPN" Type="nvarchar" MaxLength="50" />
+    <Property Name="MAKT_TXZA1_ZF" Type="nvarchar" MaxLength="40" />
+    <Property Name="MAKT_TXZA1_EN" Type="nvarchar" MaxLength="40" />
+    <Property Name="MARA_STXL1" Type="nvarchar" MaxLength="200" />
+    <Property Name="MARA_STXL2" Type="nvarchar" MaxLength="200" />
+    <Property Name="MARA_STXL3" Type="nvarchar" MaxLength="200" />
+    <Property Name="MARA_STXL4" Type="nvarchar" MaxLength="200" />
+    <Property Name="MVKE_PRODH" Type="nvarchar" MaxLength="18" />
+    <Property Name="MARA_MATKL" Type="nvarchar" MaxLength="9" />
+    <Property Name="StorageBlock" Type="nvarchar" MaxLength="20" />
+    <Property Name="BasicContent" Type="nvarchar(max)" />
+  </EntityType>
+  <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'ERP_PROXY_DB.dbo.VIEW_CUSTOMER_2' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+  <EntityType Name="VIEW_CUSTOMER_2">
+    <Key>
+      <PropertyRef Name="KNA1_KUNNR" />
+      <PropertyRef Name="KNVV_VKORG" />
+    </Key>
+    <Property Name="KNA1_KUNNR" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="KNA1_NAME1" Type="nvarchar" MaxLength="35" />
+    <Property Name="KNVV_VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="KNVV_KDGRP" Type="nvarchar" MaxLength="2" />
+  </EntityType>
+  <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'ERP_PROXY_DB.dbo.VIEW_MATERIAL_ByComp' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+  <EntityType Name="VIEW_MATERIAL_ByComp">
+    <Key>
+      <PropertyRef Name="MARA_MATNR" />
+      <PropertyRef Name="MARD_WERKS" />
+      <PropertyRef Name="MVKE_VKORG" />
+    </Key>
+    <Property Name="MARA_MATNR" Type="nvarchar" MaxLength="18" Nullable="false" />
+    <Property Name="MAKT_TXZA1_ZF" Type="nvarchar" MaxLength="40" />
+    <Property Name="MARA_STXL1" Type="nvarchar" MaxLength="200" />
+    <Property Name="MVKE_PRODH" Type="nvarchar" MaxLength="18" />
+    <Property Name="MARA_MATKL" Type="nvarchar" MaxLength="9" />
+    <Property Name="MARD_WERKS" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="MVKE_VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="ERP_PROXY_DBModelStoreContainer">
+    <EntitySet Name="F4501" EntityType="Self.F4501" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MATERIAL" EntityType="Self.MATERIAL" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VIEW_CUSTOMER_2" EntityType="Self.VIEW_CUSTOMER_2" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VIEW_CUSTOMER_2].[KNA1_KUNNR] AS [KNA1_KUNNR], 
+    [VIEW_CUSTOMER_2].[KNA1_NAME1] AS [KNA1_NAME1], 
+    [VIEW_CUSTOMER_2].[KNVV_VKORG] AS [KNVV_VKORG], 
+    [VIEW_CUSTOMER_2].[KNVV_KDGRP] AS [KNVV_KDGRP]
+    FROM [dbo].[VIEW_CUSTOMER_2] AS [VIEW_CUSTOMER_2]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="VIEW_MATERIAL_ByComp" EntityType="Self.VIEW_MATERIAL_ByComp" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VIEW_MATERIAL_ByComp].[MARA_MATNR] AS [MARA_MATNR], 
+    [VIEW_MATERIAL_ByComp].[MAKT_TXZA1_ZF] AS [MAKT_TXZA1_ZF], 
+    [VIEW_MATERIAL_ByComp].[MARA_STXL1] AS [MARA_STXL1], 
+    [VIEW_MATERIAL_ByComp].[MVKE_PRODH] AS [MVKE_PRODH], 
+    [VIEW_MATERIAL_ByComp].[MARA_MATKL] AS [MARA_MATKL], 
+    [VIEW_MATERIAL_ByComp].[MARD_WERKS] AS [MARD_WERKS], 
+    [VIEW_MATERIAL_ByComp].[MVKE_VKORG] AS [MVKE_VKORG]
+    FROM [dbo].[VIEW_MATERIAL_ByComp] AS [VIEW_MATERIAL_ByComp]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

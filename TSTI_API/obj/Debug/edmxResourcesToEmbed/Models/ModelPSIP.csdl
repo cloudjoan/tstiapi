@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PSIPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="TB_PIS_INSTALLMaterial">
+    <Key>
+      <PropertyRef Name="SRID" />
+      <PropertyRef Name="SRSerial" />
+    </Key>
+    <Property Name="SRID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MaterialID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="MaterialName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="SRSerial" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="PSIPEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="TB_PIS_INSTALLMaterial" EntityType="Self.TB_PIS_INSTALLMaterial" />
+    <EntitySet Name="TB_ONE_SysParameter" EntityType="PSIPModel.TB_ONE_SysParameter" />
+  </EntityContainer>
+  <EntityType Name="TB_ONE_SysParameter">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cOperationID" Type="Guid" Nullable="false" />
+    <Property Name="cFunctionID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="cCompanyID" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="cNo" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="cValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Disabled" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>

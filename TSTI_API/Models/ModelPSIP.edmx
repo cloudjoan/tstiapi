@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PSIPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TB_ONE_SysParameter">
+          <Key>
+            <PropertyRef Name="cID" />
+          </Key>
+          <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cOperationID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="cFunctionID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="cCompanyID" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="cNo" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="cValue" Type="nvarchar" MaxLength="50" />
+          <Property Name="cDescription" Type="nvarchar" MaxLength="255" />
+          <Property Name="Disabled" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TB_PIS_INSTALLMaterial">
+          <Key>
+            <PropertyRef Name="SRID" />
+            <PropertyRef Name="SRSerial" />
+          </Key>
+          <Property Name="SRID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="MaterialID" Type="nvarchar" MaxLength="100" />
+          <Property Name="MaterialName" Type="nvarchar" MaxLength="100" />
+          <Property Name="SRSerial" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="PSIPModelStoreContainer">
+          <EntitySet Name="TB_ONE_SysParameter" EntityType="Self.TB_ONE_SysParameter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_PIS_INSTALLMaterial" EntityType="Self.TB_PIS_INSTALLMaterial" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PSIPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TB_PIS_INSTALLMaterial">
+          <Key>
+            <PropertyRef Name="SRID" />
+            <PropertyRef Name="SRSerial" />
+          </Key>
+          <Property Name="SRID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaterialID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MaterialName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SRSerial" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="PSIPEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TB_PIS_INSTALLMaterial" EntityType="Self.TB_PIS_INSTALLMaterial" />
+          <EntitySet Name="TB_ONE_SysParameter" EntityType="PSIPModel.TB_ONE_SysParameter" />
+        </EntityContainer>
+        <EntityType Name="TB_ONE_SysParameter">
+          <Key>
+            <PropertyRef Name="cID" />
+          </Key>
+          <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cOperationID" Type="Guid" Nullable="false" />
+          <Property Name="cFunctionID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cCompanyID" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="cNo" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="cValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Disabled" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PSIPModelStoreContainer" CdmEntityContainer="PSIPEntities">
+          <EntitySetMapping Name="TB_PIS_INSTALLMaterial">
+            <EntityTypeMapping TypeName="PSIPModel.TB_PIS_INSTALLMaterial">
+              <MappingFragment StoreEntitySet="TB_PIS_INSTALLMaterial">
+                <ScalarProperty Name="SRID" ColumnName="SRID" />
+                <ScalarProperty Name="MaterialID" ColumnName="MaterialID" />
+                <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+                <ScalarProperty Name="SRSerial" ColumnName="SRSerial" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_ONE_SysParameter">
+            <EntityTypeMapping TypeName="PSIPModel.TB_ONE_SysParameter">
+              <MappingFragment StoreEntitySet="TB_ONE_SysParameter">
+                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="cDescription" ColumnName="cDescription" />
+                <ScalarProperty Name="cValue" ColumnName="cValue" />
+                <ScalarProperty Name="cNo" ColumnName="cNo" />
+                <ScalarProperty Name="cCompanyID" ColumnName="cCompanyID" />
+                <ScalarProperty Name="cFunctionID" ColumnName="cFunctionID" />
+                <ScalarProperty Name="cOperationID" ColumnName="cOperationID" />
+                <ScalarProperty Name="cID" ColumnName="cID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

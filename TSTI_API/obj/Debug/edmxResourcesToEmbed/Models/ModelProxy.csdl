@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ERP_PROXY_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="VIEW_CUSTOMER_2">
+    <Key>
+      <PropertyRef Name="KNA1_KUNNR" />
+      <PropertyRef Name="KNVV_VKORG" />
+    </Key>
+    <Property Name="KNA1_KUNNR" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="KNA1_NAME1" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+    <Property Name="KNVV_VKORG" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="KNVV_KDGRP" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="ERP_PROXY_DBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="VIEW_CUSTOMER_2" EntityType="Self.VIEW_CUSTOMER_2" />
+    <EntitySet Name="VIEW_MATERIAL_ByComp" EntityType="ERP_PROXY_DBModel.VIEW_MATERIAL_ByComp" />
+    <EntitySet Name="MATERIAL" EntityType="ERP_PROXY_DBModel.MATERIAL" />
+    <EntitySet Name="F4501" EntityType="ERP_PROXY_DBModel.F4501" />
+  </EntityContainer>
+  <EntityType Name="VIEW_MATERIAL_ByComp">
+    <Key>
+      <PropertyRef Name="MARA_MATNR" />
+      <PropertyRef Name="MARD_WERKS" />
+      <PropertyRef Name="MVKE_VKORG" />
+    </Key>
+    <Property Name="MARA_MATNR" Type="String" Nullable="false" MaxLength="18" FixedLength="false" Unicode="true" />
+    <Property Name="MAKT_TXZA1_ZF" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="MARA_STXL1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="MVKE_PRODH" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+    <Property Name="MARA_MATKL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+    <Property Name="MARD_WERKS" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="MVKE_VKORG" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="MATERIAL">
+    <Key>
+      <PropertyRef Name="MARA_MATNR" />
+      <PropertyRef Name="MARD_WERKS" />
+      <PropertyRef Name="MARD_LGORT" />
+      <PropertyRef Name="MVKE_VKORG" />
+      <PropertyRef Name="MVKE_VTWEG" />
+    </Key>
+    <Property Name="MARA_MATNR" Type="String" Nullable="false" MaxLength="18" FixedLength="false" Unicode="true" />
+    <Property Name="MARD_WERKS" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="MARD_LGORT" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="MVKE_VKORG" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="MVKE_VTWEG" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="MARA_MFRPN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MAKT_TXZA1_ZF" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="MAKT_TXZA1_EN" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="MARA_STXL1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="MARA_STXL2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="MARA_STXL3" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="MARA_STXL4" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="MVKE_PRODH" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+    <Property Name="MARA_MATKL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+    <Property Name="StorageBlock" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="BasicContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="F4501">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Comp_Cde" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Nature" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="NO" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Year" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+    <Property Name="CType" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="Target" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="CDate" Type="DateTime" Precision="3" />
+    <Property Name="StrDate" Type="DateTime" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Precision="3" />
+    <Property Name="CAmt" Type="Int32" />
+    <Property Name="CRNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="CContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Sales" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="CPIC" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="OCPIC" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="CDept" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Classified" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="First" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="BPMNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CtypeOther" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Flag" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="ADate" Type="DateTime" Precision="3" />
+    <Property Name="AEID" Type="Int32" />
+    <Property Name="ASAPID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="ATitle" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="AAccount" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+    <Property Name="ADept" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ADeptID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="APC" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="ACC" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="AWP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FEID" Type="Int32" />
+    <Property Name="FSAPID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FTitle" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="FAccount" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+    <Property Name="FDept" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="FDeptID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="FPC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FCC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FWP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="AppType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="BS" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="SS" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Sign" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="OS" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="SP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CS" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IDCard" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Pts" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CSD" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="BC" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="CP" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="FO" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="DP" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="DPlace" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Extend" Type="DateTime" Precision="3" />
+    <Property Name="WP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="CounterSign" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="TaxAmt" Type="Int32" />
+    <Property Name="CloseDate" Type="DateTime" Precision="3" />
+    <Property Name="ECSApplyNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CVR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="UploadFiles" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Vendor" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="CR_USER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CR_DATE" Type="DateTime" Precision="3" />
+    <Property Name="USERSTAMP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DATESTAMP" Type="DateTime" Precision="3" />
+    <Property Name="CrmOppNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="BILLABLE_TIME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ERP_ASSID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>

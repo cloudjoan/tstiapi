@@ -51,11 +51,42 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="RestSharp, Version=108.0.3.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.108.0.3\lib\netstandard2.0\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.5.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=5.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.5.0.1\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -164,10 +195,65 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\APIController.cs" />
+    <Compile Include="Controllers\CommonFunction.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Department.cs">
+      <DependentUpon>ModelEIPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\F4501.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MATERIAL.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelEIPDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelEIPDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelEIPDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelEIPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelEIPDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelEIPDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelProxy.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelProxy.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelProxy.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelProxy.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelProxy.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelPSIP.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelPSIP.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelPSIP.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelPSIP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelPSIP.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelPSIP.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ModelTest.Context.cs">
       <AutoGen>True</AutoGen>
@@ -184,8 +270,71 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelTest.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ModelTSTIONE.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelTSTIONE.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelTSTIONE.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelTSTIONE.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelTSTIONE.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Person.cs">
+      <DependentUpon>ModelEIPDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_MVC_CUST.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_LOG.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SRCustomerEmailMapping.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SRDetail_PartsReplace.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SRDetail_Product.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SRDetail_Record.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SRDetail_Warranty.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SRIDFormat.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SRMain.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SRRepairType.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SRSQPerson.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SRTeamMapping.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SysParameter.cs">
+      <DependentUpon>ModelPSIP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_PIS_INSTALLMaterial.cs">
+      <DependentUpon>ModelPSIP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VIEW_CUSTOMER_2.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VIEW_MATERIAL_ByComp.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -198,6 +347,36 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Models\ModelEIPDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelEIPDB.edmx</DependentUpon>
+      <LastGenOutput>ModelEIPDB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelEIPDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelEIPDB.edmx</DependentUpon>
+      <LastGenOutput>ModelEIPDB.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelProxy.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelProxy.edmx</DependentUpon>
+      <LastGenOutput>ModelProxy.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelProxy.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelProxy.edmx</DependentUpon>
+      <LastGenOutput>ModelProxy.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelPSIP.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelPSIP.edmx</DependentUpon>
+      <LastGenOutput>ModelPSIP.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelPSIP.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelPSIP.edmx</DependentUpon>
+      <LastGenOutput>ModelPSIP.cs</LastGenOutput>
+    </Content>
     <Content Include="Models\ModelTest.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ModelTest.Context.cs</LastGenOutput>
@@ -207,6 +386,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelTest.edmx</DependentUpon>
       <LastGenOutput>ModelTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelTSTIONE.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelTSTIONE.edmx</DependentUpon>
+      <LastGenOutput>ModelTSTIONE.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelTSTIONE.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelTSTIONE.edmx</DependentUpon>
+      <LastGenOutput>ModelTSTIONE.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -235,6 +424,34 @@
     </EntityDeploy>
     <Content Include="Models\ModelTest.edmx.diagram">
       <DependentUpon>ModelTest.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\ModelTSTIONE.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelTSTIONE.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelTSTIONE.edmx.diagram">
+      <DependentUpon>ModelTSTIONE.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\ModelEIPDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelEIPDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelEIPDB.edmx.diagram">
+      <DependentUpon>ModelEIPDB.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\ModelProxy.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelProxy.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelProxy.edmx.diagram">
+      <DependentUpon>ModelProxy.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\ModelPSIP.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelPSIP.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelPSIP.edmx.diagram">
+      <DependentUpon>ModelPSIP.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
