@@ -187,7 +187,14 @@ namespace TSTI_API.Controllers
             CommonFunction.EmployeeBean EmpBean = new CommonFunction.EmployeeBean();
             EmpBean = CMF.findEmployeeInfo(IV_LOGINACCOUNT);
 
-            pLoginName = EmpBean.EmployeeCName;          
+            if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
+            {
+                pLoginName = IV_LOGINACCOUNT;
+            }
+            else
+            {
+                pLoginName = EmpBean.EmployeeCName;
+            }
 
             bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
 
@@ -257,24 +264,27 @@ namespace TSTI_API.Controllers
 
                     for (int i = 0; i < countPR; i++)
                     {
-                        TB_ONE_SRDetail_Product beanD = new TB_ONE_SRDetail_Product();
+                        if (IV_SERIAL != "")
+                        {
+                            TB_ONE_SRDetail_Product beanD = new TB_ONE_SRDetail_Product();
 
-                        PRcMaterialName = CMF.findMaterialName(PRcMaterialID[i]);
-                        PRcProductNumber = CMF.findMFRPNumber(PRcMaterialID[i]);
-                        PRcInstallID = CMF.findInstallNumber(IV_SERIAL);
+                            PRcMaterialName = CMF.findMaterialName(PRcMaterialID[i]);
+                            PRcProductNumber = CMF.findMFRPNumber(PRcMaterialID[i]);
+                            PRcInstallID = CMF.findInstallNumber(IV_SERIAL);
 
-                        beanD.cSRID = pSRID;
-                        beanD.cSerialID = PRcSerialID[i];
-                        beanD.cMaterialID = PRcMaterialID[i];
-                        beanD.cMaterialName = PRcMaterialName;
-                        beanD.cProductNumber = PRcProductNumber;
-                        beanD.cInstallID = PRcInstallID;
-                        beanD.Disabled = 0;
+                            beanD.cSRID = pSRID;
+                            beanD.cSerialID = PRcSerialID[i];
+                            beanD.cMaterialID = PRcMaterialID[i];
+                            beanD.cMaterialName = PRcMaterialName;
+                            beanD.cProductNumber = PRcProductNumber;
+                            beanD.cInstallID = PRcInstallID;
+                            beanD.Disabled = 0;
 
-                        beanD.CreatedDate = DateTime.Now;
-                        beanD.CreatedUserName = pLoginName;
+                            beanD.CreatedDate = DateTime.Now;
+                            beanD.CreatedUserName = pLoginName;
 
-                        dbOne.TB_ONE_SRDetail_Product.Add(beanD);
+                            dbOne.TB_ONE_SRDetail_Product.Add(beanD);
+                        }
                     }
                     #endregion
 
@@ -286,65 +296,68 @@ namespace TSTI_API.Controllers
                     #region 呼叫RFC並回傳保固SLA Table清單
                     if (countPR > 0)
                     {
-                        QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(PRcSerialID, ref NowCount, tURLName, tSeverName);
+                        if (IV_SERIAL != "")
+                        {
+                            QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(PRcSerialID, ref NowCount, tURLName, tSeverName);
 
-                        #region 保固，因RFC已經有回傳所有清單，這邊暫時先不用
-                        //foreach (string IV_SERIAL in ArySERIAL)
-                        //{
-                        //    if (IV_SERIAL != null)
-                        //    {
-                        //        var beans = dbProxy.Stockwties.OrderByDescending(x => x.IvEdate).ThenByDescending(x => x.BpmNo).Where(x => x.IvSerial == IV_SERIAL.Trim());
+                            #region 保固，因RFC已經有回傳所有清單，這邊暫時先不用
+                            //foreach (string IV_SERIAL in ArySERIAL)
+                            //{
+                            //    if (IV_SERIAL != null)
+                            //    {
+                            //        var beans = dbProxy.Stockwties.OrderByDescending(x => x.IvEdate).ThenByDescending(x => x.BpmNo).Where(x => x.IvSerial == IV_SERIAL.Trim());
 
-                        //        foreach (var bean in beans)
-                        //        {
-                        //            NowCount++;
+                            //        foreach (var bean in beans)
+                            //        {
+                            //            NowCount++;
 
-                        //            #region 組待查詢清單
-                        //            SRWarranty QueryInfo = new SRWarranty();
+                            //            #region 組待查詢清單
+                            //            SRWarranty QueryInfo = new SRWarranty();
 
-                        //            //string[] tBPMList = CMF.findBPMWarrantyInfo(bean.BpmNo);
+                            //            //string[] tBPMList = CMF.findBPMWarrantyInfo(bean.BpmNo);
 
-                        //            DNDATE = bean.IvDndate == null ? "" : Convert.ToDateTime(bean.IvDndate).ToString("yyyy-MM-dd");
-                        //            SDATE = bean.IvSdate == null ? "" : Convert.ToDateTime(bean.IvSdate).ToString("yyyy-MM-dd");
-                        //            EDATE = bean.IvEdate == null ? "" : Convert.ToDateTime(bean.IvEdate).ToString("yyyy-MM-dd");
+                            //            DNDATE = bean.IvDndate == null ? "" : Convert.ToDateTime(bean.IvDndate).ToString("yyyy-MM-dd");
+                            //            SDATE = bean.IvSdate == null ? "" : Convert.ToDateTime(bean.IvSdate).ToString("yyyy-MM-dd");
+                            //            EDATE = bean.IvEdate == null ? "" : Convert.ToDateTime(bean.IvEdate).ToString("yyyy-MM-dd");
 
-                        //            #region 取得BPM Url
-                        //            tURL = "";
+                            //            #region 取得BPM Url
+                            //            tURL = "";
 
-                        //            if (bean.BpmNo != null)
-                        //            {
-                        //                if (bean.BpmNo.IndexOf("WTY") != -1)
-                        //                {
-                        //                    tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/Warranty/WarrantyForm.aspx?FormNo=" + bean.BpmNo + " target=_blank";
-                        //                }
-                        //                else
-                        //                {
-                        //                    tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Form/Guarantee/GuaranteeForm.aspx?FormNo=" + bean.BpmNo + " target=_blank";
-                        //                }
-                        //            }
-                        //            #endregion
+                            //            if (bean.BpmNo != null)
+                            //            {
+                            //                if (bean.BpmNo.IndexOf("WTY") != -1)
+                            //                {
+                            //                    tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/Warranty/WarrantyForm.aspx?FormNo=" + bean.BpmNo + " target=_blank";
+                            //                }
+                            //                else
+                            //                {
+                            //                    tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Form/Guarantee/GuaranteeForm.aspx?FormNo=" + bean.BpmNo + " target=_blank";
+                            //                }
+                            //            }
+                            //            #endregion
 
-                        //            QueryInfo.cID = NowCount.ToString();                                        //系統ID
-                        //            QueryInfo.cSerialID = bean.IvSerial;                                         //序號                        
-                        //            QueryInfo.cWTYID = bean.IvWtyid;                                             //保固
-                        //            QueryInfo.cWTYName = bean.IvWtydesc;                                         //保固說明
-                        //            QueryInfo.cWTYSDATE = SDATE;                                                //保固開始日期
-                        //            QueryInfo.cWTYEDATE = EDATE;                                                //保固結束日期                                                          
-                        //            QueryInfo.cSLARESP = bean.IvSlaresp;                                         //回應條件
-                        //            QueryInfo.cSLASRV = bean.IvSlasrv;                                          //服務條件
-                        //            QueryInfo.cContractID = "";                                                 //合約編號                        
-                        //            QueryInfo.cBPMFormNo = string.IsNullOrEmpty(bean.BpmNo) ? "" : bean.BpmNo;      //BPM表單編號                        
-                        //            QueryInfo.cBPMFormNoUrl = tURL;                                             //BPM URL                    
-                        //            QueryInfo.cUsed = "N";                                                     //本次使用
+                            //            QueryInfo.cID = NowCount.ToString();                                        //系統ID
+                            //            QueryInfo.cSerialID = bean.IvSerial;                                         //序號                        
+                            //            QueryInfo.cWTYID = bean.IvWtyid;                                             //保固
+                            //            QueryInfo.cWTYName = bean.IvWtydesc;                                         //保固說明
+                            //            QueryInfo.cWTYSDATE = SDATE;                                                //保固開始日期
+                            //            QueryInfo.cWTYEDATE = EDATE;                                                //保固結束日期                                                          
+                            //            QueryInfo.cSLARESP = bean.IvSlaresp;                                         //回應條件
+                            //            QueryInfo.cSLASRV = bean.IvSlasrv;                                          //服務條件
+                            //            QueryInfo.cContractID = "";                                                 //合約編號                        
+                            //            QueryInfo.cBPMFormNo = string.IsNullOrEmpty(bean.BpmNo) ? "" : bean.BpmNo;      //BPM表單編號                        
+                            //            QueryInfo.cBPMFormNoUrl = tURL;                                             //BPM URL                    
+                            //            QueryInfo.cUsed = "N";                                                     //本次使用
 
-                        //            QueryToList.Add(QueryInfo);
-                        //            #endregion
-                        //        }
-                        //    }
-                        //}
-                        #endregion
+                            //            QueryToList.Add(QueryInfo);
+                            //            #endregion
+                            //        }
+                            //    }
+                            //}
+                            #endregion
 
-                        QueryToList = QueryToList.OrderBy(x => x.cSerialID).ThenByDescending(x => x.cWTYEDATE).ToList();
+                            QueryToList = QueryToList.OrderBy(x => x.cSerialID).ThenByDescending(x => x.cWTYEDATE).ToList();
+                        }
                     }
                     #endregion                   
 
