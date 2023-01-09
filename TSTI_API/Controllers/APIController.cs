@@ -423,7 +423,7 @@ namespace TSTI_API.Controllers
 
                     if (result <= 0)
                     {
-                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新建失敗" + Environment.NewLine;
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新建失敗！" + Environment.NewLine;
                         CMF.writeToLog(pSRID, "SaveGenerallySR_API", pMsg, pLoginName);
 
                         SROUT.EV_SRID = pSRID;
@@ -1076,7 +1076,7 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑法人客戶聯絡人資料建立 ↑↑↑↑↑-----  
 
-        #region -----↓↓↓↓↓法人客戶聯絡人資料建立 ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓法人客戶聯絡人資料建立/修改 ↓↓↓↓↓-----
 
         #region 法人客戶聯絡人資料新增接口
         [HttpPost]
@@ -1094,14 +1094,42 @@ namespace TSTI_API.Controllers
             //}
             #endregion            
 
-            var bean = CONTACT_CREATE(beanIN);
+            var bean = SaveCONTACT(beanIN);
 
             return Json(bean);
         }
         #endregion
 
-        #region 新增法人客戶聯絡人資料
-        private CONTACTCREATE_OUTPUT CONTACT_CREATE(CONTACTCREATE_INPUT beanIN)
+        #region 法人客戶聯絡人資料更新接口
+        [HttpPost]
+        public ActionResult API_CONTACT_UPDATE(CONTACTCREATE_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINACCOUNT": "etatung\\elvis.chang",
+            //    "IV_CUSTOMEID": "D16151427",
+            //    "IV_CONTACTNAME": "張豐穎",
+            //    "IV_CONTACTCITY": "台中市",
+            //    "IV_CONTACTADDRESS": "南屯區五權西路二段236號6樓之1",
+            //    "IV_CONTACTTEL": "04-24713300",
+            //    "IV_CONTACTEMAIL": "elvis.chang@etatung.com",
+            //    "IV_ISDELETE": "N"
+            //}
+            #endregion            
+
+            var bean = SaveCONTACT(beanIN);
+
+            return Json(bean);
+        }
+        #endregion
+
+        #region 儲存法人客戶聯絡人資料
+        /// <summary>
+        /// 儲存法人客戶聯絡人資料
+        /// </summary>
+        /// <param name="beanIN">傳入資料</param>        
+        /// <returns></returns>
+        private CONTACTCREATE_OUTPUT SaveCONTACT(CONTACTCREATE_INPUT beanIN)
         {
             CONTACTCREATE_OUTPUT SROUT = new CONTACTCREATE_OUTPUT();
 
@@ -1111,6 +1139,7 @@ namespace TSTI_API.Controllers
 
             string CCustomerName = CMF.findCustName(beanIN.IV_CUSTOMEID);
             string IV_LOGINACCOUNT = string.IsNullOrEmpty(beanIN.IV_LOGINACCOUNT) ? "" : beanIN.IV_LOGINACCOUNT;
+            string IV_ISDELETE = string.IsNullOrEmpty(beanIN.IV_ISDELETE) ? "" : beanIN.IV_ISDELETE;
 
             CommonFunction.EmployeeBean EmpBean = new CommonFunction.EmployeeBean();
             EmpBean = CMF.findEmployeeInfo(IV_LOGINACCOUNT);
@@ -1126,7 +1155,8 @@ namespace TSTI_API.Controllers
 
             try
             {
-                var bean = dbProxy.CUSTOMER_Contact.FirstOrDefault(x => x.BpmNo == tBpmNo && x.KNB1_BUKRS == cBUKRS && x.KNA1_KUNNR == beanIN.IV_CUSTOMEID && x.ContactName == beanIN.IV_CONTACTNAME);
+                var bean = dbProxy.CUSTOMER_Contact.FirstOrDefault(x => (x.Disabled == null || x.Disabled != 1) && x.BpmNo == tBpmNo && 
+                                                                     x.KNB1_BUKRS == cBUKRS && x.KNA1_KUNNR == beanIN.IV_CUSTOMEID && x.ContactName == beanIN.IV_CONTACTNAME);
 
                 if (bean != null) //修改
                 {
@@ -1134,6 +1164,11 @@ namespace TSTI_API.Controllers
                     bean.ContactAddress = beanIN.IV_CONTACTADDRESS;
                     bean.ContactPhone = beanIN.IV_CONTACTTEL;
                     bean.ContactEmail = beanIN.IV_CONTACTEMAIL;
+
+                    if (IV_ISDELETE == "Y")
+                    {
+                        bean.Disabled = 1;
+                    }
 
                     bean.ModifiedUserName = pLoginName;
                     bean.ModifiedDate = DateTime.Now;
@@ -1165,7 +1200,15 @@ namespace TSTI_API.Controllers
 
                 if (result <= 0)
                 {
-                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新建失敗" + Environment.NewLine;
+                    if (IV_ISDELETE == "Y") //刪除
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "刪除失敗！請確認要刪除的聯絡人，是透過TICC或One Service建立的才可以刪除！" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "儲存失敗！" + Environment.NewLine;
+                    }
+
                     CMF.writeToLog("", "CONTACT_CREATE_API", pMsg, pLoginName);
                     
                     SROUT.EV_MSGT = "E";
@@ -1210,6 +1253,8 @@ namespace TSTI_API.Controllers
             public string IV_CONTACTTEL { get; set; }
             /// <summary>聯絡人Email</summary>
             public string IV_CONTACTEMAIL { get; set; }
+            /// <summary>是否要刪除</summary>
+            public string IV_ISDELETE { get; set; }            
         }
         #endregion
 
@@ -1224,7 +1269,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑法人客戶聯絡人資料 ↑↑↑↑↑-----  
+        #endregion -----↑↑↑↑↑法人客戶聯絡人資料/修改 ↑↑↑↑↑-----  
     }
 
     #region 保固SLA資訊
