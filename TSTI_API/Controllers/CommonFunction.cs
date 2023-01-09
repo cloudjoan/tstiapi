@@ -153,6 +153,81 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得法人客戶聯絡人資料
+        /// <summary>
+        /// 取得法人客戶聯絡人資料
+        /// </summary>
+        /// <param name="keyword">客戶代號/客戶名稱</param>
+        /// <returns></returns>
+        public List<VIEW_CUSTOMER_2> findCUSTOMERINFO(string keyword)
+        {
+            List<VIEW_CUSTOMER_2> tList = new List<VIEW_CUSTOMER_2>();
+
+            if (keyword != "")
+            {
+                tList = dbProxy.VIEW_CUSTOMER_2.Where(x => x.KNA1_KUNNR.Contains(keyword.Trim()) || x.KNA1_NAME1.Contains(keyword.Trim())).Take(30).ToList();               
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得法人客戶聯絡人資料
+        /// <summary>
+        /// 取得法人客戶聯絡人資料
+        /// </summary>
+        /// <param name="CustomerID">客戶代號</param>
+        /// <param name="CONTACTNAME">聯絡人姓名</param>        
+        /// <param name="CONTACTTEL">聯絡人電話</param>
+        /// <param name="CONTACTEMAIL">聯絡人Email</param>
+        /// <returns></returns>
+        public List<PCustomerContact> findCONTACTINFO(string CustomerID, string CONTACTNAME,  string CONTACTTEL, string CONTACTEMAIL)
+        {
+            var qPjRec = dbProxy.CUSTOMER_Contact.OrderByDescending(x => x.ModifiedDate).
+                                               Where(x => (x.Disabled == null || x.Disabled != 1) && x.KNA1_KUNNR == CustomerID &&
+                                                          x.ContactName != "" && x.ContactCity != "" &&
+                                                          x.ContactAddress != "" && x.ContactPhone != "" &&
+                                                          (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
+                                                          (string.IsNullOrEmpty(CONTACTTEL) ? true : x.ContactPhone.Contains(CONTACTTEL)) &&
+                                                          (string.IsNullOrEmpty(CONTACTEMAIL) ? true : x.ContactEmail.Contains(CONTACTEMAIL))).ToList();
+
+            List<string> tTempList = new List<string>();
+
+            string tTempValue = string.Empty;
+
+            List<PCustomerContact> liPCContact = new List<PCustomerContact>();
+            if (qPjRec != null && qPjRec.Count() > 0)
+            {
+                foreach (var prBean in qPjRec)
+                {
+                    tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + prBean.KNB1_BUKRS.Trim().Replace(" ", "") + "|" + prBean.ContactName.Trim().Replace(" ", "");
+
+                    if (!tTempList.Contains(tTempValue)) //判斷客戶ID、公司別、聯絡人名姓名不重覆才要顯示
+                    {
+                        tTempList.Add(tTempValue);
+
+                        PCustomerContact prDocBean = new PCustomerContact();
+
+                        prDocBean.ContactID = prBean.ContactID.ToString();
+                        prDocBean.CustomerID = prBean.KNA1_KUNNR.Trim().Replace(" ", "");
+                        prDocBean.CustomerName = prBean.KNA1_NAME1.Trim().Replace(" ", "");
+                        prDocBean.BUKRS = prBean.KNB1_BUKRS.Trim().Replace(" ", "");
+                        prDocBean.Name = prBean.ContactName.Trim().Replace(" ", "");
+                        prDocBean.City = prBean.ContactCity.Trim().Replace(" ", "");
+                        prDocBean.Address = prBean.ContactAddress.Trim().Replace(" ", "");
+                        prDocBean.Email = prBean.ContactEmail.Trim().Replace(" ", "");
+                        prDocBean.Phone = prBean.ContactPhone.Trim().Replace(" ", "");
+                        prDocBean.BPMNo = prBean.BpmNo.Trim().Replace(" ", "");
+
+                        liPCContact.Add(prDocBean);
+                    }
+                }
+            }
+
+            return liPCContact;
+        }
+        #endregion
+
         #region 取得SQ人員名稱
         /// <summary>
         /// 取得SQ人員名稱

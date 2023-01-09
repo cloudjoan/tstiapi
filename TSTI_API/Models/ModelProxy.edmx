@@ -5,6 +5,32 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ERP_PROXY_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CUSTOMER_Contact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+          </Key>
+          <Property Name="ContactID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="KNA1_KUNNR" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="KNA1_NAME1" Type="nvarchar" MaxLength="35" />
+          <Property Name="KNB1_BUKRS" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="ContactType" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="ContactName" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="ContactCity" Type="nvarchar" MaxLength="10" />
+          <Property Name="ContactAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="ContactEmail" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ContactPhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="ContactDepartment" Type="nvarchar" MaxLength="100" />
+          <Property Name="ContactPosition" Type="nvarchar" MaxLength="20" />
+          <Property Name="BpmNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ModifiedUserID" Type="uniqueidentifier" />
+          <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="Disabled" Type="int" />
+          <Property Name="IsMain" Type="tinyint" />
+          <Property Name="MainModifiedUserID" Type="uniqueidentifier" />
+          <Property Name="MainModifiedUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MainModifiedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="F4501">
           <Key>
             <PropertyRef Name="ID" />
@@ -138,6 +164,7 @@
           <Property Name="MVKE_VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
         </EntityType>
         <EntityContainer Name="ERP_PROXY_DBModelStoreContainer">
+          <EntitySet Name="CUSTOMER_Contact" EntityType="Self.CUSTOMER_Contact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="F4501" EntityType="Self.F4501" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MATERIAL" EntityType="Self.MATERIAL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VIEW_CUSTOMER_2" EntityType="Self.VIEW_CUSTOMER_2" store:Type="Views" store:Schema="dbo">
@@ -179,6 +206,7 @@
           <EntitySet Name="VIEW_MATERIAL_ByComp" EntityType="ERP_PROXY_DBModel.VIEW_MATERIAL_ByComp" />
           <EntitySet Name="MATERIAL" EntityType="ERP_PROXY_DBModel.MATERIAL" />
           <EntitySet Name="F4501" EntityType="ERP_PROXY_DBModel.F4501" />
+          <EntitySet Name="CUSTOMER_Contact" EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" />
         </EntityContainer>
         <EntityType Name="VIEW_MATERIAL_ByComp">
           <Key>
@@ -297,6 +325,32 @@
           <Property Name="CrmOppNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="BILLABLE_TIME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ERP_ASSID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CUSTOMER_Contact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+          </Key>
+          <Property Name="ContactID" Type="Guid" Nullable="false" />
+          <Property Name="KNA1_KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="KNA1_NAME1" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="KNB1_BUKRS" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="ContactType" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ContactName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="ContactCity" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ContactAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ContactEmail" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContactDepartment" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ContactPosition" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="BpmNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedUserID" Type="Guid" />
+          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Disabled" Type="Int32" />
+          <Property Name="IsMain" Type="Byte" />
+          <Property Name="MainModifiedUserID" Type="Guid" />
+          <Property Name="MainModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MainModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -426,6 +480,33 @@
                 <ScalarProperty Name="Nature" ColumnName="Nature" />
                 <ScalarProperty Name="Comp_Cde" ColumnName="Comp_Cde" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMER_Contact">
+            <EntityTypeMapping TypeName="ERP_PROXY_DBModel.CUSTOMER_Contact">
+              <MappingFragment StoreEntitySet="CUSTOMER_Contact">
+                <ScalarProperty Name="MainModifiedDate" ColumnName="MainModifiedDate" />
+                <ScalarProperty Name="MainModifiedUserName" ColumnName="MainModifiedUserName" />
+                <ScalarProperty Name="MainModifiedUserID" ColumnName="MainModifiedUserID" />
+                <ScalarProperty Name="IsMain" ColumnName="IsMain" />
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+                <ScalarProperty Name="ModifiedUserID" ColumnName="ModifiedUserID" />
+                <ScalarProperty Name="BpmNo" ColumnName="BpmNo" />
+                <ScalarProperty Name="ContactPosition" ColumnName="ContactPosition" />
+                <ScalarProperty Name="ContactDepartment" ColumnName="ContactDepartment" />
+                <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+                <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
+                <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
+                <ScalarProperty Name="ContactCity" ColumnName="ContactCity" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="ContactType" ColumnName="ContactType" />
+                <ScalarProperty Name="KNB1_BUKRS" ColumnName="KNB1_BUKRS" />
+                <ScalarProperty Name="KNA1_NAME1" ColumnName="KNA1_NAME1" />
+                <ScalarProperty Name="KNA1_KUNNR" ColumnName="KNA1_KUNNR" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

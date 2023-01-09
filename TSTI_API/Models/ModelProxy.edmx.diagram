@@ -9,6 +9,7 @@
         <EntityTypeShape EntityType="ERP_PROXY_DBModel.VIEW_MATERIAL_ByComp" Width="2.25" PointX="0.75" PointY="1.25" IsExpanded="false" />
         <EntityTypeShape EntityType="ERP_PROXY_DBModel.MATERIAL" Width="2.25" PointX="0.75" PointY="1.75" IsExpanded="false" />
         <EntityTypeShape EntityType="ERP_PROXY_DBModel.F4501" Width="2.25" PointX="0.75" PointY="2.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" Width="2.25" PointX="0.75" PointY="2.75" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

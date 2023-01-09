@@ -29,5 +29,6 @@ namespace TSTI_API.Models
         public virtual DbSet<VIEW_MATERIAL_ByComp> VIEW_MATERIAL_ByComp { get; set; }
         public virtual DbSet<MATERIAL> MATERIAL { get; set; }
         public virtual DbSet<F4501> F4501 { get; set; }
+        public virtual DbSet<CUSTOMER_Contact> CUSTOMER_Contact { get; set; }
     }
 }

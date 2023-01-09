@@ -126,5 +126,32 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="CUSTOMER_Contact">
+      <EntityTypeMapping TypeName="ERP_PROXY_DBModel.CUSTOMER_Contact">
+        <MappingFragment StoreEntitySet="CUSTOMER_Contact">
+          <ScalarProperty Name="MainModifiedDate" ColumnName="MainModifiedDate" />
+          <ScalarProperty Name="MainModifiedUserName" ColumnName="MainModifiedUserName" />
+          <ScalarProperty Name="MainModifiedUserID" ColumnName="MainModifiedUserID" />
+          <ScalarProperty Name="IsMain" ColumnName="IsMain" />
+          <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+          <ScalarProperty Name="ModifiedUserID" ColumnName="ModifiedUserID" />
+          <ScalarProperty Name="BpmNo" ColumnName="BpmNo" />
+          <ScalarProperty Name="ContactPosition" ColumnName="ContactPosition" />
+          <ScalarProperty Name="ContactDepartment" ColumnName="ContactDepartment" />
+          <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+          <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
+          <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
+          <ScalarProperty Name="ContactCity" ColumnName="ContactCity" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="ContactType" ColumnName="ContactType" />
+          <ScalarProperty Name="KNB1_BUKRS" ColumnName="KNB1_BUKRS" />
+          <ScalarProperty Name="KNA1_NAME1" ColumnName="KNA1_NAME1" />
+          <ScalarProperty Name="KNA1_KUNNR" ColumnName="KNA1_KUNNR" />
+          <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

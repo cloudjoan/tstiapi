@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +14,7 @@ namespace TSTI_API.Controllers
     {
         TESTEntities testDB = new TESTEntities();
         TSTIONEEntities dbOne = new TSTIONEEntities();
+        ERP_PROXY_DBEntities dbProxy = new ERP_PROXY_DBEntities();
 
         CommonFunction CMF = new CommonFunction();
 
@@ -34,7 +38,7 @@ namespace TSTI_API.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return Json("Hello World!", JsonRequestBehavior.AllowGet);
+            return Json("Hello World!", JsonRequestBehavior.AllowGet);          
         }
 
         [HttpGet]
@@ -99,28 +103,14 @@ namespace TSTI_API.Controllers
 
         #region -----↓↓↓↓↓一般服務請求 ↓↓↓↓↓-----
 
+        #region 建立ONE SERVICE報修SR（一般服務請求）接口
         /// <summary>
         /// 建立ONE SERVICE報修SR（一般服務請求）接口
         /// </summary>
         /// <param name="bean"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult GENERALSR_CREATEByAPI(SRMain_GENERALSR_INPUT bean)
-        {
-            SRMain_GENERALSR_OUTPUT SROUT = new SRMain_GENERALSR_OUTPUT();
-
-            SROUT = SaveGenerallySR(bean, "ADD"); //新增
-
-            return Json(SROUT);
-        }
-
-        /// <summary>
-        /// 儲存一般服務請求
-        /// </summary>
-        /// <param name="bean">一般服務請求主檔資訊</param>
-        /// <param name="tType">ADD.新增 EDIT.修改</param>
-        /// <returns></returns>
-        public SRMain_GENERALSR_OUTPUT SaveGenerallySR(SRMain_GENERALSR_INPUT bean, string tType)
+        public ActionResult API_GENERALSR_CREATE(SRMain_GENERALSR_INPUT beanIN)
         {
             #region Json範列格式，一筆(建立GENERALSR_CREATEByAPI)
             //{
@@ -148,6 +138,23 @@ namespace TSTI_API.Controllers
             //}
             #endregion
 
+            SRMain_GENERALSR_OUTPUT SROUT = new SRMain_GENERALSR_OUTPUT();
+
+            SROUT = SaveGenerallySR(beanIN, "ADD"); //新增
+
+            return Json(SROUT);
+        }
+        #endregion
+
+        #region 儲存一般服務請求
+        /// <summary>
+        /// 儲存一般服務請求
+        /// </summary>
+        /// <param name="bean">一般服務請求主檔資訊</param>
+        /// <param name="tType">ADD.新增 EDIT.修改</param>
+        /// <returns></returns>
+        private SRMain_GENERALSR_OUTPUT SaveGenerallySR(SRMain_GENERALSR_INPUT bean, string tType)
+        {
             SRMain_GENERALSR_OUTPUT SROUT = new SRMain_GENERALSR_OUTPUT();            
             
             string pLoginName = string.Empty;
@@ -716,6 +723,7 @@ namespace TSTI_API.Controllers
 
             return SROUT;
         }
+        #endregion
 
         #region 取號(SRID)
         /// <summary>
@@ -781,7 +789,7 @@ namespace TSTI_API.Controllers
             /// <summary>服務請求說明</summary>
             public string IV_DESC { get; set; }
             /// <summary>詳細描述</summary>
-            public string IV_LTXT { get; set; }            
+            public string IV_LTXT { get; set; }
             /// <summary>報修代碼(大類)</summary>
             public string IV_MKIND1 { get; set; }
             /// <summary>報修代碼(中類)</summary>
@@ -807,7 +815,7 @@ namespace TSTI_API.Controllers
             /// <summary>保固代號(若是合約則傳入合約編號)</summary>
             public string IV_WTY { get; set; }
             /// <summary>是否為二修(Y.是 N.否)</summary>
-            public string IV_REFIX { get; set; }            
+            public string IV_REFIX { get; set; }
         }
         #endregion
 
@@ -820,11 +828,403 @@ namespace TSTI_API.Controllers
             /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
             public string EV_MSGT { get; set; }
             /// <summary>消息內容</summary>
-            public string EV_MSG { get; set; }            
+            public string EV_MSG { get; set; }
         }
-        #endregion        
+        #endregion
 
-        #endregion -----↑↑↑↑↑一般服務請求 ↑↑↑↑↑-----  
+        #endregion -----↑↑↑↑↑一般服務請求 ↑↑↑↑↑-----      
+
+        #region -----↓↓↓↓↓法人客戶資料 ↓↓↓↓↓-----
+
+        #region 測試取得法人客戶資料
+        //[HttpPost]
+        //public ActionResult callAPI_CUSTOMERINFO_GET(CUSTOMERINFO_INPUT beanIN)
+        //{
+        //    var beanList = GetAPI_CUSTOMERINFO_GET(beanIN);
+
+        //    return Json(beanList);
+        //}
+
+        ///// <summary>
+        ///// 測試取得法人客戶資料
+        ///// </summary>
+        ///// <param name="beanIN"></param>
+        //public List<CUSTOMERINFO_OUTPUT> GetAPI_CUSTOMERINFO_GET(CUSTOMERINFO_INPUT beanIN)
+        //{
+        //    List<CUSTOMERINFO_OUTPUT> ListOUT = new List<CUSTOMERINFO_OUTPUT>();
+
+        //    int tLength = 0;
+
+        //    try
+        //    {
+        //        var client = new RestClient("http://localhost:32603/API/API_CUSTOMERINFO_GET");  //測試用            
+
+        //        var request = new RestRequest();
+        //        request.Method = RestSharp.Method.Post;
+
+        //        Dictionary<Object, Object> parameters = new Dictionary<Object, Object>();
+        //        parameters.Add("IV_CUSTOME", beanIN.IV_CUSTOME);               
+
+        //        request.AddHeader("Content-Type", "application/json");
+        //        request.AddParameter("application/json", parameters, ParameterType.RequestBody);
+
+        //        RestResponse response = client.Execute(request);
+
+        //        var Listdata = (JArray)JsonConvert.DeserializeObject(response.Content);
+
+        //        foreach (JObject data in Listdata)
+        //        {
+        //            CUSTOMERINFO_OUTPUT OUTBean = new CUSTOMERINFO_OUTPUT();
+
+        //            OUTBean.CUSTOMERID = data["CUSTOMERID"].ToString().Trim();
+        //            OUTBean.CUSTOMERNAME = data["CUSTOMERNAME"].ToString().Trim();
+        //            OUTBean.EV_MSGT = data["EV_MSGT"].ToString().Trim();
+        //            OUTBean.EV_MSG = data["EV_MSG"].ToString().Trim();
+
+        //            ListOUT.Add(OUTBean);
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"callAPI_CUSTOMERINFO_GET Error: {ex}");
+        //    }
+
+        //    return ListOUT;
+        //}
+        #endregion
+
+        #region 查詢法人客戶資料接口
+        [HttpPost]
+        public ActionResult API_CUSTOMERINFO_GET(CUSTOMERINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_CUSTOME": "元大證券股份有限公司"
+            //}
+            #endregion
+
+            List<CUSTOMERINFO_OUTPUT> ListOUT = new List<CUSTOMERINFO_OUTPUT>();
+
+            ListOUT = CUSTOMERINFO_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得法人客戶資料
+        private List<CUSTOMERINFO_OUTPUT> CUSTOMERINFO_GET(CUSTOMERINFO_INPUT beanIN)
+        {
+            List<CUSTOMERINFO_OUTPUT> ListOUT = new List<CUSTOMERINFO_OUTPUT>();
+
+            var tList = CMF.findCUSTOMERINFO(beanIN.IV_CUSTOME);
+
+            if (tList.Count == 0)
+            {
+                CUSTOMERINFO_OUTPUT OUTBean = new CUSTOMERINFO_OUTPUT();
+
+                OUTBean.CUSTOMERID = "";
+                OUTBean.CUSTOMERNAME = "";
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = "查無法人客戶資料，請重新查詢！";
+
+                ListOUT.Add(OUTBean);
+            }
+            else
+            {
+                foreach (var bean in tList)
+                {
+                    CUSTOMERINFO_OUTPUT OUTBean = new CUSTOMERINFO_OUTPUT();
+
+                    OUTBean.CUSTOMERID = bean.KNA1_KUNNR.Trim();
+                    OUTBean.CUSTOMERNAME = bean.KNA1_NAME1.Trim();
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    ListOUT.Add(OUTBean);
+                }
+            }
+
+            return ListOUT;
+        }
+        #endregion
+
+        #region 查詢法人客戶資料INPUT資訊
+        /// <summary>查詢法人客戶資料資料INPUT資訊</summary>
+        public struct CUSTOMERINFO_INPUT
+        {
+            /// <summary>法人客戶(統一編號/客戶名稱)</summary>
+            public string IV_CUSTOME { get; set; }                  
+        }
+        #endregion
+
+        #region 查詢法人客戶資料OUTPUT資訊
+        /// <summary>查詢法人客戶資料OUTPUT資訊</summary>
+        public struct CUSTOMERINFO_OUTPUT
+        {
+            /// <summary>客戶代號</summary>
+            public string CUSTOMERID { get; set; }
+            /// <summary>客戶名稱</summary>
+            public string CUSTOMERNAME { get; set; }           
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑法人客戶資料 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓法人客戶聯絡人資料 ↓↓↓↓↓-----
+
+        #region 查詢法人客戶聯絡人資料接口
+        [HttpPost]
+        public ActionResult API_CONTACTINFO_GET(CONTACTINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_CUSTOMEID": "D16151427"            
+            //}
+            #endregion
+
+            List<CONTACTINFO_OUTPUT> ListOUT = new List<CONTACTINFO_OUTPUT>();
+
+            ListOUT = CONTACTINFO_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得法人客戶聯絡人資料
+        private List<CONTACTINFO_OUTPUT> CONTACTINFO_GET(CONTACTINFO_INPUT beanIN)
+        {
+            List<CONTACTINFO_OUTPUT> ListOUT = new List<CONTACTINFO_OUTPUT>();
+
+            var tList = CMF.findCONTACTINFO(beanIN.IV_CUSTOMEID, beanIN.IV_CONTACTNAME, beanIN.IV_CONTACTTEL, beanIN.IV_CONTACTEMAIL);
+
+            if (tList.Count == 0)
+            {
+                CONTACTINFO_OUTPUT OUTBean = new CONTACTINFO_OUTPUT();
+
+                OUTBean.CONTACTNAME = "";
+                OUTBean.CONTACTCITY = "";
+                OUTBean.CONTACTADDRESS = "";
+                OUTBean.CONTACTTEL = "";
+                OUTBean.CONTACTEMAIL = "";
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = "查無法人客戶資料，請重新查詢！";
+
+                ListOUT.Add(OUTBean);
+            }
+            else
+            {
+                foreach (var bean in tList)
+                {
+                    CONTACTINFO_OUTPUT OUTBean = new CONTACTINFO_OUTPUT();
+
+                    OUTBean.CONTACTNAME = bean.Name;
+                    OUTBean.CONTACTCITY = bean.City;
+                    OUTBean.CONTACTADDRESS = bean.Address;
+                    OUTBean.CONTACTTEL = bean.Phone;
+                    OUTBean.CONTACTEMAIL = bean.Email;
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    ListOUT.Add(OUTBean);
+                }
+            }
+
+            return ListOUT;
+        }
+        #endregion
+
+        #region 查詢法人客戶聯絡人資料INPUT資訊
+        /// <summary>查詢法人客戶聯絡人資料資料INPUT資訊</summary>
+        public struct CONTACTINFO_INPUT
+        {
+            /// <summary>法人客戶代號</summary>
+            public string IV_CUSTOMEID { get; set; }
+            /// <summary>聯絡人姓名</summary>
+            public string IV_CONTACTNAME { get; set; }            
+            /// <summary>聯絡人電話</summary>
+            public string IV_CONTACTTEL { get; set; }
+            /// <summary>聯絡人Email</summary>
+            public string IV_CONTACTEMAIL { get; set; }
+        }
+        #endregion
+
+        #region 查詢法人客戶聯絡人資料OUTPUT資訊
+        /// <summary>查詢法人客戶聯絡人資料OUTPUT資訊</summary>
+        public struct CONTACTINFO_OUTPUT
+        {
+            /// <summary>聯絡人姓名</summary>
+            public string CONTACTNAME { get; set; }
+            /// <summary>聯絡人城市</summary>
+            public string CONTACTCITY { get; set; }
+            /// <summary>聯絡人地址</summary>
+            public string CONTACTADDRESS { get; set; }
+            /// <summary>聯絡人電話</summary>
+            public string CONTACTTEL { get; set; }
+            /// <summary>聯絡人Email</summary>
+            public string CONTACTEMAIL { get; set; }
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑法人客戶聯絡人資料建立 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓法人客戶聯絡人資料建立 ↓↓↓↓↓-----
+
+        #region 法人客戶聯絡人資料新增接口
+        [HttpPost]
+        public ActionResult API_CONTACT_CREATE(CONTACTCREATE_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINACCOUNT": "etatung\\elvis.chang",
+            //    "IV_CUSTOMEID": "D16151427",
+            //    "IV_CONTACTNAME": "張豐穎",
+            //    "IV_CONTACTCITY": "台中市",
+            //    "IV_CONTACTADDRESS": "南屯區五權西路二段236號6樓之1",
+            //    "IV_CONTACTTEL": "04-24713300",
+            //    "IV_CONTACTEMAIL": "elvis.chang@etatung.com"
+            //}
+            #endregion            
+
+            var bean = CONTACT_CREATE(beanIN);
+
+            return Json(bean);
+        }
+        #endregion
+
+        #region 新增法人客戶聯絡人資料
+        private CONTACTCREATE_OUTPUT CONTACT_CREATE(CONTACTCREATE_INPUT beanIN)
+        {
+            CONTACTCREATE_OUTPUT SROUT = new CONTACTCREATE_OUTPUT();
+
+            string tBpmNo = "GenerallySR";
+            string cBUKRS = "T012";
+            string pLoginName = string.Empty;
+
+            string CCustomerName = CMF.findCustName(beanIN.IV_CUSTOMEID);
+            string IV_LOGINACCOUNT = string.IsNullOrEmpty(beanIN.IV_LOGINACCOUNT) ? "" : beanIN.IV_LOGINACCOUNT;
+
+            CommonFunction.EmployeeBean EmpBean = new CommonFunction.EmployeeBean();
+            EmpBean = CMF.findEmployeeInfo(IV_LOGINACCOUNT);
+
+            if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
+            {
+                pLoginName = IV_LOGINACCOUNT;
+            }
+            else
+            {
+                pLoginName = EmpBean.EmployeeCName;
+            }
+
+            try
+            {
+                var bean = dbProxy.CUSTOMER_Contact.FirstOrDefault(x => x.BpmNo == tBpmNo && x.KNB1_BUKRS == cBUKRS && x.KNA1_KUNNR == beanIN.IV_CUSTOMEID && x.ContactName == beanIN.IV_CONTACTNAME);
+
+                if (bean != null) //修改
+                {
+                    bean.ContactCity = beanIN.IV_CONTACTCITY;
+                    bean.ContactAddress = beanIN.IV_CONTACTADDRESS;
+                    bean.ContactPhone = beanIN.IV_CONTACTTEL;
+                    bean.ContactEmail = beanIN.IV_CONTACTEMAIL;
+
+                    bean.ModifiedUserName = pLoginName;
+                    bean.ModifiedDate = DateTime.Now;
+                }
+                else //新增
+                {
+                    CUSTOMER_Contact bean1 = new CUSTOMER_Contact();
+
+                    bean1.ContactID = Guid.NewGuid();
+                    bean1.KNA1_KUNNR = beanIN.IV_CUSTOMEID;
+                    bean1.KNA1_NAME1 = CCustomerName;
+                    bean1.KNB1_BUKRS = cBUKRS;
+                    bean1.ContactType = "4";
+                    bean1.ContactName = beanIN.IV_CONTACTNAME;
+                    bean1.ContactCity = beanIN.IV_CONTACTCITY;
+                    bean1.ContactAddress = beanIN.IV_CONTACTADDRESS;
+                    bean1.ContactPhone = beanIN.IV_CONTACTTEL;
+                    bean1.ContactEmail = beanIN.IV_CONTACTEMAIL;
+                    bean1.BpmNo = tBpmNo;
+                    bean1.Disabled = 0;
+
+                    bean1.ModifiedUserName = pLoginName;
+                    bean1.ModifiedDate = DateTime.Now;
+
+                    dbProxy.CUSTOMER_Contact.Add(bean1);
+                }
+
+                var result = dbProxy.SaveChanges();
+
+                if (result <= 0)
+                {
+                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新建失敗" + Environment.NewLine;
+                    CMF.writeToLog("", "CONTACT_CREATE_API", pMsg, pLoginName);
+                    
+                    SROUT.EV_MSGT = "E";
+                    SROUT.EV_MSG = pMsg;
+                }
+                else
+                {                    
+                    SROUT.EV_MSGT = "Y";
+                    SROUT.EV_MSG = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "CONTACT_CREATE_API", pMsg, pLoginName);
+                
+                SROUT.EV_MSGT = "E";
+                SROUT.EV_MSG = ex.Message;
+            }
+
+            return SROUT;
+        }
+        #endregion
+
+        #region 法人客戶聯絡人資料新增INPUT資訊
+        /// <summary>法人客戶聯絡人資料新增資料INPUT資訊</summary>
+        public struct CONTACTCREATE_INPUT
+        {
+            /// <summary>建立者AD帳號</summary>
+            public string IV_LOGINACCOUNT { get; set; }
+            /// <summary>法人客戶代號</summary>
+            public string IV_CUSTOMEID { get; set; }
+            /// <summary>聯絡人姓名</summary>
+            public string IV_CONTACTNAME { get; set; }
+            /// <summary>聯絡人城市</summary>
+            public string IV_CONTACTCITY { get; set; }
+            /// <summary>聯絡人地址</summary>
+            public string IV_CONTACTADDRESS { get; set; }
+            /// <summary>聯絡人電話</summary>
+            public string IV_CONTACTTEL { get; set; }
+            /// <summary>聯絡人Email</summary>
+            public string IV_CONTACTEMAIL { get; set; }
+        }
+        #endregion
+
+        #region 法人客戶聯絡人資料新增OUTPUT資訊
+        /// <summary>法人客戶聯絡人資料新增OUTPUT資訊</summary>
+        public struct CONTACTCREATE_OUTPUT
+        {           
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑法人客戶聯絡人資料 ↑↑↑↑↑-----  
     }
 
     #region 保固SLA資訊
@@ -859,6 +1259,33 @@ namespace TSTI_API.Controllers
         public string cUsed { get; set; }
         /// <summary>tr背景顏色Class</summary>
         public string cBGColor { get; set; }
+    }
+    #endregion
+
+    #region 客戶聯絡人資訊
+    /// <summary>客戶聯絡人</summary>
+    public struct PCustomerContact
+    {
+        /// <summary>GUID</summary>
+        public string ContactID { get; set; }
+        /// <summary>客戶ID</summary>
+        public string CustomerID { get; set; }
+        /// <summary>客戶名稱</summary>
+        public string CustomerName { get; set; }
+        /// <summary>公司別</summary>
+        public string BUKRS { get; set; }
+        /// <summary>聯絡人姓名</summary>
+        public string Name { get; set; }
+        /// <summary>聯絡人居住城市</summary>
+        public string City { get; set; }
+        /// <summary>聯絡人地址</summary>
+        public string Address { get; set; }
+        /// <summary>聯絡人Email</summary>
+        public string Email { get; set; }
+        /// <summary>聯絡人電話</summary>
+        public string Phone { get; set; }
+        /// <summary>來源表單</summary>
+        public string BPMNo { get; set; }
     }
     #endregion
 }
