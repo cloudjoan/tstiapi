@@ -291,6 +291,9 @@
     <Compile Include="Models\Person.cs">
       <DependentUpon>ModelEIPDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\STOCKALL.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_MVC_CUST.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>

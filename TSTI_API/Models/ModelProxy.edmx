@@ -135,6 +135,49 @@
           <Property Name="StorageBlock" Type="nvarchar" MaxLength="20" />
           <Property Name="BasicContent" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="STOCKALL">
+          <Key>
+            <PropertyRef Name="IV_SERIAL" />
+          </Key>
+          <Property Name="IV_SERIAL" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="IV_VENDOR" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_VNAME" Type="nvarchar" MaxLength="40" />
+          <Property Name="IV_PONO" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_GRDATE" Type="datetime" />
+          <Property Name="ProdID" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Product" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdHierarchy" Type="nvarchar" MaxLength="18" />
+          <Property Name="SoNo" Type="nvarchar" MaxLength="10" />
+          <Property Name="SoAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SoSales" Type="nvarchar" MaxLength="20" />
+          <Property Name="SoSalesName" Type="nvarchar" MaxLength="20" />
+          <Property Name="INTERNALNO" Type="nvarchar" MaxLength="20" />
+          <Property Name="IV_DNDATE" Type="datetime" />
+          <Property Name="CustomerID" Type="nvarchar" MaxLength="10" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="35" />
+          <Property Name="IV_SLASRV" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_SLARESP" Type="nvarchar" MaxLength="10" />
+          <Property Name="OppNo" Type="nvarchar" MaxLength="10" />
+          <Property Name="ProjName" Type="nvarchar" MaxLength="200" />
+          <Property Name="VENDOROM_WTYID" Type="nvarchar" MaxLength="40" />
+          <Property Name="VENDOROM_SDATE" Type="datetime" />
+          <Property Name="VENDOROM_EDATE" Type="datetime" />
+          <Property Name="OM_WTYID" Type="nvarchar" MaxLength="40" />
+          <Property Name="OM_SDATE" Type="datetime" />
+          <Property Name="OM_EDATE" Type="datetime" />
+          <Property Name="EX_WTYID" Type="nvarchar" MaxLength="40" />
+          <Property Name="EX_SDATE" Type="datetime" />
+          <Property Name="EX_EDATE" Type="datetime" />
+          <Property Name="TM_WTYID" Type="nvarchar" MaxLength="40" />
+          <Property Name="TM_SDATE" Type="datetime" />
+          <Property Name="TM_EDATE" Type="datetime" />
+          <Property Name="ContractID" Type="nvarchar" MaxLength="10" />
+          <Property Name="ContractName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ContractSDATE" Type="datetime" />
+          <Property Name="ContractEDate" Type="datetime" />
+          <Property Name="RenewStatus" Type="varchar" MaxLength="2" />
+          <Property Name="CR_DATE" Type="datetime" />
+        </EntityType>
         <!--產生期間發現錯誤:
 警告 6002: 資料表/檢視 'ERP_PROXY_DB.dbo.VIEW_CUSTOMER_2' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="VIEW_CUSTOMER_2">
@@ -167,6 +210,7 @@
           <EntitySet Name="CUSTOMER_Contact" EntityType="Self.CUSTOMER_Contact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="F4501" EntityType="Self.F4501" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MATERIAL" EntityType="Self.MATERIAL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STOCKALL" EntityType="Self.STOCKALL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VIEW_CUSTOMER_2" EntityType="Self.VIEW_CUSTOMER_2" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [VIEW_CUSTOMER_2].[KNA1_KUNNR] AS [KNA1_KUNNR], 
@@ -207,6 +251,7 @@
           <EntitySet Name="MATERIAL" EntityType="ERP_PROXY_DBModel.MATERIAL" />
           <EntitySet Name="F4501" EntityType="ERP_PROXY_DBModel.F4501" />
           <EntitySet Name="CUSTOMER_Contact" EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" />
+          <EntitySet Name="STOCKALL" EntityType="ERP_PROXY_DBModel.STOCKALL" />
         </EntityContainer>
         <EntityType Name="VIEW_MATERIAL_ByComp">
           <Key>
@@ -351,6 +396,49 @@
           <Property Name="MainModifiedUserID" Type="Guid" />
           <Property Name="MainModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MainModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="STOCKALL">
+          <Key>
+            <PropertyRef Name="IV_SERIAL" />
+          </Key>
+          <Property Name="IV_SERIAL" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="IV_VENDOR" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_VNAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="IV_PONO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_GRDATE" Type="DateTime" Precision="3" />
+          <Property Name="ProdID" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Product" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdHierarchy" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="SoNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SoAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SoSales" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SoSalesName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="INTERNALNO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="IV_DNDATE" Type="DateTime" Precision="3" />
+          <Property Name="CustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerName" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="IV_SLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_SLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="OppNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ProjName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOROM_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOROM_SDATE" Type="DateTime" Precision="3" />
+          <Property Name="VENDOROM_EDATE" Type="DateTime" Precision="3" />
+          <Property Name="OM_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="OM_SDATE" Type="DateTime" Precision="3" />
+          <Property Name="OM_EDATE" Type="DateTime" Precision="3" />
+          <Property Name="EX_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="EX_SDATE" Type="DateTime" Precision="3" />
+          <Property Name="EX_EDATE" Type="DateTime" Precision="3" />
+          <Property Name="TM_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TM_SDATE" Type="DateTime" Precision="3" />
+          <Property Name="TM_EDATE" Type="DateTime" Precision="3" />
+          <Property Name="ContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ContractName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ContractSDATE" Type="DateTime" Precision="3" />
+          <Property Name="ContractEDate" Type="DateTime" Precision="3" />
+          <Property Name="RenewStatus" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="CR_DATE" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -507,6 +595,50 @@
                 <ScalarProperty Name="KNA1_NAME1" ColumnName="KNA1_NAME1" />
                 <ScalarProperty Name="KNA1_KUNNR" ColumnName="KNA1_KUNNR" />
                 <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STOCKALL">
+            <EntityTypeMapping TypeName="ERP_PROXY_DBModel.STOCKALL">
+              <MappingFragment StoreEntitySet="STOCKALL">
+                <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+                <ScalarProperty Name="RenewStatus" ColumnName="RenewStatus" />
+                <ScalarProperty Name="ContractEDate" ColumnName="ContractEDate" />
+                <ScalarProperty Name="ContractSDATE" ColumnName="ContractSDATE" />
+                <ScalarProperty Name="ContractName" ColumnName="ContractName" />
+                <ScalarProperty Name="ContractID" ColumnName="ContractID" />
+                <ScalarProperty Name="TM_EDATE" ColumnName="TM_EDATE" />
+                <ScalarProperty Name="TM_SDATE" ColumnName="TM_SDATE" />
+                <ScalarProperty Name="TM_WTYID" ColumnName="TM_WTYID" />
+                <ScalarProperty Name="EX_EDATE" ColumnName="EX_EDATE" />
+                <ScalarProperty Name="EX_SDATE" ColumnName="EX_SDATE" />
+                <ScalarProperty Name="EX_WTYID" ColumnName="EX_WTYID" />
+                <ScalarProperty Name="OM_EDATE" ColumnName="OM_EDATE" />
+                <ScalarProperty Name="OM_SDATE" ColumnName="OM_SDATE" />
+                <ScalarProperty Name="OM_WTYID" ColumnName="OM_WTYID" />
+                <ScalarProperty Name="VENDOROM_EDATE" ColumnName="VENDOROM_EDATE" />
+                <ScalarProperty Name="VENDOROM_SDATE" ColumnName="VENDOROM_SDATE" />
+                <ScalarProperty Name="VENDOROM_WTYID" ColumnName="VENDOROM_WTYID" />
+                <ScalarProperty Name="ProjName" ColumnName="ProjName" />
+                <ScalarProperty Name="OppNo" ColumnName="OppNo" />
+                <ScalarProperty Name="IV_SLARESP" ColumnName="IV_SLARESP" />
+                <ScalarProperty Name="IV_SLASRV" ColumnName="IV_SLASRV" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="IV_DNDATE" ColumnName="IV_DNDATE" />
+                <ScalarProperty Name="INTERNALNO" ColumnName="INTERNALNO" />
+                <ScalarProperty Name="SoSalesName" ColumnName="SoSalesName" />
+                <ScalarProperty Name="SoSales" ColumnName="SoSales" />
+                <ScalarProperty Name="SoAmount" ColumnName="SoAmount" />
+                <ScalarProperty Name="SoNo" ColumnName="SoNo" />
+                <ScalarProperty Name="ProdHierarchy" ColumnName="ProdHierarchy" />
+                <ScalarProperty Name="Product" ColumnName="Product" />
+                <ScalarProperty Name="ProdID" ColumnName="ProdID" />
+                <ScalarProperty Name="IV_GRDATE" ColumnName="IV_GRDATE" />
+                <ScalarProperty Name="IV_PONO" ColumnName="IV_PONO" />
+                <ScalarProperty Name="IV_VNAME" ColumnName="IV_VNAME" />
+                <ScalarProperty Name="IV_VENDOR" ColumnName="IV_VENDOR" />
+                <ScalarProperty Name="IV_SERIAL" ColumnName="IV_SERIAL" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

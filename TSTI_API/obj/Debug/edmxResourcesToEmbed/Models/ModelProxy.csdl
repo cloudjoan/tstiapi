@@ -16,6 +16,7 @@
     <EntitySet Name="MATERIAL" EntityType="ERP_PROXY_DBModel.MATERIAL" />
     <EntitySet Name="F4501" EntityType="ERP_PROXY_DBModel.F4501" />
     <EntitySet Name="CUSTOMER_Contact" EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" />
+    <EntitySet Name="STOCKALL" EntityType="ERP_PROXY_DBModel.STOCKALL" />
   </EntityContainer>
   <EntityType Name="VIEW_MATERIAL_ByComp">
     <Key>
@@ -160,5 +161,48 @@
     <Property Name="MainModifiedUserID" Type="Guid" />
     <Property Name="MainModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="MainModifiedDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="STOCKALL">
+    <Key>
+      <PropertyRef Name="IV_SERIAL" />
+    </Key>
+    <Property Name="IV_SERIAL" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IV_VENDOR" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_VNAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IV_PONO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_GRDATE" Type="DateTime" Precision="3" />
+    <Property Name="ProdID" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="Product" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProdHierarchy" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+    <Property Name="SoNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="SoAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="SoSales" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="SoSalesName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="INTERNALNO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="IV_DNDATE" Type="DateTime" Precision="3" />
+    <Property Name="CustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerName" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+    <Property Name="IV_SLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_SLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="OppNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="ProjName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="VENDOROM_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="VENDOROM_SDATE" Type="DateTime" Precision="3" />
+    <Property Name="VENDOROM_EDATE" Type="DateTime" Precision="3" />
+    <Property Name="OM_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="OM_SDATE" Type="DateTime" Precision="3" />
+    <Property Name="OM_EDATE" Type="DateTime" Precision="3" />
+    <Property Name="EX_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="EX_SDATE" Type="DateTime" Precision="3" />
+    <Property Name="EX_EDATE" Type="DateTime" Precision="3" />
+    <Property Name="TM_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="TM_SDATE" Type="DateTime" Precision="3" />
+    <Property Name="TM_EDATE" Type="DateTime" Precision="3" />
+    <Property Name="ContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="ContractName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ContractSDATE" Type="DateTime" Precision="3" />
+    <Property Name="ContractEDate" Type="DateTime" Precision="3" />
+    <Property Name="RenewStatus" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="CR_DATE" Type="DateTime" Precision="3" />
   </EntityType>
 </Schema>

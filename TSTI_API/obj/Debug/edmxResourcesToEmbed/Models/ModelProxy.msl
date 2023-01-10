@@ -153,5 +153,49 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="STOCKALL">
+      <EntityTypeMapping TypeName="ERP_PROXY_DBModel.STOCKALL">
+        <MappingFragment StoreEntitySet="STOCKALL">
+          <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+          <ScalarProperty Name="RenewStatus" ColumnName="RenewStatus" />
+          <ScalarProperty Name="ContractEDate" ColumnName="ContractEDate" />
+          <ScalarProperty Name="ContractSDATE" ColumnName="ContractSDATE" />
+          <ScalarProperty Name="ContractName" ColumnName="ContractName" />
+          <ScalarProperty Name="ContractID" ColumnName="ContractID" />
+          <ScalarProperty Name="TM_EDATE" ColumnName="TM_EDATE" />
+          <ScalarProperty Name="TM_SDATE" ColumnName="TM_SDATE" />
+          <ScalarProperty Name="TM_WTYID" ColumnName="TM_WTYID" />
+          <ScalarProperty Name="EX_EDATE" ColumnName="EX_EDATE" />
+          <ScalarProperty Name="EX_SDATE" ColumnName="EX_SDATE" />
+          <ScalarProperty Name="EX_WTYID" ColumnName="EX_WTYID" />
+          <ScalarProperty Name="OM_EDATE" ColumnName="OM_EDATE" />
+          <ScalarProperty Name="OM_SDATE" ColumnName="OM_SDATE" />
+          <ScalarProperty Name="OM_WTYID" ColumnName="OM_WTYID" />
+          <ScalarProperty Name="VENDOROM_EDATE" ColumnName="VENDOROM_EDATE" />
+          <ScalarProperty Name="VENDOROM_SDATE" ColumnName="VENDOROM_SDATE" />
+          <ScalarProperty Name="VENDOROM_WTYID" ColumnName="VENDOROM_WTYID" />
+          <ScalarProperty Name="ProjName" ColumnName="ProjName" />
+          <ScalarProperty Name="OppNo" ColumnName="OppNo" />
+          <ScalarProperty Name="IV_SLARESP" ColumnName="IV_SLARESP" />
+          <ScalarProperty Name="IV_SLASRV" ColumnName="IV_SLASRV" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="IV_DNDATE" ColumnName="IV_DNDATE" />
+          <ScalarProperty Name="INTERNALNO" ColumnName="INTERNALNO" />
+          <ScalarProperty Name="SoSalesName" ColumnName="SoSalesName" />
+          <ScalarProperty Name="SoSales" ColumnName="SoSales" />
+          <ScalarProperty Name="SoAmount" ColumnName="SoAmount" />
+          <ScalarProperty Name="SoNo" ColumnName="SoNo" />
+          <ScalarProperty Name="ProdHierarchy" ColumnName="ProdHierarchy" />
+          <ScalarProperty Name="Product" ColumnName="Product" />
+          <ScalarProperty Name="ProdID" ColumnName="ProdID" />
+          <ScalarProperty Name="IV_GRDATE" ColumnName="IV_GRDATE" />
+          <ScalarProperty Name="IV_PONO" ColumnName="IV_PONO" />
+          <ScalarProperty Name="IV_VNAME" ColumnName="IV_VNAME" />
+          <ScalarProperty Name="IV_VENDOR" ColumnName="IV_VENDOR" />
+          <ScalarProperty Name="IV_SERIAL" ColumnName="IV_SERIAL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

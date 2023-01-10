@@ -252,13 +252,41 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得人員中文+英文姓名
+        #region 取得產品序號相關資訊
         /// <summary>
-        /// 取得人員中文+英文姓名
+        /// 取得產品序號相關資訊
         /// </summary>
-        /// <param name="keyword">ERPID</param>        
+        /// <param name="IV_SERIAL">序號ID</param>
         /// <returns></returns>
-        public string findEmployeeName(string keyword)
+        public SerialMaterialInfo findMaterialBySerial(string IV_SERIAL)
+        {
+            SerialMaterialInfo ProBean = new SerialMaterialInfo();
+
+            if (IV_SERIAL != "")
+            {
+                var bean = dbProxy.STOCKALL.FirstOrDefault(x => x.IV_SERIAL == IV_SERIAL.Trim());
+
+                if (bean != null)
+                {
+                    ProBean.IV_SERIAL = bean.IV_SERIAL;
+                    ProBean.ProdID = bean.ProdID;
+                    ProBean.Product = bean.Product;
+                    ProBean.MFRPN = findMFRPNumber(bean.ProdID);
+                    ProBean.InstallNo = findInstallNumber(IV_SERIAL);
+                }
+            }
+
+            return ProBean;
+        }
+        #endregion
+
+        #region 取得人員中文+英文姓名
+/// <summary>
+/// 取得人員中文+英文姓名
+/// </summary>
+/// <param name="keyword">ERPID</param>        
+/// <returns></returns>
+public string findEmployeeName(string keyword)
         {
             string reValue = string.Empty;
 
@@ -275,7 +303,7 @@ namespace TSTI_API.Controllers
 
             return reValue;
         }
-        #endregion
+        #endregion       
 
         #region 取得物料說明
         /// <summary>
@@ -351,12 +379,11 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 呼叫RFC並回傳SLA Table清單
         /// </summary>        
-        /// <param name="ArySERIAL">序號Array</param>
-        /// <param name="NowCount">目前的項次</param>
+        /// <param name="ArySERIAL">序號Array</param>        
         /// <param name="tURLName">BPM站台名稱</param>
         /// <param name="tSeverName">PSIP站台名稱</param>
         /// <returns></returns>
-        public List<SRWarranty> ZFM_TICC_SERIAL_SEARCHWTYList(string[] ArySERIAL, ref int NowCount, string tURLName, string tSeverName)
+        public List<SRWarranty> ZFM_TICC_SERIAL_SEARCHWTYList(string[] ArySERIAL, string tURLName, string tSeverName)
         {
             List<SRWarranty> QueryToList = new List<SRWarranty>();
 
@@ -410,8 +437,6 @@ namespace TSTI_API.Controllers
 
                         for (int i = 0; i < tLength; i++)
                         {
-                            NowCount++;
-
                             cContractIDURL = "";
                             tBPMNO = "";
                             tURL = "";
@@ -467,21 +492,20 @@ namespace TSTI_API.Controllers
 
                             #region 取得清單
                             SRWarranty QueryInfo = new SRWarranty();
-
-                            QueryInfo.cID = NowCount.ToString();        //系統ID
-                            QueryInfo.cSerialID = IV_SERIAL;            //序號                        
-                            QueryInfo.cWTYID = cWTYID;                  //保固
-                            QueryInfo.cWTYName = cWTYName;              //保固說明
-                            QueryInfo.cWTYSDATE = cWTYSDATE;            //保固開始日期
-                            QueryInfo.cWTYEDATE = cWTYEDATE;            //保固結束日期                                                          
-                            QueryInfo.cSLARESP = cSLARESP;              //回應條件
-                            QueryInfo.cSLASRV = cSLASRV;                //服務條件
-                            QueryInfo.cContractID = cContractID;        //合約編號
-                            QueryInfo.cContractIDUrl = cContractIDURL;  //合約編號Url
-                            QueryInfo.cBPMFormNo = tBPMNO;              //BPM表單編號                        
-                            QueryInfo.cBPMFormNoUrl = tURL;             //BPM URL                    
-                            QueryInfo.cUsed = "N";
-                            QueryInfo.cBGColor = tBGColor;             //tr背景顏色Class
+                            
+                            QueryInfo.SERIALID = IV_SERIAL;            //序號                        
+                            QueryInfo.WTYID = cWTYID;                  //保固
+                            QueryInfo.WTYName = cWTYName;              //保固說明
+                            QueryInfo.WTYSDATE = cWTYSDATE;            //保固開始日期
+                            QueryInfo.WTYEDATE = cWTYEDATE;            //保固結束日期                                                          
+                            QueryInfo.SLARESP = cSLARESP;              //回應條件
+                            QueryInfo.SLASRV = cSLASRV;                //服務條件
+                            QueryInfo.CONTRACTID = cContractID;        //合約編號
+                            QueryInfo.CONTRACTIDUrl = cContractIDURL;  //合約編號Url
+                            QueryInfo.BPMFormNo = tBPMNO;              //BPM表單編號                        
+                            QueryInfo.BPMFormNoUrl = tURL;             //BPM URL                    
+                            QueryInfo.USED = "N";
+                            QueryInfo.BGColor = tBGColor;             //tr背景顏色Class
 
                             QueryToList.Add(QueryInfo);
                             #endregion

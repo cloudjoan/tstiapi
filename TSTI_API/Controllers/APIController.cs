@@ -296,8 +296,6 @@ namespace TSTI_API.Controllers
                     #endregion
 
                     #region 新增【保固SLA資訊】明細
-                    int NowCount = 0;
-
                     List<SRWarranty> QueryToList = new List<SRWarranty>();    //查詢出來的清單    
 
                     #region 呼叫RFC並回傳保固SLA Table清單
@@ -305,7 +303,7 @@ namespace TSTI_API.Controllers
                     {
                         if (IV_SERIAL != "")
                         {
-                            QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(PRcSerialID, ref NowCount, tURLName, tSeverName);
+                            QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(PRcSerialID, tURLName, tSeverName);
 
                             #region 保固，因RFC已經有回傳所有清單，這邊暫時先不用
                             //foreach (string IV_SERIAL in ArySERIAL)
@@ -363,7 +361,7 @@ namespace TSTI_API.Controllers
                             //}
                             #endregion
 
-                            QueryToList = QueryToList.OrderBy(x => x.cSerialID).ThenByDescending(x => x.cWTYEDATE).ToList();
+                            QueryToList = QueryToList.OrderBy(x => x.SERIALID).ThenByDescending(x => x.WTYEDATE).ToList();
                         }
                     }
                     #endregion                   
@@ -382,33 +380,33 @@ namespace TSTI_API.Controllers
                         }
 
                         beanD.cSRID = pSRID;
-                        beanD.cSerialID = beanSR.cSerialID;
-                        beanD.cWTYID = beanSR.cWTYID;
-                        beanD.cWTYName = beanSR.cWTYName;
+                        beanD.cSerialID = beanSR.SERIALID;
+                        beanD.cWTYID = beanSR.WTYID;
+                        beanD.cWTYName = beanSR.WTYName;
 
-                        if (beanSR.cWTYSDATE != "")
+                        if (beanSR.WTYSDATE != "")
                         {
-                            beanD.cWTYSDATE = Convert.ToDateTime(beanSR.cWTYSDATE);
+                            beanD.cWTYSDATE = Convert.ToDateTime(beanSR.WTYSDATE);
                         }
 
-                        if (beanSR.cWTYEDATE != "")
+                        if (beanSR.WTYEDATE != "")
                         {
-                           beanD.cWTYEDATE = Convert.ToDateTime(beanSR.cWTYEDATE);
+                           beanD.cWTYEDATE = Convert.ToDateTime(beanSR.WTYEDATE);
                         }
 
-                        beanD.cSLARESP = beanSR.cSLARESP;
-                        beanD.cSLASRV = beanSR.cSLASRV;
-                        beanD.cContractID = beanSR.cContractID;
-                        beanD.cBPMFormNo = beanSR.cBPMFormNo;
+                        beanD.cSLARESP = beanSR.SLARESP;
+                        beanD.cSLASRV = beanSR.SLASRV;
+                        beanD.cContractID = beanSR.CONTRACTID;
+                        beanD.cBPMFormNo = beanSR.BPMFormNo;
 
                         #region 判斷是否有指定使用
-                        if (beanSR.cSerialID == tSerialID && beanSR.cWTYID == tWTYID)
+                        if (beanSR.SERIALID == tSerialID && beanSR.WTYID == tWTYID)
                         {
                             beanD.cUsed = "Y";
                         }
                         else
                         {
-                            beanD.cUsed = beanSR.cUsed;
+                            beanD.cUsed = beanSR.USED;
                         }
                         #endregion
 
@@ -849,12 +847,10 @@ namespace TSTI_API.Controllers
         ///// 測試取得法人客戶資料
         ///// </summary>
         ///// <param name="beanIN"></param>
-        //public List<CUSTOMERINFO_OUTPUT> GetAPI_CUSTOMERINFO_GET(CUSTOMERINFO_INPUT beanIN)
+        //public CUSTOMERINFO_OUTPUT GetAPI_CUSTOMERINFO_GET(CUSTOMERINFO_INPUT beanIN)
         //{
-        //    List<CUSTOMERINFO_OUTPUT> ListOUT = new List<CUSTOMERINFO_OUTPUT>();
-
-        //    int tLength = 0;
-
+        //    CUSTOMERINFO_OUTPUT OUTBean = new CUSTOMERINFO_OUTPUT();
+           
         //    try
         //    {
         //        var client = new RestClient("http://localhost:32603/API/API_CUSTOMERINFO_GET");  //測試用            
@@ -863,34 +859,47 @@ namespace TSTI_API.Controllers
         //        request.Method = RestSharp.Method.Post;
 
         //        Dictionary<Object, Object> parameters = new Dictionary<Object, Object>();
-        //        parameters.Add("IV_CUSTOME", beanIN.IV_CUSTOME);               
+        //        parameters.Add("IV_CUSTOME", beanIN.IV_CUSTOME);
 
         //        request.AddHeader("Content-Type", "application/json");
         //        request.AddParameter("application/json", parameters, ParameterType.RequestBody);
 
         //        RestResponse response = client.Execute(request);
 
-        //        var Listdata = (JArray)JsonConvert.DeserializeObject(response.Content);
+        //        #region 取得回傳訊息(成功或失敗)
+        //        var data = (JObject)JsonConvert.DeserializeObject(response.Content);
 
-        //        foreach (JObject data in Listdata)
+        //        OUTBean.EV_MSGT = data["EV_MSGT"].ToString().Trim();
+        //        OUTBean.EV_MSG = data["EV_MSG"].ToString().Trim();
+        //        #endregion
+
+        //        #region 取得法人客戶資料List
+        //        var tList = (JArray)JsonConvert.DeserializeObject(data["CUSTOMERINFO_LIST"].ToString().Trim());
+
+        //        if (tList != null)
         //        {
-        //            CUSTOMERINFO_OUTPUT OUTBean = new CUSTOMERINFO_OUTPUT();
+        //            List<CUSTOMERINFO_LIST> tCustList = new List<CUSTOMERINFO_LIST>();
 
-        //            OUTBean.CUSTOMERID = data["CUSTOMERID"].ToString().Trim();
-        //            OUTBean.CUSTOMERNAME = data["CUSTOMERNAME"].ToString().Trim();
-        //            OUTBean.EV_MSGT = data["EV_MSGT"].ToString().Trim();
-        //            OUTBean.EV_MSG = data["EV_MSG"].ToString().Trim();
+        //            foreach (JObject bean in tList)
+        //            {
+        //                CUSTOMERINFO_LIST beanCust = new CUSTOMERINFO_LIST();
 
-        //            ListOUT.Add(OUTBean);
-        //        }
+        //                beanCust.CUSTOMERID = bean["CUSTOMERID"].ToString().Trim();
+        //                beanCust.CUSTOMERNAME = bean["CUSTOMERNAME"].ToString().Trim();
 
+        //                tCustList.Add(beanCust);
+        //            }
+
+        //            OUTBean.CUSTOMERINFO_LIST = tCustList;
+        //        }                
+        //        #endregion
         //    }
         //    catch (Exception ex)
         //    {
         //        Console.WriteLine($"callAPI_CUSTOMERINFO_GET Error: {ex}");
         //    }
 
-        //    return ListOUT;
+        //    return OUTBean;
         //}
         #endregion
 
@@ -904,7 +913,7 @@ namespace TSTI_API.Controllers
             //}
             #endregion
 
-            List<CUSTOMERINFO_OUTPUT> ListOUT = new List<CUSTOMERINFO_OUTPUT>();
+            CUSTOMERINFO_OUTPUT ListOUT = new CUSTOMERINFO_OUTPUT();
 
             ListOUT = CUSTOMERINFO_GET(beanIN);
 
@@ -913,39 +922,40 @@ namespace TSTI_API.Controllers
         #endregion
 
         #region 取得法人客戶資料
-        private List<CUSTOMERINFO_OUTPUT> CUSTOMERINFO_GET(CUSTOMERINFO_INPUT beanIN)
+        private CUSTOMERINFO_OUTPUT CUSTOMERINFO_GET(CUSTOMERINFO_INPUT beanIN)
         {
-            List<CUSTOMERINFO_OUTPUT> ListOUT = new List<CUSTOMERINFO_OUTPUT>();
+            CUSTOMERINFO_OUTPUT OUTBean = new CUSTOMERINFO_OUTPUT();
 
             var tList = CMF.findCUSTOMERINFO(beanIN.IV_CUSTOME);
 
             if (tList.Count == 0)
-            {
-                CUSTOMERINFO_OUTPUT OUTBean = new CUSTOMERINFO_OUTPUT();
-
-                OUTBean.CUSTOMERID = "";
-                OUTBean.CUSTOMERNAME = "";
+            {  
                 OUTBean.EV_MSGT = "E";
                 OUTBean.EV_MSG = "查無法人客戶資料，請重新查詢！";
-
-                ListOUT.Add(OUTBean);
             }
             else
             {
+                OUTBean.EV_MSGT = "Y";
+                OUTBean.EV_MSG = "";
+
+                #region 取得法人客戶資料List
+                List<CUSTOMERINFO_LIST> tCustList = new List<CUSTOMERINFO_LIST>();
+
                 foreach (var bean in tList)
                 {
-                    CUSTOMERINFO_OUTPUT OUTBean = new CUSTOMERINFO_OUTPUT();
+                    CUSTOMERINFO_LIST beanCust = new CUSTOMERINFO_LIST();
 
-                    OUTBean.CUSTOMERID = bean.KNA1_KUNNR.Trim();
-                    OUTBean.CUSTOMERNAME = bean.KNA1_NAME1.Trim();
-                    OUTBean.EV_MSGT = "Y";
-                    OUTBean.EV_MSG = "";
+                    beanCust.CUSTOMERID = bean.KNA1_KUNNR.Trim();
+                    beanCust.CUSTOMERNAME = bean.KNA1_NAME1.Trim();
 
-                    ListOUT.Add(OUTBean);
+                    tCustList.Add(beanCust);
                 }
+
+                OUTBean.CUSTOMERINFO_LIST = tCustList;
+                #endregion
             }
 
-            return ListOUT;
+            return OUTBean;
         }
         #endregion
 
@@ -961,15 +971,22 @@ namespace TSTI_API.Controllers
         #region 查詢法人客戶資料OUTPUT資訊
         /// <summary>查詢法人客戶資料OUTPUT資訊</summary>
         public struct CUSTOMERINFO_OUTPUT
+        {                
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>法人客戶資料清單</summary>
+            public List<CUSTOMERINFO_LIST> CUSTOMERINFO_LIST { get; set; }
+        }
+
+        public struct CUSTOMERINFO_LIST
         {
             /// <summary>客戶代號</summary>
             public string CUSTOMERID { get; set; }
             /// <summary>客戶名稱</summary>
             public string CUSTOMERNAME { get; set; }           
-            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
-            public string EV_MSGT { get; set; }
-            /// <summary>消息內容</summary>
-            public string EV_MSG { get; set; }
         }
         #endregion
 
@@ -987,7 +1004,7 @@ namespace TSTI_API.Controllers
             //}
             #endregion
 
-            List<CONTACTINFO_OUTPUT> ListOUT = new List<CONTACTINFO_OUTPUT>();
+            CONTACTINFO_OUTPUT ListOUT = new CONTACTINFO_OUTPUT();
 
             ListOUT = CONTACTINFO_GET(beanIN);
 
@@ -996,45 +1013,43 @@ namespace TSTI_API.Controllers
         #endregion
 
         #region 取得法人客戶聯絡人資料
-        private List<CONTACTINFO_OUTPUT> CONTACTINFO_GET(CONTACTINFO_INPUT beanIN)
+        private CONTACTINFO_OUTPUT CONTACTINFO_GET(CONTACTINFO_INPUT beanIN)
         {
-            List<CONTACTINFO_OUTPUT> ListOUT = new List<CONTACTINFO_OUTPUT>();
+            CONTACTINFO_OUTPUT OUTBean = new CONTACTINFO_OUTPUT();
 
             var tList = CMF.findCONTACTINFO(beanIN.IV_CUSTOMEID, beanIN.IV_CONTACTNAME, beanIN.IV_CONTACTTEL, beanIN.IV_CONTACTEMAIL);
 
             if (tList.Count == 0)
             {
-                CONTACTINFO_OUTPUT OUTBean = new CONTACTINFO_OUTPUT();
-
-                OUTBean.CONTACTNAME = "";
-                OUTBean.CONTACTCITY = "";
-                OUTBean.CONTACTADDRESS = "";
-                OUTBean.CONTACTTEL = "";
-                OUTBean.CONTACTEMAIL = "";
                 OUTBean.EV_MSGT = "E";
-                OUTBean.EV_MSG = "查無法人客戶資料，請重新查詢！";
-
-                ListOUT.Add(OUTBean);
+                OUTBean.EV_MSG = "查無法人客戶聯絡人資料，請重新查詢！";               
             }
             else
             {
+                OUTBean.EV_MSGT = "Y";
+                OUTBean.EV_MSG = "";
+
+                #region 取得法人客戶資料List
+                List<CONTACTINFO_LIST> tCustList = new List<CONTACTINFO_LIST>();
+
                 foreach (var bean in tList)
                 {
-                    CONTACTINFO_OUTPUT OUTBean = new CONTACTINFO_OUTPUT();
+                    CONTACTINFO_LIST beanCust = new CONTACTINFO_LIST();                    
 
-                    OUTBean.CONTACTNAME = bean.Name;
-                    OUTBean.CONTACTCITY = bean.City;
-                    OUTBean.CONTACTADDRESS = bean.Address;
-                    OUTBean.CONTACTTEL = bean.Phone;
-                    OUTBean.CONTACTEMAIL = bean.Email;
-                    OUTBean.EV_MSGT = "Y";
-                    OUTBean.EV_MSG = "";
+                    beanCust.CONTACTNAME = bean.Name;
+                    beanCust.CONTACTCITY = bean.City;
+                    beanCust.CONTACTADDRESS = bean.Address;
+                    beanCust.CONTACTTEL = bean.Phone;
+                    beanCust.CONTACTEMAIL = bean.Email;
 
-                    ListOUT.Add(OUTBean);
+                    tCustList.Add(beanCust);
                 }
+
+                OUTBean.CONTACTINFO_LIST = tCustList;
+                #endregion               
             }
 
-            return ListOUT;
+            return OUTBean;
         }
         #endregion
 
@@ -1056,6 +1071,17 @@ namespace TSTI_API.Controllers
         #region 查詢法人客戶聯絡人資料OUTPUT資訊
         /// <summary>查詢法人客戶聯絡人資料OUTPUT資訊</summary>
         public struct CONTACTINFO_OUTPUT
+        {            
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>法人客戶聯絡人資料清單</summary>
+            public List<CONTACTINFO_LIST> CONTACTINFO_LIST { get; set; }
+        }
+
+        public struct CONTACTINFO_LIST
         {
             /// <summary>聯絡人姓名</summary>
             public string CONTACTNAME { get; set; }
@@ -1066,11 +1092,7 @@ namespace TSTI_API.Controllers
             /// <summary>聯絡人電話</summary>
             public string CONTACTTEL { get; set; }
             /// <summary>聯絡人Email</summary>
-            public string CONTACTEMAIL { get; set; }
-            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
-            public string EV_MSGT { get; set; }
-            /// <summary>消息內容</summary>
-            public string EV_MSG { get; set; }
+            public string CONTACTEMAIL { get; set; }           
         }
         #endregion
 
@@ -1270,40 +1292,157 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑法人客戶聯絡人資料/修改 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務請求資訊(List)) ↓↓↓↓↓-----
+
+        #region 查詢序號相關資訊接口
+        [HttpPost]
+        public ActionResult API_SERIALINFO_SEARCH(SERIALSEARCH_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_SERIAL": "SGH33223R6"            
+            //}
+            #endregion
+
+            SERIALSEARCH_OUTPUT ListOUT = new SERIALSEARCH_OUTPUT();
+
+            ListOUT = SERIALINFO_SEARCH(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得序號相關資訊
+        private SERIALSEARCH_OUTPUT SERIALINFO_SEARCH(SERIALSEARCH_INPUT beanIN)
+        {
+            SERIALSEARCH_OUTPUT SROUT = new SERIALSEARCH_OUTPUT();
+
+            #region 取得產品序號資訊
+            var ProBean = CMF.findMaterialBySerial(beanIN.IV_SERIAL);
+
+            if (ProBean.IV_SERIAL != null)
+            {
+                SROUT.EV_SERIAL = ProBean.IV_SERIAL;
+                SROUT.EV_PRDID = ProBean.ProdID;
+                SROUT.EV_PRDNAME = ProBean.Product;
+                SROUT.EV_PRDNUMBER = ProBean.MFRPN;
+                SROUT.EV_INSTALLID = ProBean.InstallNo;
+                SROUT.EV_MSGT = "Y";
+                SROUT.EV_MSG = "";
+            }
+            else
+            {
+                SROUT.EV_SERIAL = "";
+                SROUT.EV_PRDID = "";
+                SROUT.EV_PRDNAME = "";
+                SROUT.EV_PRDNUMBER = "";
+                SROUT.EV_INSTALLID = "";
+                SROUT.EV_MSGT = "E";
+                SROUT.EV_MSG = "查無該序號相關資訊！";
+            }
+            #endregion
+
+            #region 保固SLA資訊(List)
+            List<SRWarranty> QueryToList = new List<SRWarranty>();    //查詢出來的清單
+           
+            if (ProBean.IV_SERIAL != null)
+            {
+                bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
+                string tURLName = string.Empty;
+                string tSeverName = string.Empty;
+                string[] ArySERIAL = new string[1];
+
+                if (tIsFormal)
+                {
+                    tURLName = "tsti-bpm01.etatung.com.tw";
+                    tSeverName = "psip-prd-ap";
+                }
+                else
+                {
+                    tURLName = "bpm-qas";
+                    tSeverName = "psip-qas";
+                }
+
+                ArySERIAL[0] = ProBean.IV_SERIAL;
+
+                QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(ArySERIAL, tURLName, tSeverName);
+                QueryToList = QueryToList.OrderBy(x => x.SERIALID).ThenByDescending(x => x.WTYEDATE).ToList();
+
+                SROUT.WTSLA_LIST = QueryToList;
+            }
+            #endregion            
+
+            return SROUT;
+        }
+        #endregion
+
+        #region 序號查詢INPUT資訊
+        /// <summary>序號查詢INPUT資訊</summary>
+        public struct SERIALSEARCH_INPUT
+        {
+            /// <summary>序號ID</summary>
+            public string IV_SERIAL { get; set; }            
+        }
+        #endregion
+
+        #region 序號查詢OUTPUT資訊
+        /// <summary>序號查詢OUTPUT資訊</summary>
+        public struct SERIALSEARCH_OUTPUT
+        {
+            /// <summary>序號ID</summary>
+            public string EV_SERIAL { get; set; }
+            /// <summary>料號</summary>
+            public string EV_PRDID { get; set; }
+            /// <summary>料號說明</summary>
+            public string EV_PRDNAME { get; set; }
+            /// <summary>製造商零件號碼</summary>
+            public string EV_PRDNUMBER { get; set; }
+            /// <summary>裝機號碼</summary>
+            public string EV_INSTALLID { get; set; }
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>保固SLA資訊清單</summary>
+            public List<SRWarranty> WTSLA_LIST { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑序號查詢接口 ↑↑↑↑↑-----  
     }
 
     #region 保固SLA資訊
     /// <summary>保固SLA資訊</summary>
     public class SRWarranty
-    {
-        /// <summary>系統ID</summary>
-        public string cID { get; set; }
+    {        
         /// <summary>序號</summary>
-        public string cSerialID { get; set; }
+        public string SERIALID { get; set; }
         /// <summary>保固代號</summary>
-        public string cWTYID { get; set; }
+        public string WTYID { get; set; }
         /// <summary>保固說明</summary>
-        public string cWTYName { get; set; }
+        public string WTYName { get; set; }
         /// <summary>保固開始日期</summary>
-        public string cWTYSDATE { get; set; }
+        public string WTYSDATE { get; set; }
         /// <summary>保固結束日期</summary>
-        public string cWTYEDATE { get; set; }
+        public string WTYEDATE { get; set; }
         /// <summary>回應條件</summary>
-        public string cSLARESP { get; set; }
+        public string SLARESP { get; set; }
         /// <summary>服務條件</summary>
-        public string cSLASRV { get; set; }
+        public string SLASRV { get; set; }
         /// <summary>合約編號</summary>
-        public string cContractID { get; set; }
+        public string CONTRACTID { get; set; }
         /// <summary>合約編號Url</summary>
-        public string cContractIDUrl { get; set; }
+        public string CONTRACTIDUrl { get; set; }
         /// <summary>保固申請(BPM表單編號)</summary>
-        public string cBPMFormNo { get; set; }
+        public string BPMFormNo { get; set; }
         /// <summary>保固申請Url(BPM表單編號Url)</summary>
-        public string cBPMFormNoUrl { get; set; }
+        public string BPMFormNoUrl { get; set; }
         /// <summary>本次使用</summary>
-        public string cUsed { get; set; }
+        public string USED { get; set; }
         /// <summary>tr背景顏色Class</summary>
-        public string cBGColor { get; set; }
+        public string BGColor { get; set; }
     }
     #endregion
 
@@ -1331,6 +1470,23 @@ namespace TSTI_API.Controllers
         public string Phone { get; set; }
         /// <summary>來源表單</summary>
         public string BPMNo { get; set; }
+    }
+    #endregion
+
+    #region 關鍵字產品序號物料資訊
+    /// <summary>關鍵字產品序號物料資訊</summary>
+    public struct SerialMaterialInfo
+    {
+        /// <summary>序號</summary>
+        public string IV_SERIAL { get; set; }
+        /// <summary>料號</summary>
+        public string ProdID { get; set; }
+        /// <summary>料號說明</summary>
+        public string Product { get; set; }
+        /// <summary>製造商零件號碼</summary>
+        public string MFRPN { get; set; }
+        /// <summary>裝機號碼</summary>
+        public string InstallNo { get; set; }
     }
     #endregion
 }
