@@ -109,6 +109,7 @@
           <Property Name="cSLASRV" Type="nvarchar" MaxLength="10" />
           <Property Name="cContractID" Type="nvarchar" MaxLength="10" />
           <Property Name="cBPMFormNo" Type="varchar" MaxLength="50" />
+          <Property Name="cAdvice" Type="nvarchar" MaxLength="2000" />
           <Property Name="cUsed" Type="varchar" MaxLength="1" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
@@ -325,27 +326,6 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="TB_ONE_SRDetail_Warranty">
-          <Key>
-            <PropertyRef Name="cID" />
-          </Key>
-          <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="cSRID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="cSerialID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="cWTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="cWTYName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="cWTYSDATE" Type="DateTime" Precision="3" />
-          <Property Name="cWTYEDATE" Type="DateTime" Precision="3" />
-          <Property Name="cSLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="cSLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="cContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="cBPMFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cUsed" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="TB_ONE_SRIDFormat">
           <Key>
             <PropertyRef Name="cID" />
@@ -418,12 +398,12 @@
           <EntitySet Name="TB_ONE_SRDetail_PartsReplace" EntityType="Self.TB_ONE_SRDetail_PartsReplace" />
           <EntitySet Name="TB_ONE_SRDetail_Product" EntityType="Self.TB_ONE_SRDetail_Product" />
           <EntitySet Name="TB_ONE_SRDetail_Record" EntityType="Self.TB_ONE_SRDetail_Record" />
-          <EntitySet Name="TB_ONE_SRDetail_Warranty" EntityType="Self.TB_ONE_SRDetail_Warranty" />
           <EntitySet Name="TB_ONE_SRIDFormat" EntityType="Self.TB_ONE_SRIDFormat" />
           <EntitySet Name="TB_ONE_SRRepairType" EntityType="Self.TB_ONE_SRRepairType" />
           <EntitySet Name="TB_ONE_SRSQPerson" EntityType="Self.TB_ONE_SRSQPerson" />
           <EntitySet Name="TB_ONE_SRTeamMapping" EntityType="Self.TB_ONE_SRTeamMapping" />
           <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
+          <EntitySet Name="TB_ONE_SRDetail_Warranty" EntityType="Model.TB_ONE_SRDetail_Warranty" />
         </EntityContainer>
         <EntityType Name="TB_ONE_SRMain">
           <Key>
@@ -458,6 +438,28 @@
           <Property Name="cSalesID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="cSalesName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="cSystemGUID" Type="Guid" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_ONE_SRDetail_Warranty">
+          <Key>
+            <PropertyRef Name="cID" />
+          </Key>
+          <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cSRID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cSerialID" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cWTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cWTYName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cWTYSDATE" Type="DateTime" Precision="3" />
+          <Property Name="cWTYEDATE" Type="DateTime" Precision="3" />
+          <Property Name="cSLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cSLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cBPMFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cAdvice" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="cUsed" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
@@ -556,28 +558,6 @@
                 <ScalarProperty Name="cDesc" ColumnName="cDesc" />
                 <ScalarProperty Name="cSRReport" ColumnName="cSRReport" />
                 <ScalarProperty Name="Disabled" ColumnName="Disabled" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TB_ONE_SRDetail_Warranty">
-            <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_Warranty">
-              <MappingFragment StoreEntitySet="TB_ONE_SRDetail_Warranty">
-                <ScalarProperty Name="cID" ColumnName="cID" />
-                <ScalarProperty Name="cSRID" ColumnName="cSRID" />
-                <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
-                <ScalarProperty Name="cWTYID" ColumnName="cWTYID" />
-                <ScalarProperty Name="cWTYName" ColumnName="cWTYName" />
-                <ScalarProperty Name="cWTYSDATE" ColumnName="cWTYSDATE" />
-                <ScalarProperty Name="cWTYEDATE" ColumnName="cWTYEDATE" />
-                <ScalarProperty Name="cSLARESP" ColumnName="cSLARESP" />
-                <ScalarProperty Name="cSLASRV" ColumnName="cSLASRV" />
-                <ScalarProperty Name="cContractID" ColumnName="cContractID" />
-                <ScalarProperty Name="cBPMFormNo" ColumnName="cBPMFormNo" />
-                <ScalarProperty Name="cUsed" ColumnName="cUsed" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
@@ -687,6 +667,29 @@
                 <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
                 <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
                 <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_ONE_SRDetail_Warranty">
+            <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_Warranty">
+              <MappingFragment StoreEntitySet="TB_ONE_SRDetail_Warranty">
+                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="cUsed" ColumnName="cUsed" />
+                <ScalarProperty Name="cAdvice" ColumnName="cAdvice" />
+                <ScalarProperty Name="cBPMFormNo" ColumnName="cBPMFormNo" />
+                <ScalarProperty Name="cContractID" ColumnName="cContractID" />
+                <ScalarProperty Name="cSLASRV" ColumnName="cSLASRV" />
+                <ScalarProperty Name="cSLARESP" ColumnName="cSLARESP" />
+                <ScalarProperty Name="cWTYEDATE" ColumnName="cWTYEDATE" />
+                <ScalarProperty Name="cWTYSDATE" ColumnName="cWTYSDATE" />
+                <ScalarProperty Name="cWTYName" ColumnName="cWTYName" />
+                <ScalarProperty Name="cWTYID" ColumnName="cWTYID" />
+                <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
+                <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+                <ScalarProperty Name="cID" ColumnName="cID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -95,28 +95,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="TB_ONE_SRDetail_Warranty">
-      <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_Warranty">
-        <MappingFragment StoreEntitySet="TB_ONE_SRDetail_Warranty">
-          <ScalarProperty Name="cID" ColumnName="cID" />
-          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
-          <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
-          <ScalarProperty Name="cWTYID" ColumnName="cWTYID" />
-          <ScalarProperty Name="cWTYName" ColumnName="cWTYName" />
-          <ScalarProperty Name="cWTYSDATE" ColumnName="cWTYSDATE" />
-          <ScalarProperty Name="cWTYEDATE" ColumnName="cWTYEDATE" />
-          <ScalarProperty Name="cSLARESP" ColumnName="cSLARESP" />
-          <ScalarProperty Name="cSLASRV" ColumnName="cSLASRV" />
-          <ScalarProperty Name="cContractID" ColumnName="cContractID" />
-          <ScalarProperty Name="cBPMFormNo" ColumnName="cBPMFormNo" />
-          <ScalarProperty Name="cUsed" ColumnName="cUsed" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="TB_ONE_SRIDFormat">
       <EntityTypeMapping TypeName="Model.TB_ONE_SRIDFormat">
         <MappingFragment StoreEntitySet="TB_ONE_SRIDFormat">
@@ -219,6 +197,29 @@
           <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
           <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
           <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_SRDetail_Warranty">
+      <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_Warranty">
+        <MappingFragment StoreEntitySet="TB_ONE_SRDetail_Warranty">
+          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="cUsed" ColumnName="cUsed" />
+          <ScalarProperty Name="cAdvice" ColumnName="cAdvice" />
+          <ScalarProperty Name="cBPMFormNo" ColumnName="cBPMFormNo" />
+          <ScalarProperty Name="cContractID" ColumnName="cContractID" />
+          <ScalarProperty Name="cSLASRV" ColumnName="cSLASRV" />
+          <ScalarProperty Name="cSLARESP" ColumnName="cSLARESP" />
+          <ScalarProperty Name="cWTYEDATE" ColumnName="cWTYEDATE" />
+          <ScalarProperty Name="cWTYSDATE" ColumnName="cWTYSDATE" />
+          <ScalarProperty Name="cWTYName" ColumnName="cWTYName" />
+          <ScalarProperty Name="cWTYID" ColumnName="cWTYID" />
+          <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
+          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

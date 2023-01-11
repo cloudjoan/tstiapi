@@ -25,6 +25,7 @@ namespace TSTI_API.Models
         public string cSLASRV { get; set; }
         public string cContractID { get; set; }
         public string cBPMFormNo { get; set; }
+        public string cAdvice { get; set; }
         public string cUsed { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUserName { get; set; }

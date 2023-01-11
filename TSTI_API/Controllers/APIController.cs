@@ -165,27 +165,27 @@ namespace TSTI_API.Controllers
             string tInvoiceNo = string.Empty;
             string tInvoiceItem = string.Empty;
 
-            string IV_LOGINACCOUNT = string.IsNullOrEmpty(bean.IV_LOGINACCOUNT) ? "" : bean.IV_LOGINACCOUNT;
-            string IV_CUSTOMER = string.IsNullOrEmpty(bean.IV_CUSTOMER) ? "" : bean.IV_CUSTOMER;
-            string IV_REPAIRNAME = string.IsNullOrEmpty(bean.IV_REPAIRNAME) ? "" : bean.IV_REPAIRNAME;
-            string IV_SRTEAM = string.IsNullOrEmpty(bean.IV_SRTEAM) ? "" : bean.IV_SRTEAM;
-            string IV_RKIND = string.IsNullOrEmpty(bean.IV_RKIND) ? "" : bean.IV_RKIND;
-            string IV_PATHWAY = string.IsNullOrEmpty(bean.IV_PATHWAY) ? "" : bean.IV_PATHWAY;
-            string IV_DESC = string.IsNullOrEmpty(bean.IV_DESC) ? "" : bean.IV_DESC;
-            string IV_LTXT = string.IsNullOrEmpty(bean.IV_LTXT) ? "" : bean.IV_LTXT;
-            string IV_MKIND1 = string.IsNullOrEmpty(bean.IV_MKIND1) ? "" : bean.IV_MKIND1;
-            string IV_MKIND2 = string.IsNullOrEmpty(bean.IV_MKIND2) ? "" : bean.IV_MKIND2;
-            string IV_MKIND3 = string.IsNullOrEmpty(bean.IV_MKIND3) ? "" : bean.IV_MKIND3;
-            string IV_CONTNAME = string.IsNullOrEmpty(bean.IV_CONTNAME) ? "" : bean.IV_CONTNAME;
-            string IV_CONTTEL = string.IsNullOrEmpty(bean.IV_CONTTEL) ? "" : bean.IV_CONTTEL;
-            string IV_CONTADDR = string.IsNullOrEmpty(bean.IV_CONTADDR) ? "" : bean.IV_CONTADDR;
-            string IV_CONTEMAIL = string.IsNullOrEmpty(bean.IV_CONTEMAIL) ? "" : bean.IV_CONTEMAIL;
-            string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO;
-            string IV_SQEMPID = string.IsNullOrEmpty(bean.IV_SQEMPID) ? "" : bean.IV_SQEMPID;
-            string IV_SERIAL = string.IsNullOrEmpty(bean.IV_SERIAL) ? "" : bean.IV_SERIAL;
-            string IV_SNPID = string.IsNullOrEmpty(bean.IV_SNPID) ? "" : bean.IV_SNPID;
-            string IV_WTY = string.IsNullOrEmpty(bean.IV_WTY) ? "" : bean.IV_WTY;
-            string IV_REFIX = string.IsNullOrEmpty(bean.IV_REFIX) ? "" : bean.IV_REFIX;
+            string IV_LOGINACCOUNT = string.IsNullOrEmpty(bean.IV_LOGINACCOUNT) ? "" : bean.IV_LOGINACCOUNT.Trim();
+            string IV_CUSTOMER = string.IsNullOrEmpty(bean.IV_CUSTOMER) ? "" : bean.IV_CUSTOMER.Trim();
+            string IV_REPAIRNAME = string.IsNullOrEmpty(bean.IV_REPAIRNAME) ? "" : bean.IV_REPAIRNAME.Trim();
+            string IV_SRTEAM = string.IsNullOrEmpty(bean.IV_SRTEAM) ? "" : bean.IV_SRTEAM.Trim();
+            string IV_RKIND = string.IsNullOrEmpty(bean.IV_RKIND) ? "" : bean.IV_RKIND.Trim();
+            string IV_PATHWAY = string.IsNullOrEmpty(bean.IV_PATHWAY) ? "" : bean.IV_PATHWAY.Trim();
+            string IV_DESC = string.IsNullOrEmpty(bean.IV_DESC) ? "" : bean.IV_DESC.Trim();
+            string IV_LTXT = string.IsNullOrEmpty(bean.IV_LTXT) ? "" : bean.IV_LTXT.Trim();
+            string IV_MKIND1 = string.IsNullOrEmpty(bean.IV_MKIND1) ? "" : bean.IV_MKIND1.Trim();
+            string IV_MKIND2 = string.IsNullOrEmpty(bean.IV_MKIND2) ? "" : bean.IV_MKIND2.Trim();
+            string IV_MKIND3 = string.IsNullOrEmpty(bean.IV_MKIND3) ? "" : bean.IV_MKIND3.Trim();
+            string IV_CONTNAME = string.IsNullOrEmpty(bean.IV_CONTNAME) ? "" : bean.IV_CONTNAME.Trim();
+            string IV_CONTTEL = string.IsNullOrEmpty(bean.IV_CONTTEL) ? "" : bean.IV_CONTTEL.Trim();
+            string IV_CONTADDR = string.IsNullOrEmpty(bean.IV_CONTADDR) ? "" : bean.IV_CONTADDR.Trim();
+            string IV_CONTEMAIL = string.IsNullOrEmpty(bean.IV_CONTEMAIL) ? "" : bean.IV_CONTEMAIL.Trim();
+            string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
+            string IV_SQEMPID = string.IsNullOrEmpty(bean.IV_SQEMPID) ? "" : bean.IV_SQEMPID.Trim();
+            string IV_SERIAL = string.IsNullOrEmpty(bean.IV_SERIAL) ? "" : bean.IV_SERIAL.Trim();
+            string IV_SNPID = string.IsNullOrEmpty(bean.IV_SNPID) ? "" : bean.IV_SNPID.Trim();
+            string IV_WTY = string.IsNullOrEmpty(bean.IV_WTY) ? "" : bean.IV_WTY.Trim();
+            string IV_REFIX = string.IsNullOrEmpty(bean.IV_REFIX) ? "" : bean.IV_REFIX.Trim();
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
             string CSqpersonName = CMF.findSQPersonName(IV_SQEMPID);
@@ -398,6 +398,7 @@ namespace TSTI_API.Controllers
                         beanD.cSLASRV = beanSR.SLASRV;
                         beanD.cContractID = beanSR.CONTRACTID;
                         beanD.cBPMFormNo = beanSR.BPMFormNo;
+                        beanD.cAdvice = beanSR.ADVICE;
 
                         #region 判斷是否有指定使用
                         if (beanSR.SERIALID == tSerialID && beanSR.WTYID == tWTYID)
@@ -926,7 +927,7 @@ namespace TSTI_API.Controllers
         {
             CUSTOMERINFO_OUTPUT OUTBean = new CUSTOMERINFO_OUTPUT();
 
-            var tList = CMF.findCUSTOMERINFO(beanIN.IV_CUSTOME);
+            var tList = CMF.findCUSTOMERINFO(beanIN.IV_CUSTOME.Trim());
 
             if (tList.Count == 0)
             {  
@@ -1017,7 +1018,7 @@ namespace TSTI_API.Controllers
         {
             CONTACTINFO_OUTPUT OUTBean = new CONTACTINFO_OUTPUT();
 
-            var tList = CMF.findCONTACTINFO(beanIN.IV_CUSTOMEID, beanIN.IV_CONTACTNAME, beanIN.IV_CONTACTTEL, beanIN.IV_CONTACTEMAIL);
+            var tList = CMF.findCONTACTINFO(beanIN.IV_CUSTOMEID.Trim(), beanIN.IV_CONTACTNAME.Trim(), beanIN.IV_CONTACTTEL.Trim(), beanIN.IV_CONTACTEMAIL.Trim());
 
             if (tList.Count == 0)
             {
@@ -1160,8 +1161,8 @@ namespace TSTI_API.Controllers
             string pLoginName = string.Empty;
 
             string CCustomerName = CMF.findCustName(beanIN.IV_CUSTOMEID);
-            string IV_LOGINACCOUNT = string.IsNullOrEmpty(beanIN.IV_LOGINACCOUNT) ? "" : beanIN.IV_LOGINACCOUNT;
-            string IV_ISDELETE = string.IsNullOrEmpty(beanIN.IV_ISDELETE) ? "" : beanIN.IV_ISDELETE;
+            string IV_LOGINACCOUNT = string.IsNullOrEmpty(beanIN.IV_LOGINACCOUNT) ? "" : beanIN.IV_LOGINACCOUNT.Trim();
+            string IV_ISDELETE = string.IsNullOrEmpty(beanIN.IV_ISDELETE) ? "" : beanIN.IV_ISDELETE.Trim();
 
             CommonFunction.EmployeeBean EmpBean = new CommonFunction.EmployeeBean();
             EmpBean = CMF.findEmployeeInfo(IV_LOGINACCOUNT);
@@ -1178,14 +1179,14 @@ namespace TSTI_API.Controllers
             try
             {
                 var bean = dbProxy.CUSTOMER_Contact.FirstOrDefault(x => (x.Disabled == null || x.Disabled != 1) && x.BpmNo == tBpmNo && 
-                                                                     x.KNB1_BUKRS == cBUKRS && x.KNA1_KUNNR == beanIN.IV_CUSTOMEID && x.ContactName == beanIN.IV_CONTACTNAME);
+                                                                     x.KNB1_BUKRS == cBUKRS && x.KNA1_KUNNR == beanIN.IV_CUSTOMEID.Trim() && x.ContactName == beanIN.IV_CONTACTNAME.Trim());
 
                 if (bean != null) //修改
                 {
-                    bean.ContactCity = beanIN.IV_CONTACTCITY;
-                    bean.ContactAddress = beanIN.IV_CONTACTADDRESS;
-                    bean.ContactPhone = beanIN.IV_CONTACTTEL;
-                    bean.ContactEmail = beanIN.IV_CONTACTEMAIL;
+                    bean.ContactCity = beanIN.IV_CONTACTCITY.Trim();
+                    bean.ContactAddress = beanIN.IV_CONTACTADDRESS.Trim();
+                    bean.ContactPhone = beanIN.IV_CONTACTTEL.Trim();
+                    bean.ContactEmail = beanIN.IV_CONTACTEMAIL.Trim();
 
                     if (IV_ISDELETE == "Y")
                     {
@@ -1200,15 +1201,15 @@ namespace TSTI_API.Controllers
                     CUSTOMER_Contact bean1 = new CUSTOMER_Contact();
 
                     bean1.ContactID = Guid.NewGuid();
-                    bean1.KNA1_KUNNR = beanIN.IV_CUSTOMEID;
+                    bean1.KNA1_KUNNR = beanIN.IV_CUSTOMEID.Trim();
                     bean1.KNA1_NAME1 = CCustomerName;
                     bean1.KNB1_BUKRS = cBUKRS;
                     bean1.ContactType = "4";
-                    bean1.ContactName = beanIN.IV_CONTACTNAME;
-                    bean1.ContactCity = beanIN.IV_CONTACTCITY;
-                    bean1.ContactAddress = beanIN.IV_CONTACTADDRESS;
-                    bean1.ContactPhone = beanIN.IV_CONTACTTEL;
-                    bean1.ContactEmail = beanIN.IV_CONTACTEMAIL;
+                    bean1.ContactName = beanIN.IV_CONTACTNAME.Trim();
+                    bean1.ContactCity = beanIN.IV_CONTACTCITY.Trim();
+                    bean1.ContactAddress = beanIN.IV_CONTACTADDRESS.Trim();
+                    bean1.ContactPhone = beanIN.IV_CONTACTTEL.Trim();
+                    bean1.ContactEmail = beanIN.IV_CONTACTEMAIL.Trim();
                     bean1.BpmNo = tBpmNo;
                     bean1.Disabled = 0;
 
@@ -1301,7 +1302,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_SERIAL": "SGH33223R6"            
+            //    "IV_SERIAL": "SGH639VL8F"            
             //}
             #endregion
 
@@ -1319,7 +1320,7 @@ namespace TSTI_API.Controllers
             SERIALSEARCH_OUTPUT SROUT = new SERIALSEARCH_OUTPUT();
 
             #region 取得產品序號資訊
-            var ProBean = CMF.findMaterialBySerial(beanIN.IV_SERIAL);
+            var ProBean = CMF.findMaterialBySerial(beanIN.IV_SERIAL.Trim());
 
             if (ProBean.IV_SERIAL != null)
             {
@@ -1343,11 +1344,12 @@ namespace TSTI_API.Controllers
             }
             #endregion
 
-            #region 保固SLA資訊(List)
-            List<SRWarranty> QueryToList = new List<SRWarranty>();    //查詢出來的清單
-           
+            
             if (ProBean.IV_SERIAL != null)
             {
+                #region 保固SLA資訊(List)
+                List<SRWarranty> QueryToList = new List<SRWarranty>();    //查詢出來的清單
+
                 bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
                 string tURLName = string.Empty;
                 string tSeverName = string.Empty;
@@ -1370,8 +1372,16 @@ namespace TSTI_API.Controllers
                 QueryToList = QueryToList.OrderBy(x => x.SERIALID).ThenByDescending(x => x.WTYEDATE).ToList();
 
                 SROUT.WTSLA_LIST = QueryToList;
+                #endregion
+
+                #region 服務請求主檔資訊清單
+                List<SRIDINFO> QuerySRToList = new List<SRIDINFO>();    //查詢出來的清單
+
+                QuerySRToList = CMF.findSRMAINList(ProBean.IV_SERIAL);
+
+                SROUT.SRMAIN_LIST = QuerySRToList;
+                #endregion
             }
-            #endregion            
 
             return SROUT;
         }
@@ -1407,6 +1417,8 @@ namespace TSTI_API.Controllers
 
             /// <summary>保固SLA資訊清單</summary>
             public List<SRWarranty> WTSLA_LIST { get; set; }
+            /// <summary>服務請求主檔資訊清單</summary>
+            public List<SRIDINFO> SRMAIN_LIST { get; set; }
         }
         #endregion
 
@@ -1439,10 +1451,44 @@ namespace TSTI_API.Controllers
         public string BPMFormNo { get; set; }
         /// <summary>保固申請Url(BPM表單編號Url)</summary>
         public string BPMFormNoUrl { get; set; }
+        /// <summary>客服主管建議</summary>
+        public string ADVICE { get; set; }
         /// <summary>本次使用</summary>
         public string USED { get; set; }
         /// <summary>tr背景顏色Class</summary>
         public string BGColor { get; set; }
+    }
+    #endregion
+
+    #region 服務請求主檔資訊
+    /// <summary>服務請求主檔資訊</summary>
+    public class SRIDINFO
+    {
+        /// <summary>服務請求ID</summary>
+        public string SRID { get; set; }
+        /// <summary>服務請求說明</summary>
+        public string SRDESC { get; set; }
+        /// <summary>服務請求開單日期</summary>
+        public string SRDATE { get; set; }
+        /// <summary>SR類型代號</summary>
+        public string SRTYPE { get; set; }
+        /// <summary>SR類型描述</summary>
+        public string SRTDESC { get; set; }
+        /// <summary>服務報告書URL</summary>
+        public string SRREPORT { get; set; }
+        /// <summary>主要工程師ERPID</summary>
+        public string MAINENGID { get; set; }
+        /// <summary>主要工程師姓名</summary>
+        public string MAINENGNAME { get; set; }
+        /// <summary>聯絡人姓名</summary>
+        public string CONTNAME { get; set; }
+        /// <summary>聯絡人地址</summary>
+        public string CONTADDR { get; set; }
+        /// <summary>聯絡人電話</summary>
+        public string CONTTEL { get; set; }
+        /// <summary>聯絡人信箱</summary>
+        public string CONTEMAIL { get; set; }
+
     }
     #endregion
 

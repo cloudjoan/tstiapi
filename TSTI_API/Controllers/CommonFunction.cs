@@ -397,6 +397,7 @@ public string findEmployeeName(string keyword)
             string cContractIDURL = string.Empty;
             string tBPMNO = string.Empty;
             string tURL = string.Empty;
+            string tAdvice = string.Empty;
             string tBGColor = "table-success";
 
             int tLength = 0;
@@ -449,6 +450,7 @@ public string findEmployeeName(string keyword)
                             cSLASRV = data["ET_WARRANTY"]["SyncRoot"][i]["sLARESPField"].ToString().Trim();      //服務條件
                             cContractID = data["ET_WARRANTY"]["SyncRoot"][i]["cONTRACTField"].ToString().Trim(); //合約編號
                             tBPMNO = data["ET_WARRANTY"]["SyncRoot"][i]["bPM_NOField"].ToString().Trim();        //BPM表單編號
+                            tAdvice = data["ET_WARRANTY"]["SyncRoot"][i]["aDVICEField"].ToString().Trim();       //客服主管建議
 
                             #region 取得BPM Url
                             if (cContractID != "")
@@ -503,7 +505,8 @@ public string findEmployeeName(string keyword)
                             QueryInfo.CONTRACTID = cContractID;        //合約編號
                             QueryInfo.CONTRACTIDUrl = cContractIDURL;  //合約編號Url
                             QueryInfo.BPMFormNo = tBPMNO;              //BPM表單編號                        
-                            QueryInfo.BPMFormNoUrl = tURL;             //BPM URL                    
+                            QueryInfo.BPMFormNoUrl = tURL;             //BPM URL
+                            QueryInfo.ADVICE = tAdvice;               //客服主管建議                                          
                             QueryInfo.USED = "N";
                             QueryInfo.BGColor = tBGColor;             //tr背景顏色Class
 
@@ -521,6 +524,80 @@ public string findEmployeeName(string keyword)
             }
 
             return QueryToList;
+        }
+        #endregion
+
+        #region 取得服務請求主檔資訊清單
+        /// <summary>
+        /// 取得服務請求主檔資訊清單
+        /// </summary>
+        /// <param name="IV_SERIAL">序號</param>
+        /// <returns></returns>
+        public List<SRIDINFO> findSRMAINList(string IV_SERIAL)
+        {
+            List<SRIDINFO> QuerySRToList = new List<SRIDINFO>();     //查詢出來的清單
+            List<string> tListSRID = new List<string>();            //SRID清單
+
+            string tSRTYPE = string.Empty;
+            string tSRTDESC = string.Empty;
+
+            var beansP = dbOne.TB_ONE_SRDetail_Product.Where(x => x.Disabled == 0 & x.cSerialID == IV_SERIAL);
+
+            foreach(var bean in beansP)
+            {
+                if (!tListSRID.Contains(bean.cSRID))
+                {
+                    tListSRID.Add(bean.cSRID);
+                }
+            }
+
+            foreach(string tSRID in tListSRID)
+            {
+                var bean = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == tSRID);
+
+                if (bean != null)
+                {
+                    SRIDINFO SRinfo = new SRIDINFO();
+
+                    switch(tSRID.Substring(0,2))
+                    {
+                        case "61":
+                        case "81":
+                            tSRTYPE = "Z01";
+                            tSRTDESC = "一般服務";
+                            break;
+
+                        case "63":
+                        case "83":
+                            tSRTYPE = "Z02";
+                            tSRTDESC = "裝機服務";
+                            break;
+
+                        case "65":
+                        case "85":
+                            tSRTYPE = "Z03";
+                            tSRTDESC = "定維服務";
+                            break;
+                    }
+
+                    SRinfo.SRID = tSRID;
+                    SRinfo.SRDESC = bean.cDesc;
+                    SRinfo.SRDATE = Convert.ToDateTime(bean.CreatedDate).ToString("yyyy-MM-dd HH:mm:ss");
+                    SRinfo.SRTYPE = tSRTYPE;
+                    SRinfo.SRTDESC = tSRTDESC;
+                    SRinfo.SRREPORT = "";
+                    SRinfo.MAINENGID = bean.cMainEngineerID;
+                    SRinfo.MAINENGNAME = bean.cMainEngineerName;
+                    SRinfo.CONTNAME = bean.cContacterName;
+                    SRinfo.CONTADDR = bean.cContactAddress;
+                    SRinfo.CONTTEL = bean.cContactPhone;
+                    SRinfo.CONTEMAIL = bean.cContactEmail;
+
+                    QuerySRToList.Add(SRinfo);
+                }
+            }
+
+            return QuerySRToList;
         }
         #endregion
 

@@ -104,6 +104,7 @@
     <Property Name="cSLASRV" Type="nvarchar" MaxLength="10" />
     <Property Name="cContractID" Type="nvarchar" MaxLength="10" />
     <Property Name="cBPMFormNo" Type="varchar" MaxLength="50" />
+    <Property Name="cAdvice" Type="nvarchar" MaxLength="2000" />
     <Property Name="cUsed" Type="varchar" MaxLength="1" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
