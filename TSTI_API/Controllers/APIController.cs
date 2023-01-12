@@ -1379,7 +1379,7 @@ namespace TSTI_API.Controllers
                 #region 服務請求主檔資訊清單
                 List<SRIDINFO> QuerySRToList = new List<SRIDINFO>();    //查詢出來的清單
 
-                QuerySRToList = CMF.findSRMAINList(ProBean.IV_SERIAL);
+                QuerySRToList = CMF.findSRMAINList(pOperationID_GenerallySR, ProBean.IV_SERIAL);
 
                 SROUT.SRMAIN_LIST = QuerySRToList;
                 #endregion
@@ -1845,6 +1845,24 @@ namespace TSTI_API.Controllers
         }
         #endregion       
 
+        #region 查詢一般服務請求狀態接口
+        [HttpPost]
+        public ActionResult API_GENERALSRSTATUS_GET(OPTION_INPUT beanIV)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_COMPID": "T012"
+            //}
+            #endregion
+
+            OPTION_OUTPUT ListOUT = new OPTION_OUTPUT();
+
+            ListOUT = OPTION_GET(beanIV, "GENERALSRSTATUS");
+
+            return Json(ListOUT);
+        }
+        #endregion       
+
         #region 取得下拉選項清單
         private OPTION_OUTPUT OPTION_GET(OPTION_INPUT beanIV, string tFunction)
         {
@@ -1863,6 +1881,11 @@ namespace TSTI_API.Controllers
                 case "SRPATHWAY":
                     tFunName = "報修管道";
                     tFunNo = "SRPATH";
+                    break;
+
+                case "GENERALSRSTATUS":
+                    tFunName = "狀態";
+                    tFunNo = "SRSTATUS";
                     break;
             }
 
@@ -1951,6 +1974,10 @@ namespace TSTI_API.Controllers
         public string SRTYPE { get; set; }
         /// <summary>SR類型描述</summary>
         public string SRTDESC { get; set; }
+        /// <summary>狀態ID</summary>
+        public string STATUS { get; set; }
+        /// <summary>狀態說明</summary>
+        public string STATUSDESC { get; set; }
         /// <summary>服務報告書URL</summary>
         public string SRREPORTUrl { get; set; }
         /// <summary>主要工程師ERPID</summary>

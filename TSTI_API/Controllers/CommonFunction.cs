@@ -154,6 +154,36 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得【資訊系統參數設定檔】的參數值說明
+        /// <summary>
+        /// 取得【資訊系統參數設定檔】的參數值
+        /// </summary>
+        /// <param name="cOperationID">程式作業編號檔系統ID</param>
+        /// <param name="cFunctionID">功能別(SENDMAIL.寄送Mail、ACCOUNT.取得人員帳號、OTHER.其他自定義)</param>
+        /// <param name="cCompanyID">公司別(ALL.全集團、T012.大世科、T016.群輝、C069.大世科技上海、T022.協志科)</param>
+        /// <param name="cNo">參數No</param>
+        /// <param name="cValue">參數值</param>
+        /// <returns></returns>
+        public string findSysParameterDescription(string cOperationID, string cFunctionID, string cCompanyID, string cNo, string cValue)
+        {
+            string reValue = string.Empty;
+
+            var bean = dbPSIP.TB_ONE_SysParameter.FirstOrDefault(x => x.Disabled == 0 &&
+                                                                 x.cOperationID.ToString() == cOperationID &&
+                                                                 x.cFunctionID == cFunctionID.Trim() &&
+                                                                 x.cCompanyID == cCompanyID.Trim() &&
+                                                                 x.cNo == cNo.Trim() &&
+                                                                 x.cValue == cValue.Trim());
+
+            if (bean != null)
+            {
+                reValue = bean.cDescription;
+            }
+
+            return reValue;
+        }
+        #endregion        
+
         #region 取得SAP的公司別
         /// <summary>
         /// 取得SAP的公司別(T012、T016、C069、T022)
@@ -755,15 +785,17 @@ public string findEmployeeName(string keyword)
         /// <summary>
         /// 取得服務請求主檔資訊清單
         /// </summary>
+        /// <param name="pOperationID_GenerallySR">程式作業編號檔系統ID(一般服務)</param>
         /// <param name="IV_SERIAL">序號</param>
         /// <returns></returns>
-        public List<SRIDINFO> findSRMAINList(string IV_SERIAL)
+        public List<SRIDINFO> findSRMAINList(string pOperationID_GenerallySR, string IV_SERIAL)
         {
             List<SRIDINFO> QuerySRToList = new List<SRIDINFO>();     //查詢出來的清單
             List<string> tListSRID = new List<string>();            //SRID清單
 
             string tSRTYPE = string.Empty;
             string tSRTDESC = string.Empty;
+            string tSTATUSDESC = string.Empty;
             string tSRREPORTUrl = string.Empty;
 
             var beansP = dbOne.TB_ONE_SRDetail_Product.Where(x => x.Disabled == 0 & x.cSerialID == IV_SERIAL);
@@ -805,6 +837,7 @@ public string findEmployeeName(string keyword)
                             break;
                     }
 
+                    tSTATUSDESC = findSysParameterDescription(pOperationID_GenerallySR, "OTHER", "T012", "SRSTATUS", bean.cStatus);
                     tSRREPORTUrl = findSRReportURL(tSRID);
 
                     SRinfo.SRID = tSRID;
@@ -812,6 +845,8 @@ public string findEmployeeName(string keyword)
                     SRinfo.SRDATE = Convert.ToDateTime(bean.CreatedDate).ToString("yyyy-MM-dd HH:mm:ss");
                     SRinfo.SRTYPE = tSRTYPE;
                     SRinfo.SRTDESC = tSRTDESC;
+                    SRinfo.STATUS = bean.cStatus;
+                    SRinfo.STATUSDESC = tSTATUSDESC;
                     SRinfo.SRREPORTUrl = tSRREPORTUrl;
                     SRinfo.MAINENGID = bean.cMainEngineerID;
                     SRinfo.MAINENGNAME = bean.cMainEngineerName;
