@@ -26,7 +26,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 程式作業編號檔系統ID(一般服務)
         /// </summary>
-        static string pOperationID_GenerallySR = "869FC989-1049-4266-ABDE-69A9B07BCD0A";
+        string pOperationID_GenerallySR = "869FC989-1049-4266-ABDE-69A9B07BCD0A";
 
         static string API_KEY = "6xdTlREsMbFd0dBT28jhb5W3BNukgLOos";
 
@@ -1423,6 +1423,356 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑序號查詢接口 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓員工資料接口 ↓↓↓↓↓-----        
+
+        #region 查詢員工資料接口
+        [HttpPost]
+        public ActionResult API_EMPLOYEEINFO_GET(EMPLOYEEINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_EMPNAME": "張豐穎"
+            //}
+            #endregion
+
+            EMPLOYEEINFO_OUTPUT ListOUT = new EMPLOYEEINFO_OUTPUT();
+
+            ListOUT = EMPLOYEEINFO_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得員工資料
+        private EMPLOYEEINFO_OUTPUT EMPLOYEEINFO_GET(EMPLOYEEINFO_INPUT beanIN)
+        {
+            EMPLOYEEINFO_OUTPUT OUTBean = new EMPLOYEEINFO_OUTPUT();
+
+            string EMPCOMPID = "T012";
+
+            var tList = CMF.findEMPLOYEEINFO(beanIN.IV_EMPNAME.Trim());
+
+            if (tList.Count == 0)
+            {
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = "查無員工資料，請重新查詢！";
+            }
+            else
+            {
+                OUTBean.EV_MSGT = "Y";
+                OUTBean.EV_MSG = "";
+
+                #region 取得員工資料List
+                List<EMPLOYEEINFO_LIST> tEMPList = new List<EMPLOYEEINFO_LIST>();
+
+                foreach (var bean in tList)
+                {
+                    EMPLOYEEINFO_LIST beanEMP = new EMPLOYEEINFO_LIST();
+
+                    switch(bean.Comp_Cde.Trim())
+                    {
+                        case "Comp-1":
+                            EMPCOMPID = "T012";
+                            break;
+                        case "Comp-2":
+                            EMPCOMPID = "T016";
+                            break;
+                        case "Comp-3":
+                            EMPCOMPID = "C069";
+                            break;
+                        case "Comp-4":
+                            EMPCOMPID = "T022";
+                            break;
+                    }
+
+                    beanEMP.EMPID = bean.ERP_ID;
+                    beanEMP.EMPNAME = bean.Name2;
+                    beanEMP.EMPENNAME = bean.Name;
+                    beanEMP.EMPACCOUNT = bean.Account;
+                    beanEMP.EMPCOMPID = EMPCOMPID;
+
+                    tEMPList.Add(beanEMP);
+                }
+
+                OUTBean.EMP_LIST = tEMPList;
+                #endregion
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢員工資料INPUT資訊
+        /// <summary>查詢員工資料資料INPUT資訊</summary>
+        public struct EMPLOYEEINFO_INPUT
+        {
+            /// <summary>員工姓名(英文名/中文名)</summary>
+            public string IV_EMPNAME { get; set; }
+        }
+        #endregion
+
+        #region 查詢員工資料OUTPUT資訊
+        /// <summary>查詢員工資料OUTPUT資訊</summary>
+        public struct EMPLOYEEINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>員工資料清單</summary>
+            public List<EMPLOYEEINFO_LIST> EMP_LIST { get; set; }
+        }
+
+        public struct EMPLOYEEINFO_LIST
+        {
+            /// <summary>員工ERPID</summary>
+            public string EMPID { get; set; }
+            /// <summary>員工姓名(中文)</summary>
+            public string EMPNAME { get; set; }
+            /// <summary>員工姓名(英文)</summary>
+            public string EMPENNAME { get; set; }
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string EMPCOMPID { get; set; }
+            /// <summary>員工帳號</summary>
+            public string EMPACCOUNT { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑員工資料接口 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓服務團隊資料接口 ↓↓↓↓↓-----        
+
+        #region 查詢服務團隊資料接口
+        [HttpPost]
+        public ActionResult API_SRTEAMINFO_GET(SRTEAMINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_COMPID": "T012"
+            //}
+            #endregion
+
+            OPTION_OUTPUT ListOUT = new OPTION_OUTPUT();
+
+            ListOUT = SRTEAMINFO_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得服務團隊資料
+        private OPTION_OUTPUT SRTEAMINFO_GET(SRTEAMINFO_INPUT beanIN)
+        {
+            OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();            
+
+            var tList = CMF.findSRTEAMINFO(beanIN.IV_COMPID);
+
+            if (tList.Count == 0)
+            {
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = "查無服務團隊資料，請重新查詢！";
+            }
+            else
+            {
+                OUTBean.EV_MSGT = "Y";
+                OUTBean.EV_MSG = "";
+
+                #region 取得服務團隊資料List
+                List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
+
+                foreach (var bean in tList)
+                {
+                    OPTION_LIST beanTEAM = new OPTION_LIST();
+
+                    beanTEAM.VALUE = bean.cTeamOldID;   //服務團隊ID
+                    beanTEAM.TEXT = bean.cTeamOldName;  //服務團隊名稱
+
+                    tEMPList.Add(beanTEAM);
+                }
+
+                OUTBean.OPTION_LIST = tEMPList;
+                #endregion
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢服務團隊資料INPUT資訊
+        /// <summary>查詢服務團隊資料INPUT資訊</summary>
+        public struct SRTEAMINFO_INPUT
+        {
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string IV_COMPID { get; set; }
+        }
+        #endregion        
+
+        #endregion -----↑↑↑↑↑服務團隊資料接口 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓SQ人員資料接口 ↓↓↓↓↓-----        
+
+        #region 查詢SQ人員資料接口
+        [HttpPost]
+        public ActionResult API_SQINFO_GET(SQINFO_INPUT beanIV)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_EMPNAME": "陳勁嘉"
+            //}
+            #endregion
+
+            OPTION_OUTPUT ListOUT = new OPTION_OUTPUT();
+
+            ListOUT = SQINFO_GET(beanIV);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得SQ人員資料
+        private OPTION_OUTPUT SQINFO_GET(SQINFO_INPUT beanIN)
+        {
+            OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();
+
+            var tList = CMF.findSQINFO(beanIN.IV_EMPNAME.Trim());
+
+            if (tList.Count == 0)
+            {
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = "查無SQ人員資料，請重新查詢！";
+            }
+            else
+            {
+                OUTBean.EV_MSGT = "Y";
+                OUTBean.EV_MSG = "";
+
+                #region 取得SQ人員資料List
+                List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
+
+                foreach (var bean in tList)
+                {
+                    OPTION_LIST beanTEAM = new OPTION_LIST();
+
+                    beanTEAM.VALUE = bean.cFullKEY; //SQ人員ID
+                    beanTEAM.TEXT = bean.cFullNAME; //SQ人員說明
+
+                    tEMPList.Add(beanTEAM);
+                }
+
+                OUTBean.OPTION_LIST = tEMPList;
+                #endregion
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢SQ人員資料INPUT資訊
+        /// <summary>查詢SQ人員資料INPUT資訊</summary>
+        public struct SQINFO_INPUT
+        {
+            /// <summary>姓名/類別</summary>
+            public string IV_EMPNAME { get; set; }
+        }
+        #endregion      
+
+        #endregion -----↑↑↑↑↑服務團隊資料接口 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓下拉選項共用接口 ↓↓↓↓↓-----        
+
+        #region 查詢維護服務種類接口
+        [HttpPost]
+        public ActionResult API_MASERVICETYPE_GET(OPTION_INPUT beanIV)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_COMPID": "T012"
+            //}
+            #endregion
+
+            OPTION_OUTPUT ListOUT = new OPTION_OUTPUT();
+
+            ListOUT = OPTION_GET(beanIV, "MASERVICETYPE");
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 查詢報修管道接口
+        [HttpPost]
+        public ActionResult API_SRPATHWAY_GET(OPTION_INPUT beanIV)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_COMPID": "T012"
+            //}
+            #endregion
+
+            OPTION_OUTPUT ListOUT = new OPTION_OUTPUT();
+
+            ListOUT = OPTION_GET(beanIV, "SRPATHWAY");
+
+            return Json(ListOUT);
+        }
+        #endregion       
+
+        #region 取得下拉選項清單
+        private OPTION_OUTPUT OPTION_GET(OPTION_INPUT beanIV, string tFunction)
+        {
+            OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();
+
+            string tFunName = string.Empty;
+            string tFunNo = string.Empty;
+
+            switch (tFunction)
+            {
+                case "MASERVICETYPE":
+                    tFunName = "維護服務種類";
+                    tFunNo = "SRMATYPE";
+                    break;
+
+                case "SRPATHWAY":
+                    tFunName = "報修管道";
+                    tFunNo = "SRPATH";
+                    break;
+            }
+
+            var tList = CMF.findOPTION(pOperationID_GenerallySR, beanIV.IV_COMPID.Trim(), tFunNo);
+
+            if (tList.Count == 0)
+            {
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = "查無" + tFunName + "，請重新查詢！";
+            }
+            else
+            {
+                OUTBean.EV_MSGT = "Y";
+                OUTBean.EV_MSG = "";
+
+                #region 取得下拉選項List
+                List<OPTION_LIST> tOPTList = new List<OPTION_LIST>();
+
+                foreach (var bean in tList)
+                {
+                    OPTION_LIST beanEMP = new OPTION_LIST();                   
+
+                    beanEMP.VALUE = bean.Value;
+                    beanEMP.TEXT = bean.Text;
+
+                    tOPTList.Add(beanEMP);
+                }
+
+                OUTBean.OPTION_LIST = tOPTList;
+                #endregion
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑下拉選項共用接口 ↑↑↑↑↑-----
     }
 
     #region 保固SLA資訊
@@ -1475,7 +1825,7 @@ namespace TSTI_API.Controllers
         /// <summary>SR類型描述</summary>
         public string SRTDESC { get; set; }
         /// <summary>服務報告書URL</summary>
-        public string SRREPORT { get; set; }
+        public string SRREPORTUrl { get; set; }
         /// <summary>主要工程師ERPID</summary>
         public string MAINENGID { get; set; }
         /// <summary>主要工程師姓名</summary>
@@ -1533,6 +1883,37 @@ namespace TSTI_API.Controllers
         public string MFRPN { get; set; }
         /// <summary>裝機號碼</summary>
         public string InstallNo { get; set; }
+    }
+    #endregion
+
+    #region 查詢下拉清單INPUT資訊
+    /// <summary>查詢下拉清單INPUT資訊</summary>
+    public struct OPTION_INPUT
+    {
+        /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+        public string IV_COMPID { get; set; }
+    }
+    #endregion
+
+    #region 查詢下拉選項清單OUTPUT資訊
+    /// <summary>查詢下拉選項清單OUTPUT資訊</summary>
+    public struct OPTION_OUTPUT
+    {
+        /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+        public string EV_MSGT { get; set; }
+        /// <summary>消息內容</summary>
+        public string EV_MSG { get; set; }
+
+        /// <summary>下拉選項清單</summary>
+        public List<OPTION_LIST> OPTION_LIST { get; set; }
+    }
+
+    public struct OPTION_LIST
+    {
+        /// <summary>ID</summary>
+        public string VALUE { get; set; }
+        /// <summary>名稱</summary>
+        public string TEXT { get; set; }
     }
     #endregion
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using TSTI_API.Models;
 
 namespace TSTI_API.Controllers
@@ -14,7 +15,7 @@ namespace TSTI_API.Controllers
         TSTIONEEntities dbOne = new TSTIONEEntities();
         MCSWorkflowEntities dbEIP = new MCSWorkflowEntities();
         ERP_PROXY_DBEntities dbProxy = new ERP_PROXY_DBEntities();
-        PSIPEntities dbPSIP = new PSIPEntities();
+        PSIPEntities dbPSIP = new PSIPEntities();        
 
         public CommonFunction()
         {
@@ -68,6 +69,60 @@ namespace TSTI_API.Controllers
             reValue = Convert.ToBoolean(tValue);
 
             return reValue;
+        }
+        #endregion
+
+        #region 取得系統參數清單
+        /// <summary>
+        /// 取得系統參數清單
+        /// </summary>
+        /// <param name="cOperationID">程式作業編號檔系統ID</param>
+        /// <param name="cFunctionID">功能別(OTHER.其他自定義)</param>
+        /// <param name="cCompanyID">公司別</param>
+        /// <param name="cNo">參數No</param>        
+        /// <returns></returns>
+        public List<SelectListItem> findSysParameterList(string cOperationID, string cFunctionID, string cCompanyID, string cNo)
+        {
+            var tList = findSysParameterListItem(cOperationID, cFunctionID, cCompanyID, cNo);
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得【資訊系統參數設定檔】的參數值清單(回傳SelectListItem)
+        /// <summary>
+        /// 取得【資訊系統參數設定檔】的參數值清單(回傳SelectListItem)
+        /// </summary>
+        /// <param name="cOperationID">程式作業編號檔系統ID</param>
+        /// <param name="cFunctionID">功能別(OTHER.其他自定義)</param>
+        /// <param name="cCompanyID">公司別(ALL.全集團、T012.大世科、T016.群輝、C069.大世科技上海、T022.協志科)</param>
+        /// <param name="cNo">參數No</param>        
+        /// <returns></returns>
+        public List<SelectListItem> findSysParameterListItem(string cOperationID, string cFunctionID, string cCompanyID, string cNo)
+        {
+            var tList = new List<SelectListItem>();
+            List<string> tTempList = new List<string>();
+
+            string tKEY = string.Empty;
+            string tNAME = string.Empty;
+
+            var beans = dbPSIP.TB_ONE_SysParameter.OrderBy(x => x.cOperationID).ThenBy(x => x.cFunctionID).ThenBy(x => x.cCompanyID).OrderBy(x => x.cNo).
+                                               Where(x => x.Disabled == 0 &&
+                                                          x.cOperationID.ToString() == cOperationID &&
+                                                          x.cFunctionID == cFunctionID.Trim() &&
+                                                          x.cCompanyID == cCompanyID.Trim() &&
+                                                          x.cNo == cNo.Trim());          
+
+            foreach (var bean in beans)
+            {
+                if (!tTempList.Contains(bean.cValue))
+                {
+                    tList.Add(new SelectListItem { Text = bean.cDescription, Value = bean.cValue });
+                    tTempList.Add(bean.cValue);
+                }
+            }
+
+            return tList;
         }
         #endregion
 
@@ -153,9 +208,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得法人客戶聯絡人資料
+        #region 取得法人客戶資料
         /// <summary>
-        /// 取得法人客戶聯絡人資料
+        /// 取得法人客戶資料
         /// </summary>
         /// <param name="keyword">客戶代號/客戶名稱</param>
         /// <returns></returns>
@@ -225,6 +280,83 @@ namespace TSTI_API.Controllers
             }
 
             return liPCContact;
+        }
+        #endregion
+
+        #region 取得員工資料
+        /// <summary>
+        /// 取得員工資料
+        /// </summary>
+        /// <param name="keyword">員工姓名(中文名/英文名)</param>
+        /// <returns></returns>
+        public List<Person> findEMPLOYEEINFO(string keyword)
+        {
+            List<Person> tList = new List<Person>();
+
+            if (keyword != "")
+            {
+                tList = dbEIP.Person.Where(x => (x.Leave_Date == null && x.Leave_Reason == null) && (x.Name.Contains(keyword) || x.Name2.Contains(keyword))).Take(10).ToList();
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得服務團隊資料
+        /// <summary>
+        /// 取得服務團隊資料
+        /// </summary>        
+        /// <param name="tCompanyID">公司別(T012、T016、C069、T022)</param>
+        /// <returns></returns>        
+        public List<TB_ONE_SRTeamMapping> findSRTEAMINFO(string tCompanyID)
+        {
+            List<TB_ONE_SRTeamMapping> tList = new List<TB_ONE_SRTeamMapping>();
+
+            if (tCompanyID == "T012")
+            {
+                tList = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && !(x.cTeamOldID.Contains("SRV.1217") || x.cTeamOldID.Contains("SRV.1227") || x.cTeamOldID.Contains("SRV.1237"))).ToList();
+            }
+            else if (tCompanyID == "T016")
+            {
+                tList = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && (x.cTeamOldID.Contains("SRV.1217") || x.cTeamOldID.Contains("SRV.1227") || x.cTeamOldID.Contains("SRV.1237"))).ToList();
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得SQ人員資料
+        /// <summary>
+        /// 取得SQ人員資料
+        /// </summary>
+        /// <param name="keyword">員工姓名(中文名/英文名)</param>
+        /// <returns></returns>
+        public List<TB_ONE_SRSQPerson> findSQINFO(string keyword)
+        {
+            List<TB_ONE_SRSQPerson> tList = new List<TB_ONE_SRSQPerson>();
+
+            if (keyword != "")
+            {
+                tList = dbOne.TB_ONE_SRSQPerson.Where(x => x.Disabled == 0 & (x.cFullKEY.Contains(keyword.Trim()) || x.cFullNAME.Contains(keyword.Trim()))).Take(10).ToList();
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得下拉選項List
+        /// <summary>
+        /// 取得下拉選項List
+        /// </summary>
+        /// <param name="pOperationID_GenerallySR">程式作業編號檔系統ID(一般服務)</param>
+        /// <param name="tCompanyID">公司別(T012、T016、C069、T022)</param>
+        /// <param name="tFunNo">功能名稱</param>
+        /// <returns></returns>
+        public List<SelectListItem> findOPTION(string pOperationID_GenerallySR, string tCompanyID, string tFunNo)
+        {   
+            List<SelectListItem> ListOPTION = findSysParameterList(pOperationID_GenerallySR, "OTHER", tCompanyID, tFunNo);
+
+            return ListOPTION;
         }
         #endregion
 
@@ -540,6 +672,7 @@ public string findEmployeeName(string keyword)
 
             string tSRTYPE = string.Empty;
             string tSRTDESC = string.Empty;
+            string tSRREPORTUrl = string.Empty;
 
             var beansP = dbOne.TB_ONE_SRDetail_Product.Where(x => x.Disabled == 0 & x.cSerialID == IV_SERIAL);
 
@@ -580,12 +713,14 @@ public string findEmployeeName(string keyword)
                             break;
                     }
 
+                    tSRREPORTUrl = findSRReportURL(tSRID);
+
                     SRinfo.SRID = tSRID;
                     SRinfo.SRDESC = bean.cDesc;
                     SRinfo.SRDATE = Convert.ToDateTime(bean.CreatedDate).ToString("yyyy-MM-dd HH:mm:ss");
                     SRinfo.SRTYPE = tSRTYPE;
                     SRinfo.SRTDESC = tSRTDESC;
-                    SRinfo.SRREPORT = "";
+                    SRinfo.SRREPORTUrl = tSRREPORTUrl;
                     SRinfo.MAINENGID = bean.cMainEngineerID;
                     SRinfo.MAINENGNAME = bean.cMainEngineerName;
                     SRinfo.CONTNAME = bean.cContacterName;
@@ -598,6 +733,32 @@ public string findEmployeeName(string keyword)
             }
 
             return QuerySRToList;
+        }
+        #endregion
+
+        #region 取得工時紀錄檔裡的服務報告書url
+        /// <summary>
+        /// 取得工時紀錄檔裡的服務報告書url
+        /// </summary>
+        /// <param name="tSRID"></param>
+        /// <returns></returns>
+        public string findSRReportURL(string tSRID)
+        {
+            string reValue = string.Empty;
+
+            var beans = dbOne.TB_ONE_SRDetail_Record.Where(x => x.Disabled == 0 && x.cSRID == tSRID);
+
+            foreach(var bean in beans)
+            {
+                reValue += bean.cSRReport;
+            }
+
+            if (reValue != "")
+            {
+                reValue = reValue.TrimEnd(',').Replace(",", ";");
+            }
+
+            return reValue;
         }
         #endregion
 
