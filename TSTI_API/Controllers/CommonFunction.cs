@@ -325,6 +325,98 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得所有第一階List清單(報修類別)
+        /// <summary>
+        /// 取得所有第一階List清單(報修類別)
+        /// </summary>
+        /// <param name="tCompanyID">公司別(T012、T016、C069、T022)</param>
+        /// <returns></returns>
+        public List<SelectListItem> findFirstKINDList(string tCompanyID)
+        {
+            List<string> tTempList = new List<string>();
+
+            string tKIND_KEY = string.Empty;
+            string tKIND_NAME = string.Empty;
+
+            var beansKIND = dbOne.TB_ONE_SRRepairType.OrderBy(x => x.cKIND_KEY).Where(x => x.Disabled == 0 && x.cUP_KIND_KEY == "0");
+
+            var tList = new List<SelectListItem>();            
+
+            foreach (var bean in beansKIND)
+            {
+                if (!tTempList.Contains(bean.cKIND_KEY))
+                {
+                    tList.Add(new SelectListItem { Text = bean.cKIND_NAME, Value = bean.cKIND_KEY });
+                    tTempList.Add(bean.cKIND_KEY);
+                }
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 傳入第一階(大類)並取得第二階(中類)清單
+        /// <summary>
+        /// 傳入第一階(大類)並取得第二階(中類)清單
+        /// </summary>
+        /// <param name="tCompanyID">公司別(T012、T016、C069、T022)</param>
+        /// <param name="keyword">第一階(大類)代碼</param>
+        /// <returns></returns>
+        public List<SelectListItem> findSRTypeSecList(string tCompanyID, string keyword)
+        {
+            List<string> tTempList = new List<string>();
+
+            string tKIND_KEY = string.Empty;
+            string tKIND_NAME = string.Empty;
+
+            var beansKIND = dbOne.TB_ONE_SRRepairType.OrderBy(x => x.cKIND_KEY).Where(x => x.Disabled == 0 && x.cKIND_LEVEL == 2 && x.cUP_KIND_KEY == keyword);
+
+            var tList = new List<SelectListItem>();            
+
+            foreach (var bean in beansKIND)
+            {
+                if (!tTempList.Contains(bean.cKIND_KEY))
+                {
+                    tList.Add(new SelectListItem { Text = bean.cKIND_NAME, Value = bean.cKIND_KEY });
+                    tTempList.Add(bean.cKIND_KEY);
+                }
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 傳入第二階(中類)並取得第三階(小類)清單
+        /// <summary>
+        /// 傳入第二階(中類)並取得第三階(小類)清單
+        /// </summary>
+        /// <param name="tCompanyID">公司別(T012、T016、C069、T022)</param>
+        /// <param name="keyword">第二階(中類)代碼</param>
+        /// <returns></returns>
+        public List<SelectListItem> findSRTypeThrList(string tCompanyID, string keyword)
+        {
+            List<string> tTempList = new List<string>();
+
+            string tKIND_KEY = string.Empty;
+            string tKIND_NAME = string.Empty;
+
+            var beansKIND = dbOne.TB_ONE_SRRepairType.OrderBy(x => x.cKIND_KEY).Where(x => x.Disabled == 0 && x.cKIND_LEVEL == 3 && x.cUP_KIND_KEY == keyword);
+
+            var tList = new List<SelectListItem>();            
+
+            foreach (var bean in beansKIND)
+            {
+                if (!tTempList.Contains(bean.cKIND_KEY))
+                {
+                    tList.Add(new SelectListItem { Text = bean.cKIND_NAME, Value = bean.cKIND_KEY });
+                    tTempList.Add(bean.cKIND_KEY);
+                }
+            }
+
+            return tList;
+        }
+        #endregion      
+
         #region 取得SQ人員資料
         /// <summary>
         /// 取得SQ人員資料

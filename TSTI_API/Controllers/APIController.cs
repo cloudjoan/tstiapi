@@ -34,6 +34,7 @@ namespace TSTI_API.Controllers
         /// <summary>全域變數</summary>
         string pMsg = "";
 
+        #region 範例API
         // GET: API
         [HttpGet]
         public ActionResult Index()
@@ -100,6 +101,7 @@ namespace TSTI_API.Controllers
         {
             return Json(string.Format("{0} Email:{1}", data["userNames"] ?? "逢金", data["email"] ?? "沒有"));
         }
+        #endregion
 
         #region -----↓↓↓↓↓一般服務請求 ↓↓↓↓↓-----
 
@@ -1679,6 +1681,131 @@ namespace TSTI_API.Controllers
         #endregion      
 
         #endregion -----↑↑↑↑↑服務團隊資料接口 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓報修類別資料接口 ↓↓↓↓↓-----        
+
+        #region 查詢報修類別(大類)資料接口
+        [HttpPost]
+        public ActionResult API_SRKINDONE_GET(SRKIND_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_COMPID": "T012"
+            //}
+            #endregion
+
+            OPTION_OUTPUT ListOUT = new OPTION_OUTPUT();
+
+            ListOUT = SRKIND_GET(beanIN, 1);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 查詢報修類別(中類)資料接口
+        [HttpPost]
+        public ActionResult API_SRKINDSEC_GET(SRKIND_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_COMPID": "T012",
+            //    "IV_ONEID": "ZA02"
+            //}
+            #endregion
+
+            OPTION_OUTPUT ListOUT = new OPTION_OUTPUT();
+
+            ListOUT = SRKIND_GET(beanIN, 2);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 查詢報修類別(小類)資料接口
+        [HttpPost]
+        public ActionResult API_SRKINDTHR_GET(SRKIND_INPUT beanIN)
+        {            
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_COMPID": "T012",
+            //    "IV_ONEID": "ZA02",
+            //    "IV_SECID": "ZB0201"
+            //}
+            #endregion
+
+            OPTION_OUTPUT ListOUT = new OPTION_OUTPUT();
+
+            ListOUT = SRKIND_GET(beanIN, 3);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得報修類別資料
+        private OPTION_OUTPUT SRKIND_GET(SRKIND_INPUT beanIN, int tLevel)
+        {
+            OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();
+
+            List<SelectListItem> tList = new List<SelectListItem>();
+
+            if (tLevel == 1) //大類
+            {
+                tList = CMF.findFirstKINDList(beanIN.IV_COMPID);
+            }
+            else if (tLevel == 2) //中類
+            {
+                tList = CMF.findSRTypeSecList(beanIN.IV_COMPID, beanIN.IV_ONEID);
+            }
+            else if (tLevel == 3) //小類
+            {
+                tList = CMF.findSRTypeThrList(beanIN.IV_COMPID, beanIN.IV_SECID);
+            }
+
+            if (tList.Count == 0)
+            {
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = "查無報修類別資料，請重新查詢！";
+            }
+            else
+            {
+                OUTBean.EV_MSGT = "Y";
+                OUTBean.EV_MSG = "";
+
+                #region 取得報修類別資料List
+                List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
+
+                foreach (var bean in tList)
+                {
+                    OPTION_LIST beanTEAM = new OPTION_LIST();
+
+                    beanTEAM.VALUE = bean.Value;   //報修類別ID
+                    beanTEAM.TEXT = bean.Text;     //報修類別名稱
+
+                    tEMPList.Add(beanTEAM);
+                }
+
+                OUTBean.OPTION_LIST = tEMPList;
+                #endregion
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢報修類別資料INPUT資訊
+        /// <summary>查詢報修類別資料INPUT資訊</summary>
+        public struct SRKIND_INPUT
+        {
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string IV_COMPID { get; set; }
+            /// <summary>類別ID(大類)</summary>
+            public string IV_ONEID { get; set; }
+            /// <summary>類別ID(中類)</summary>
+            public string IV_SECID { get; set; }
+        }
+        #endregion        
+
+        #endregion -----↑↑↑↑↑報修類別(大類)資料接口 ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓下拉選項共用接口 ↓↓↓↓↓-----        
 
