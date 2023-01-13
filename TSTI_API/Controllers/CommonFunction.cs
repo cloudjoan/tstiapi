@@ -466,6 +466,25 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得料號資料
+        /// <summary>
+        /// 取得料號資料
+        /// </summary>
+        /// <param name="keyword">料號/料號說明</param>
+        /// <returns></returns>
+        public List<VIEW_MATERIAL_ByComp> findMATERIALINFO(string keyword)
+        {
+            List<VIEW_MATERIAL_ByComp> tList = new List<VIEW_MATERIAL_ByComp>();
+
+            if (keyword != "")
+            {
+                tList = dbProxy.VIEW_MATERIAL_ByComp.Where(x => x.MARA_MATNR.Contains(keyword) || x.MAKT_TXZA1_ZF.Contains(keyword)).Take(8).ToList();
+            }
+
+            return tList;
+        }
+        #endregion
+
         #region 取得下拉選項List
         /// <summary>
         /// 取得下拉選項List

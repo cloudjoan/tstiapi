@@ -1682,6 +1682,75 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑服務團隊資料接口 ↑↑↑↑↑-----  
 
+        #region -----↓↓↓↓↓料號資料接口 ↓↓↓↓↓-----        
+
+        #region 查詢料號資料接口
+        [HttpPost]
+        public ActionResult API_MATERIALINFO_GET(MATERIALINFO_INPUT beanIV)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_MATERIAL": "507284"
+            //}
+            #endregion
+
+            OPTION_OUTPUT ListOUT = new OPTION_OUTPUT();
+
+            ListOUT = MATERIALINFO_GET(beanIV);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得料號資料
+        private OPTION_OUTPUT MATERIALINFO_GET(MATERIALINFO_INPUT beanIN)
+        {
+            OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();
+
+            var tList = CMF.findMATERIALINFO(beanIN.IV_MATERIAL.Trim());
+
+            if (tList.Count == 0)
+            {
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = "查無料號資料，請重新查詢！";
+            }
+            else
+            {
+                OUTBean.EV_MSGT = "Y";
+                OUTBean.EV_MSG = "";
+
+                #region 取得料號資料List
+                List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
+
+                foreach (var bean in tList)
+                {
+                    OPTION_LIST beanTEAM = new OPTION_LIST();
+
+                    beanTEAM.VALUE = bean.MARA_MATNR;   //料號ID
+                    beanTEAM.TEXT = bean.MAKT_TXZA1_ZF; //料號說明
+
+                    tEMPList.Add(beanTEAM);
+                }
+
+                OUTBean.OPTION_LIST = tEMPList;
+                #endregion
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢料號資料INPUT資訊
+        /// <summary>查詢料號資料INPUT資訊</summary>
+        public struct MATERIALINFO_INPUT
+        {
+            /// <summary>料號/料號說明</summary>
+            public string IV_MATERIAL { get; set; }
+        }
+        #endregion      
+
+        #endregion -----↑↑↑↑↑服務團隊資料接口 ↑↑↑↑↑-----  
+
         #region -----↓↓↓↓↓報修類別資料接口 ↓↓↓↓↓-----        
 
         #region 查詢報修類別(大類)資料接口
