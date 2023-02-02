@@ -27,7 +27,7 @@ namespace TSTI_API.Models
         public string cHPCaseID { get; set; }
         public Nullable<System.DateTime> cArriveDate { get; set; }
         public Nullable<System.DateTime> cReturnDate { get; set; }
-        public string cMaterialItem { get; set; }
+        public string cPersonalDamage { get; set; }
         public string cNote { get; set; }
         public Nullable<int> Disabled { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }

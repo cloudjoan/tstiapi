@@ -30,6 +30,9 @@ namespace TSTI_API.Models
         public string cSRProcessWay { get; set; }
         public string cIsSecondFix { get; set; }
         public string cRepairName { get; set; }
+        public string cRepairAddress { get; set; }
+        public string cRepairPhone { get; set; }
+        public string cRepairEmail { get; set; }
         public string cContacterName { get; set; }
         public string cContactAddress { get; set; }
         public string cContactPhone { get; set; }

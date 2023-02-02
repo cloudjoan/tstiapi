@@ -27,14 +27,14 @@ namespace TSTI_API.Models
     
         public virtual DbSet<TB_ONE_LOG> TB_ONE_LOG { get; set; }
         public virtual DbSet<TB_ONE_SRCustomerEmailMapping> TB_ONE_SRCustomerEmailMapping { get; set; }
-        public virtual DbSet<TB_ONE_SRDetail_PartsReplace> TB_ONE_SRDetail_PartsReplace { get; set; }
-        public virtual DbSet<TB_ONE_SRDetail_Product> TB_ONE_SRDetail_Product { get; set; }
-        public virtual DbSet<TB_ONE_SRDetail_Record> TB_ONE_SRDetail_Record { get; set; }
         public virtual DbSet<TB_ONE_SRIDFormat> TB_ONE_SRIDFormat { get; set; }
         public virtual DbSet<TB_ONE_SRRepairType> TB_ONE_SRRepairType { get; set; }
         public virtual DbSet<TB_ONE_SRSQPerson> TB_ONE_SRSQPerson { get; set; }
         public virtual DbSet<TB_ONE_SRTeamMapping> TB_ONE_SRTeamMapping { get; set; }
-        public virtual DbSet<TB_ONE_SRMain> TB_ONE_SRMain { get; set; }
+        public virtual DbSet<TB_ONE_SRDetail_PartsReplace> TB_ONE_SRDetail_PartsReplace { get; set; }
+        public virtual DbSet<TB_ONE_SRDetail_Product> TB_ONE_SRDetail_Product { get; set; }
+        public virtual DbSet<TB_ONE_SRDetail_Record> TB_ONE_SRDetail_Record { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_Warranty> TB_ONE_SRDetail_Warranty { get; set; }
+        public virtual DbSet<TB_ONE_SRMain> TB_ONE_SRMain { get; set; }
     }
 }

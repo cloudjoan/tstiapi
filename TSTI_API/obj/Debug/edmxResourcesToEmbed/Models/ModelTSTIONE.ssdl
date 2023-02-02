@@ -43,7 +43,7 @@
     <Property Name="cHPCaseID" Type="nvarchar" MaxLength="30" />
     <Property Name="cArriveDate" Type="datetime" />
     <Property Name="cReturnDate" Type="datetime" />
-    <Property Name="cMaterialItem" Type="nvarchar" MaxLength="20" />
+    <Property Name="cPersonalDamage" Type="varchar" MaxLength="1" />
     <Property Name="cNote" Type="nvarchar" MaxLength="255" />
     <Property Name="Disabled" Type="int" />
     <Property Name="CreatedDate" Type="datetime" />
@@ -59,7 +59,7 @@
     <Property Name="cSRID" Type="nvarchar" MaxLength="20" Nullable="false" />
     <Property Name="cSerialID" Type="nvarchar" MaxLength="40" Nullable="false" />
     <Property Name="cMaterialID" Type="nvarchar" MaxLength="20" />
-    <Property Name="cMaterialName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cMaterialName" Type="nvarchar" MaxLength="255" />
     <Property Name="cProductNumber" Type="nvarchar" MaxLength="50" />
     <Property Name="cInstallID" Type="nvarchar" MaxLength="20" />
     <Property Name="Disabled" Type="int" />
@@ -146,6 +146,9 @@
     <Property Name="cSRProcessWay" Type="nvarchar" MaxLength="3" />
     <Property Name="cIsSecondFix" Type="varchar" MaxLength="1" />
     <Property Name="cRepairName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cRepairAddress" Type="nvarchar" MaxLength="110" />
+    <Property Name="cRepairPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="cRepairEmail" Type="nvarchar" MaxLength="200" />
     <Property Name="cContacterName" Type="nvarchar" MaxLength="40" />
     <Property Name="cContactAddress" Type="nvarchar" MaxLength="110" />
     <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />

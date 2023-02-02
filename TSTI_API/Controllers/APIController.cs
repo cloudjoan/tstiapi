@@ -118,7 +118,6 @@ namespace TSTI_API.Controllers
             //{
             // "IV_LOGINACCOUNT": "etatung\\elvis.chang",
             // "IV_CUSTOMER": "D03251108",
-            // "IV_REPAIRNAME": "王炯凱",
             // "IV_SRTEAM": "SRV.12211000",
             // "IV_RKIND": "Z01",
             // "IV_PATHWAY": "Z01",
@@ -127,6 +126,10 @@ namespace TSTI_API.Controllers
             // "IV_MKIND1": "ZA01",
             // "IV_MKIND2": "ZB0101",
             // "IV_MKIND3": "ZC010101",
+            // "IV_REPAIRNAME": "王炯凱",
+            // "IV_REPAIRTEL": "02-2506-2121#1239",
+            // "IV_REPAIRADDR": "台北市中山區松江路121號13樓",
+            // "IV_REPAIREMAIL": "CARRYWANG@hotaimotor.com.tw",
             // "IV_CONTNAME": "周可斌",
             // "IV_CONTTEL": "(02)6638-6888EXT.13104",
             // "IV_CONTADDR": "信義區菸廠路88號12樓",
@@ -168,8 +171,7 @@ namespace TSTI_API.Controllers
             string tInvoiceItem = string.Empty;
 
             string IV_LOGINACCOUNT = string.IsNullOrEmpty(bean.IV_LOGINACCOUNT) ? "" : bean.IV_LOGINACCOUNT.Trim();
-            string IV_CUSTOMER = string.IsNullOrEmpty(bean.IV_CUSTOMER) ? "" : bean.IV_CUSTOMER.Trim();
-            string IV_REPAIRNAME = string.IsNullOrEmpty(bean.IV_REPAIRNAME) ? "" : bean.IV_REPAIRNAME.Trim();
+            string IV_CUSTOMER = string.IsNullOrEmpty(bean.IV_CUSTOMER) ? "" : bean.IV_CUSTOMER.Trim();            
             string IV_SRTEAM = string.IsNullOrEmpty(bean.IV_SRTEAM) ? "" : bean.IV_SRTEAM.Trim();
             string IV_RKIND = string.IsNullOrEmpty(bean.IV_RKIND) ? "" : bean.IV_RKIND.Trim();
             string IV_PATHWAY = string.IsNullOrEmpty(bean.IV_PATHWAY) ? "" : bean.IV_PATHWAY.Trim();
@@ -178,6 +180,10 @@ namespace TSTI_API.Controllers
             string IV_MKIND1 = string.IsNullOrEmpty(bean.IV_MKIND1) ? "" : bean.IV_MKIND1.Trim();
             string IV_MKIND2 = string.IsNullOrEmpty(bean.IV_MKIND2) ? "" : bean.IV_MKIND2.Trim();
             string IV_MKIND3 = string.IsNullOrEmpty(bean.IV_MKIND3) ? "" : bean.IV_MKIND3.Trim();
+            string IV_REPAIRNAME = string.IsNullOrEmpty(bean.IV_REPAIRNAME) ? "" : bean.IV_REPAIRNAME.Trim();
+            string IV_REPAIRTEL = string.IsNullOrEmpty(bean.IV_REPAIRTEL) ? "" : bean.IV_REPAIRTEL.Trim();
+            string IV_REPAIRADDR = string.IsNullOrEmpty(bean.IV_REPAIRADDR) ? "" : bean.IV_REPAIRADDR.Trim();
+            string IV_REPAIREMAIL = string.IsNullOrEmpty(bean.IV_REPAIREMAIL) ? "" : bean.IV_REPAIREMAIL.Trim();
             string IV_CONTNAME = string.IsNullOrEmpty(bean.IV_CONTNAME) ? "" : bean.IV_CONTNAME.Trim();
             string IV_CONTTEL = string.IsNullOrEmpty(bean.IV_CONTTEL) ? "" : bean.IV_CONTTEL.Trim();
             string IV_CONTADDR = string.IsNullOrEmpty(bean.IV_CONTADDR) ? "" : bean.IV_CONTADDR.Trim();
@@ -229,10 +235,9 @@ namespace TSTI_API.Controllers
 
                     //主表資料
                     beanM.cSRID = pSRID;
-                    beanM.cStatus = IV_EMPNO != "" ? "E0005" : "E0001";    //新增時若有主要工程師，則預設為L3.處理中，反之則預設為新建
+                    beanM.cStatus = IV_EMPNO != "" ? "E0005" : "E0001";    //新增時若有L2工程師，則預設為L3.處理中，反之則預設為新建
                     beanM.cCustomerName = CCustomerName;
-                    beanM.cCustomerID = IV_CUSTOMER;
-                    beanM.cRepairName = IV_REPAIRNAME;
+                    beanM.cCustomerID = IV_CUSTOMER;                    
                     beanM.cDesc = IV_DESC;
                     beanM.cNotes = IV_LTXT;
                     beanM.cMAServiceType = IV_RKIND;
@@ -242,6 +247,10 @@ namespace TSTI_API.Controllers
                     beanM.cSRPathWay = IV_PATHWAY;
                     beanM.cSRProcessWay = "";
                     beanM.cIsSecondFix = IV_REFIX;
+                    beanM.cRepairName = IV_REPAIRNAME;
+                    beanM.cRepairAddress = IV_REPAIRADDR;
+                    beanM.cRepairPhone = IV_REPAIRTEL;
+                    beanM.cRepairEmail = IV_REPAIREMAIL;
                     beanM.cContacterName = IV_CONTNAME;
                     beanM.cContactAddress = IV_CONTADDR;
                     beanM.cContactPhone = IV_CONTTEL;
@@ -441,16 +450,15 @@ namespace TSTI_API.Controllers
                 else
                 {
                     #region 註解
-                    //#region 修改主檔  
-                    //    var beanNowM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == pSRID);
+                    ////#region 修改主檔  
+                    //var beanNowM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == pSRID);
 
                     ////主表資料
                     //OldCStatus = beanNowM.CStatus;
 
                     //beanNowM.CStatus = CStatus;
                     //beanNowM.CCustomerName = CCustomerName;
-                    //beanNowM.CCustomerId = CCustomerId;
-                    //beanNowM.CRepairName = CRepairName;
+                    //beanNowM.CCustomerId = CCustomerId;                    
                     //beanNowM.CDesc = CDesc;
                     //beanNowM.CNotes = CNotes;
                     //beanNowM.CMaserviceType = CMaserviceType;
@@ -460,6 +468,10 @@ namespace TSTI_API.Controllers
                     //beanNowM.CSrpathWay = CSrpathWay;
                     //beanNowM.CSrprocessWay = CSrprocessWay;
                     //beanNowM.CIsSecondFix = CIsSecondFix;
+                    //beanNowM.CRepairName = CRepairName;
+                    //beanNowM.CRepairAddress = CRepairAddress;
+                    //beanNowM.CRepairPhone = CRepairPhone;
+                    //beanNowM.CRepairEmail = CRepairEmail;
                     //beanNowM.CContacterName = CContacterName;
                     //beanNowM.CContactAddress = CContactAddress;
                     //beanNowM.CContactPhone = CContactPhone;
@@ -778,9 +790,7 @@ namespace TSTI_API.Controllers
             /// <summary>建立者AD帳號</summary>
             public string IV_LOGINACCOUNT { get; set; }
             /// <summary>客戶ID</summary>
-            public string IV_CUSTOMER { get; set; }
-            /// <summary>報修人姓名</summary>
-            public string IV_REPAIRNAME { get; set; }
+            public string IV_CUSTOMER { get; set; }            
             /// <summary>服務團隊ID</summary>
             public string IV_SRTEAM { get; set; }
             /// <summary>維護服務種類</summary>
@@ -797,6 +807,14 @@ namespace TSTI_API.Controllers
             public string IV_MKIND2 { get; set; }
             /// <summary>報修代碼(小類)</summary>
             public string IV_MKIND3 { get; set; }
+            /// <summary>報修人姓名</summary>
+            public string IV_REPAIRNAME { get; set; }
+            /// <summary>報修人電話</summary>
+            public string IV_REPAIRTEL { get; set; }
+            /// <summary>報修人地址</summary>
+            public string IV_REPAIRADDR { get; set; }
+            /// <summary>報修人Email</summary>
+            public string IV_REPAIREMAIL { get; set; }
             /// <summary>聯絡人姓名</summary>
             public string IV_CONTNAME { get; set; }
             /// <summary>聯絡人電話</summary>
@@ -805,7 +823,7 @@ namespace TSTI_API.Controllers
             public string IV_CONTADDR { get; set; }
             /// <summary>聯絡人Email</summary>
             public string IV_CONTEMAIL { get; set; }
-            /// <summary>主要工程師員工編號</summary>
+            /// <summary>L2工程師員工編號</summary>
             public string IV_EMPNO { get; set; }
             /// <summary>SQ人員ID</summary>
             public string IV_SQEMPID { get; set; }
@@ -929,33 +947,46 @@ namespace TSTI_API.Controllers
         {
             CUSTOMERINFO_OUTPUT OUTBean = new CUSTOMERINFO_OUTPUT();
 
-            var tList = CMF.findCUSTOMERINFO(beanIN.IV_CUSTOME.Trim());
-
-            if (tList.Count == 0)
-            {  
-                OUTBean.EV_MSGT = "E";
-                OUTBean.EV_MSG = "查無法人客戶資料，請重新查詢！";
-            }
-            else
+            try
             {
-                OUTBean.EV_MSGT = "Y";
-                OUTBean.EV_MSG = "";
+                var tList = CMF.findCUSTOMERINFO(beanIN.IV_CUSTOME.Trim());
 
-                #region 取得法人客戶資料List
-                List<CUSTOMERINFO_LIST> tCustList = new List<CUSTOMERINFO_LIST>();
-
-                foreach (var bean in tList)
+                if (tList.Count == 0)
                 {
-                    CUSTOMERINFO_LIST beanCust = new CUSTOMERINFO_LIST();
-
-                    beanCust.CUSTOMERID = bean.KNA1_KUNNR.Trim();
-                    beanCust.CUSTOMERNAME = bean.KNA1_NAME1.Trim();
-
-                    tCustList.Add(beanCust);
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無法人客戶資料，請重新查詢！";
                 }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
 
-                OUTBean.CUSTOMERINFO_LIST = tCustList;
-                #endregion
+                    #region 取得法人客戶資料List
+                    List<CUSTOMERINFO_LIST> tCustList = new List<CUSTOMERINFO_LIST>();
+
+                    foreach (var bean in tList)
+                    {
+                        CUSTOMERINFO_LIST beanCust = new CUSTOMERINFO_LIST();
+
+                        beanCust.CUSTOMERID = bean.KNA1_KUNNR.Trim();
+                        beanCust.CUSTOMERNAME = bean.KNA1_NAME1.Trim();
+
+                        tCustList.Add(beanCust);
+                    }
+
+                    OUTBean.CUSTOMERINFO_LIST = tCustList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "CUSTOMERINFO_GET_API", pMsg, "SYS");
+                
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
             }
 
             return OUTBean;
@@ -1003,7 +1034,10 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_CUSTOMEID": "D16151427"            
+            //   "IV_CUSTOMEID": "D16151427",
+            //   "IV_CONTACTNAME": "",
+            //   "IV_CONTACTTEL": "",
+            //   "IV_CONTACTEMAIL": ""
             //}
             #endregion
 
@@ -1019,37 +1053,55 @@ namespace TSTI_API.Controllers
         private CONTACTINFO_OUTPUT CONTACTINFO_GET(CONTACTINFO_INPUT beanIN)
         {
             CONTACTINFO_OUTPUT OUTBean = new CONTACTINFO_OUTPUT();
-
-            var tList = CMF.findCONTACTINFO(beanIN.IV_CUSTOMEID.Trim(), beanIN.IV_CONTACTNAME.Trim(), beanIN.IV_CONTACTTEL.Trim(), beanIN.IV_CONTACTEMAIL.Trim());
-
-            if (tList.Count == 0)
+            
+            try
             {
-                OUTBean.EV_MSGT = "E";
-                OUTBean.EV_MSG = "查無法人客戶聯絡人資料，請重新查詢！";               
-            }
-            else
-            {
-                OUTBean.EV_MSGT = "Y";
-                OUTBean.EV_MSG = "";
+                string CUSTOMEID = string.IsNullOrEmpty(beanIN.IV_CUSTOMEID) ? "" : beanIN.IV_CUSTOMEID.Trim();
+                string CONTACTNAME = string.IsNullOrEmpty(beanIN.IV_CONTACTNAME) ? "" : beanIN.IV_CONTACTNAME.Trim();
+                string CONTACTTEL = string.IsNullOrEmpty(beanIN.IV_CONTACTTEL) ? "" : beanIN.IV_CONTACTTEL.Trim();
+                string CONTACTEMAIL = string.IsNullOrEmpty(beanIN.IV_CONTACTEMAIL) ? "" : beanIN.IV_CONTACTEMAIL.Trim();
 
-                #region 取得法人客戶資料List
-                List<CONTACTINFO_LIST> tCustList = new List<CONTACTINFO_LIST>();
+                var tList = CMF.findCONTACTINFO(CUSTOMEID, CONTACTNAME, CONTACTTEL, CONTACTEMAIL);
 
-                foreach (var bean in tList)
+                if (tList.Count == 0)
                 {
-                    CONTACTINFO_LIST beanCust = new CONTACTINFO_LIST();                    
-
-                    beanCust.CONTACTNAME = bean.Name;
-                    beanCust.CONTACTCITY = bean.City;
-                    beanCust.CONTACTADDRESS = bean.Address;
-                    beanCust.CONTACTTEL = bean.Phone;
-                    beanCust.CONTACTEMAIL = bean.Email;
-
-                    tCustList.Add(beanCust);
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無法人客戶聯絡人資料，請重新查詢！";
                 }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
 
-                OUTBean.CONTACTINFO_LIST = tCustList;
-                #endregion               
+                    #region 取得法人客戶資料List
+                    List<CONTACTINFO_LIST> tCustList = new List<CONTACTINFO_LIST>();
+
+                    foreach (var bean in tList)
+                    {
+                        CONTACTINFO_LIST beanCust = new CONTACTINFO_LIST();
+
+                        beanCust.CONTACTNAME = bean.Name;
+                        beanCust.CONTACTCITY = bean.City;
+                        beanCust.CONTACTADDRESS = bean.Address;
+                        beanCust.CONTACTTEL = bean.Phone;
+                        beanCust.CONTACTEMAIL = bean.Email;
+
+                        tCustList.Add(beanCust);
+                    }
+
+                    OUTBean.CONTACTINFO_LIST = tCustList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "CONTACTINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
             }
 
             return OUTBean;
@@ -1234,7 +1286,7 @@ namespace TSTI_API.Controllers
                         pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "儲存失敗！" + Environment.NewLine;
                     }
 
-                    CMF.writeToLog("", "CONTACT_CREATE_API", pMsg, pLoginName);
+                    CMF.writeToLog("", "SaveCONTACT_API", pMsg, pLoginName);
                     
                     SROUT.EV_MSGT = "E";
                     SROUT.EV_MSG = pMsg;
@@ -1250,7 +1302,7 @@ namespace TSTI_API.Controllers
                 pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
                 pMsg += " 失敗行數：" + ex.ToString();
 
-                CMF.writeToLog("", "CONTACT_CREATE_API", pMsg, pLoginName);
+                CMF.writeToLog("", "SaveCONTACT_API", pMsg, pLoginName);
                 
                 SROUT.EV_MSGT = "E";
                 SROUT.EV_MSG = ex.Message;
@@ -1451,54 +1503,67 @@ namespace TSTI_API.Controllers
         {
             EMPLOYEEINFO_OUTPUT OUTBean = new EMPLOYEEINFO_OUTPUT();
 
-            string EMPCOMPID = "T012";
-
-            var tList = CMF.findEMPLOYEEINFO(beanIN.IV_EMPNAME.Trim());
-
-            if (tList.Count == 0)
+            try
             {
-                OUTBean.EV_MSGT = "E";
-                OUTBean.EV_MSG = "查無員工資料，請重新查詢！";
-            }
-            else
-            {
-                OUTBean.EV_MSGT = "Y";
-                OUTBean.EV_MSG = "";
+                string EMPCOMPID = "T012";
 
-                #region 取得員工資料List
-                List<EMPLOYEEINFO_LIST> tEMPList = new List<EMPLOYEEINFO_LIST>();
+                var tList = CMF.findEMPLOYEEINFO(beanIN.IV_EMPNAME.Trim());
 
-                foreach (var bean in tList)
+                if (tList.Count == 0)
                 {
-                    EMPLOYEEINFO_LIST beanEMP = new EMPLOYEEINFO_LIST();
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無員工資料，請重新查詢！";
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
 
-                    switch(bean.Comp_Cde.Trim())
+                    #region 取得員工資料List
+                    List<EMPLOYEEINFO_LIST> tEMPList = new List<EMPLOYEEINFO_LIST>();
+
+                    foreach (var bean in tList)
                     {
-                        case "Comp-1":
-                            EMPCOMPID = "T012";
-                            break;
-                        case "Comp-2":
-                            EMPCOMPID = "T016";
-                            break;
-                        case "Comp-3":
-                            EMPCOMPID = "C069";
-                            break;
-                        case "Comp-4":
-                            EMPCOMPID = "T022";
-                            break;
+                        EMPLOYEEINFO_LIST beanEMP = new EMPLOYEEINFO_LIST();
+
+                        switch (bean.Comp_Cde.Trim())
+                        {
+                            case "Comp-1":
+                                EMPCOMPID = "T012";
+                                break;
+                            case "Comp-2":
+                                EMPCOMPID = "T016";
+                                break;
+                            case "Comp-3":
+                                EMPCOMPID = "C069";
+                                break;
+                            case "Comp-4":
+                                EMPCOMPID = "T022";
+                                break;
+                        }
+
+                        beanEMP.EMPID = bean.ERP_ID;
+                        beanEMP.EMPNAME = bean.Name2;
+                        beanEMP.EMPENNAME = bean.Name;
+                        beanEMP.EMPACCOUNT = bean.Account;
+                        beanEMP.EMPCOMPID = EMPCOMPID;
+
+                        tEMPList.Add(beanEMP);
                     }
 
-                    beanEMP.EMPID = bean.ERP_ID;
-                    beanEMP.EMPNAME = bean.Name2;
-                    beanEMP.EMPENNAME = bean.Name;
-                    beanEMP.EMPACCOUNT = bean.Account;
-                    beanEMP.EMPCOMPID = EMPCOMPID;
-
-                    tEMPList.Add(beanEMP);
+                    OUTBean.EMP_LIST = tEMPList;
+                    #endregion
                 }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
 
-                OUTBean.EMP_LIST = tEMPList;
-                #endregion
+                CMF.writeToLog("", "EMPLOYEEINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
             }
 
             return OUTBean;
@@ -1567,35 +1632,48 @@ namespace TSTI_API.Controllers
         #region 取得服務團隊資料
         private OPTION_OUTPUT SRTEAMINFO_GET(SRTEAMINFO_INPUT beanIN)
         {
-            OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();            
+            OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();
 
-            var tList = CMF.findSRTEAMINFO(beanIN.IV_COMPID);
-
-            if (tList.Count == 0)
+            try
             {
-                OUTBean.EV_MSGT = "E";
-                OUTBean.EV_MSG = "查無服務團隊資料，請重新查詢！";
-            }
-            else
-            {
-                OUTBean.EV_MSGT = "Y";
-                OUTBean.EV_MSG = "";
+                var tList = CMF.findSRTEAMINFO(beanIN.IV_COMPID);
 
-                #region 取得服務團隊資料List
-                List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
-
-                foreach (var bean in tList)
+                if (tList.Count == 0)
                 {
-                    OPTION_LIST beanTEAM = new OPTION_LIST();
-
-                    beanTEAM.VALUE = bean.cTeamOldID;   //服務團隊ID
-                    beanTEAM.TEXT = bean.cTeamOldName;  //服務團隊名稱
-
-                    tEMPList.Add(beanTEAM);
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無服務團隊資料，請重新查詢！";
                 }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
 
-                OUTBean.OPTION_LIST = tEMPList;
-                #endregion
+                    #region 取得服務團隊資料List
+                    List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
+
+                    foreach (var bean in tList)
+                    {
+                        OPTION_LIST beanTEAM = new OPTION_LIST();
+
+                        beanTEAM.VALUE = bean.cTeamOldID;   //服務團隊ID
+                        beanTEAM.TEXT = bean.cTeamOldName;  //服務團隊名稱
+
+                        tEMPList.Add(beanTEAM);
+                    }
+
+                    OUTBean.OPTION_LIST = tEMPList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "SRTEAMINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
             }
 
             return OUTBean;
@@ -1638,33 +1716,46 @@ namespace TSTI_API.Controllers
         {
             OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();
 
-            var tList = CMF.findSQINFO(beanIN.IV_EMPNAME.Trim());
-
-            if (tList.Count == 0)
+            try
             {
-                OUTBean.EV_MSGT = "E";
-                OUTBean.EV_MSG = "查無SQ人員資料，請重新查詢！";
-            }
-            else
-            {
-                OUTBean.EV_MSGT = "Y";
-                OUTBean.EV_MSG = "";
+                var tList = CMF.findSQINFO(beanIN.IV_EMPNAME.Trim());
 
-                #region 取得SQ人員資料List
-                List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
-
-                foreach (var bean in tList)
+                if (tList.Count == 0)
                 {
-                    OPTION_LIST beanTEAM = new OPTION_LIST();
-
-                    beanTEAM.VALUE = bean.cFullKEY; //SQ人員ID
-                    beanTEAM.TEXT = bean.cFullNAME; //SQ人員說明
-
-                    tEMPList.Add(beanTEAM);
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無SQ人員資料，請重新查詢！";
                 }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
 
-                OUTBean.OPTION_LIST = tEMPList;
-                #endregion
+                    #region 取得SQ人員資料List
+                    List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
+
+                    foreach (var bean in tList)
+                    {
+                        OPTION_LIST beanTEAM = new OPTION_LIST();
+
+                        beanTEAM.VALUE = bean.cFullKEY; //SQ人員ID
+                        beanTEAM.TEXT = bean.cFullNAME; //SQ人員說明
+
+                        tEMPList.Add(beanTEAM);
+                    }
+
+                    OUTBean.OPTION_LIST = tEMPList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "SQINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
             }
 
             return OUTBean;
@@ -1707,33 +1798,46 @@ namespace TSTI_API.Controllers
         {
             OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();
 
-            var tList = CMF.findMATERIALINFO(beanIN.IV_MATERIAL.Trim());
-
-            if (tList.Count == 0)
+            try
             {
-                OUTBean.EV_MSGT = "E";
-                OUTBean.EV_MSG = "查無料號資料，請重新查詢！";
-            }
-            else
-            {
-                OUTBean.EV_MSGT = "Y";
-                OUTBean.EV_MSG = "";
+                var tList = CMF.findMATERIALINFO(beanIN.IV_MATERIAL.Trim());
 
-                #region 取得料號資料List
-                List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
-
-                foreach (var bean in tList)
+                if (tList.Count == 0)
                 {
-                    OPTION_LIST beanTEAM = new OPTION_LIST();
-
-                    beanTEAM.VALUE = bean.MARA_MATNR;   //料號ID
-                    beanTEAM.TEXT = bean.MAKT_TXZA1_ZF; //料號說明
-
-                    tEMPList.Add(beanTEAM);
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無料號資料，請重新查詢！";
                 }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
 
-                OUTBean.OPTION_LIST = tEMPList;
-                #endregion
+                    #region 取得料號資料List
+                    List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
+
+                    foreach (var bean in tList)
+                    {
+                        OPTION_LIST beanTEAM = new OPTION_LIST();
+
+                        beanTEAM.VALUE = bean.MARA_MATNR;   //料號ID
+                        beanTEAM.TEXT = bean.MAKT_TXZA1_ZF; //料號說明
+
+                        tEMPList.Add(beanTEAM);
+                    }
+
+                    OUTBean.OPTION_LIST = tEMPList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "MATERIALINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
             }
 
             return OUTBean;
@@ -1815,46 +1919,59 @@ namespace TSTI_API.Controllers
         {
             OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();
 
-            List<SelectListItem> tList = new List<SelectListItem>();
+            try
+            {
+                List<SelectListItem> tList = new List<SelectListItem>();
 
-            if (tLevel == 1) //大類
-            {
-                tList = CMF.findFirstKINDList(beanIN.IV_COMPID);
-            }
-            else if (tLevel == 2) //中類
-            {
-                tList = CMF.findSRTypeSecList(beanIN.IV_COMPID, beanIN.IV_ONEID);
-            }
-            else if (tLevel == 3) //小類
-            {
-                tList = CMF.findSRTypeThrList(beanIN.IV_COMPID, beanIN.IV_SECID);
-            }
-
-            if (tList.Count == 0)
-            {
-                OUTBean.EV_MSGT = "E";
-                OUTBean.EV_MSG = "查無報修類別資料，請重新查詢！";
-            }
-            else
-            {
-                OUTBean.EV_MSGT = "Y";
-                OUTBean.EV_MSG = "";
-
-                #region 取得報修類別資料List
-                List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
-
-                foreach (var bean in tList)
+                if (tLevel == 1) //大類
                 {
-                    OPTION_LIST beanTEAM = new OPTION_LIST();
-
-                    beanTEAM.VALUE = bean.Value;   //報修類別ID
-                    beanTEAM.TEXT = bean.Text;     //報修類別名稱
-
-                    tEMPList.Add(beanTEAM);
+                    tList = CMF.findFirstKINDList(beanIN.IV_COMPID);
+                }
+                else if (tLevel == 2) //中類
+                {
+                    tList = CMF.findSRTypeSecList(beanIN.IV_COMPID, beanIN.IV_ONEID);
+                }
+                else if (tLevel == 3) //小類
+                {
+                    tList = CMF.findSRTypeThrList(beanIN.IV_COMPID, beanIN.IV_SECID);
                 }
 
-                OUTBean.OPTION_LIST = tEMPList;
-                #endregion
+                if (tList.Count == 0)
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無報修類別資料，請重新查詢！";
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    #region 取得報修類別資料List
+                    List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
+
+                    foreach (var bean in tList)
+                    {
+                        OPTION_LIST beanTEAM = new OPTION_LIST();
+
+                        beanTEAM.VALUE = bean.Value;   //報修類別ID
+                        beanTEAM.TEXT = bean.Text;     //報修類別名稱
+
+                        tEMPList.Add(beanTEAM);
+                    }
+
+                    OUTBean.OPTION_LIST = tEMPList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "SRKIND_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
             }
 
             return OUTBean;
@@ -1937,54 +2054,67 @@ namespace TSTI_API.Controllers
         {
             OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();
 
-            string tFunName = string.Empty;
-            string tFunNo = string.Empty;
-
-            switch (tFunction)
+            try
             {
-                case "MASERVICETYPE":
-                    tFunName = "維護服務種類";
-                    tFunNo = "SRMATYPE";
-                    break;
+                string tFunName = string.Empty;
+                string tFunNo = string.Empty;
 
-                case "SRPATHWAY":
-                    tFunName = "報修管道";
-                    tFunNo = "SRPATH";
-                    break;
-
-                case "GENERALSRSTATUS":
-                    tFunName = "狀態";
-                    tFunNo = "SRSTATUS";
-                    break;
-            }
-
-            var tList = CMF.findOPTION(pOperationID_GenerallySR, beanIV.IV_COMPID.Trim(), tFunNo);
-
-            if (tList.Count == 0)
-            {
-                OUTBean.EV_MSGT = "E";
-                OUTBean.EV_MSG = "查無" + tFunName + "，請重新查詢！";
-            }
-            else
-            {
-                OUTBean.EV_MSGT = "Y";
-                OUTBean.EV_MSG = "";
-
-                #region 取得下拉選項List
-                List<OPTION_LIST> tOPTList = new List<OPTION_LIST>();
-
-                foreach (var bean in tList)
+                switch (tFunction)
                 {
-                    OPTION_LIST beanEMP = new OPTION_LIST();                   
+                    case "MASERVICETYPE":
+                        tFunName = "維護服務種類";
+                        tFunNo = "SRMATYPE";
+                        break;
 
-                    beanEMP.VALUE = bean.Value;
-                    beanEMP.TEXT = bean.Text;
+                    case "SRPATHWAY":
+                        tFunName = "報修管道";
+                        tFunNo = "SRPATH";
+                        break;
 
-                    tOPTList.Add(beanEMP);
+                    case "GENERALSRSTATUS":
+                        tFunName = "狀態";
+                        tFunNo = "SRSTATUS";
+                        break;
                 }
 
-                OUTBean.OPTION_LIST = tOPTList;
-                #endregion
+                var tList = CMF.findOPTION(pOperationID_GenerallySR, beanIV.IV_COMPID.Trim(), tFunNo);
+
+                if (tList.Count == 0)
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無" + tFunName + "，請重新查詢！";
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    #region 取得下拉選項List
+                    List<OPTION_LIST> tOPTList = new List<OPTION_LIST>();
+
+                    foreach (var bean in tList)
+                    {
+                        OPTION_LIST beanEMP = new OPTION_LIST();
+
+                        beanEMP.VALUE = bean.Value;
+                        beanEMP.TEXT = bean.Text;
+
+                        tOPTList.Add(beanEMP);
+                    }
+
+                    OUTBean.OPTION_LIST = tOPTList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "OPTION_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
             }
 
             return OUTBean;
@@ -2049,9 +2179,9 @@ namespace TSTI_API.Controllers
         public string STATUSDESC { get; set; }
         /// <summary>服務報告書URL</summary>
         public string SRREPORTUrl { get; set; }
-        /// <summary>主要工程師ERPID</summary>
+        /// <summary>L2工程師ERPID</summary>
         public string MAINENGID { get; set; }
-        /// <summary>主要工程師姓名</summary>
+        /// <summary>L2工程師姓名</summary>
         public string MAINENGNAME { get; set; }
         /// <summary>聯絡人姓名</summary>
         public string CONTNAME { get; set; }
