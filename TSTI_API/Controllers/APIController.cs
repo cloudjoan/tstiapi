@@ -251,7 +251,7 @@ namespace TSTI_API.Controllers
                     beanM.cRepairAddress = IV_REPAIRADDR;
                     beanM.cRepairPhone = IV_REPAIRTEL;
                     beanM.cRepairEmail = IV_REPAIREMAIL;
-                    beanM.cContacterName = IV_CONTNAME;
+                    beanM.cContactName = IV_CONTNAME;
                     beanM.cContactAddress = IV_CONTADDR;
                     beanM.cContactPhone = IV_CONTTEL;
                     beanM.cContactEmail = IV_CONTEMAIL;

@@ -33,7 +33,7 @@ namespace TSTI_API.Models
         public string cRepairAddress { get; set; }
         public string cRepairPhone { get; set; }
         public string cRepairEmail { get; set; }
-        public string cContacterName { get; set; }
+        public string cContactName { get; set; }
         public string cContactAddress { get; set; }
         public string cContactPhone { get; set; }
         public string cContactEmail { get; set; }

@@ -25,6 +25,9 @@
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContactName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="TB_ONE_SRIDFormat">
     <Key>
@@ -213,7 +216,7 @@
     <Property Name="cRepairAddress" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
     <Property Name="cRepairPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="cRepairEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="cContacterName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cContactName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
     <Property Name="cContactAddress" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
     <Property Name="cContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />

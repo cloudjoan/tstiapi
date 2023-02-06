@@ -869,7 +869,7 @@ public string findEmployeeName(string keyword)
                     SRinfo.SRREPORTUrl = tSRREPORTUrl;
                     SRinfo.MAINENGID = bean.cMainEngineerID;
                     SRinfo.MAINENGNAME = bean.cMainEngineerName;
-                    SRinfo.CONTNAME = bean.cContacterName;
+                    SRinfo.CONTNAME = bean.cContactName;
                     SRinfo.CONTADDR = bean.cContactAddress;
                     SRinfo.CONTTEL = bean.cContactPhone;
                     SRinfo.CONTEMAIL = bean.cContactEmail;

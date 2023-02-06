@@ -20,6 +20,9 @@
     <Property Name="cCustomerName" Type="nvarchar" MaxLength="35" />
     <Property Name="cTeamID" Type="varchar" MaxLength="36" />
     <Property Name="cEmailID" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
     <Property Name="Disabled" Type="int" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
@@ -149,7 +152,7 @@
     <Property Name="cRepairAddress" Type="nvarchar" MaxLength="110" />
     <Property Name="cRepairPhone" Type="nvarchar" MaxLength="50" />
     <Property Name="cRepairEmail" Type="nvarchar" MaxLength="200" />
-    <Property Name="cContacterName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
     <Property Name="cContactAddress" Type="nvarchar" MaxLength="110" />
     <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />
     <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />

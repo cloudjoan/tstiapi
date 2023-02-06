@@ -16,6 +16,9 @@
     <EntitySetMapping Name="TB_ONE_SRCustomerEmailMapping">
       <EntityTypeMapping TypeName="Model.TB_ONE_SRCustomerEmailMapping">
         <MappingFragment StoreEntitySet="TB_ONE_SRCustomerEmailMapping">
+          <ScalarProperty Name="cContactEmail" ColumnName="cContactEmail" />
+          <ScalarProperty Name="cContactPhone" ColumnName="cContactPhone" />
+          <ScalarProperty Name="cContactName" ColumnName="cContactName" />
           <ScalarProperty Name="cID" ColumnName="cID" />
           <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
           <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
@@ -203,7 +206,7 @@
           <ScalarProperty Name="cContactEmail" ColumnName="cContactEmail" />
           <ScalarProperty Name="cContactPhone" ColumnName="cContactPhone" />
           <ScalarProperty Name="cContactAddress" ColumnName="cContactAddress" />
-          <ScalarProperty Name="cContacterName" ColumnName="cContacterName" />
+          <ScalarProperty Name="cContactName" ColumnName="cContactName" />
           <ScalarProperty Name="cRepairEmail" ColumnName="cRepairEmail" />
           <ScalarProperty Name="cRepairPhone" ColumnName="cRepairPhone" />
           <ScalarProperty Name="cRepairAddress" ColumnName="cRepairAddress" />

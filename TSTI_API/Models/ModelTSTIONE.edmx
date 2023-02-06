@@ -25,6 +25,9 @@
           <Property Name="cCustomerName" Type="nvarchar" MaxLength="35" />
           <Property Name="cTeamID" Type="varchar" MaxLength="36" />
           <Property Name="cEmailID" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
+          <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
           <Property Name="Disabled" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
@@ -154,7 +157,7 @@
           <Property Name="cRepairAddress" Type="nvarchar" MaxLength="110" />
           <Property Name="cRepairPhone" Type="nvarchar" MaxLength="50" />
           <Property Name="cRepairEmail" Type="nvarchar" MaxLength="200" />
-          <Property Name="cContacterName" Type="nvarchar" MaxLength="40" />
+          <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
           <Property Name="cContactAddress" Type="nvarchar" MaxLength="110" />
           <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />
           <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
@@ -265,6 +268,9 @@
           <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContactName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TB_ONE_SRIDFormat">
           <Key>
@@ -453,7 +459,7 @@
           <Property Name="cRepairAddress" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
           <Property Name="cRepairPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="cRepairEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="cContacterName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cContactName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="cContactAddress" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
           <Property Name="cContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -492,6 +498,9 @@
           <EntitySetMapping Name="TB_ONE_SRCustomerEmailMapping">
             <EntityTypeMapping TypeName="Model.TB_ONE_SRCustomerEmailMapping">
               <MappingFragment StoreEntitySet="TB_ONE_SRCustomerEmailMapping">
+                <ScalarProperty Name="cContactEmail" ColumnName="cContactEmail" />
+                <ScalarProperty Name="cContactPhone" ColumnName="cContactPhone" />
+                <ScalarProperty Name="cContactName" ColumnName="cContactName" />
                 <ScalarProperty Name="cID" ColumnName="cID" />
                 <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
                 <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
@@ -679,7 +688,7 @@
                 <ScalarProperty Name="cContactEmail" ColumnName="cContactEmail" />
                 <ScalarProperty Name="cContactPhone" ColumnName="cContactPhone" />
                 <ScalarProperty Name="cContactAddress" ColumnName="cContactAddress" />
-                <ScalarProperty Name="cContacterName" ColumnName="cContacterName" />
+                <ScalarProperty Name="cContactName" ColumnName="cContactName" />
                 <ScalarProperty Name="cRepairEmail" ColumnName="cRepairEmail" />
                 <ScalarProperty Name="cRepairPhone" ColumnName="cRepairPhone" />
                 <ScalarProperty Name="cRepairAddress" ColumnName="cRepairAddress" />

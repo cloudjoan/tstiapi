@@ -24,5 +24,8 @@ namespace TSTI_API.Models
         public string CreatedUserName { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string ModifiedUserName { get; set; }
+        public string cContactName { get; set; }
+        public string cContactPhone { get; set; }
+        public string cContactEmail { get; set; }
     }
 }
