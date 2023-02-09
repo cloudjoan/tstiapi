@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MCSWorkflowModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ParentID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="DisplayOrder" Type="Int32" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="FullName2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="LocationID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IsCostCenter" Type="Boolean" Nullable="false" />
+    <Property Name="IsVirtual" Type="Boolean" Nullable="false" />
+    <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ManagerID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DeptCode1" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="DeptCode2" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="DeptCode3" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="DeptCode4" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="DeptCode5" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="PrintNum" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Level" Type="Int32" Nullable="false" />
+    <Property Name="VisitStore" Type="Boolean" />
+    <Property Name="VisitStoreUnit" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+    <Property Name="JDE_Dept_No" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="JDE_Dept_Nm" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="CR_USER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CR_DATE" Type="DateTime" Precision="3" />
+    <Property Name="USERSTAMP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DATESTAMP" Type="DateTime" Precision="3" />
+    <Property Name="IsBusinessUnit" Type="Boolean" Nullable="false" />
+    <Property Name="ProfitCenterID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CostCenterID" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Comp_Cde" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Alias" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Name2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="DeptID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="TitleID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TitleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Level" Type="Int32" Nullable="false" />
+    <Property Name="PositionCode" Type="Int32" Nullable="false" />
+    <Property Name="AgentID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="AgentStartTime" Type="DateTime" Precision="3" />
+    <Property Name="AgentEndTime" Type="DateTime" Precision="3" />
+    <Property Name="Away" Type="Boolean" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CostCenter" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="NotifyType" Type="Int32" Nullable="false" />
+    <Property Name="Pluralism" Type="Boolean" Nullable="false" />
+    <Property Name="PositionCode2" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+    <Property Name="Manager" Type="Boolean" />
+    <Property Name="IsDeptManager" Type="Boolean" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+    <Property Name="PID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Constellation" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="Sex" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Job_Status" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Regest_Date" Type="DateTime" Precision="3" />
+    <Property Name="CallIn_Date" Type="DateTime" Precision="3" />
+    <Property Name="CallOut_Date" Type="DateTime" Precision="3" />
+    <Property Name="Replace_Date" Type="DateTime" Precision="3" />
+    <Property Name="Leave_Date" Type="DateTime" Precision="3" />
+    <Property Name="Leave_Reason" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Comp_Cde" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Area_Cde" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Job_Type" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Title1" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Title2" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Capital_Position1" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Capital_Position2" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Cp_Date" Type="DateTime" Precision="3" />
+    <Property Name="Position1" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Position2" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Position_Date" Type="DateTime" Precision="3" />
+    <Property Name="Comp_Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Extension" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Nationality" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Blood_Type" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+    <Property Name="CR_USER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CR_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="USERSTAMP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DATESTAMP" Type="DateTime" Precision="3" />
+    <Property Name="Work_Place" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+    <Property Name="ERP_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Workers" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Center" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+    <Property Name="Account" Type="String" MaxLength="108" FixedLength="false" Unicode="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityContainer Name="MCSWorkflowEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Department" EntityType="Self.Department" />
+    <EntitySet Name="Person" EntityType="Self.Person" />
+  </EntityContainer>
+</Schema>

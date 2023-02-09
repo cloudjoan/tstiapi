@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="TB_ONE_LOG">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cSRID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="EventName" Type="nvarchar" MaxLength="200" />
+    <Property Name="Log" Type="nvarchar(max)" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRCustomerEmailMapping">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cCustomerID" Type="nvarchar" MaxLength="10" />
+    <Property Name="cCustomerName" Type="nvarchar" MaxLength="35" />
+    <Property Name="cTeamID" Type="varchar" MaxLength="36" />
+    <Property Name="cEmailID" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRDetail_PartsReplace">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cSRID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="cXCHP" Type="nvarchar" MaxLength="20" />
+    <Property Name="cMaterialID" Type="nvarchar" MaxLength="40" />
+    <Property Name="cMaterialName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cOldCT" Type="nvarchar" MaxLength="30" />
+    <Property Name="cNewCT" Type="nvarchar" MaxLength="30" />
+    <Property Name="cHPCT" Type="nvarchar" MaxLength="20" />
+    <Property Name="cNewUEFI" Type="nvarchar" MaxLength="60" />
+    <Property Name="cStandbySerialID" Type="nvarchar" MaxLength="40" />
+    <Property Name="cHPCaseID" Type="nvarchar" MaxLength="30" />
+    <Property Name="cArriveDate" Type="datetime" />
+    <Property Name="cReturnDate" Type="datetime" />
+    <Property Name="cPersonalDamage" Type="varchar" MaxLength="1" />
+    <Property Name="cNote" Type="nvarchar" MaxLength="255" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRDetail_Product">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cSRID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="cSerialID" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="cMaterialID" Type="nvarchar" MaxLength="20" />
+    <Property Name="cMaterialName" Type="nvarchar" MaxLength="255" />
+    <Property Name="cProductNumber" Type="nvarchar" MaxLength="50" />
+    <Property Name="cInstallID" Type="nvarchar" MaxLength="20" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRDetail_Record">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cSRID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="cEngineerID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="cEngineerName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cReceiveTime" Type="datetime" />
+    <Property Name="cStartTime" Type="datetime" />
+    <Property Name="cArriveTime" Type="datetime" />
+    <Property Name="cFinishTime" Type="datetime" />
+    <Property Name="cWorkHours" Type="numeric" Precision="6" Scale="0" />
+    <Property Name="cDesc" Type="nvarchar" MaxLength="255" />
+    <Property Name="cSRReport" Type="nvarchar(max)" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRDetail_Warranty">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cSRID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="cSerialID" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="cWTYID" Type="nvarchar" MaxLength="40" />
+    <Property Name="cWTYName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cWTYSDATE" Type="datetime" />
+    <Property Name="cWTYEDATE" Type="datetime" />
+    <Property Name="cSLARESP" Type="nvarchar" MaxLength="10" />
+    <Property Name="cSLASRV" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContractID" Type="nvarchar" MaxLength="10" />
+    <Property Name="cBPMFormNo" Type="varchar" MaxLength="50" />
+    <Property Name="cAdvice" Type="nvarchar" MaxLength="2000" />
+    <Property Name="cUsed" Type="varchar" MaxLength="1" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRIDFormat">
+    <Key>
+      <PropertyRef Name="cID" />
+      <PropertyRef Name="cTitle" />
+      <PropertyRef Name="cYear" />
+      <PropertyRef Name="cMonth" />
+      <PropertyRef Name="cDay" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cTitle" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="cYear" Type="varchar" MaxLength="4" Nullable="false" />
+    <Property Name="cMonth" Type="varchar" MaxLength="2" Nullable="false" />
+    <Property Name="cDay" Type="varchar" MaxLength="2" Nullable="false" />
+    <Property Name="cNO" Type="varchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRMain">
+    <Key>
+      <PropertyRef Name="cSRID" />
+    </Key>
+    <Property Name="cSRID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="cCustomerID" Type="nvarchar" MaxLength="10" />
+    <Property Name="cCustomerName" Type="nvarchar" MaxLength="35" />
+    <Property Name="cDesc" Type="nvarchar" MaxLength="255" />
+    <Property Name="cNotes" Type="nvarchar" MaxLength="2000" />
+    <Property Name="cAttatchement" Type="nvarchar(max)" />
+    <Property Name="cStatus" Type="nvarchar" MaxLength="5" />
+    <Property Name="cMAServiceType" Type="nvarchar" MaxLength="3" />
+    <Property Name="cDelayReason" Type="nvarchar" MaxLength="255" />
+    <Property Name="cSRTypeOne" Type="nvarchar" MaxLength="20" />
+    <Property Name="cSRTypeSec" Type="nvarchar" MaxLength="20" />
+    <Property Name="cSRTypeThr" Type="nvarchar" MaxLength="20" />
+    <Property Name="cSRPathWay" Type="nvarchar" MaxLength="3" />
+    <Property Name="cSRProcessWay" Type="nvarchar" MaxLength="3" />
+    <Property Name="cIsSecondFix" Type="varchar" MaxLength="1" />
+    <Property Name="cRepairName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cRepairAddress" Type="nvarchar" MaxLength="110" />
+    <Property Name="cRepairPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="cRepairEmail" Type="nvarchar" MaxLength="200" />
+    <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cContactAddress" Type="nvarchar" MaxLength="110" />
+    <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
+    <Property Name="cTeamID" Type="varchar" MaxLength="255" />
+    <Property Name="cMainEngineerID" Type="nvarchar" MaxLength="20" />
+    <Property Name="cMainEngineerName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cAssEngineerID" Type="nvarchar" MaxLength="255" />
+    <Property Name="cSQPersonID" Type="nvarchar" MaxLength="6" />
+    <Property Name="cSQPersonName" Type="nvarchar" MaxLength="100" />
+    <Property Name="cSalesID" Type="nvarchar" MaxLength="20" />
+    <Property Name="cSalesName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cSystemGUID" Type="uniqueidentifier" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRRepairType">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cKIND_KEY" Type="nvarchar" MaxLength="20" />
+    <Property Name="cUP_KIND_KEY" Type="nvarchar" MaxLength="20" />
+    <Property Name="cKIND_NAME" Type="nvarchar" MaxLength="100" />
+    <Property Name="cKIND_NAME_EN_US" Type="nvarchar" MaxLength="200" />
+    <Property Name="cKIND_LEVEL" Type="int" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRSQPerson">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cFirstKEY" Type="varchar" MaxLength="1" />
+    <Property Name="cSecondKEY" Type="varchar" MaxLength="1" />
+    <Property Name="cThirdKEY" Type="varchar" MaxLength="20" />
+    <Property Name="cNO" Type="varchar" MaxLength="3" />
+    <Property Name="cContent" Type="nvarchar" MaxLength="30" />
+    <Property Name="cEngineerID" Type="nvarchar" MaxLength="20" />
+    <Property Name="cEngineerName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cFullKEY" Type="nvarchar" MaxLength="6" />
+    <Property Name="cFullNAME" Type="nvarchar" MaxLength="100" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRTeamMapping">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cTeamNewID" Type="varchar" MaxLength="36" Nullable="false" />
+    <Property Name="cTeamNewName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cTeamOldID" Type="varchar" MaxLength="36" Nullable="false" />
+    <Property Name="cTeamOldName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="TB_ONE_LOG" EntityType="Self.TB_ONE_LOG" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRCustomerEmailMapping" EntityType="Self.TB_ONE_SRCustomerEmailMapping" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRDetail_PartsReplace" EntityType="Self.TB_ONE_SRDetail_PartsReplace" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRDetail_Product" EntityType="Self.TB_ONE_SRDetail_Product" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRDetail_Record" EntityType="Self.TB_ONE_SRDetail_Record" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRDetail_Warranty" EntityType="Self.TB_ONE_SRDetail_Warranty" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRIDFormat" EntityType="Self.TB_ONE_SRIDFormat" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRMain" EntityType="Self.TB_ONE_SRMain" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRRepairType" EntityType="Self.TB_ONE_SRRepairType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRSQPerson" EntityType="Self.TB_ONE_SRSQPerson" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRTeamMapping" EntityType="Self.TB_ONE_SRTeamMapping" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

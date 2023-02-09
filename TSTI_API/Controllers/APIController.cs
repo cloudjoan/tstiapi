@@ -2164,6 +2164,74 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 測試取得合約標的資料
+        //[HttpPost]
+        //public ActionResult callAPI_CONTRACTOBJINFO_GET(CONTRACTOBJINFO_INPUT beanIN)
+        //{
+        //    var beanList = GetAPI_CONTRACTOBJINFO_GET(beanIN);
+
+        //    return Json(beanList);
+        //}
+
+        ///// <summary>
+        ///// 測試取得合約標的資料
+        ///// </summary>
+        ///// <param name="beanIN"></param>
+        //public CONTRACTOBJINFO_OUTPUT GetAPI_CONTRACTOBJINFO_GET(CONTRACTOBJINFO_INPUT beanIN)
+        //{
+        //    CONTRACTOBJINFO_OUTPUT OUTBean = new CONTRACTOBJINFO_OUTPUT();
+
+        //    try
+        //    {
+        //        var client = new RestClient("http://localhost:32603/API/API_CONTRACTOBJINFO_GET");  //測試用            
+
+        //        var request = new RestRequest();
+        //        request.Method = RestSharp.Method.Post;
+
+        //        Dictionary<Object, Object> parameters = new Dictionary<Object, Object>();
+        //        parameters.Add("IV_CONTRACTID", beanIN.IV_CONTRACTID);
+
+        //        request.AddHeader("Content-Type", "application/json");
+        //        request.AddParameter("application/json", parameters, ParameterType.RequestBody);
+
+        //        RestResponse response = client.Execute(request);
+
+        //        #region 取得回傳訊息(成功或失敗)
+        //        var data = (JObject)JsonConvert.DeserializeObject(response.Content);
+
+        //        OUTBean.EV_MSGT = data["EV_MSGT"].ToString().Trim();
+        //        OUTBean.EV_MSG = data["EV_MSG"].ToString().Trim();
+        //        #endregion
+
+        //        #region 取得法人客戶資料List
+        //        var tList = (JArray)JsonConvert.DeserializeObject(data["CONTRACTOBJINFO_LIST"].ToString().Trim());
+
+        //        if (tList != null)
+        //        {
+        //            List<CONTRACTOBJINFO_LIST> tCustList = new List<CONTRACTOBJINFO_LIST>();
+
+        //            foreach (JObject bean in tList)
+        //            {
+        //                CONTRACTOBJINFO_LIST beanCust = new CONTRACTOBJINFO_LIST();
+
+        //                beanCust.SUB_CONTRACTID = bean["SUB_CONTRACTID"].ToString().Trim();                        
+
+        //                tCustList.Add(beanCust);
+        //            }
+
+        //            OUTBean.CONTRACTOBJINFO_LIST = tCustList;
+        //        }
+        //        #endregion
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"callAPI_CONTRACTOBJINFO_GET Error: {ex}");
+        //    }
+
+        //    return OUTBean;
+        //}
+        #endregion
+
         #region 查詢合約標的資料        
         [HttpPost]
         public ActionResult API_CONTRACTOBJINFO_GET(CONTRACTOBJINFO_INPUT beanIN)
@@ -2245,7 +2313,7 @@ namespace TSTI_API.Controllers
                 pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
                 pMsg += " 失敗行數：" + ex.ToString();
 
-                CMF.writeToLog("", "CUSTOMERINFO_GET_API", pMsg, "SYS");
+                CMF.writeToLog("", "CONTRACTOBJINFO_GET_API", pMsg, "SYS");
 
                 OUTBean.EV_MSGT = "E";
                 OUTBean.EV_MSG = ex.Message;
