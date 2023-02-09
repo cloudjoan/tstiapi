@@ -2203,25 +2203,28 @@ namespace TSTI_API.Controllers
         //        OUTBean.EV_MSG = data["EV_MSG"].ToString().Trim();
         //        #endregion
 
-        //        #region 取得法人客戶資料List
-        //        var tList = (JArray)JsonConvert.DeserializeObject(data["CONTRACTOBJINFO_LIST"].ToString().Trim());
-
-        //        if (tList != null)
+        //        if (OUTBean.EV_MSGT == "Y")
         //        {
-        //            List<CONTRACTOBJINFO_LIST> tCustList = new List<CONTRACTOBJINFO_LIST>();
+        //            #region 取得合約標的資料List
+        //            var tList = (JArray)JsonConvert.DeserializeObject(data["CONTRACTOBJINFO_LIST"].ToString().Trim());
 
-        //            foreach (JObject bean in tList)
+        //            if (tList != null)
         //            {
-        //                CONTRACTOBJINFO_LIST beanCust = new CONTRACTOBJINFO_LIST();
+        //                List<CONTRACTOBJINFO_LIST> tCustList = new List<CONTRACTOBJINFO_LIST>();
 
-        //                beanCust.SUB_CONTRACTID = bean["SUB_CONTRACTID"].ToString().Trim();                        
+        //                foreach (JObject bean in tList)
+        //                {
+        //                    CONTRACTOBJINFO_LIST beanCust = new CONTRACTOBJINFO_LIST();
 
-        //                tCustList.Add(beanCust);
+        //                    beanCust.SUB_CONTRACTID = bean["SUB_CONTRACTID"].ToString().Trim();
+
+        //                    tCustList.Add(beanCust);
+        //                }
+
+        //                OUTBean.CONTRACTOBJINFO_LIST = tCustList;
         //            }
-
-        //            OUTBean.CONTRACTOBJINFO_LIST = tCustList;
+        //            #endregion
         //        }
-        //        #endregion
         //    }
         //    catch (Exception ex)
         //    {
