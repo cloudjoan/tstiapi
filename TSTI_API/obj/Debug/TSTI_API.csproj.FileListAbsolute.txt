@@ -219,3 +219,5 @@ D:\GIT\tstiapi\TSTI_API\bin\System.Text.Json.xml
 D:\GIT\tstiapi\TSTI_API\bin\System.Threading.Tasks.Extensions.xml
 D:\GIT\tstiapi\TSTI_API\bin\System.ValueTuple.xml
 D:\GIT\tstiapi\TSTI_API\bin\zh-Hant\EntityFramework.SqlServer.resources.dll
+D:\GIT\tstiapi\TSTI_API\bin\sapnco.dll
+D:\GIT\tstiapi\TSTI_API\bin\sapnco_utils.dll

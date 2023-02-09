@@ -4,8 +4,10 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
 using System.Web;
 using System.Web.Mvc;
+using SAP.Middleware.Connector;
 using TSTI_API.Models;
 
 namespace TSTI_API.Controllers
@@ -930,6 +932,39 @@ public string findEmployeeName(string keyword)
             return reValue;
         }
         #endregion
+
+        #region 取得RFC相關DataTable
+        /// <summary>
+        /// 取得RFC相關DataTable
+        /// </summary>
+        /// <param name="function">傳入的RFC Fcuntion</param>
+        /// <param name="tableName">tableName</param>
+        /// <returns></returns>
+        public DataTable SetRFCDataTable(IRfcFunction function, string tableName)
+        {
+            IRfcTable rfcTable = function.GetTable(tableName);
+
+            DataTable dt = new DataTable();
+
+            for (int i = 0; i < rfcTable.ElementCount; i++)
+            {
+                RfcElementMetadata rfcMeta = rfcTable.GetElementMetadata(i);
+                dt.Columns.Add(rfcMeta.Name);
+            }
+            foreach (IRfcStructure row in rfcTable)
+            {
+                DataRow dr = dt.NewRow();
+                for (int i = 0; i < rfcTable.ElementCount; i++)
+                {
+                    RfcElementMetadata rfcMeta = rfcTable.GetElementMetadata(i);
+                    dr[rfcMeta.Name] = row.GetString(rfcMeta.Name);
+                }
+                dt.Rows.Add(dr);
+            }
+
+            return dt;
+        }
+        #endregion       
 
         #region 寫log 
         /// <summary>

@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data;
+using SAP.Middleware.Connector;
 using System.Web.Mvc;
 using TSTI_API.Models;
 
@@ -17,6 +19,9 @@ namespace TSTI_API.Controllers
         ERP_PROXY_DBEntities dbProxy = new ERP_PROXY_DBEntities();
 
         CommonFunction CMF = new CommonFunction();
+
+        RfcDestination sapConnector;
+        RfcDestination sapTatungConnector;
 
         /// <summary>
         /// 程式作業編號檔系統ID(ALL，固定的GUID)
@@ -2122,6 +2127,186 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑下拉選項共用接口 ↑↑↑↑↑-----
+
+        #region -----↓↓↓↓↓CALL RFC接口 ↓↓↓↓↓-----    
+
+        #region 初始SapConnector
+        public void initSapConnector()
+        {
+            #region 呼叫SAPERP正式區或測試區(true.正式區 false.測試區)
+            bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
+
+            if (tIsFormal)
+            {
+                if (sapConnector == null)
+                {
+                    sapConnector = new SapConnector().getCRM_PRD(); //正式機                    
+                }
+
+                if (sapTatungConnector == null)
+                {
+                    sapTatungConnector = new SapConnector().getTatung_PRD(); //正式機
+                }
+            }
+            else
+            {
+                if (sapConnector == null)
+                {
+                    sapConnector = new SapConnector().getCRM_QAS(); //測試環境
+                }
+
+                if (sapTatungConnector == null)
+                {
+                    sapTatungConnector = new SapConnector().getTatung_QAS(); //測試環境
+                }
+            }
+            #endregion
+        }
+        #endregion
+
+        #region 查詢合約標的資料        
+        [HttpPost]
+        public ActionResult API_CONTRACTOBJINFO_GET(CONTRACTOBJINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_CONTRACTID": "11104083"
+            //}
+            #endregion
+
+            CONTRACTOBJINFO_OUTPUT ListOUT = new CONTRACTOBJINFO_OUTPUT();
+
+            ListOUT = CONTRACTOBJINFO_GET(beanIN);
+
+            return Json(ListOUT);           
+        }
+        #endregion
+
+        #region 取得合約標的資料
+        private CONTRACTOBJINFO_OUTPUT CONTRACTOBJINFO_GET(CONTRACTOBJINFO_INPUT beanIN)
+        {
+            CONTRACTOBJINFO_OUTPUT OUTBean = new CONTRACTOBJINFO_OUTPUT();
+
+            string tOBJ_NOTES = string.Empty;
+
+            try
+            {
+                initSapConnector();
+
+                RfcFunctionMetadata ZFM_CONTRACT_GETALL_INFO = sapConnector.Repository.GetFunctionMetadata("ZFM_CONTRACT_GETALL_INFO");
+                IRfcFunction function = ZFM_CONTRACT_GETALL_INFO.CreateFunction();
+
+                function.SetValue("IV_CONTRACTID", beanIN.IV_CONTRACTID.Trim());
+                function.Invoke(sapConnector);
+
+                DataTable dtOBJ = CMF.SetRFCDataTable(function, "LT_CONTRACT_OBJ");                
+
+                if (dtOBJ.Rows.Count == 0)
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無合約標的資料，請重新查詢！";
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    #region 取得合約標的資料List
+                    List<CONTRACTOBJINFO_LIST> tObjList = new List<CONTRACTOBJINFO_LIST>();
+
+                    foreach (DataRow dr in dtOBJ.Rows)
+                    {
+                        CONTRACTOBJINFO_LIST beanCust = new CONTRACTOBJINFO_LIST();
+
+                        tOBJ_NOTES = dr["NOTE"].ToString().Replace("\r\n", "<br/>").Replace("\n", "<br/>");
+
+                        beanCust.CONTRACTID = beanIN.IV_CONTRACTID.Trim();             //主約文件編號
+                        beanCust.HOSTNAME = dr["HOSTNAME"].ToString();                //HostName
+                        beanCust.SN = dr["SN"].ToString();                          //序號
+                        beanCust.BRANDS = dr["BRANDS"].ToString();                   //廠牌
+                        beanCust.MODEL = dr["MODEL"].ToString();                     //ProductModel
+                        beanCust.LOCATION = dr["LOCATION"].ToString();                //Location
+                        beanCust.PLACE = dr["PLACE"].ToString();                     //地點
+                        beanCust.AREA = dr["AREA"].ToString();                       //區域
+                        beanCust.RESPONSE_LEVEL = dr["RESPONSE_LEVEL"].ToString();     //回應條件
+                        beanCust.SERVICE_LEVEL = dr["SERVICE_LEVEL"].ToString();       //服務條件
+                        beanCust.NOTES = tOBJ_NOTES;                                //備註
+                        beanCust.SUB_CONTRACTID = dr["SUB_CONTRACTID"].ToString();     //下包文件編號
+
+                        tObjList.Add(beanCust);
+                    }
+
+                    OUTBean.CONTRACTOBJINFO_LIST = tObjList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "CUSTOMERINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢合約標的資料INPUT資訊
+        /// <summary>查詢合約標的資料INPUT資訊</summary>
+        public struct CONTRACTOBJINFO_INPUT
+        {
+            /// <summary>合約編號</summary>
+            public string IV_CONTRACTID { get; set; }
+        }
+        #endregion
+
+        #region 查詢合約標的資料OUTPUT資訊
+        /// <summary>查詢合約標的資料OUTPUT資訊</summary>
+        public struct CONTRACTOBJINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>合約標的資料清單</summary>
+            public List<CONTRACTOBJINFO_LIST> CONTRACTOBJINFO_LIST { get; set; }
+        }
+
+        public struct CONTRACTOBJINFO_LIST
+        {
+            /// <summary>主約文件編號</summary>
+            public string CONTRACTID;
+            /// <summary>HostName</summary>
+            public string HOSTNAME;
+            /// <summary>序號</summary>
+            public string SN;
+            /// <summary>廠牌</summary>
+            public string BRANDS;
+            /// <summary>ProductModel</summary>
+            public string MODEL;
+            /// <summary>Location</summary>
+            public string LOCATION;
+            /// <summary>地點</summary>
+            public string PLACE;
+            /// <summary>區域</summary>
+            public string AREA;
+            /// <summary>回應條件</summary>
+            public string RESPONSE_LEVEL;
+            /// <summary>服務條件</summary>
+            public string SERVICE_LEVEL;
+            /// <summary>備註</summary>
+            public string NOTES;
+            /// <summary>下包文件編號</summary>
+            public string SUB_CONTRACTID;
+        }
+        #endregion    
+
+        #endregion -----↑↑↑↑↑CALL RFC接口 ↑↑↑↑↑-----
     }
 
     #region 保固SLA資訊
