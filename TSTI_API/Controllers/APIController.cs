@@ -457,6 +457,7 @@ namespace TSTI_API.Controllers
                         beanD.cSLARESP = beanSR.SLARESP;
                         beanD.cSLASRV = beanSR.SLASRV;
                         beanD.cContractID = beanSR.CONTRACTID;
+                        beanD.cSubContractID = beanSR.SUBCONTRACTID;
                         beanD.cBPMFormNo = beanSR.BPMFormNo;
                         beanD.cAdvice = beanSR.ADVICE;
 
@@ -2444,49 +2445,7 @@ namespace TSTI_API.Controllers
             /// <summary>合約編號</summary>
             public string IV_CONTRACTID { get; set; }
         }
-        #endregion
-
-        #region 查詢合約標的資料OUTPUT資訊
-        /// <summary>查詢合約標的資料OUTPUT資訊</summary>
-        public struct CONTRACTOBJINFO_OUTPUT
-        {
-            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
-            public string EV_MSGT { get; set; }
-            /// <summary>消息內容</summary>
-            public string EV_MSG { get; set; }
-
-            /// <summary>合約標的資料清單</summary>
-            public List<CONTRACTOBJINFO_LIST> CONTRACTOBJINFO_LIST { get; set; }
-        }
-
-        public struct CONTRACTOBJINFO_LIST
-        {
-            /// <summary>主約文件編號</summary>
-            public string CONTRACTID;
-            /// <summary>HostName</summary>
-            public string HOSTNAME;
-            /// <summary>序號</summary>
-            public string SN;
-            /// <summary>廠牌</summary>
-            public string BRANDS;
-            /// <summary>ProductModel</summary>
-            public string MODEL;
-            /// <summary>Location</summary>
-            public string LOCATION;
-            /// <summary>地點</summary>
-            public string PLACE;
-            /// <summary>區域</summary>
-            public string AREA;
-            /// <summary>回應條件</summary>
-            public string RESPONSE_LEVEL;
-            /// <summary>服務條件</summary>
-            public string SERVICE_LEVEL;
-            /// <summary>備註</summary>
-            public string NOTES;
-            /// <summary>下包文件編號</summary>
-            public string SUB_CONTRACTID;
-        }
-        #endregion    
+        #endregion        
 
         #endregion -----↑↑↑↑↑CALL RFC接口 ↑↑↑↑↑-----
     }
@@ -2513,6 +2472,8 @@ namespace TSTI_API.Controllers
         public string CONTRACTID { get; set; }
         /// <summary>合約編號Url</summary>
         public string CONTRACTIDUrl { get; set; }
+        /// <summary>下包文件編號</summary>
+        public string SUBCONTRACTID { get; set; }
         /// <summary>保固申請(BPM表單編號)</summary>
         public string BPMFormNo { get; set; }
         /// <summary>保固申請Url(BPM表單編號Url)</summary>
@@ -2669,6 +2630,48 @@ namespace TSTI_API.Controllers
         public string VALUE { get; set; }
         /// <summary>名稱</summary>
         public string TEXT { get; set; }
+    }
+    #endregion
+
+    #region 查詢合約標的資料OUTPUT資訊
+    /// <summary>查詢合約標的資料OUTPUT資訊</summary>
+    public struct CONTRACTOBJINFO_OUTPUT
+    {
+        /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+        public string EV_MSGT { get; set; }
+        /// <summary>消息內容</summary>
+        public string EV_MSG { get; set; }
+
+        /// <summary>合約標的資料清單</summary>
+        public List<CONTRACTOBJINFO_LIST> CONTRACTOBJINFO_LIST { get; set; }
+    }
+
+    public struct CONTRACTOBJINFO_LIST
+    {
+        /// <summary>主約文件編號</summary>
+        public string CONTRACTID;
+        /// <summary>HostName</summary>
+        public string HOSTNAME;
+        /// <summary>序號</summary>
+        public string SN;
+        /// <summary>廠牌</summary>
+        public string BRANDS;
+        /// <summary>ProductModel</summary>
+        public string MODEL;
+        /// <summary>Location</summary>
+        public string LOCATION;
+        /// <summary>地點</summary>
+        public string PLACE;
+        /// <summary>區域</summary>
+        public string AREA;
+        /// <summary>回應條件</summary>
+        public string RESPONSE_LEVEL;
+        /// <summary>服務條件</summary>
+        public string SERVICE_LEVEL;
+        /// <summary>備註</summary>
+        public string NOTES;
+        /// <summary>下包文件編號</summary>
+        public string SUB_CONTRACTID;
     }
     #endregion
 }

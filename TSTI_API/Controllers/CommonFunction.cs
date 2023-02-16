@@ -676,6 +676,7 @@ public string findEmployeeName(string keyword)
             string cSLASRV = string.Empty;
             string cContractID = string.Empty;
             string cContractIDURL = string.Empty;
+            string cSUB_CONTRACTID = string.Empty;
             string tBPMNO = string.Empty;
             string tURL = string.Empty;
             string tAdvice = string.Empty;
@@ -737,6 +738,7 @@ public string findEmployeeName(string keyword)
                             if (cContractID != "")
                             {
                                 tBPMNO = findContractSealsFormNo(cContractID);
+                                cSUB_CONTRACTID = findContractSealsOBJSubNo(cContractID);
 
                                 try
                                 {
@@ -785,6 +787,7 @@ public string findEmployeeName(string keyword)
                             QueryInfo.SLASRV = cSLASRV;                //服務條件
                             QueryInfo.CONTRACTID = cContractID;        //合約編號
                             QueryInfo.CONTRACTIDUrl = cContractIDURL;  //合約編號Url
+                            QueryInfo.SUBCONTRACTID = cSUB_CONTRACTID; //下包文件編號
                             QueryInfo.BPMFormNo = tBPMNO;              //BPM表單編號                        
                             QueryInfo.BPMFormNoUrl = tURL;             //BPM URL
                             QueryInfo.ADVICE = tAdvice;               //客服主管建議                                          
@@ -1001,6 +1004,71 @@ public string findEmployeeName(string keyword)
                 {
                     reValue = bean.BPMNo.Trim();
                 }
+            }
+
+            return reValue;
+        }
+        #endregion
+
+        #region 傳入合約編號並取得CRM合約標的的下包文件編號
+        /// <summary>
+        /// 傳入合約編號並取得CRM合約標的的下包文件編號
+        /// </summary>
+        /// <param name="NO">合約編號</param>
+        /// <returns></returns>
+        public string findContractSealsOBJSubNo(string NO)
+        {
+            string reValue = string.Empty;
+            string SUB_CONTRACTID = string.Empty;
+
+            var client = new RestClient("http://localhost:32603/API/API_CONTRACTOBJINFO_GET");
+
+            if (NO != null)
+            {
+                CONTRACTOBJINFO_OUTPUT OUTBean = new CONTRACTOBJINFO_OUTPUT();
+
+                var request = new RestRequest();
+                request.Method = RestSharp.Method.Post;
+
+                Dictionary<Object, Object> parameters = new Dictionary<Object, Object>();
+                parameters.Add("IV_CONTRACTID", NO);
+
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("application/json", parameters, ParameterType.RequestBody);
+
+                RestResponse response = client.Execute(request);
+
+                #region 取得回傳訊息(成功或失敗)
+                if (response.Content != null)
+                {
+                    var data = (JObject)JsonConvert.DeserializeObject(response.Content);
+
+                    OUTBean.EV_MSGT = data["EV_MSGT"].ToString().Trim();
+                    OUTBean.EV_MSG = data["EV_MSG"].ToString().Trim();
+                    #endregion
+
+                    if (OUTBean.EV_MSGT == "Y")
+                    {
+                        #region 取得合約標的資料List
+                        var tList = (JArray)JsonConvert.DeserializeObject(data["CONTRACTOBJINFO_LIST"].ToString().Trim());
+
+                        if (tList != null)
+                        {
+                            foreach (JObject bean in tList)
+                            {
+                                SUB_CONTRACTID = bean["SUB_CONTRACTID"].ToString().Trim();
+
+                                if (SUB_CONTRACTID != "")
+                                {
+                                    break;
+                                }
+                            }
+
+                            reValue = SUB_CONTRACTID;
+                        }
+                        #endregion
+                    }
+                }                
             }
 
             return reValue;
