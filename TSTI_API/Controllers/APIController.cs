@@ -121,30 +121,48 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式，一筆(建立GENERALSR_CREATEByAPI)
             //{
-            // "IV_LOGINACCOUNT": "etatung\\elvis.chang",
-            // "IV_CUSTOMER": "D03251108",
-            // "IV_SRTEAM": "SRV.12211000",
-            // "IV_RKIND": "Z01",
-            // "IV_PATHWAY": "Z01",
-            // "IV_DESC": "Test20230106",
-            // "IV_LTXT": "Test20230106詳細說明",
-            // "IV_MKIND1": "ZA01",
-            // "IV_MKIND2": "ZB0101",
-            // "IV_MKIND3": "ZC010101",
-            // "IV_REPAIRNAME": "王炯凱",
-            // "IV_REPAIRTEL": "02-2506-2121#1239",
-            // "IV_REPAIRADDR": "台北市中山區松江路121號13樓",
-            // "IV_REPAIREMAIL": "CARRYWANG@hotaimotor.com.tw",
-            // "IV_CONTNAME": "周可斌",
-            // "IV_CONTTEL": "(02)6638-6888EXT.13104",
-            // "IV_CONTADDR": "信義區菸廠路88號12樓",
-            // "IV_CONTEMAIL": "AlexChou@taiwanmobile.com",
-            // "IV_EMPNO": "10001567",
-            // "IV_SQEMPID": "ZC103",
-            // "IV_SERIAL": "SGH33223R6;SGH33223R0",
-            // "IV_SNPID": "G-654081B21-057;G-654081B21-057",
-            // "IV_WTY": "SGH33223R6;OM363636",
-            // "IV_REFIX": "N"
+            //     "IV_LOGINACCOUNT": "etatung\\elvis.chang",
+            //     "IV_CUSTOMER": "D03251108",
+            //     "IV_SRTEAM": "SRV.12211000",
+            //     "IV_RKIND": "Z01",
+            //     "IV_PATHWAY": "Z01",
+            //     "IV_DESC": "Test20230106",
+            //     "IV_LTXT": "Test20230106詳細說明",
+            //     "IV_MKIND1": "ZA01",
+            //     "IV_MKIND2": "ZB0101",
+            //     "IV_MKIND3": "ZC010101",
+            //     "IV_REPAIRNAME": "王炯凱",
+            //     "IV_REPAIRTEL": "02-2506-2121#1239",
+            //     "IV_REPAIRADDR": "台北市中山區松江路121號13樓",
+            //     "IV_REPAIREMAIL": "CARRYWANG@hotaimotor.com.tw",
+            //     "IV_CONTNAME": "周可斌",
+            //     "IV_CONTTEL": "(02)6638-6888EXT.13104",
+            //     "IV_CONTADDR": "信義區菸廠路88號12樓",
+            //     "IV_CONTEMAIL": "AlexChou@taiwanmobile.com",
+            //     "IV_EMPNO": "10001567",
+            //     "IV_SQEMPID": "ZC103",
+            //     "IV_SERIAL": "SGH33223R6",
+            //     "IV_SNPID": "G-654081B21-057",
+            //     "IV_WTY": "OM363636",
+            //     "IV_REFIX": "N",
+            //     "CREATECONTACT_LIST": [
+            //        {
+            //            "SRID": "612211250004",
+            //            "CONTNAME": "賴淑瑛",
+            //            "CONTADDR": "台北市信義區菸廠路88號12樓",
+            //            "CONTTEL": "(02)6638-6888#13158",
+            //            "CONTMOBILE": "",
+            //            "CONTEMAIL": "winnielai@taiwanmobile.com"
+            //        },
+            //        {
+            //            "SRID": "612211250004",
+            //            "CONTNAME": "廖勇翔",
+            //            "CONTADDR": "台北市信義區菸廠路88號12樓",
+            //            "CONTTEL": "02-6638-6888#13124",
+            //            "CONTMOBILE": "",
+            //            "CONTEMAIL": "AllenLiao@taiwanmobile.com"
+            //        }                 
+            //    ]
             //}
             #endregion
 
@@ -188,11 +206,7 @@ namespace TSTI_API.Controllers
             string IV_REPAIRNAME = string.IsNullOrEmpty(bean.IV_REPAIRNAME) ? "" : bean.IV_REPAIRNAME.Trim();
             string IV_REPAIRTEL = string.IsNullOrEmpty(bean.IV_REPAIRTEL) ? "" : bean.IV_REPAIRTEL.Trim();
             string IV_REPAIRADDR = string.IsNullOrEmpty(bean.IV_REPAIRADDR) ? "" : bean.IV_REPAIRADDR.Trim();
-            string IV_REPAIREMAIL = string.IsNullOrEmpty(bean.IV_REPAIREMAIL) ? "" : bean.IV_REPAIREMAIL.Trim();
-            string IV_CONTNAME = string.IsNullOrEmpty(bean.IV_CONTNAME) ? "" : bean.IV_CONTNAME.Trim();
-            string IV_CONTTEL = string.IsNullOrEmpty(bean.IV_CONTTEL) ? "" : bean.IV_CONTTEL.Trim();
-            string IV_CONTADDR = string.IsNullOrEmpty(bean.IV_CONTADDR) ? "" : bean.IV_CONTADDR.Trim();
-            string IV_CONTEMAIL = string.IsNullOrEmpty(bean.IV_CONTEMAIL) ? "" : bean.IV_CONTEMAIL.Trim();
+            string IV_REPAIREMAIL = string.IsNullOrEmpty(bean.IV_REPAIREMAIL) ? "" : bean.IV_REPAIREMAIL.Trim();            
             string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
             string IV_SQEMPID = string.IsNullOrEmpty(bean.IV_SQEMPID) ? "" : bean.IV_SQEMPID.Trim();
             string IV_SERIAL = string.IsNullOrEmpty(bean.IV_SERIAL) ? "" : bean.IV_SERIAL.Trim();
@@ -255,11 +269,7 @@ namespace TSTI_API.Controllers
                     beanM.cRepairName = IV_REPAIRNAME;
                     beanM.cRepairAddress = IV_REPAIRADDR;
                     beanM.cRepairPhone = IV_REPAIRTEL;
-                    beanM.cRepairEmail = IV_REPAIREMAIL;
-                    beanM.cContactName = IV_CONTNAME;
-                    beanM.cContactAddress = IV_CONTADDR;
-                    beanM.cContactPhone = IV_CONTTEL;
-                    beanM.cContactEmail = IV_CONTEMAIL;
+                    beanM.cRepairEmail = IV_REPAIREMAIL;                   
                     beanM.cTeamID = IV_SRTEAM;
                     beanM.cSQPersonID = IV_SQEMPID;
                     beanM.cSQPersonName = CSqpersonName;
@@ -274,6 +284,35 @@ namespace TSTI_API.Controllers
                     beanM.CreatedUserName = pLoginName;
 
                     dbOne.TB_ONE_SRMain.Add(beanM);
+                    #endregion
+
+                    #region 新增【客戶聯絡人資訊】明細
+                    if (bean.CREATECONTACT_LIST != null)
+                    {
+                        foreach(var beanCon in bean.CREATECONTACT_LIST)
+                        {
+                            string IV_CONTNAME = string.IsNullOrEmpty(beanCon.CONTNAME) ? "" : beanCon.CONTNAME.Trim();
+                            string IV_CONTADDR = string.IsNullOrEmpty(beanCon.CONTADDR) ? "" : beanCon.CONTADDR.Trim();
+                            string IV_CONTTEL = string.IsNullOrEmpty(beanCon.CONTTEL) ? "" : beanCon.CONTTEL.Trim();
+                            string IV_CONTMOBILE = string.IsNullOrEmpty(beanCon.CONTMOBILE) ? "" : beanCon.CONTMOBILE.Trim();
+                            string IV_CONTEMAIL = string.IsNullOrEmpty(beanCon.CONTEMAIL) ? "" : beanCon.CONTEMAIL.Trim();
+
+                            TB_ONE_SRDetail_Contact beanD = new TB_ONE_SRDetail_Contact();
+
+                            beanD.cSRID = pSRID;
+                            beanD.cContactName = IV_CONTNAME;
+                            beanD.cContactAddress = IV_CONTADDR;
+                            beanD.cContactPhone = IV_CONTTEL;
+                            beanD.cContactMobile = IV_CONTMOBILE;
+                            beanD.cContactEmail = IV_CONTEMAIL;
+                            beanD.Disabled = 0;
+
+                            beanD.CreatedDate = DateTime.Now;
+                            beanD.CreatedUserName = pLoginName;
+
+                            dbOne.TB_ONE_SRDetail_Contact.Add(beanD);
+                        }
+                    }                    
                     #endregion
 
                     #region 新增【產品序號資訊】明細
@@ -391,8 +430,13 @@ namespace TSTI_API.Controllers
 
                         if (IV_WTY.Trim() != "")
                         {
-                            tSerialID = IV_WTY.Trim().Split(';')[0];
-                            tWTYID = IV_WTY.Trim().Split(';')[1];
+                            #region 因Joradn說不會有二筆序號，先註解，改只抓一筆
+                            //tSerialID = IV_WTY.Trim().Split(';')[0];
+                            //tWTYID = IV_WTY.Trim().Split(';')[1];
+                            #endregion
+
+                            tSerialID = beanSR.SERIALID;
+                            tWTYID = IV_WTY.Trim();
                         }
 
                         beanD.cSRID = pSRID;
@@ -417,9 +461,40 @@ namespace TSTI_API.Controllers
                         beanD.cAdvice = beanSR.ADVICE;
 
                         #region 判斷是否有指定使用
-                        if (beanSR.SERIALID == tSerialID && beanSR.WTYID == tWTYID)
+                        if (tWTYID != "")
                         {
-                            beanD.cUsed = "Y";
+                            switch (tWTYID.Substring(0,2))
+                            {
+                                #region 有保固抓保固欄位
+                                case "OM":
+                                case "EX":                                
+                                case "TM":
+                                    if (beanSR.SERIALID == tSerialID && beanSR.WTYID == tWTYID)
+                                    {
+                                        beanD.cUsed = "Y";
+                                    }
+                                    else
+                                    {
+                                        beanD.cUsed = beanSR.USED;
+                                    }
+
+                                    break;
+                                #endregion
+
+                                #region 剩下判斷合約編號欄位
+                                default: 
+                                    if (beanSR.SERIALID == tSerialID && beanSR.CONTRACTID == tWTYID)
+                                    {
+                                        beanD.cUsed = "Y";
+                                    }
+                                    else
+                                    {
+                                        beanD.cUsed = beanSR.USED;
+                                    }
+
+                                    break;
+                                #endregion
+                            }
                         }
                         else
                         {
@@ -819,15 +894,7 @@ namespace TSTI_API.Controllers
             /// <summary>報修人地址</summary>
             public string IV_REPAIRADDR { get; set; }
             /// <summary>報修人Email</summary>
-            public string IV_REPAIREMAIL { get; set; }
-            /// <summary>聯絡人姓名</summary>
-            public string IV_CONTNAME { get; set; }
-            /// <summary>聯絡人電話</summary>
-            public string IV_CONTTEL { get; set; }
-            /// <summary>聯絡人地址</summary>
-            public string IV_CONTADDR { get; set; }
-            /// <summary>聯絡人Email</summary>
-            public string IV_CONTEMAIL { get; set; }
+            public string IV_REPAIREMAIL { get; set; }            
             /// <summary>L2工程師員工編號</summary>
             public string IV_EMPNO { get; set; }
             /// <summary>SQ人員ID</summary>
@@ -840,6 +907,9 @@ namespace TSTI_API.Controllers
             public string IV_WTY { get; set; }
             /// <summary>是否為二修(Y.是 N.否)</summary>
             public string IV_REFIX { get; set; }
+
+            /// <summary>服務請求客戶聯絡人資訊</summary>
+            public List<CREATECONTACTINFO> CREATECONTACT_LIST { get; set; }
         }
         #endregion
 
@@ -1042,6 +1112,7 @@ namespace TSTI_API.Controllers
             //   "IV_CUSTOMEID": "D16151427",
             //   "IV_CONTACTNAME": "",
             //   "IV_CONTACTTEL": "",
+            //   "IV_CONTACTMOBILE": "",
             //   "IV_CONTACTEMAIL": ""
             //}
             #endregion
@@ -1064,9 +1135,10 @@ namespace TSTI_API.Controllers
                 string CUSTOMEID = string.IsNullOrEmpty(beanIN.IV_CUSTOMEID) ? "" : beanIN.IV_CUSTOMEID.Trim();
                 string CONTACTNAME = string.IsNullOrEmpty(beanIN.IV_CONTACTNAME) ? "" : beanIN.IV_CONTACTNAME.Trim();
                 string CONTACTTEL = string.IsNullOrEmpty(beanIN.IV_CONTACTTEL) ? "" : beanIN.IV_CONTACTTEL.Trim();
+                string CONTACTMOBILE = string.IsNullOrEmpty(beanIN.IV_CONTACTMOBILE) ? "" : beanIN.IV_CONTACTMOBILE.Trim();
                 string CONTACTEMAIL = string.IsNullOrEmpty(beanIN.IV_CONTACTEMAIL) ? "" : beanIN.IV_CONTACTEMAIL.Trim();
 
-                var tList = CMF.findCONTACTINFO(CUSTOMEID, CONTACTNAME, CONTACTTEL, CONTACTEMAIL);
+                var tList = CMF.findCONTACTINFO(CUSTOMEID, CONTACTNAME, CONTACTTEL, CONTACTMOBILE, CONTACTEMAIL);
 
                 if (tList.Count == 0)
                 {
@@ -1089,6 +1161,7 @@ namespace TSTI_API.Controllers
                         beanCust.CONTACTCITY = bean.City;
                         beanCust.CONTACTADDRESS = bean.Address;
                         beanCust.CONTACTTEL = bean.Phone;
+                        beanCust.CONTACTMOBILE = bean.Mobile;
                         beanCust.CONTACTEMAIL = bean.Email;
 
                         tCustList.Add(beanCust);
@@ -1123,6 +1196,8 @@ namespace TSTI_API.Controllers
             public string IV_CONTACTNAME { get; set; }            
             /// <summary>聯絡人電話</summary>
             public string IV_CONTACTTEL { get; set; }
+            /// <summary>聯絡人手機</summary>
+            public string IV_CONTACTMOBILE { get; set; }
             /// <summary>聯絡人Email</summary>
             public string IV_CONTACTEMAIL { get; set; }
         }
@@ -1151,6 +1226,8 @@ namespace TSTI_API.Controllers
             public string CONTACTADDRESS { get; set; }
             /// <summary>聯絡人電話</summary>
             public string CONTACTTEL { get; set; }
+            /// <summary>聯絡人手機</summary>
+            public string CONTACTMOBILE { get; set; }
             /// <summary>聯絡人Email</summary>
             public string CONTACTEMAIL { get; set; }           
         }
@@ -1172,6 +1249,7 @@ namespace TSTI_API.Controllers
             //    "IV_CONTACTCITY": "台中市",
             //    "IV_CONTACTADDRESS": "南屯區五權西路二段236號6樓之1",
             //    "IV_CONTACTTEL": "04-24713300",
+            //    "IV_CONTACTMOBILE": "0972",
             //    "IV_CONTACTEMAIL": "elvis.chang@etatung.com"
             //}
             #endregion            
@@ -1194,6 +1272,7 @@ namespace TSTI_API.Controllers
             //    "IV_CONTACTCITY": "台中市",
             //    "IV_CONTACTADDRESS": "南屯區五權西路二段236號6樓之1",
             //    "IV_CONTACTTEL": "04-24713300",
+            //    "IV_CONTACTMOBILE": "0972",
             //    "IV_CONTACTEMAIL": "elvis.chang@etatung.com",
             //    "IV_ISDELETE": "N"
             //}
@@ -1245,6 +1324,7 @@ namespace TSTI_API.Controllers
                     bean.ContactCity = beanIN.IV_CONTACTCITY.Trim();
                     bean.ContactAddress = beanIN.IV_CONTACTADDRESS.Trim();
                     bean.ContactPhone = beanIN.IV_CONTACTTEL.Trim();
+                    bean.ContactMobile = beanIN.IV_CONTACTMOBILE.Trim();
                     bean.ContactEmail = beanIN.IV_CONTACTEMAIL.Trim();
 
                     if (IV_ISDELETE == "Y")
@@ -1263,11 +1343,12 @@ namespace TSTI_API.Controllers
                     bean1.KNA1_KUNNR = beanIN.IV_CUSTOMEID.Trim();
                     bean1.KNA1_NAME1 = CCustomerName;
                     bean1.KNB1_BUKRS = cBUKRS;
-                    bean1.ContactType = "4";
+                    bean1.ContactType = "5"; //One Service
                     bean1.ContactName = beanIN.IV_CONTACTNAME.Trim();
                     bean1.ContactCity = beanIN.IV_CONTACTCITY.Trim();
                     bean1.ContactAddress = beanIN.IV_CONTACTADDRESS.Trim();
                     bean1.ContactPhone = beanIN.IV_CONTACTTEL.Trim();
+                    bean1.ContactMobile = beanIN.IV_CONTACTMOBILE.Trim();
                     bean1.ContactEmail = beanIN.IV_CONTACTEMAIL.Trim();
                     bean1.BpmNo = tBpmNo;
                     bean1.Disabled = 0;
@@ -1333,6 +1414,8 @@ namespace TSTI_API.Controllers
             public string IV_CONTACTADDRESS { get; set; }
             /// <summary>聯絡人電話</summary>
             public string IV_CONTACTTEL { get; set; }
+            /// <summary>聯絡人手機</summary>
+            public string IV_CONTACTMOBILE { get; set; }
             /// <summary>聯絡人Email</summary>
             public string IV_CONTACTEMAIL { get; set; }
             /// <summary>是否要刪除</summary>
@@ -1361,7 +1444,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_SERIAL": "SGH639VL8F"            
+            //    "IV_SERIAL": "SGH33223R6"            
             //}
             #endregion
 
@@ -1402,7 +1485,6 @@ namespace TSTI_API.Controllers
                 SROUT.EV_MSG = "查無該序號相關資訊！";
             }
             #endregion
-
             
             if (ProBean.IV_SERIAL != null)
             {
@@ -1439,6 +1521,33 @@ namespace TSTI_API.Controllers
                 QuerySRToList = CMF.findSRMAINList(pOperationID_GenerallySR, ProBean.IV_SERIAL);
 
                 SROUT.SRMAIN_LIST = QuerySRToList;
+                #endregion
+
+                #region 服務請求客戶聯絡人資訊清單
+
+                #region 先取得SRID清單
+                List<string> tSRIDList = new List<string>();
+
+                if (QuerySRToList.Count > 0)
+                {
+                    foreach(var SRBean in QuerySRToList)
+                    {
+                        if (!tSRIDList.Contains(SRBean.SRID))
+                        {
+                            tSRIDList.Add(SRBean.SRID);
+                        }
+                    }
+                }
+                #endregion
+
+                #region 再執行查詢
+                List<SRCONTACTINFO> QuerySRCONTACTToList = new List<SRCONTACTINFO>();    //查詢出來的清單
+               
+                QuerySRCONTACTToList = CMF.findSRCONTACTList(tSRIDList);
+
+                SROUT.SRCONTACT_LIST = QuerySRCONTACTToList;
+                #endregion
+
                 #endregion
             }
 
@@ -1478,6 +1587,8 @@ namespace TSTI_API.Controllers
             public List<SRWarranty> WTSLA_LIST { get; set; }
             /// <summary>服務請求主檔資訊清單</summary>
             public List<SRIDINFO> SRMAIN_LIST { get; set; }
+            /// <summary>服務請求客戶聯絡人資訊</summary>
+            public List<SRCONTACTINFO> SRCONTACT_LIST { get; set; }
         }
         #endregion
 
@@ -2439,12 +2550,45 @@ namespace TSTI_API.Controllers
         public string MAINENGID { get; set; }
         /// <summary>L2工程師姓名</summary>
         public string MAINENGNAME { get; set; }
+        /// <summary>指派工程師姓名</summary>
+        public string ASSENGNAME { get; set; }
+        /// <summary>技術主管姓名</summary>
+        public string TECHMAGNAME { get; set; }
+    }
+    #endregion
+
+    #region 服務請求客戶聯絡人資訊
+    /// <summary>服務請求客戶聯絡人資訊</summary>
+    public class SRCONTACTINFO
+    {
+        /// <summary>服務請求ID</summary>
+        public string SRID { get; set; }       
         /// <summary>聯絡人姓名</summary>
         public string CONTNAME { get; set; }
         /// <summary>聯絡人地址</summary>
         public string CONTADDR { get; set; }
         /// <summary>聯絡人電話</summary>
         public string CONTTEL { get; set; }
+        /// <summary>聯絡人手機</summary>
+        public string CONTMOBILE { get; set; }
+        /// <summary>聯絡人信箱</summary>
+        public string CONTEMAIL { get; set; }
+
+    }
+    #endregion
+
+    #region 建立客戶聯絡人資訊
+    /// <summary>建立客戶聯絡人資訊</summary>
+    public class CREATECONTACTINFO
+    {        
+        /// <summary>聯絡人姓名</summary>
+        public string CONTNAME { get; set; }
+        /// <summary>聯絡人地址</summary>
+        public string CONTADDR { get; set; }
+        /// <summary>聯絡人電話</summary>
+        public string CONTTEL { get; set; }
+        /// <summary>聯絡人手機</summary>
+        public string CONTMOBILE { get; set; }
         /// <summary>聯絡人信箱</summary>
         public string CONTEMAIL { get; set; }
 
@@ -2473,6 +2617,8 @@ namespace TSTI_API.Controllers
         public string Email { get; set; }
         /// <summary>聯絡人電話</summary>
         public string Phone { get; set; }
+        /// <summary>聯絡人手機</summary>
+        public string Mobile { get; set; }
         /// <summary>來源表單</summary>
         public string BPMNo { get; set; }
     }

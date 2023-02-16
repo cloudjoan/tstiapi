@@ -22,6 +22,24 @@
     <Property Name="cEmailID" Type="nvarchar" MaxLength="50" />
     <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
     <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContactMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRDetail_Contact">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cSRID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cContactAddress" Type="nvarchar" MaxLength="110" />
+    <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContactMobile" Type="nvarchar" MaxLength="50" />
     <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
     <Property Name="Disabled" Type="int" />
     <Property Name="CreatedDate" Type="datetime" />
@@ -108,6 +126,7 @@
     <Property Name="cContractID" Type="nvarchar" MaxLength="10" />
     <Property Name="cBPMFormNo" Type="varchar" MaxLength="50" />
     <Property Name="cAdvice" Type="nvarchar" MaxLength="2000" />
+    <Property Name="cSubContractID" Type="nvarchar" MaxLength="50" />
     <Property Name="cUsed" Type="varchar" MaxLength="1" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
@@ -151,15 +170,13 @@
     <Property Name="cRepairName" Type="nvarchar" MaxLength="40" />
     <Property Name="cRepairAddress" Type="nvarchar" MaxLength="110" />
     <Property Name="cRepairPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="cRepairMobile" Type="nvarchar" MaxLength="50" />
     <Property Name="cRepairEmail" Type="nvarchar" MaxLength="200" />
-    <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
-    <Property Name="cContactAddress" Type="nvarchar" MaxLength="110" />
-    <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />
-    <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
     <Property Name="cTeamID" Type="varchar" MaxLength="255" />
     <Property Name="cMainEngineerID" Type="nvarchar" MaxLength="20" />
     <Property Name="cMainEngineerName" Type="nvarchar" MaxLength="40" />
     <Property Name="cAssEngineerID" Type="nvarchar" MaxLength="255" />
+    <Property Name="cTechManagerID" Type="nvarchar" MaxLength="255" />
     <Property Name="cSQPersonID" Type="nvarchar" MaxLength="6" />
     <Property Name="cSQPersonName" Type="nvarchar" MaxLength="100" />
     <Property Name="cSalesID" Type="nvarchar" MaxLength="20" />
@@ -224,6 +241,7 @@
   <EntityContainer Name="ModelStoreContainer">
     <EntitySet Name="TB_ONE_LOG" EntityType="Self.TB_ONE_LOG" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRCustomerEmailMapping" EntityType="Self.TB_ONE_SRCustomerEmailMapping" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRDetail_Contact" EntityType="Self.TB_ONE_SRDetail_Contact" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRDetail_PartsReplace" EntityType="Self.TB_ONE_SRDetail_PartsReplace" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRDetail_Product" EntityType="Self.TB_ONE_SRDetail_Product" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRDetail_Record" EntityType="Self.TB_ONE_SRDetail_Record" Schema="dbo" store:Type="Tables" />

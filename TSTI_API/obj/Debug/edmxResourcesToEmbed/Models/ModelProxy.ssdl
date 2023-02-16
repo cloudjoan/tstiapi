@@ -14,6 +14,7 @@
     <Property Name="ContactAddress" Type="nvarchar" MaxLength="100" />
     <Property Name="ContactEmail" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="ContactPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="ContactMobile" Type="nvarchar" MaxLength="50" />
     <Property Name="ContactDepartment" Type="nvarchar" MaxLength="100" />
     <Property Name="ContactPosition" Type="nvarchar" MaxLength="20" />
     <Property Name="BpmNo" Type="varchar" MaxLength="50" Nullable="false" />
@@ -89,7 +90,7 @@
     <Property Name="DP" Type="nvarchar" MaxLength="1000" />
     <Property Name="DPlace" Type="nvarchar" MaxLength="1000" />
     <Property Name="Extend" Type="datetime" />
-    <Property Name="WP" Type="nvarchar" MaxLength="150" />
+    <Property Name="WP" Type="nvarchar" MaxLength="255" />
     <Property Name="CounterSign" Type="nvarchar" MaxLength="100" />
     <Property Name="TaxAmt" Type="int" />
     <Property Name="CloseDate" Type="datetime" />

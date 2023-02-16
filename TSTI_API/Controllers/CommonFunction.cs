@@ -266,9 +266,10 @@ namespace TSTI_API.Controllers
         /// <param name="CustomerID">客戶代號</param>
         /// <param name="CONTACTNAME">聯絡人姓名</param>        
         /// <param name="CONTACTTEL">聯絡人電話</param>
+        /// <param name="CONTACTMOBILE">聯絡人手機</param>
         /// <param name="CONTACTEMAIL">聯絡人Email</param>
         /// <returns></returns>
-        public List<PCustomerContact> findCONTACTINFO(string CustomerID, string CONTACTNAME,  string CONTACTTEL, string CONTACTEMAIL)
+        public List<PCustomerContact> findCONTACTINFO(string CustomerID, string CONTACTNAME, string CONTACTTEL, string CONTACTMOBILE, string CONTACTEMAIL)
         {
             var qPjRec = dbProxy.CUSTOMER_Contact.OrderByDescending(x => x.ModifiedDate).
                                                Where(x => (x.Disabled == null || x.Disabled != 1) && x.KNA1_KUNNR == CustomerID &&
@@ -276,22 +277,26 @@ namespace TSTI_API.Controllers
                                                           x.ContactAddress != "" && x.ContactPhone != "" &&
                                                           (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
                                                           (string.IsNullOrEmpty(CONTACTTEL) ? true : x.ContactPhone.Contains(CONTACTTEL)) &&
+                                                          (string.IsNullOrEmpty(CONTACTMOBILE) ? true : x.ContactMobile.Contains(CONTACTMOBILE)) &&
                                                           (string.IsNullOrEmpty(CONTACTEMAIL) ? true : x.ContactEmail.Contains(CONTACTEMAIL))).ToList();
 
             List<string> tTempList = new List<string>();
 
             string tTempValue = string.Empty;
+            string ContactMobile = string.Empty;
 
             List<PCustomerContact> liPCContact = new List<PCustomerContact>();
             if (qPjRec != null && qPjRec.Count() > 0)
             {
                 foreach (var prBean in qPjRec)
                 {
-                    tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + prBean.KNB1_BUKRS.Trim().Replace(" ", "") + "|" + prBean.ContactName.Trim().Replace(" ", "");
+                    tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + prBean.KNB1_BUKRS.Trim().Replace(" ", "") + "|" + prBean.ContactEmail.Trim().Replace(" ", "");
 
                     if (!tTempList.Contains(tTempValue)) //判斷客戶ID、公司別、聯絡人名姓名不重覆才要顯示
                     {
                         tTempList.Add(tTempValue);
+
+                        ContactMobile = string.IsNullOrEmpty(prBean.ContactMobile) ? "" : prBean.ContactMobile.Trim().Replace(" ", "");
 
                         PCustomerContact prDocBean = new PCustomerContact();
 
@@ -304,6 +309,7 @@ namespace TSTI_API.Controllers
                         prDocBean.Address = prBean.ContactAddress.Trim().Replace(" ", "");
                         prDocBean.Email = prBean.ContactEmail.Trim().Replace(" ", "");
                         prDocBean.Phone = prBean.ContactPhone.Trim().Replace(" ", "");
+                        prDocBean.Mobile = ContactMobile;
                         prDocBean.BPMNo = prBean.BpmNo.Trim().Replace(" ", "");
 
                         liPCContact.Add(prDocBean);
@@ -738,14 +744,14 @@ public string findEmployeeName(string keyword)
 
                                     if (ContractID >= 10506151 && ContractID != 10506152 && ContractID != 10506157) //新的用印申請單
                                     {
-                                        tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/ContractSeals/ContractSealsForm.aspx?FormNo=" + tBPMNO + " target=_blank";
+                                        tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/ContractSeals/ContractSealsForm.aspx?FormNo=" + tBPMNO;
                                     }
                                     else //舊的用印申請單
                                     {
-                                        tURL = "http://" + tURLName + "/ContractSeals/_layouts/FormServer.aspx?XmlLocation=%2fContractSeals%2fBPMContractSealsForm%2f" + tBPMNO + ".xml&ClientInstalled=true&DefaultItemOpen=1&source=/_layouts/TSTI.SharePoint.BPM/CloseWindow.aspx target=_blank";
+                                        tURL = "http://" + tURLName + "/ContractSeals/_layouts/FormServer.aspx?XmlLocation=%2fContractSeals%2fBPMContractSealsForm%2f" + tBPMNO + ".xml&ClientInstalled=true&DefaultItemOpen=1&source=/_layouts/TSTI.SharePoint.BPM/CloseWindow.aspx";
                                     }
 
-                                    cContractIDURL = "http://" + tSeverName + "/Spare/QueryContractInfo?CONTRACTID=" + cContractID + " target=_blank"; //合約編號URL
+                                    cContractIDURL = "http://" + tSeverName + "/Spare/QueryContractInfo?CONTRACTID=" + cContractID; //合約編號URL
                                 }
                                 catch (Exception ex)
                                 {
@@ -758,11 +764,11 @@ public string findEmployeeName(string keyword)
                             {
                                 if (tBPMNO.IndexOf("WTY") != -1)
                                 {
-                                    tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/Warranty/WarrantyForm.aspx?FormNo=" + tBPMNO + " target=_blank";
+                                    tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/Warranty/WarrantyForm.aspx?FormNo=" + tBPMNO;
                                 }
                                 else
                                 {
-                                    tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Form/Guarantee/GuaranteeForm.aspx?FormNo=" + tBPMNO + " target=_blank";
+                                    tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Form/Guarantee/GuaranteeForm.aspx?FormNo=" + tBPMNO;
                                 }
                             }
                             #endregion
@@ -802,6 +808,39 @@ public string findEmployeeName(string keyword)
         }
         #endregion
 
+        #region 傳入ERPID並回傳「中文姓名+英文姓名」，若有多筆以分號隔開
+        /// <summary>
+        /// 傳入ERPID並回傳「中文姓名+英文姓名」，若有多筆以分號隔開
+        /// </summary>
+        /// <param name="tERPIDList"></param>
+        /// <returns></returns>
+        public string findEmployeeCENameByERPID(string tERPIDList)
+        {
+            string reValue = string.Empty;
+
+            tERPIDList = string.IsNullOrEmpty(tERPIDList) ? "" : tERPIDList;
+
+            if (tERPIDList != "")
+            {
+                string[] AryERPID = tERPIDList.Split(';');
+
+                foreach(string tERPID in AryERPID)
+                {
+                    var bean = dbEIP.Person.FirstOrDefault(x => x.ERP_ID == tERPID);
+
+                    if (bean != null)
+                    {
+                        reValue += bean.Name2 + " " + bean.Name + ";";
+                    }
+                }
+
+                reValue = reValue.TrimEnd(';');
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得服務請求主檔資訊清單
         /// <summary>
         /// 取得服務請求主檔資訊清單
@@ -818,6 +857,8 @@ public string findEmployeeName(string keyword)
             string tSRTDESC = string.Empty;
             string tSTATUSDESC = string.Empty;
             string tSRREPORTUrl = string.Empty;
+            string tASSENGNAME = string.Empty;
+            string tTECHMAGNAME = string.Empty;
 
             var beansP = dbOne.TB_ONE_SRDetail_Product.Where(x => x.Disabled == 0 & x.cSerialID == IV_SERIAL);
 
@@ -860,6 +901,8 @@ public string findEmployeeName(string keyword)
 
                     tSTATUSDESC = findSysParameterDescription(pOperationID_GenerallySR, "OTHER", "T012", "SRSTATUS", bean.cStatus);
                     tSRREPORTUrl = findSRReportURL(tSRID);
+                    tASSENGNAME = findEmployeeCENameByERPID(bean.cAssEngineerID);
+                    tTECHMAGNAME = findEmployeeCENameByERPID(bean.cTechManagerID);
 
                     SRinfo.SRID = tSRID;
                     SRinfo.SRDESC = bean.cDesc;
@@ -871,9 +914,40 @@ public string findEmployeeName(string keyword)
                     SRinfo.SRREPORTUrl = tSRREPORTUrl;
                     SRinfo.MAINENGID = bean.cMainEngineerID;
                     SRinfo.MAINENGNAME = bean.cMainEngineerName;
+                    SRinfo.ASSENGNAME = tASSENGNAME;
+                    SRinfo.TECHMAGNAME = tTECHMAGNAME;
+
+                    QuerySRToList.Add(SRinfo);
+                }
+            }
+
+            return QuerySRToList;
+        }
+        #endregion
+
+        #region 服務請求客戶聯絡人資訊清單
+        /// <summary>
+        /// 服務請求客戶聯絡人資訊清單
+        /// </summary>
+        /// <param name="tSRIDList">服務請求ID清單</param>
+        /// <returns></returns>
+        public List<SRCONTACTINFO> findSRCONTACTList(List<string> tSRIDList)
+        {
+            List<SRCONTACTINFO> QuerySRToList = new List<SRCONTACTINFO>();     //查詢出來的清單            
+
+            foreach (string tSRID in tSRIDList)
+            {
+                var beans = dbOne.TB_ONE_SRDetail_Contact.Where(x => x.Disabled == 0 & x.cSRID == tSRID);
+
+                foreach (var bean in beans)
+                {
+                    SRCONTACTINFO SRinfo = new SRCONTACTINFO();
+
+                    SRinfo.SRID = bean.cSRID;
                     SRinfo.CONTNAME = bean.cContactName;
                     SRinfo.CONTADDR = bean.cContactAddress;
                     SRinfo.CONTTEL = bean.cContactPhone;
+                    SRinfo.CONTMOBILE = bean.cContactMobile;
                     SRinfo.CONTEMAIL = bean.cContactEmail;
 
                     QuerySRToList.Add(SRinfo);

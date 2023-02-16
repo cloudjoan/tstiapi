@@ -310,6 +310,9 @@
     <Compile Include="Models\TB_ONE_SRCustomerEmailMapping.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_ONE_SRDetail_Contact.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_ONE_SRDetail_PartsReplace.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>

@@ -24,6 +24,7 @@ namespace TSTI_API.Models
         public string ContactAddress { get; set; }
         public string ContactEmail { get; set; }
         public string ContactPhone { get; set; }
+        public string ContactMobile { get; set; }
         public string ContactDepartment { get; set; }
         public string ContactPosition { get; set; }
         public string BpmNo { get; set; }

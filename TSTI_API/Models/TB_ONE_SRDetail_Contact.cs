@@ -12,14 +12,12 @@ namespace TSTI_API.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TB_ONE_SRCustomerEmailMapping
+    public partial class TB_ONE_SRDetail_Contact
     {
         public int cID { get; set; }
-        public string cCustomerID { get; set; }
-        public string cCustomerName { get; set; }
-        public string cTeamID { get; set; }
-        public string cEmailID { get; set; }
+        public string cSRID { get; set; }
         public string cContactName { get; set; }
+        public string cContactAddress { get; set; }
         public string cContactPhone { get; set; }
         public string cContactMobile { get; set; }
         public string cContactEmail { get; set; }
