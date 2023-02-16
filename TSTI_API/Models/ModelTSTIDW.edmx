@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'BI.dbo.MART_AnalyseRevenueAll' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <EntityType Name="MART_AnalyseRevenueAll">
+          <Key>
+            <PropertyRef Name="Phase" />
+            <PropertyRef Name="DocNo" />
+            <PropertyRef Name="RenewStatus" />
+            <PropertyRef Name="InsertTime" />
+          </Key>
+          <Property Name="DeptID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Comp" Type="nvarchar" MaxLength="5" />
+          <Property Name="DeptCenter" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeptDivision" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeptDepartment" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeptSection" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProfitCenter" Type="nvarchar" MaxLength="10" />
+          <Property Name="Employee" Type="nvarchar" MaxLength="16" />
+          <Property Name="EmployeeID" Type="nvarchar" MaxLength="8" />
+          <Property Name="Phase" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="DocNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="InternalNo" Type="nvarchar" MaxLength="20" />
+          <Property Name="project" Type="nvarchar" MaxLength="200" />
+          <Property Name="OppNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="SOType" Type="nvarchar" MaxLength="20" />
+          <Property Name="COInvoiceNo" Type="nvarchar" MaxLength="10" />
+          <Property Name="COInvoiceItem" Type="nvarchar" MaxLength="16" />
+          <Property Name="COSONo" Type="nvarchar" MaxLength="10" />
+          <Property Name="COSOItem" Type="nvarchar" MaxLength="16" />
+          <Property Name="InvoiceNumber" Type="nvarchar" MaxLength="2000" />
+          <Property Name="RenewStatus" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="MaterialAvailableDate" Type="datetime" />
+          <Property Name="InvoiceDate" Type="datetime" />
+          <Property Name="YearMonth" Type="nvarchar" MaxLength="10" />
+          <Property Name="CustomerID" Type="nvarchar" MaxLength="10" />
+          <Property Name="Customer" Type="nvarchar" MaxLength="35" />
+          <Property Name="Location" Type="varchar" MaxLength="4" />
+          <Property Name="ProdID" Type="nvarchar" MaxLength="18" />
+          <Property Name="Product" Type="nvarchar" MaxLength="40" />
+          <Property Name="POWarranty" Type="nvarchar" MaxLength="200" />
+          <Property Name="SOWarranty" Type="nvarchar" MaxLength="200" />
+          <Property Name="ProdHierarchy" Type="nvarchar" MaxLength="18" />
+          <Property Name="ProdHierarchyBrad" Type="nvarchar" MaxLength="3" />
+          <Property Name="DeptAnnualTargetPK" Type="nvarchar" MaxLength="60" />
+          <Property Name="EmpAnnualTargetPK" Type="nvarchar" MaxLength="22" />
+          <Property Name="PMTargetPK" Type="nvarchar" MaxLength="46" />
+          <Property Name="Quantity" Type="decimal" Precision="9" Scale="0" />
+          <Property Name="Revenue" Type="decimal" Precision="9" Scale="0" />
+          <Property Name="Profit" Type="decimal" Precision="10" Scale="0" />
+          <Property Name="InsertTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="BIModelStoreContainer">
+          <EntitySet Name="MART_AnalyseRevenueAll" EntityType="Self.MART_AnalyseRevenueAll" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MART_AnalyseRevenueAll].[DeptID] AS [DeptID], 
+    [MART_AnalyseRevenueAll].[Comp] AS [Comp], 
+    [MART_AnalyseRevenueAll].[DeptCenter] AS [DeptCenter], 
+    [MART_AnalyseRevenueAll].[DeptDivision] AS [DeptDivision], 
+    [MART_AnalyseRevenueAll].[DeptDepartment] AS [DeptDepartment], 
+    [MART_AnalyseRevenueAll].[DeptSection] AS [DeptSection], 
+    [MART_AnalyseRevenueAll].[ProfitCenter] AS [ProfitCenter], 
+    [MART_AnalyseRevenueAll].[Employee] AS [Employee], 
+    [MART_AnalyseRevenueAll].[EmployeeID] AS [EmployeeID], 
+    [MART_AnalyseRevenueAll].[Phase] AS [Phase], 
+    [MART_AnalyseRevenueAll].[DocNo] AS [DocNo], 
+    [MART_AnalyseRevenueAll].[InternalNo] AS [InternalNo], 
+    [MART_AnalyseRevenueAll].[project] AS [project], 
+    [MART_AnalyseRevenueAll].[OppNo] AS [OppNo], 
+    [MART_AnalyseRevenueAll].[SOType] AS [SOType], 
+    [MART_AnalyseRevenueAll].[COInvoiceNo] AS [COInvoiceNo], 
+    [MART_AnalyseRevenueAll].[COInvoiceItem] AS [COInvoiceItem], 
+    [MART_AnalyseRevenueAll].[COSONo] AS [COSONo], 
+    [MART_AnalyseRevenueAll].[COSOItem] AS [COSOItem], 
+    [MART_AnalyseRevenueAll].[InvoiceNumber] AS [InvoiceNumber], 
+    [MART_AnalyseRevenueAll].[RenewStatus] AS [RenewStatus], 
+    [MART_AnalyseRevenueAll].[MaterialAvailableDate] AS [MaterialAvailableDate], 
+    [MART_AnalyseRevenueAll].[InvoiceDate] AS [InvoiceDate], 
+    [MART_AnalyseRevenueAll].[YearMonth] AS [YearMonth], 
+    [MART_AnalyseRevenueAll].[CustomerID] AS [CustomerID], 
+    [MART_AnalyseRevenueAll].[Customer] AS [Customer], 
+    [MART_AnalyseRevenueAll].[Location] AS [Location], 
+    [MART_AnalyseRevenueAll].[ProdID] AS [ProdID], 
+    [MART_AnalyseRevenueAll].[Product] AS [Product], 
+    [MART_AnalyseRevenueAll].[POWarranty] AS [POWarranty], 
+    [MART_AnalyseRevenueAll].[SOWarranty] AS [SOWarranty], 
+    [MART_AnalyseRevenueAll].[ProdHierarchy] AS [ProdHierarchy], 
+    [MART_AnalyseRevenueAll].[ProdHierarchyBrad] AS [ProdHierarchyBrad], 
+    [MART_AnalyseRevenueAll].[DeptAnnualTargetPK] AS [DeptAnnualTargetPK], 
+    [MART_AnalyseRevenueAll].[EmpAnnualTargetPK] AS [EmpAnnualTargetPK], 
+    [MART_AnalyseRevenueAll].[PMTargetPK] AS [PMTargetPK], 
+    [MART_AnalyseRevenueAll].[Quantity] AS [Quantity], 
+    [MART_AnalyseRevenueAll].[Revenue] AS [Revenue], 
+    [MART_AnalyseRevenueAll].[Profit] AS [Profit], 
+    [MART_AnalyseRevenueAll].[InsertTime] AS [InsertTime]
+    FROM [dbo].[MART_AnalyseRevenueAll] AS [MART_AnalyseRevenueAll]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="MART_AnalyseRevenueAll">
+          <Key>
+            <PropertyRef Name="Phase" />
+            <PropertyRef Name="DocNo" />
+            <PropertyRef Name="RenewStatus" />
+            <PropertyRef Name="InsertTime" />
+          </Key>
+          <Property Name="DeptID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Comp" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="DeptCenter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeptDivision" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeptDepartment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeptSection" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProfitCenter" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Employee" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeID" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="Phase" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DocNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="InternalNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="project" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OppNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SOType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="COInvoiceNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="COInvoiceItem" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="COSONo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="COSOItem" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceNumber" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="RenewStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaterialAvailableDate" Type="DateTime" Precision="3" />
+          <Property Name="InvoiceDate" Type="DateTime" Precision="3" />
+          <Property Name="YearMonth" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Customer" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="ProdID" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="Product" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="POWarranty" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SOWarranty" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ProdHierarchy" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="ProdHierarchyBrad" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="DeptAnnualTargetPK" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="EmpAnnualTargetPK" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="PMTargetPK" Type="String" MaxLength="46" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Decimal" Precision="9" Scale="0" />
+          <Property Name="Revenue" Type="Decimal" Precision="9" Scale="0" />
+          <Property Name="Profit" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="InsertTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="BIEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MART_AnalyseRevenueAll" EntityType="Self.MART_AnalyseRevenueAll" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BIModelStoreContainer" CdmEntityContainer="BIEntities">
+          <EntitySetMapping Name="MART_AnalyseRevenueAll">
+            <EntityTypeMapping TypeName="BIModel.MART_AnalyseRevenueAll">
+              <MappingFragment StoreEntitySet="MART_AnalyseRevenueAll">
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="Comp" ColumnName="Comp" />
+                <ScalarProperty Name="DeptCenter" ColumnName="DeptCenter" />
+                <ScalarProperty Name="DeptDivision" ColumnName="DeptDivision" />
+                <ScalarProperty Name="DeptDepartment" ColumnName="DeptDepartment" />
+                <ScalarProperty Name="DeptSection" ColumnName="DeptSection" />
+                <ScalarProperty Name="ProfitCenter" ColumnName="ProfitCenter" />
+                <ScalarProperty Name="Employee" ColumnName="Employee" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="Phase" ColumnName="Phase" />
+                <ScalarProperty Name="DocNo" ColumnName="DocNo" />
+                <ScalarProperty Name="InternalNo" ColumnName="InternalNo" />
+                <ScalarProperty Name="project" ColumnName="project" />
+                <ScalarProperty Name="OppNo" ColumnName="OppNo" />
+                <ScalarProperty Name="SOType" ColumnName="SOType" />
+                <ScalarProperty Name="COInvoiceNo" ColumnName="COInvoiceNo" />
+                <ScalarProperty Name="COInvoiceItem" ColumnName="COInvoiceItem" />
+                <ScalarProperty Name="COSONo" ColumnName="COSONo" />
+                <ScalarProperty Name="COSOItem" ColumnName="COSOItem" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="RenewStatus" ColumnName="RenewStatus" />
+                <ScalarProperty Name="MaterialAvailableDate" ColumnName="MaterialAvailableDate" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="YearMonth" ColumnName="YearMonth" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="ProdID" ColumnName="ProdID" />
+                <ScalarProperty Name="Product" ColumnName="Product" />
+                <ScalarProperty Name="POWarranty" ColumnName="POWarranty" />
+                <ScalarProperty Name="SOWarranty" ColumnName="SOWarranty" />
+                <ScalarProperty Name="ProdHierarchy" ColumnName="ProdHierarchy" />
+                <ScalarProperty Name="ProdHierarchyBrad" ColumnName="ProdHierarchyBrad" />
+                <ScalarProperty Name="DeptAnnualTargetPK" ColumnName="DeptAnnualTargetPK" />
+                <ScalarProperty Name="EmpAnnualTargetPK" ColumnName="EmpAnnualTargetPK" />
+                <ScalarProperty Name="PMTargetPK" ColumnName="PMTargetPK" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Revenue" ColumnName="Revenue" />
+                <ScalarProperty Name="Profit" ColumnName="Profit" />
+                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -17,7 +17,8 @@ namespace TSTI_API.Controllers
         TSTIONEEntities dbOne = new TSTIONEEntities();
         MCSWorkflowEntities dbEIP = new MCSWorkflowEntities();
         ERP_PROXY_DBEntities dbProxy = new ERP_PROXY_DBEntities();
-        PSIPEntities dbPSIP = new PSIPEntities();        
+        PSIPEntities dbPSIP = new PSIPEntities();
+        BIEntities dbBI = new BIEntities();
 
         public CommonFunction()
         {
@@ -546,7 +547,7 @@ namespace TSTI_API.Controllers
             if (IV_SERIAL != "")
             {
                 var bean = dbProxy.STOCKALL.FirstOrDefault(x => x.IV_SERIAL == IV_SERIAL.Trim());
-
+                
                 if (bean != null)
                 {
                     ProBean.IV_SERIAL = bean.IV_SERIAL;
@@ -554,7 +555,7 @@ namespace TSTI_API.Controllers
                     ProBean.Product = bean.Product;
                     ProBean.MFRPN = findMFRPNumber(bean.ProdID);
                     ProBean.InstallNo = findInstallNumber(IV_SERIAL);
-                }
+                }              
             }
 
             return ProBean;

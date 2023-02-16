@@ -1462,6 +1462,22 @@ namespace TSTI_API.Controllers
         {
             SERIALSEARCH_OUTPUT SROUT = new SERIALSEARCH_OUTPUT();
 
+            bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
+            string tURLName = string.Empty;
+            string tSeverName = string.Empty;
+            string[] ArySERIAL = new string[1];
+
+            if (tIsFormal)
+            {
+                tURLName = "tsti-bpm01.etatung.com.tw";
+                tSeverName = "psip-prd-ap";
+            }
+            else
+            {
+                tURLName = "bpm-qas";
+                tSeverName = "psip-qas";
+            }
+
             #region 取得產品序號資訊
             var ProBean = CMF.findMaterialBySerial(beanIN.IV_SERIAL.Trim());
 
@@ -1477,38 +1493,22 @@ namespace TSTI_API.Controllers
             }
             else
             {
-                SROUT.EV_SERIAL = "";
+                SROUT.EV_SERIAL = beanIN.IV_SERIAL.Trim();
                 SROUT.EV_PRDID = "";
                 SROUT.EV_PRDNAME = "";
                 SROUT.EV_PRDNUMBER = "";
                 SROUT.EV_INSTALLID = "";
-                SROUT.EV_MSGT = "E";
-                SROUT.EV_MSG = "查無該序號相關資訊！";
+                SROUT.EV_MSGT = "Y";
+                SROUT.EV_MSG = "";
             }
             #endregion
             
-            if (ProBean.IV_SERIAL != null)
+            if (beanIN.IV_SERIAL.Trim() != "")
             {
                 #region 保固SLA資訊(List)
-                List<SRWarranty> QueryToList = new List<SRWarranty>();    //查詢出來的清單
+                List<SRWarranty> QueryToList = new List<SRWarranty>();    //查詢出來的清單                
 
-                bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
-                string tURLName = string.Empty;
-                string tSeverName = string.Empty;
-                string[] ArySERIAL = new string[1];
-
-                if (tIsFormal)
-                {
-                    tURLName = "tsti-bpm01.etatung.com.tw";
-                    tSeverName = "psip-prd-ap";
-                }
-                else
-                {
-                    tURLName = "bpm-qas";
-                    tSeverName = "psip-qas";
-                }
-
-                ArySERIAL[0] = ProBean.IV_SERIAL;
+                ArySERIAL[0] = beanIN.IV_SERIAL.Trim();
 
                 QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(ArySERIAL, tURLName, tSeverName);
                 QueryToList = QueryToList.OrderBy(x => x.SERIALID).ThenByDescending(x => x.WTYEDATE).ToList();
@@ -1519,7 +1519,7 @@ namespace TSTI_API.Controllers
                 #region 服務請求主檔資訊清單
                 List<SRIDINFO> QuerySRToList = new List<SRIDINFO>();    //查詢出來的清單
 
-                QuerySRToList = CMF.findSRMAINList(pOperationID_GenerallySR, ProBean.IV_SERIAL);
+                QuerySRToList = CMF.findSRMAINList(pOperationID_GenerallySR, beanIN.IV_SERIAL.Trim());
 
                 SROUT.SRMAIN_LIST = QuerySRToList;
                 #endregion

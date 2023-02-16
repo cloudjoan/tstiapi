@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="MART_AnalyseRevenueAll">
+    <Key>
+      <PropertyRef Name="Phase" />
+      <PropertyRef Name="DocNo" />
+      <PropertyRef Name="RenewStatus" />
+      <PropertyRef Name="InsertTime" />
+    </Key>
+    <Property Name="DeptID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Comp" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="DeptCenter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptDivision" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptDepartment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DeptSection" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfitCenter" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Employee" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="EmployeeID" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+    <Property Name="Phase" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DocNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="InternalNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="project" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="OppNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SOType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="COInvoiceNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="COInvoiceItem" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="COSONo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="COSOItem" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="InvoiceNumber" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="RenewStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MaterialAvailableDate" Type="DateTime" Precision="3" />
+    <Property Name="InvoiceDate" Type="DateTime" Precision="3" />
+    <Property Name="YearMonth" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Customer" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+    <Property Name="Location" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+    <Property Name="ProdID" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+    <Property Name="Product" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="POWarranty" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="SOWarranty" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ProdHierarchy" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+    <Property Name="ProdHierarchyBrad" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="DeptAnnualTargetPK" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+    <Property Name="EmpAnnualTargetPK" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+    <Property Name="PMTargetPK" Type="String" MaxLength="46" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="Decimal" Precision="9" Scale="0" />
+    <Property Name="Revenue" Type="Decimal" Precision="9" Scale="0" />
+    <Property Name="Profit" Type="Decimal" Precision="10" Scale="0" />
+    <Property Name="InsertTime" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityContainer Name="BIEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="MART_AnalyseRevenueAll" EntityType="Self.MART_AnalyseRevenueAll" />
+  </EntityContainer>
+</Schema>

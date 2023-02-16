@@ -217,6 +217,9 @@
     <Compile Include="Models\F4501.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MART_AnalyseRevenueAll.cs">
+      <DependentUpon>ModelTSTIDW.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MATERIAL.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
@@ -279,6 +282,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelTest.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelTSTIDW.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelTSTIDW.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelTSTIDW.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelTSTIDW.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelTSTIDW.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelTSTIDW.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ModelTSTIONE.Context.cs">
       <AutoGen>True</AutoGen>
@@ -403,6 +421,16 @@
       <DependentUpon>ModelTest.edmx</DependentUpon>
       <LastGenOutput>ModelTest.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\ModelTSTIDW.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelTSTIDW.edmx</DependentUpon>
+      <LastGenOutput>ModelTSTIDW.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelTSTIDW.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelTSTIDW.edmx</DependentUpon>
+      <LastGenOutput>ModelTSTIDW.cs</LastGenOutput>
+    </Content>
     <Content Include="Models\ModelTSTIONE.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelTSTIONE.edmx</DependentUpon>
@@ -468,6 +496,13 @@
     </EntityDeploy>
     <Content Include="Models\ModelPSIP.edmx.diagram">
       <DependentUpon>ModelPSIP.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\ModelTSTIDW.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelTSTIDW.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelTSTIDW.edmx.diagram">
+      <DependentUpon>ModelTSTIDW.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
