@@ -218,8 +218,8 @@ namespace TSTI_API.Controllers
             string CSqpersonName = CMF.findSQPersonName(IV_SQEMPID);
             string CMainEngineerName = CMF.findEmployeeName(IV_EMPNO);
 
-            CommonFunction.EmployeeBean EmpBean = new CommonFunction.EmployeeBean();
-            EmpBean = CMF.findEmployeeInfo(IV_LOGINACCOUNT);
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByAccount(IV_LOGINACCOUNT);
 
             if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
             {
@@ -1303,8 +1303,8 @@ namespace TSTI_API.Controllers
             string IV_LOGINACCOUNT = string.IsNullOrEmpty(beanIN.IV_LOGINACCOUNT) ? "" : beanIN.IV_LOGINACCOUNT.Trim();
             string IV_ISDELETE = string.IsNullOrEmpty(beanIN.IV_ISDELETE) ? "" : beanIN.IV_ISDELETE.Trim();
 
-            CommonFunction.EmployeeBean EmpBean = new CommonFunction.EmployeeBean();
-            EmpBean = CMF.findEmployeeInfo(IV_LOGINACCOUNT);
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByAccount(IV_LOGINACCOUNT);
 
             if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
             {
@@ -1437,7 +1437,7 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑法人客戶聯絡人資料/修改 ↑↑↑↑↑-----  
 
-        #region -----↓↓↓↓↓序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務請求資訊(List)) ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務請求資訊(List)、服務請求客戶聯絡人資訊(List)) ↓↓↓↓↓-----
 
         #region 查詢序號相關資訊接口
         [HttpPost]
@@ -1593,7 +1593,134 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑序號查詢接口 ↑↑↑↑↑-----  
+        #endregion -----↑↑↑↑↑序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務請求資訊(List)、服務請求客戶聯絡人資訊(List)) ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓服務待辦清單查詢接口 ↓↓↓↓↓-----        
+
+        #region 查詢服務待辦清單接口
+        [HttpPost]
+        public ActionResult API_SRTODOLIST_SEARCH(SRTODOLIST_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_EMPNO": "10000975"
+            //}
+            #endregion
+
+            SRTODOLIST_OUTPUT ListOUT = new SRTODOLIST_OUTPUT();
+
+            ListOUT = SRTODOLIST_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得服務待辦清單
+        private SRTODOLIST_OUTPUT SRTODOLIST_GET(SRTODOLIST_INPUT beanIN)
+        {
+            SRTODOLIST_OUTPUT OUTBean = new SRTODOLIST_OUTPUT();
+
+            string tERPID = string.Empty;
+
+            try
+            {
+                #region 取得登入人員資訊
+                tERPID = beanIN.IV_EMPNO;
+
+                EmployeeBean EmpBean = new EmployeeBean();
+                EmpBean = CMF.findEmployeeInfoByERPID(tERPID);
+                #endregion                
+
+                #region 一般服務
+                //取得登入人員所負責的服務團隊
+                List<string> tSRTeamList = CMF.findSRTeamMappingList(EmpBean.CostCenterID, EmpBean.DepartmentNO);
+
+                //取得登入人員所有要負責的SRID                
+                List<string[]> tList = CMF.findSRIDList(pOperationID_GenerallySR, EmpBean.BUKRS, EmpBean.IsManager, EmpBean.EmployeeERPID, tSRTeamList, "61");                
+                #endregion               
+
+                if (tList.Count == 0)
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無服務待辦清單，請重新查詢！";
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    #region 取得員工資料List
+                    List<SRTODOLISTINFO> tTODOList = new List<SRTODOLISTINFO>();
+
+                    foreach (string[] tAry in tList)
+                    {
+                        if (EmpBean.IsManager && tAry[10] != "E0001")
+                        {
+                            //判斷是主管且【不為L2工程師】且【也不為技術主管】才跳過
+                            if (tERPID != tAry[6] && tAry[8].IndexOf(tERPID) == -1)
+                            {
+                                continue;
+                            }
+                        }
+
+                        SRTODOLISTINFO beanTODO = new SRTODOLISTINFO();
+
+                        beanTODO.SRID = tAry[0];
+                        beanTODO.CUSTOMERNAME = tAry[1];
+                        beanTODO.REPAIRNAME = tAry[2];
+                        beanTODO.SRDESC = tAry[3];                        
+                        beanTODO.PATHWAY = tAry[4];
+                        beanTODO.SRTYPE = tAry[5];
+                        beanTODO.MAINENGNAME = tAry[7];
+                        beanTODO.MODIFDATE = tAry[9];
+                        beanTODO.STATUSDESC = tAry[11];
+
+                        tTODOList.Add(beanTODO);
+                    }
+
+                    OUTBean.SRTODOLIST_LIST = tTODOList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "SRTODOLIST_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢服務待辦清單INPUT資訊
+        /// <summary>查詢服務待辦清單INPUT資訊</summary>
+        public struct SRTODOLIST_INPUT
+        {
+            /// <summary>員工編號(ERPID)</summary>
+            public string IV_EMPNO { get; set; }
+        }
+        #endregion
+
+        #region 查詢服務待辦清單OUTPUT資訊
+        /// <summary>查詢服務待辦清單OUTPUT資訊</summary>
+        public struct SRTODOLIST_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>服務待辦清單</summary>
+            public List<SRTODOLISTINFO> SRTODOLIST_LIST { get; set; }
+        }        
+        #endregion
+
+        #endregion -----↑↑↑↑↑服務待辦清單查詢接口 ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓員工資料接口 ↓↓↓↓↓-----        
 
@@ -1624,7 +1751,7 @@ namespace TSTI_API.Controllers
             {
                 string EMPCOMPID = "T012";
 
-                var tList = CMF.findEMPLOYEEINFO(beanIN.IV_EMPNAME.Trim());
+                var tList = CMF.findEMPINFO(beanIN.IV_EMPNAME.Trim());
 
                 if (tList.Count == 0)
                 {
@@ -2449,6 +2576,66 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑CALL RFC接口 ↑↑↑↑↑-----
     }
+
+    #region 人員資訊相關
+    public struct EmployeeBean
+    {
+        /// <summary>人員帳號</summary>
+        public string EmployeeNO { get; set; }
+        /// <summary>ERPID</summary>
+        public string EmployeeERPID { get; set; }
+        /// <summary>中文姓名</summary>
+        public string EmployeeCName { get; set; }
+        /// <summary>英文姓名</summary>
+        public string EmployeeEName { get; set; }
+        /// <summary>工作地點</summary>
+        public string WorkPlace { get; set; }
+        /// <summary>分機</summary>
+        public string PhoneExt { get; set; }
+        /// <summary>公司別(Comp-1、Comp-2、Comp-3、Comp-4)</summary>
+        public string CompanyCode { get; set; }
+        /// <summary>工廠別(T012、T016、C069、T022_</summary>
+        public string BUKRS { get; set; }
+        /// <summary>部門代號</summary>
+        public string DepartmentNO { get; set; }
+        /// <summary>部門名稱</summary>
+        public string DepartmentName { get; set; }
+        /// <summary>利潤中心</summary>
+        public string ProfitCenterID { get; set; }
+        /// <summary>成本中心</summary>
+        public string CostCenterID { get; set; }
+        /// <summary>人員Email</summary>
+        public string EmployeeEmail { get; set; }
+        /// <summary>人員ID(Person資料表ID)</summary>
+        public string EmployeePersonID { get; set; }
+        /// <summary>是否為主管(true.是 false.否)</summary>
+        public bool IsManager { get; set; }
+    }
+    #endregion
+
+    #region 服務待辦清單資訊
+    public class SRTODOLISTINFO
+    {
+        /// <summary>服務請求ID</summary>
+        public string SRID { get; set; }
+        /// <summary>服務請求說明</summary>
+        public string SRDESC { get; set; }
+        /// <summary>客戶</summary>
+        public string CUSTOMERNAME { get; set; }
+        /// <summary>客戶報修人</summary>
+        public string REPAIRNAME { get; set; }
+        /// <summary>報修管道</summary>
+        public string PATHWAY { get; set; }
+        /// <summary>報修類別</summary>
+        public string SRTYPE { get; set; }
+        /// <summary>L2工程師</summary>
+        public string MAINENGNAME { get; set; }
+        /// <summary>最後編輯日期</summary>
+        public string MODIFDATE { get; set; }
+        /// <summary>狀態</summary>
+        public string STATUSDESC { get; set; }
+    }
+    #endregion
 
     #region 保固SLA資訊
     /// <summary>保固SLA資訊</summary>
