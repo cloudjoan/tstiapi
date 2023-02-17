@@ -1,113 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityType Name="TB_ONE_LOG">
-    <Key>
-      <PropertyRef Name="cID" />
-    </Key>
-    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="cSRID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="EventName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="Log" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="TB_ONE_SRCustomerEmailMapping">
-    <Key>
-      <PropertyRef Name="cID" />
-    </Key>
-    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="cCustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cCustomerName" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
-    <Property Name="cTeamID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
-    <Property Name="cEmailID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Disabled" Type="Int32" />
-    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cContactName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="cContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="TB_ONE_SRIDFormat">
-    <Key>
-      <PropertyRef Name="cID" />
-      <PropertyRef Name="cTitle" />
-      <PropertyRef Name="cYear" />
-      <PropertyRef Name="cMonth" />
-      <PropertyRef Name="cDay" />
-    </Key>
-    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="cTitle" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="cYear" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="cMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="cDay" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="cNO" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-  </EntityType>
-  <EntityType Name="TB_ONE_SRRepairType">
-    <Key>
-      <PropertyRef Name="cID" />
-    </Key>
-    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="cKIND_KEY" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cUP_KIND_KEY" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cKIND_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cKIND_NAME_EN_US" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="cKIND_LEVEL" Type="Int32" />
-    <Property Name="Disabled" Type="Int32" />
-    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="TB_ONE_SRSQPerson">
-    <Key>
-      <PropertyRef Name="cID" />
-    </Key>
-    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="cFirstKEY" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-    <Property Name="cSecondKEY" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-    <Property Name="cThirdKEY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="cNO" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-    <Property Name="cContent" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cEngineerID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cEngineerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="cFullKEY" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
-    <Property Name="cFullNAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="Disabled" Type="Int32" />
-    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="TB_ONE_SRTeamMapping">
-    <Key>
-      <PropertyRef Name="cID" />
-    </Key>
-    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="cTeamNewID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="cTeamNewName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cTeamOldID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="cTeamOldName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Disabled" Type="Int32" />
-    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-  </EntityType>
   <EntityContainer Name="TSTIONEEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="TB_ONE_LOG" EntityType="Self.TB_ONE_LOG" />
-    <EntitySet Name="TB_ONE_SRCustomerEmailMapping" EntityType="Self.TB_ONE_SRCustomerEmailMapping" />
-    <EntitySet Name="TB_ONE_SRIDFormat" EntityType="Self.TB_ONE_SRIDFormat" />
-    <EntitySet Name="TB_ONE_SRRepairType" EntityType="Self.TB_ONE_SRRepairType" />
-    <EntitySet Name="TB_ONE_SRSQPerson" EntityType="Self.TB_ONE_SRSQPerson" />
-    <EntitySet Name="TB_ONE_SRTeamMapping" EntityType="Self.TB_ONE_SRTeamMapping" />
+    <EntitySet Name="TB_ONE_SRDetail_Contact" EntityType="Model.TB_ONE_SRDetail_Contact" />
     <EntitySet Name="TB_ONE_SRDetail_PartsReplace" EntityType="Model.TB_ONE_SRDetail_PartsReplace" />
     <EntitySet Name="TB_ONE_SRDetail_Product" EntityType="Model.TB_ONE_SRDetail_Product" />
     <EntitySet Name="TB_ONE_SRDetail_Record" EntityType="Model.TB_ONE_SRDetail_Record" />
     <EntitySet Name="TB_ONE_SRDetail_Warranty" EntityType="Model.TB_ONE_SRDetail_Warranty" />
     <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
+    <EntitySet Name="TB_ONE_LOG" EntityType="Model.TB_ONE_LOG" />
+    <EntitySet Name="TB_ONE_SRCustomerEmailMapping" EntityType="Model.TB_ONE_SRCustomerEmailMapping" />
+    <EntitySet Name="TB_ONE_SRIDFormat" EntityType="Model.TB_ONE_SRIDFormat" />
+    <EntitySet Name="TB_ONE_SRRepairType" EntityType="Model.TB_ONE_SRRepairType" />
+    <EntitySet Name="TB_ONE_SRSQPerson" EntityType="Model.TB_ONE_SRSQPerson" />
+    <EntitySet Name="TB_ONE_SRTeamMapping" EntityType="Model.TB_ONE_SRTeamMapping" />
   </EntityContainer>
+  <EntityType Name="TB_ONE_SRDetail_Contact">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cSRID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cContactName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cContactAddress" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
+    <Property Name="cContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContactMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Disabled" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
   <EntityType Name="TB_ONE_SRDetail_PartsReplace">
     <Key>
       <PropertyRef Name="cID" />
@@ -187,6 +110,7 @@
     <Property Name="cContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="cBPMFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="cAdvice" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="cSubContractID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="cUsed" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -215,20 +139,114 @@
     <Property Name="cRepairName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
     <Property Name="cRepairAddress" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
     <Property Name="cRepairPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cRepairMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="cRepairEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="cContactName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="cContactAddress" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
-    <Property Name="cContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="cTeamID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="cMainEngineerID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="cMainEngineerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
     <Property Name="cAssEngineerID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cTechManagerID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="cSQPersonID" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
     <Property Name="cSQPersonName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="cSalesID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="cSalesName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
     <Property Name="cSystemGUID" Type="Guid" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_ONE_LOG">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cSRID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="EventName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Log" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRCustomerEmailMapping">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cCustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cCustomerName" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+    <Property Name="cTeamID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="cEmailID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContactName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContactMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Disabled" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRIDFormat">
+    <Key>
+      <PropertyRef Name="cID" />
+      <PropertyRef Name="cTitle" />
+      <PropertyRef Name="cYear" />
+      <PropertyRef Name="cMonth" />
+      <PropertyRef Name="cDay" />
+    </Key>
+    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cTitle" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="cYear" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+    <Property Name="cMonth" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="cDay" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="cNO" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRRepairType">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cKIND_KEY" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cUP_KIND_KEY" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cKIND_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cKIND_NAME_EN_US" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="cKIND_LEVEL" Type="Int32" />
+    <Property Name="Disabled" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRSQPerson">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cFirstKEY" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cSecondKEY" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cThirdKEY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="cNO" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Name="cContent" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cEngineerID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cEngineerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cFullKEY" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+    <Property Name="cFullNAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Disabled" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRTeamMapping">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cTeamNewID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="cTeamNewName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cTeamOldID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="cTeamOldName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Disabled" Type="Int32" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />

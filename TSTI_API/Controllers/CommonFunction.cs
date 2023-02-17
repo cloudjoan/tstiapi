@@ -718,8 +718,9 @@ public string findEmployeeName(string keyword)
         /// <param name="ArySERIAL">序號Array</param>        
         /// <param name="tURLName">BPM站台名稱</param>
         /// <param name="tSeverName">PSIP站台名稱</param>
+        /// <param name="tAPIURLName">API站台名稱</param>
         /// <returns></returns>
-        public List<SRWarranty> ZFM_TICC_SERIAL_SEARCHWTYList(string[] ArySERIAL, string tURLName, string tSeverName)
+        public List<SRWarranty> ZFM_TICC_SERIAL_SEARCHWTYList(string[] ArySERIAL, string tURLName, string tSeverName, string tAPIURLName)
         {
             List<SRWarranty> QueryToList = new List<SRWarranty>();
 
@@ -793,7 +794,7 @@ public string findEmployeeName(string keyword)
                             if (cContractID != "")
                             {
                                 tBPMNO = findContractSealsFormNo(cContractID);
-                                cSUB_CONTRACTID = findContractSealsOBJSubNo(cContractID);
+                                cSUB_CONTRACTID = findContractSealsOBJSubNo(tAPIURLName, cContractID);
 
                                 try
                                 {
@@ -1069,14 +1070,16 @@ public string findEmployeeName(string keyword)
         /// <summary>
         /// 傳入合約編號並取得CRM合約標的的下包文件編號
         /// </summary>
+        /// <param name="tAPIURLName">API站台名稱</param>
         /// <param name="NO">合約編號</param>
         /// <returns></returns>
-        public string findContractSealsOBJSubNo(string NO)
+        public string findContractSealsOBJSubNo(string tAPIURLName, string NO)
         {
             string reValue = string.Empty;
             string SUB_CONTRACTID = string.Empty;
+            string tURL = tAPIURLName + "/API/API_CONTRACTOBJINFO_GET";
 
-            var client = new RestClient("http://localhost:32603/API/API_CONTRACTOBJINFO_GET");
+            var client = new RestClient(tURL);
 
             if (NO != null)
             {
