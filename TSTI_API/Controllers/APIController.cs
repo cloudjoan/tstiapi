@@ -528,6 +528,10 @@ namespace TSTI_API.Controllers
                         SROUT.EV_SRID = pSRID;
                         SROUT.EV_MSGT = "Y";
                         SROUT.EV_MSG = "";
+
+                        #region 寄送Mail通知
+                        //CMF.SetSRMailContent(pOperationID_GenerallySR, EmpBean.BUKRS, pSRID, pLoginName);
+                        #endregion
                     }
                 }
                 else
@@ -949,10 +953,10 @@ namespace TSTI_API.Controllers
         //public CUSTOMERINFO_OUTPUT GetAPI_CUSTOMERINFO_GET(CUSTOMERINFO_INPUT beanIN)
         //{
         //    CUSTOMERINFO_OUTPUT OUTBean = new CUSTOMERINFO_OUTPUT();
-           
+
         //    try
         //    {
-        //        var client = new RestClient("http://localhost:32603/API/API_CUSTOMERINFO_GET");  //測試用            
+        //        var client = new RestClient("http://api-qas.etatung.com/API/API_CUSTOMERINFO_GET");  //測試用            
 
         //        var request = new RestRequest();
         //        request.Method = RestSharp.Method.Post;
@@ -990,7 +994,7 @@ namespace TSTI_API.Controllers
         //            }
 
         //            OUTBean.CUSTOMERINFO_LIST = tCustList;
-        //        }                
+        //        }
         //        #endregion
         //    }
         //    catch (Exception ex)
@@ -2578,7 +2582,7 @@ namespace TSTI_API.Controllers
         }
         #endregion        
 
-        #endregion -----↑↑↑↑↑CALL RFC接口 ↑↑↑↑↑-----
+        #endregion -----↑↑↑↑↑CALL RFC接口 ↑↑↑↑↑-----        
     }
 
     #region 人員資訊相關
@@ -2709,6 +2713,51 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
+    #region 服務請求主檔資訊(For Mail)
+    /// <summary>服務請求主檔資訊(For Mail)</summary>
+    public class SRIDINFOByMail
+    {
+        /// <summary>服務請求ID</summary>
+        public string SRID { get; set; }
+        /// <summary>狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )</summary>
+        public string Status { get; set; }
+        /// <summary>服務案件種類</summary>
+        public string SRCase { get; set; }
+        /// <summary>服務團隊</summary>
+        public string TeamNAME { get; set; }
+        /// <summary>服務團隊主管</summary>
+        public string TeamMGR { get; set; }
+        /// <summary>L2工程師</summary>
+        public string MainENG { get; set; }
+        /// <summary>指派工程師</summary>
+        public string AssENG { get; set; }
+        /// <summary>技術主管</summary>
+        public string TechMGR { get; set; }
+        /// <summary>合約文件編號</summary>
+        public string ContractID { get; set; }
+        /// <summary>派單時間</summary>
+        public string CreatedDate { get; set; }
+        /// <summary>是否為二修</summary>
+        public string SecFix { get; set; }
+        /// <summary>需求說明</summary>
+        public string Desc { get; set; }
+        /// <summary>詳細描述</summary>
+        public string Notes { get; set; }
+        /// <summary>客戶名稱</summary>
+        public string CusName { get; set; }
+        /// <summary>報修人</summary>
+        public string RepairName { get; set; }
+        /// <summary>報修人電話</summary>
+        public string RepairPhone { get; set; }
+        /// <summary>報修人手機</summary>
+        public string RepairMobile { get; set; }
+        /// <summary>報修人地址</summary>
+        public string RepairAddress { get; set; }
+        /// <summary>報修人Email</summary>
+        public string RepairEmail { get; set; }
+    }
+    #endregion
+
     #region 服務請求客戶聯絡人資訊
     /// <summary>服務請求客戶聯絡人資訊</summary>
     public class SRCONTACTINFO
@@ -2726,6 +2775,80 @@ namespace TSTI_API.Controllers
         /// <summary>聯絡人信箱</summary>
         public string CONTEMAIL { get; set; }
 
+    }
+    #endregion
+
+    #region 服務請求零件更換資訊
+    /// <summary>服務請求零件更換資訊</summary>
+    public class SRPARTSREPALCEINFO
+    {
+        /// <summary>服務請求ID</summary>
+        public string SRID { get; set; }
+        /// <summary>XC HP申請零件</summary>
+        public string cXCHP { get; set; }
+        /// <summary>更換零件料號ID</summary>
+        public string MaterialID { get; set; }
+        /// <summary>料號說明</summary>
+        public string MaterialName { get; set; }
+        /// <summary>Old CT</summary>
+        public string OldCT { get; set; }
+        /// <summary>New CT</summary>
+        public string NewCT { get; set; }
+        /// <summary>HP CT</summary>
+        public string HPCT { get; set; }
+        /// <summary>New UEFI </summary>
+        public string NewUEFI { get; set; }
+        /// <summary>備機序號</summary>
+        public string StandbySerialID { get; set; }
+        /// <summary>HP Case ID</summary>
+        public string HPCaseID { get; set; }
+        /// <summary>到貨日 </summary>
+        public string ArriveDate { get; set; }
+        /// <summary>歸還日 </summary>
+        public string ReturnDate { get; set; }
+        /// <summary>是否有人損</summary>
+        public string PersonalDamage { get; set; }
+        /// <summary>備註</summary>
+        public string Note { get; set; }
+    }
+    #endregion
+
+    #region 服務團隊對照組織相關資訊
+    /// <summary>服務團隊對照組織相關資訊</summary>
+    public class SRTEAMORGINFO
+    {
+        /// <summary>服務團隊ID</summary>
+        public string TEAMID { get; set; }
+        /// <summary>服務團隊名稱</summary>
+        
+        public string TEAMNAME { get; set; }
+        /// <summary>部門ID</summary>
+        public string DEPTID { get; set; }
+        /// <summary>部門名稱</summary>
+        public string DEPTNAME { get; set; }
+        /// <summary>部門主管ERPID</summary>
+        public string DEPTMGRERPID { get; set; }
+        /// <summary>部門主管帳號</summary>
+        public string DEPTMGRACCOUNT { get; set; }
+        /// <summary>部門主管姓名(中文+英文)</summary>
+        public string DEPTMGRNAME { get; set; }
+        /// <summary>部門主管Email</summary>
+        public string DEPTMGREMAIL { get; set; }
+    }
+    #endregion
+
+    #region 服務請求L2工程師/指派工程師/技術主管相關資訊
+    /// <summary>服務請求L2工程師/指派工程師/技術主管相關資訊</summary>
+    public class SREMPINFO
+    {       
+        /// <summary>ERPID</summary>
+        public string ERPID { get; set; }
+        /// <summary>帳號</summary>
+        public string ACCOUNT { get; set; }
+        /// <summary>姓名(中文+英文)</summary>
+        public string NAME { get; set; }
+        /// <summary>Email</summary>
+        public string EMAIL { get; set; }
     }
     #endregion
 
@@ -2774,7 +2897,7 @@ namespace TSTI_API.Controllers
         /// <summary>來源表單</summary>
         public string BPMNo { get; set; }
     }
-    #endregion
+    #endregion   
 
     #region 關鍵字產品序號物料資訊
     /// <summary>關鍵字產品序號物料資訊</summary>
