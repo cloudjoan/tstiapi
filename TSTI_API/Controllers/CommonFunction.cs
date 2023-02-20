@@ -25,6 +25,11 @@ namespace TSTI_API.Controllers
         PSIPEntities dbPSIP = new PSIPEntities();
         BIEntities dbBI = new BIEntities();
 
+        /// <summary>
+        /// 程式作業編號檔系統ID(ALL，固定的GUID)
+        /// </summary>
+        string pSysOperationID = "F8EFC55F-FA77-4731-BB45-2F2147244A2D";
+
         /// <summary>全域變數</summary>
         string pMsg = "";
 
@@ -516,9 +521,7 @@ namespace TSTI_API.Controllers
             foreach (var bean in SRTeam)
             {
                 reValue += bean.DEPTMGREMAIL + ";";
-            }
-
-            reValue = reValue.TrimEnd(';');
+            }            
 
             return reValue;
         }
@@ -588,9 +591,7 @@ namespace TSTI_API.Controllers
             foreach (var bean in SREmp)
             {
                 reValue += bean.EMAIL + ";";
-            }
-
-            reValue = reValue.TrimEnd(';');
+            }            
 
             return reValue;
         }
@@ -783,6 +784,27 @@ namespace TSTI_API.Controllers
             }
 
             return tList;
+        }
+        #endregion    
+
+        #region 取得Mail Body
+        /// <summary>
+        /// 取得Mail Body
+        /// </summary>
+        /// <param name="tMAIL_TYPE">MAIL TYPE</param>
+        /// <returns></returns>
+        public string GetMailBody(string tMAIL_TYPE)
+        {
+            string reValue = string.Empty;
+
+            var bean = dbProxy.TB_MAIL_CONTENT.FirstOrDefault(x => x.MAIL_TYPE == tMAIL_TYPE);
+
+            if (bean != null)
+            {
+                reValue = bean.MAIL_CONTENT;
+            }
+
+            return reValue;
         }
         #endregion
 
@@ -1870,16 +1892,250 @@ namespace TSTI_API.Controllers
 
         #region -----↓↓↓↓↓Mail相關 ↓↓↓↓↓-----
 
+        #region 取得【一般服務】案件種類的郵件主旨
+        /// <summary>
+        /// 取得【一般服務】案件種類的郵件主旨
+        /// </summary>
+        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、SECFIX.二修、SAVE.保存、THRPARTY.3Party、CANCEL.取消)</param>
+        /// <param name="SRID">服務ID</param>
+        /// <param name="CusName">客戶名稱</param>
+        /// <param name="TeamNAME">服務團隊</param>
+        /// <param name="SRCase">服務案件種類</param>
+        /// <param name="MainENG">L2工程師</param>
+        /// <returns></returns>
+        public string findGenerallySRMailSubject(SRCondition cCondition, string SRID, string CusName, string TeamNAME, string SRCase, string MainENG)
+        {
+            string reValue = string.Empty;
+
+            switch (cCondition)
+            {
+                case SRCondition.ADD:
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 派單通知[<服務ID>]                  
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 派單通知[" + SRID + "]";
+                    break;
+
+                case SRCondition.TRANS:
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類>[<服務ID>]已轉到[<L2工程師>]名下，請留意！
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + "[" + SRID + "]已轉到[" + MainENG + "]名下，請留意！";
+                    break;
+
+                case SRCondition.REJECT:
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 主管審核駁回通知[<服務ID>]
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 主管審核駁回通知[" + SRID + "]";
+                    break;
+
+                case SRCondition.HPGCSN:
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 派單通知[<服務ID>]，需下料。
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 派單通知[" + SRID + "]，需下料。";
+                    break;
+
+                case SRCondition.SECFIX:
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 二修通知[<服務ID>]
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 二修通知[" + SRID + "]";
+                    break;
+
+                case SRCondition.SAVE:
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 異動通知[<服務ID>]
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 異動通知[" + SRID + "]";
+                    break;
+
+                case SRCondition.THRPARTY:
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 3Party通知[<服務ID>]
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 3Party通知[" + SRID + "]";
+                    break;
+
+                case SRCondition.CANCEL:
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 取消通知[<服務ID>]，請關注！
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 取消通知[" + SRID + "]，請關注！";
+                    break;
+            }
+
+            return reValue;
+        }
+        #endregion
+
+        #region 取得【一般服務】案件客戶聯絡窗口資訊Html Table
+        /// <summary>
+        /// 取得【一般服務】案件客戶聯絡窗口資訊Html Table
+        /// </summary>
+        /// <param name="SRContact_List">服務請求客戶聯絡人資訊清單</param>
+        /// <returns></returns>
+        public string findGenerallySRContact_Table(List<SRCONTACTINFO> SRContact_List)
+        {
+            #region 格式
+            //[客戶聯絡窗口資料]												
+            //聯絡人	聯絡人電話	聯絡人手機	聯絡人地址	聯絡人Email								
+            //OOO	042OOO	09OOO	台北市OOO	TEST@OOO								
+            //OOO	042OOO	09OOO	台北市OOO	TEST@OOO
+            #endregion
+
+            StringBuilder strHTML = new StringBuilder();
+            string reValue = string.Empty;
+
+            if (SRContact_List.Count > 0)
+            {
+                strHTML.AppendLine("<div>");
+                strHTML.AppendLine("    <p>[客戶聯絡窗口資訊]</p>");
+                strHTML.AppendLine("    <table style='width:540.0pt;' width='720' align='left' border='1'>");
+                strHTML.AppendLine("        <tr>");
+                strHTML.AppendLine("            <td>聯絡人</td>");
+                strHTML.AppendLine("            <td>聯絡人電話</td>");
+                strHTML.AppendLine("            <td>聯絡人手機</td>");
+                strHTML.AppendLine("            <td>聯絡人地址</td>");
+                strHTML.AppendLine("            <td>聯絡人Email</td>");
+                strHTML.AppendLine("        </tr>");
+
+                foreach (var bean in SRContact_List)
+                {
+                    strHTML.AppendLine("        <tr>");
+                    strHTML.AppendLine("            <td>" + bean.CONTNAME + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.CONTTEL + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.CONTMOBILE + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.CONTADDR + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.CONTEMAIL + "</td>");
+                    strHTML.AppendLine("        </tr>");
+                }
+
+                strHTML.AppendLine("    </table>");
+                strHTML.AppendLine("</div>");               
+            }
+
+            reValue = strHTML.ToString();
+
+            return reValue;
+        }
+        #endregion
+
+        #region 取得【一般服務】案件產品序號資訊Html Table
+        /// <summary>
+        /// 取得【一般服務】案件產品序號資訊Html Table
+        /// </summary>
+        /// <param name="SRSeiral_List">服務請求產品序號資訊清單</param>
+        /// <returns></returns>
+        public string findGenerallySRSeiral_Table(List<SRSERIALMATERIALINFO> SRSeiral_List)
+        {
+            #region 格式
+            //[產品序號資訊]
+            //序號	機器型號	Product Number	料號	裝機資訊
+            //SGH1OOO	DL360pG8OOO	654081OOO	507281OOO	63OOO								
+            //SGH2OOO	DL360pG8OOO	654082OOO	507282OOO	63OOO
+            #endregion
+
+            StringBuilder strHTML = new StringBuilder();
+            string reValue = string.Empty;
+
+            if (SRSeiral_List.Count > 0)
+            {
+                strHTML.AppendLine("<div>");
+                strHTML.AppendLine("    <p>[產品序號資訊]</p>");
+                strHTML.AppendLine("    <table style='width:540.0pt;' width='720' align='left' border='1'>");
+                strHTML.AppendLine("        <tr>");
+                strHTML.AppendLine("            <td>序號</td>");
+                strHTML.AppendLine("            <td>機器型號</td>");
+                strHTML.AppendLine("            <td>Product Number</td>");
+                strHTML.AppendLine("            <td>料號</td>");
+                strHTML.AppendLine("            <td>裝機資訊</td>");
+                strHTML.AppendLine("        </tr>");
+
+                foreach (var bean in SRSeiral_List)
+                {
+                    strHTML.AppendLine("        <tr>");
+                    strHTML.AppendLine("            <td>" + bean.SerialID + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.MaterialName + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.ProductNumber + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.MaterialID + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.InstallID + "</td>");
+                    strHTML.AppendLine("        </tr>");
+                }
+
+                strHTML.AppendLine("    </table>");
+                strHTML.AppendLine("</div>");
+            }
+
+            reValue = strHTML.ToString();
+
+            return reValue;
+        }
+        #endregion
+
+        #region 取得【一般服務】案件零件更換資訊Html Table
+        /// <summary>
+        /// 取得【一般服務】案件零件更換資訊Html Table
+        /// </summary>
+        /// <param name="SRParts_List">服務請求零件更換資訊清單</param>
+        /// <returns></returns>
+        public string findGenerallySRParts_Table(List<SRPARTSREPALCEINFO> SRParts_List)
+        {
+            #region 格式
+            //[零件更換資訊]												
+            //XC HP申請零件	更換零件料號ID	料號說明	Old CT	New CT	HP CT	New UEFI	備機序號	HP Case ID	到貨日	歸還日	是否有人損	備註
+            //OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	Y	OOO
+            //OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	N	OOO	
+            #endregion
+
+            StringBuilder strHTML = new StringBuilder();
+            string reValue = string.Empty;
+
+            if (SRParts_List.Count > 0)
+            {
+                strHTML.AppendLine("<div>");
+                strHTML.AppendLine("    <p>[零件更換資訊]</p>");
+                strHTML.AppendLine("    <table style='width:540.0pt;' width='720' align='left' border='1'>");
+                strHTML.AppendLine("        <tr>");
+                strHTML.AppendLine("            <td>XC HP申請零件</td>");
+                strHTML.AppendLine("            <td>更換零件料號ID</td>");
+                strHTML.AppendLine("            <td>料號說明</td>");
+                strHTML.AppendLine("            <td>Old CT</td>");
+                strHTML.AppendLine("            <td>New CT</td>");
+                strHTML.AppendLine("            <td>HP CT</td>");
+                strHTML.AppendLine("            <td>New UEFI</td>");
+                strHTML.AppendLine("            <td>備機序號</td>");
+                strHTML.AppendLine("            <td>HP Case ID</td>");
+                strHTML.AppendLine("            <td>到貨日</td>");
+                strHTML.AppendLine("            <td>歸還日</td>");
+                strHTML.AppendLine("            <td>是否有人損</td>");
+                strHTML.AppendLine("            <td>備註</td>");
+                strHTML.AppendLine("        </tr>");
+
+                foreach (var bean in SRParts_List)
+                {
+                    strHTML.AppendLine("        <tr>");
+                    strHTML.AppendLine("            <td>" + bean.XCHP + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.MaterialID + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.MaterialName + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.OldCT + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.NewCT + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.HPCT + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.NewUEFI + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.StandbySerialID + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.HPCaseID + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.ArriveDate + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.ReturnDate + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.PersonalDamage + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.Note.Replace("\r\n", "<br/>") + "</td>");
+                    strHTML.AppendLine("        </tr>");
+                }
+
+                strHTML.AppendLine("    </table>");
+                strHTML.AppendLine("</div>");
+            }
+
+            reValue = strHTML.ToString();
+
+            return reValue;
+        }
+        #endregion
+
         #region 組服務請求Mail相關資訊
         /// <summary>
         /// 組服務請求Mail相關資訊
-        /// </summary>        
+        /// </summary>
+        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、SECFIX.二修、SAVE.保存、THRPARTY.3Party、CANCEL.取消)</param>
         /// <param name="cOperationID_GenerallySR">程式作業編號檔系統ID</param>
         /// <param name="cBUKRS">公司別(T012、T016、C069、T022)</param>
         /// <param name="cSRID">SRID(服務案件ID)</param>           
         /// <param name="cLoginName">登入人員姓名</param>
-        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、SECFIX.二修、SAVE.保存、THRPARTY.3Party、CANCEL.取消)</param>
-        public void SetSRMailContent(string cOperationID_GenerallySR, string cBUKRS, string cSRID, string cLoginName, SRCondition cCondition)
+        public void SetSRMailContent(SRCondition cCondition, string cOperationID_GenerallySR, string cBUKRS, string cSRID, string cLoginName)
         {          
             string tMailToTemp = string.Empty;
             string tMailCcTemp = string.Empty; 
@@ -2028,7 +2284,7 @@ namespace TSTI_API.Controllers
                     SRParts_List = findSRPARTSREPALCEINFO(cSRID);
                     #endregion -----↑↑↑↑↑零件更換資訊 ↑↑↑↑↑----- 
 
-                    SendSRMail(cSRID, cLoginName, SRMain, SRContact_List, SRSeiral_List, SRParts_List); //發送服務請求Mail相關資訊
+                    SendSRMail(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRContact_List, SRSeiral_List, SRParts_List); //發送服務請求Mail相關資訊
                 }
             }
             catch (Exception ex)
@@ -2045,13 +2301,15 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 發送服務請求Mail相關資訊
         /// </summary>
+        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、SECFIX.二修、SAVE.保存、THRPARTY.3Party、CANCEL.取消)</param>
         /// <param name="cSRID">SRID</param>
         /// <param name="cLoginName">登入人員姓名</param>
+        /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
         /// <param name="SRMain">服務請求主檔資訊(For Mail)</param>
         /// <param name="SRContact_List">服務請求客戶聯絡人資訊清單</param>
         /// <param name="SRSeiral_List">服務請求產品序號資訊清單</param>
         /// <param name="SRParts_List">服務請求零件更換資訊清單</param>
-        public void SendSRMail(string cSRID, string cLoginName, SRIDINFOByMail SRMain, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List, List<SRPARTSREPALCEINFO> SRParts_List)
+        public void SendSRMail(SRCondition cCondition, string cSRID, string cLoginName, bool tIsFormal, SRIDINFOByMail SRMain, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List, List<SRPARTSREPALCEINFO> SRParts_List)
         {
             List<string> tMailToList = new List<string>();
             List<string> tMailCcList = new List<string>();
@@ -2068,140 +2326,200 @@ namespace TSTI_API.Controllers
             string tSeverName = string.Empty;       //主機名稱
 
             string tStatus = string.Empty;          //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
+            string tContractID = string.Empty;      //合約文件編號
+            string tSecFix = string.Empty;          //是否為二修
+            string tSRContact_Table = string.Empty;
+            string tSRSeiral_Table = string.Empty;
+            string tSRParts_Table = string.Empty;
 
             try
-            {               
+            {
+                #region 取得收件者
+                if (SRMain.MainENGEmail != "") //有指派L2工程師
+                {
+                    tMailToTemp = SRMain.MainENGEmail + SRMain.AssENGEmail + SRMain.TechMGREmail;
+                }
+                else //未指派L2工程師
+                {
+                    tMailToTemp = SRMain.TeamMGREmail + SRMain.MainENGEmail + SRMain.AssENGEmail + SRMain.TechMGREmail;
+                }
 
-                //#region 取得收件者
-                //if (tMailToTemp != "")
-                //{
-                //    foreach (string tValue in tMailToTemp.TrimEnd(';').Split(';'))
-                //    {
-                //        if (!tMailToList.Contains(tValue))
-                //        {
-                //            tMailToList.Add(tValue);
+                if (tMailToTemp != "")
+                {
+                    foreach (string tValue in tMailToTemp.TrimEnd(';').Split(';'))
+                    {
+                        if (!tMailToList.Contains(tValue))
+                        {
+                            tMailToList.Add(tValue);
 
-                //            tMailTo += tValue + ";";
-                //        }
-                //    }
+                            tMailTo += tValue + ";";
+                        }
+                    }
 
-                //    tMailTo = tMailTo.TrimEnd(';');
-                //}
-                //#endregion
+                    tMailTo = tMailTo.TrimEnd(';');
+                }
+                #endregion
 
-                //#region 取得副本
-                //if (tMailCcTemp != "")
-                //{
-                //    foreach (string tValue in tMailCcTemp.TrimEnd(';').Split(';'))
-                //    {
-                //        if (!tMailCcList.Contains(tValue))
-                //        {
-                //            tMailCcList.Add(tValue);
+                #region 取得副本
+                if (SRMain.MainENGEmail != "") //有指派L2工程師
+                {
+                    tMailCcTemp = SRMain.TeamMGREmail;
+                }               
 
-                //            tMailCc += tValue + ";";
-                //        }
-                //    }
+                if (tMailCcTemp != "")
+                {
+                    foreach (string tValue in tMailCcTemp.TrimEnd(';').Split(';'))
+                    {
+                        if (!tMailCcList.Contains(tValue))
+                        {
+                            tMailCcList.Add(tValue);
 
-                //    tMailCc = tMailCc.TrimEnd(';');
-                //}
-                //#endregion
+                            tMailCc += tValue + ";";
+                        }
+                    }
 
-                //#region 取得密件副本
-                //if (tMailBCcTemp != "")
-                //{
-                //    foreach (string tValue in tMailBCcTemp.TrimEnd(';').Split(';'))
-                //    {
-                //        if (!tMailBCcList.Contains(tValue))
-                //        {
-                //            tMailBCcList.Add(tValue);
+                    tMailCc = tMailCc.TrimEnd(';');
+                }
+                #endregion
 
-                //            tMailBCc += tValue + ";";
-                //        }
-                //    }
+                #region 取得密件副本
+                tMailBCcTemp = "Elvis.Chang@etatung.com"; //測試用，等都正常了就註解掉
 
-                //    tMailBCc = tMailBCc.TrimEnd(';');
-                //}
-                //#endregion
+                if (tMailBCcTemp != "")
+                {
+                    foreach (string tValue in tMailBCcTemp.TrimEnd(';').Split(';'))
+                    {
+                        if (!tMailBCcList.Contains(tValue))
+                        {
+                            tMailBCcList.Add(tValue);
 
-                //#region 是否為測試區
-                //string strTest = string.Empty;
+                            tMailBCc += tValue + ";";
+                        }
+                    }
 
-                //if (!tIsFormal)
-                //{
-                //    strTest = "【*測試*】";
-                //}
-                //#endregion
+                    tMailBCc = tMailBCc.TrimEnd(';');
+                }
+                #endregion
 
-                //#region 郵件主旨
-                ////備品維修
-                ////(待發料)備品維修_陳大明_台灣大哥大股份有限公司_8100002643
-                ////((狀態)借用類型_申請人_客戶_SRID)
+                #region 是否為測試區
+                string strTest = string.Empty;
 
-                ////內部借用
-                ////(待備品主管判斷備品周轉)內部借用_陳大明_20201001～20201031
-                ////((狀態)借用類型_申請人_借用起訖)
+                if (!tIsFormal)
+                {
+                    strTest = "【*測試*】";
+                }
+                #endregion
 
-                //string tMailSubject = string.Empty;
+                #region 郵件主旨
+                string tMailSubject = findGenerallySRMailSubject(cCondition, cSRID, SRMain.CusName, SRMain.TeamNAME, SRMain.SRCase, SRMain.MainENG);
+                #endregion
 
-                ////tMailSubject = strTest + "(" + tStageName + ")" + cApplicationType + "_" + cApplyUser_Name + "_" + cSRCustName + "_" + cSRID;
-                //#endregion
+                #region 郵件內容
 
-                //#region 郵件內容
+                #region 內容格式參考(一般服務)                
+                //親愛的主管/同仁您好，	
+                //[服務案件明細]	
+                //服務案件ID:	61OOO
+                //服務案件種類:	一般服務
+                //服務團隊:	L2電腦系統(含PS)-北區
+                //服務團隊主管:	L2MGR
+                //L2工程師:	L3MGR
+                //指派工程師:	ASSEngineer
+                //技術主管:	TechMGR
+                //狀態:	處理中
+                //派單時間:	2016/1/5 13:36
+                //合約文件編號:	2540/7/23 00:00
+                //維護服務種類:	保固內
+                //是否為二修:	是
+                //需求說明:	pls. support BUG FIX onsite
+                //詳細描述:	硬體破損
 
-                //#region 內容格式參考(備品維修)                
-                ////備品借用單SP-20200701-0010請協助發料，謝謝。
-                ////[服務案件明細]
-                ////服務案件ID: 8100002643
-                ////借用人:田巧如
-                ////填表人:吳若華
-                ////建立時間: 2020/10/08 12:58:05
-                ////客戶名稱: 台灣大哥大股份有限公司
-                ////需求說明: 【網路報修】加盟店-電腦維修無法連結印表機
-                ////主機訊息(序號，主機P/N，主機規格/說明): SGH747T67N，OOO，DL360
+                //[客戶報修窗口資料]	
+                //客戶名稱:	
+                //報修人:	
+                //報修人電話:	
+                //報修人手機:	
+                //報修人地址:	
+                //報修人Email:
 
-                ////[備品待辦清單]
-                ////查看待辦清單 =>超連結(http://psip-qas/Spare/Index?FormNo=SP-20200701-0010&SRID=8100002643&NowStage=3)
+                //[客戶聯絡窗口資料]												
+                //聯絡人	聯絡人電話	聯絡人手機	聯絡人地址	聯絡人Email								
+                //OOO	042OOO	09OOO	台北市OOO	TEST@OOO								
+                //OOO	042OOO	09OOO	台北市OOO	TEST@OOO								
 
-                ////-------此信件由系統管理員發出，請勿回覆此信件-------
-                //#endregion
+                //[產品序號資訊]												
+                //序號	機器型號	Product Number	料號	裝機資訊								
+                //SGH1OOO	DL360pG8OOO	654081OOO	507281OOO	63OOO								
+                //SGH2OOO	DL360pG8OOO	654082OOO	507282OOO	63OOO								
 
-                //#region 內容格式參考(內部借用)                
-                ////備品借用單SP-20200701-0010請協助判斷備品周轉，謝謝。
-                ////[服務案件明細]
-                ////借用人:田巧如
-                ////填表人:吳若華
-                ////建立時間: 2020/10/08 12:58:05
-                ////借用起訖: 20201001~20201031
-                ////申請說明: POC電腦維修無法連結印表機
+                //[零件更換資訊]												
+                //XC HP申請零件	更換零件料號ID	料號說明	Old CT	New CT	HP CT	New UEFI	備機序號	HP Case ID	到貨日	歸還日	是否有人損	備註
+                //OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	Y	OOO
+                //OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	OOO	N	OOO	
 
-                ////[備品待辦清單]
-                ////查看待辦清單 =>超連結(http://psip-qas/Spare/Index?FormNo=SP-20200701-0010&NowStage=2)
+                //請儘速至One Sevice 系統處理，謝謝！
+                //查看待辦清單 =>超連結(http://172.31.7.56:32200/ServiceRequest/ToDoList)
+                //提醒您：此為系統發送信函請勿直接回覆此信。                
 
-                ////-------此信件由系統管理員發出，請勿回覆此信件-------
-                //#endregion
+                //-------此信件由系統管理員發出，請勿回覆此信件-------
+                #endregion
 
-                //string tMailBody = string.Empty;
+                string tMailBody = string.Empty;
 
-                //if (tStatus == "E0015") //取消
-                //{
-                //    tHypeLink = "http://" + tSeverName + "/ServiceRequest/GenerallySR?SRID=" + cSRID;
-                //}
-                //else
-                //{
-                //    tHypeLink = "http://" + tSeverName + "/ServiceRequest/ToDoList";
-                //}
+                if (tStatus == "E0015") //取消
+                {
+                    tHypeLink = "http://" + tSeverName + "/ServiceRequest/GenerallySR?SRID=" + cSRID;
+                }
+                else
+                {
+                    tHypeLink = "http://" + tSeverName + "/ServiceRequest/ToDoList";
+                }
 
-                //tMailBody = GetMailBody("WSSpareINTERNAL_MAIL");
+                if (SRMain.ContractID != "")
+                {
+                    tContractID = "<p>合約文件編號：【" + SRMain.ContractID + "】</p>";
+                }
+                
+                if (SRMain.SecFix == "Y")
+                {
+                    tSecFix = "<p>是否為二修：【" + SRMain.SecFix + "】</p>";
+                }
 
-                //tMailBody = tMailBody.Replace("【<cFormNo>】", cFormNo).Replace("【<tStageName2>】", tStageName2);
-                //tMailBody = tMailBody.Replace("【<cApplyUser_Name>】", cApplyUser_Name).Replace("【<cFillUser_Name>】", cFillUser_Name);
-                //tMailBody = tMailBody.Replace("【<CreatedDate>】", CreatedDate).Replace("【<cStartDate>】", cStartDate).Replace("【<cEndDate>】", cEndDate);
-                //tMailBody = tMailBody.Replace("【<cApplicationNote>】", cApplicationNote).Replace("【<cSRInfo>】", cSRInfo).Replace("【<tNextStage>】", tNextStage);
-                //tMailBody = tMailBody.Replace("【<tComment>】", tComment).Replace("【<tHypeLink>】", tHypeLink);
-                //#endregion
+                #region 取得【一般服務】案件客戶聯絡窗口資訊Html Table
+                tSRContact_Table = findGenerallySRContact_Table(SRContact_List);
+                #endregion
 
-                ////呼叫寄送Mail
-                //SendMailByAPI("SendSRMail_API", null, tMailTo, tMailCc, tMailBCc, tMailSubject, tMailBody, "", "");
+                #region 取得【一般服務】案件產品序號資訊Html Table
+                tSRSeiral_Table = findGenerallySRSeiral_Table(SRSeiral_List);
+                #endregion
+
+                #region 取得【一般服務】案件零件更換資訊Html Table
+                tSRParts_Table = findGenerallySRParts_Table(SRParts_List);
+                #endregion
+
+                tMailBody = GetMailBody("ONEGenerally_MAIL");
+
+                tMailBody = tMailBody.Replace("【<SRID>】", cSRID).Replace("【<SRCase>】", SRMain.SRCase).Replace("【<TeamNAME>】", SRMain.TeamNAME);
+                tMailBody = tMailBody.Replace("【<TeamMGR>】", SRMain.TeamMGR).Replace("【<MainENG>】", SRMain.MainENG).Replace("【<AssENG>】", SRMain.AssENG);                
+                tMailBody = tMailBody.Replace("【<TechMGR>】", SRMain.TechMGR).Replace("【<StatusDesc>】", SRMain.StatusDesc).Replace("【<CreatedDate>】", SRMain.CreatedDate);
+                tMailBody = tMailBody.Replace("<ContractID>", tContractID).Replace("【<MAServiceType>】", SRMain.MAServiceType).Replace("<SecFix>", tSecFix);
+                tMailBody = tMailBody.Replace("【<Desc>】", SRMain.Desc).Replace("【<Notes>】", SRMain.Notes);
+
+                tMailBody = tMailBody.Replace("【<CusName>】", SRMain.CusName).Replace("【<RepairName>】", SRMain.RepairName).Replace("【<RepairPhone>】", SRMain.RepairPhone);
+                tMailBody = tMailBody.Replace("【<RepairMobile>】", SRMain.RepairMobile).Replace("【<RepairAddress>】", SRMain.RepairAddress).Replace("【<RepairEmail>】", SRMain.RepairEmail);
+
+
+                tMailBody = tMailBody.Replace("【<tHypeLink>】", tHypeLink);
+                #endregion
+
+                #region 測試用
+                //tMailTo = "elvis.chang@etatung.com";
+                //tMailCc = "";
+                //tMailBCc = "";
+                #endregion
+
+                //呼叫寄送Mail
+                SendMailByAPI("SendSRMail_API", null, tMailTo, tMailCc, tMailBCc, tMailSubject, tMailBody, "", "");
             }
             catch (Exception ex)
             {

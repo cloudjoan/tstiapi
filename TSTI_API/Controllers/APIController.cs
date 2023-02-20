@@ -530,7 +530,7 @@ namespace TSTI_API.Controllers
                         SROUT.EV_MSG = "";
 
                         #region 寄送Mail通知
-                        CMF.SetSRMailContent(pOperationID_GenerallySR, EmpBean.BUKRS, pSRID, pLoginName, SRCondition.ADD);
+                        CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, EmpBean.BUKRS, pSRID, pLoginName);
                         #endregion
                     }
                 }
@@ -3041,6 +3041,11 @@ namespace TSTI_API.Controllers
         /// 駁回
         /// </summary>
         REJECT,
+
+        /// <summary>
+        /// HPGCSN申請
+        /// </summary>
+        HPGCSN,
 
         /// <summary>
         /// 二修

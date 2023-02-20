@@ -17,6 +17,7 @@
     <EntitySet Name="F4501" EntityType="ERP_PROXY_DBModel.F4501" />
     <EntitySet Name="STOCKALL" EntityType="ERP_PROXY_DBModel.STOCKALL" />
     <EntitySet Name="CUSTOMER_Contact" EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" />
+    <EntitySet Name="TB_MAIL_CONTENT" EntityType="ERP_PROXY_DBModel.TB_MAIL_CONTENT" />
   </EntityContainer>
   <EntityType Name="VIEW_MATERIAL_ByComp">
     <Key>
@@ -205,5 +206,13 @@
     <Property Name="MainModifiedUserID" Type="Guid" />
     <Property Name="MainModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="MainModifiedDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="TB_MAIL_CONTENT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MAIL_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MAIL_CONTENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

@@ -198,5 +198,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_MAIL_CONTENT">
+      <EntityTypeMapping TypeName="ERP_PROXY_DBModel.TB_MAIL_CONTENT">
+        <MappingFragment StoreEntitySet="TB_MAIL_CONTENT">
+          <ScalarProperty Name="MAIL_CONTENT" ColumnName="MAIL_CONTENT" />
+          <ScalarProperty Name="MAIL_TYPE" ColumnName="MAIL_TYPE" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

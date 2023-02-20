@@ -179,6 +179,14 @@
           <Property Name="RenewStatus" Type="varchar" MaxLength="2" />
           <Property Name="CR_DATE" Type="datetime" />
         </EntityType>
+        <EntityType Name="TB_MAIL_CONTENT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MAIL_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="MAIL_CONTENT" Type="nvarchar(max)" />
+        </EntityType>
         <!--產生期間發現錯誤:
 警告 6002: 資料表/檢視 'ERP_PROXY_DB.dbo.VIEW_CUSTOMER_2' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="VIEW_CUSTOMER_2">
@@ -212,6 +220,7 @@
           <EntitySet Name="F4501" EntityType="Self.F4501" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MATERIAL" EntityType="Self.MATERIAL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="STOCKALL" EntityType="Self.STOCKALL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_MAIL_CONTENT" EntityType="Self.TB_MAIL_CONTENT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VIEW_CUSTOMER_2" EntityType="Self.VIEW_CUSTOMER_2" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [VIEW_CUSTOMER_2].[KNA1_KUNNR] AS [KNA1_KUNNR], 
@@ -253,6 +262,7 @@
           <EntitySet Name="F4501" EntityType="ERP_PROXY_DBModel.F4501" />
           <EntitySet Name="STOCKALL" EntityType="ERP_PROXY_DBModel.STOCKALL" />
           <EntitySet Name="CUSTOMER_Contact" EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" />
+          <EntitySet Name="TB_MAIL_CONTENT" EntityType="ERP_PROXY_DBModel.TB_MAIL_CONTENT" />
         </EntityContainer>
         <EntityType Name="VIEW_MATERIAL_ByComp">
           <Key>
@@ -441,6 +451,14 @@
           <Property Name="MainModifiedUserID" Type="Guid" />
           <Property Name="MainModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MainModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="TB_MAIL_CONTENT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MAIL_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MAIL_CONTENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -642,6 +660,15 @@
                 <ScalarProperty Name="KNA1_NAME1" ColumnName="KNA1_NAME1" />
                 <ScalarProperty Name="KNA1_KUNNR" ColumnName="KNA1_KUNNR" />
                 <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_MAIL_CONTENT">
+            <EntityTypeMapping TypeName="ERP_PROXY_DBModel.TB_MAIL_CONTENT">
+              <MappingFragment StoreEntitySet="TB_MAIL_CONTENT">
+                <ScalarProperty Name="MAIL_CONTENT" ColumnName="MAIL_CONTENT" />
+                <ScalarProperty Name="MAIL_TYPE" ColumnName="MAIL_TYPE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

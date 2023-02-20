@@ -319,6 +319,9 @@
     <Compile Include="Models\STOCKALL.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_MAIL_CONTENT.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_MVC_CUST.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
