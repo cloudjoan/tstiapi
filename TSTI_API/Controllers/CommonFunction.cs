@@ -2500,16 +2500,14 @@ namespace TSTI_API.Controllers
                 tMailBody = GetMailBody("ONEGenerally_MAIL");
 
                 tMailBody = tMailBody.Replace("【<SRID>】", cSRID).Replace("【<SRCase>】", SRMain.SRCase).Replace("【<TeamNAME>】", SRMain.TeamNAME);
-                tMailBody = tMailBody.Replace("【<TeamMGR>】", SRMain.TeamMGR).Replace("【<MainENG>】", SRMain.MainENG).Replace("【<AssENG>】", SRMain.AssENG);                
-                tMailBody = tMailBody.Replace("【<TechMGR>】", SRMain.TechMGR).Replace("【<StatusDesc>】", SRMain.StatusDesc).Replace("【<CreatedDate>】", SRMain.CreatedDate);
-                tMailBody = tMailBody.Replace("<ContractID>", tContractID).Replace("【<MAServiceType>】", SRMain.MAServiceType).Replace("<SecFix>", tSecFix);
-                tMailBody = tMailBody.Replace("【<Desc>】", SRMain.Desc).Replace("【<Notes>】", SRMain.Notes);
-
-                tMailBody = tMailBody.Replace("【<CusName>】", SRMain.CusName).Replace("【<RepairName>】", SRMain.RepairName).Replace("【<RepairPhone>】", SRMain.RepairPhone);
-                tMailBody = tMailBody.Replace("【<RepairMobile>】", SRMain.RepairMobile).Replace("【<RepairAddress>】", SRMain.RepairAddress).Replace("【<RepairEmail>】", SRMain.RepairEmail);
-
-
-                tMailBody = tMailBody.Replace("【<tHypeLink>】", tHypeLink);
+                tMailBody += tMailBody.Replace("【<TeamMGR>】", SRMain.TeamMGR).Replace("【<MainENG>】", SRMain.MainENG).Replace("【<AssENG>】", SRMain.AssENG);                
+                tMailBody += tMailBody.Replace("【<TechMGR>】", SRMain.TechMGR).Replace("【<StatusDesc>】", SRMain.StatusDesc).Replace("【<CreatedDate>】", SRMain.CreatedDate);
+                tMailBody += tMailBody.Replace("<ContractID>", tContractID).Replace("【<MAServiceType>】", SRMain.MAServiceType).Replace("<SecFix>", tSecFix);
+                tMailBody += tMailBody.Replace("【<Desc>】", SRMain.Desc).Replace("【<Notes>】", SRMain.Notes);
+                tMailBody += tMailBody.Replace("【<CusName>】", SRMain.CusName).Replace("【<RepairName>】", SRMain.RepairName).Replace("【<RepairPhone>】", SRMain.RepairPhone);
+                tMailBody += tMailBody.Replace("【<RepairMobile>】", SRMain.RepairMobile).Replace("【<RepairAddress>】", SRMain.RepairAddress).Replace("【<RepairEmail>】", SRMain.RepairEmail);
+                tMailBody += tMailBody.Replace("<SRContact_List>", tSRContact_Table).Replace("<SRSeiral_List>", tSRSeiral_Table).Replace("<SRParts_List>", tSRParts_Table);
+                tMailBody += tMailBody.Replace("【<tHypeLink>】", tHypeLink);
                 #endregion
 
                 #region 測試用
