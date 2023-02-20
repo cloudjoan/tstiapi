@@ -530,7 +530,7 @@ namespace TSTI_API.Controllers
                         SROUT.EV_MSG = "";
 
                         #region 寄送Mail通知
-                        //CMF.SetSRMailContent(pOperationID_GenerallySR, EmpBean.BUKRS, pSRID, pLoginName);
+                        CMF.SetSRMailContent(pOperationID_GenerallySR, EmpBean.BUKRS, pSRID, pLoginName, SRCondition.ADD);
                         #endregion
                     }
                 }
@@ -2719,8 +2719,10 @@ namespace TSTI_API.Controllers
     {
         /// <summary>服務請求ID</summary>
         public string SRID { get; set; }
-        /// <summary>狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )</summary>
+        /// <summary>狀態ID</summary>
         public string Status { get; set; }
+        /// <summary>狀態說明(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )</summary>
+        public string StatusDesc { get; set; }
         /// <summary>服務案件種類</summary>
         public string SRCase { get; set; }
         /// <summary>服務團隊</summary>
@@ -2732,11 +2734,13 @@ namespace TSTI_API.Controllers
         /// <summary>指派工程師</summary>
         public string AssENG { get; set; }
         /// <summary>技術主管</summary>
-        public string TechMGR { get; set; }
-        /// <summary>合約文件編號</summary>
-        public string ContractID { get; set; }
+        public string TechMGR { get; set; }        
         /// <summary>派單時間</summary>
         public string CreatedDate { get; set; }
+        /// <summary>合約文件編號</summary>
+        public string ContractID { get; set; }
+        /// <summary>維護服務種類</summary>
+        public string MAServiceType { get; set; }
         /// <summary>是否為二修</summary>
         public string SecFix { get; set; }
         /// <summary>需求說明</summary>
@@ -2755,6 +2759,15 @@ namespace TSTI_API.Controllers
         public string RepairAddress { get; set; }
         /// <summary>報修人Email</summary>
         public string RepairEmail { get; set; }
+
+        /// <summary>服務團隊主管Email</summary>
+        public string TeamMGREmail { get; set; }
+        /// <summary>L2工程師Email</summary>
+        public string MainENGEmail { get; set; }
+        /// <summary>指派工程師Email</summary>
+        public string AssENGEmail { get; set; }
+        /// <summary>技術主管Email</summary>
+        public string TechMGREmail { get; set; }
     }
     #endregion
 
@@ -2778,6 +2791,25 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
+    #region 服務請求產品序號資訊
+    /// <summary>服務請求產品序號資訊</summary>
+    public class SRSERIALMATERIALINFO
+    {
+        /// <summary>服務請求ID</summary>
+        public string SRID { get; set; }
+        /// <summary>序號</summary>
+        public string SerialID { get; set; }
+        /// <summary>物料代號</summary>
+        public string MaterialID { get; set; }
+        /// <summary>機器型號</summary>
+        public string MaterialName { get; set; }
+        /// <summary>製造商零件號碼</summary>
+        public string ProductNumber { get; set; }
+        /// <summary>裝機號碼</summary>
+        public string InstallID { get; set; }
+    }
+    #endregion
+
     #region 服務請求零件更換資訊
     /// <summary>服務請求零件更換資訊</summary>
     public class SRPARTSREPALCEINFO
@@ -2785,7 +2817,7 @@ namespace TSTI_API.Controllers
         /// <summary>服務請求ID</summary>
         public string SRID { get; set; }
         /// <summary>XC HP申請零件</summary>
-        public string cXCHP { get; set; }
+        public string XCHP { get; set; }
         /// <summary>更換零件料號ID</summary>
         public string MaterialID { get; set; }
         /// <summary>料號說明</summary>
@@ -2905,9 +2937,9 @@ namespace TSTI_API.Controllers
     {
         /// <summary>序號</summary>
         public string IV_SERIAL { get; set; }
-        /// <summary>料號</summary>
+        /// <summary>物料代號</summary>
         public string ProdID { get; set; }
-        /// <summary>料號說明</summary>
+        /// <summary>機器型號</summary>
         public string Product { get; set; }
         /// <summary>製造商零件號碼</summary>
         public string MFRPN { get; set; }
@@ -2986,6 +3018,49 @@ namespace TSTI_API.Controllers
         public string NOTES;
         /// <summary>下包文件編號</summary>
         public string SUB_CONTRACTID;
+    }
+    #endregion
+
+    #region 服務請求執行條件
+    /// <summary>
+    /// 服務請求執行條件
+    /// </summary>
+    public enum SRCondition
+    {
+        /// <summary>
+        /// 新建
+        /// </summary>
+        ADD,
+
+        /// <summary>
+        /// 轉派L2工程師
+        /// </summary>
+        TRANS,
+
+        /// <summary>
+        /// 駁回
+        /// </summary>
+        REJECT,
+
+        /// <summary>
+        /// 二修
+        /// </summary>
+        SECFIX,
+
+        /// <summary>
+        /// 保存
+        /// </summary>
+        SAVE,
+
+        /// <summary>
+        /// 3 Party
+        /// </summary>
+        THRPARTY,
+
+        /// <summary>
+        /// 取消
+        /// </summary>
+        CANCEL
     }
     #endregion
 }

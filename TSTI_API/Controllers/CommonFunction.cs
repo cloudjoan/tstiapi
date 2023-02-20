@@ -625,6 +625,27 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得保固SLA資訊的合約編號有勾選本次使用的號碼
+        /// <summary>
+        /// 取得保固SLA資訊的合約編號有勾選本次使用的號碼
+        /// </summary>
+        /// <param name="cSRID">SRID</param>
+        /// <returns></returns>
+        public string findSRContractID(string cSRID)
+        {
+            string reValue = string.Empty;
+
+            var bean = dbOne.TB_ONE_SRDetail_Warranty.FirstOrDefault(x => x.cUsed == "Y" && x.cContractID != "" && x.cSRID == cSRID);
+
+            if (bean != null)
+            {
+                reValue = bean.cContractID;
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得該部門主管相關資訊
         /// <summary>
         /// 取得該部門主管相關資訊
@@ -660,6 +681,110 @@ namespace TSTI_API.Controllers
             return reValue;
         }
         #endregion 
+
+        #region 取得客戶聯絡窗口相關資訊
+        /// <summary>
+        /// 取得客戶聯絡窗口相關資訊
+        /// </summary>
+        /// <param name="cSRID">SRID</param>
+        /// <returns></returns>        
+        public List<SRCONTACTINFO> findSRCONTACTINFO(string cSRID)
+        {
+            List<SRCONTACTINFO> tList = new List<SRCONTACTINFO>();            
+
+            var beans = dbOne.TB_ONE_SRDetail_Contact.Where(x => x.Disabled == 0 && x.cSRID == cSRID);
+
+            foreach (var bean in beans)
+            {
+                SRCONTACTINFO SRCon = new SRCONTACTINFO();               
+
+                SRCon.SRID = bean.cSRID;
+                SRCon.CONTNAME = bean.cContactName;
+                SRCon.CONTADDR = bean.cContactAddress;
+                SRCon.CONTTEL = bean.cContactPhone;
+                SRCon.CONTMOBILE = bean.cContactMobile;
+                SRCon.CONTEMAIL = bean.cContactEmail;
+                
+                tList.Add(SRCon);
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得產品序號資訊資訊
+        /// <summary>
+        /// 取得產品序號資訊資訊
+        /// </summary>
+        /// <param name="cSRID">SRID</param>
+        /// <returns></returns>        
+        public List<SRSERIALMATERIALINFO> findSRSERIALMATERIALINFO(string cSRID)
+        {
+            List<SRSERIALMATERIALINFO> tList = new List<SRSERIALMATERIALINFO>();
+
+            var beans = dbOne.TB_ONE_SRDetail_Product.Where(x => x.Disabled == 0 && x.cSRID == cSRID);
+
+            foreach (var bean in beans)
+            {
+                SRSERIALMATERIALINFO SRSerial = new SRSERIALMATERIALINFO();
+
+                SRSerial.SRID = bean.cSRID;
+                SRSerial.SerialID = bean.cSerialID;
+                SRSerial.MaterialID = bean.cMaterialID;
+                SRSerial.MaterialName = bean.cMaterialName;
+                SRSerial.ProductNumber = bean.cProductNumber;
+                SRSerial.InstallID = bean.cInstallID;
+
+                tList.Add(SRSerial);
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得零件更換資訊
+        /// <summary>
+        /// 取得零件更換資訊
+        /// </summary>
+        /// <param name="cSRID">SRID</param>
+        /// <returns></returns>        
+        public List<SRPARTSREPALCEINFO> findSRPARTSREPALCEINFO(string cSRID)
+        {
+            List<SRPARTSREPALCEINFO> tList = new List<SRPARTSREPALCEINFO>();
+
+            string cArriveDate = string.Empty;
+            string cReturnDate = string.Empty;
+
+            var beans = dbOne.TB_ONE_SRDetail_PartsReplace.Where(x => x.Disabled == 0 && x.cSRID == cSRID);
+
+            foreach (var bean in beans)
+            {
+                SRPARTSREPALCEINFO SRPart = new SRPARTSREPALCEINFO();
+
+                cArriveDate = bean.cArriveDate == null ? "" : Convert.ToDateTime(bean.cArriveDate).ToString("yyyy-MM-dd");
+                cReturnDate = bean.cReturnDate == null ? "" : Convert.ToDateTime(bean.cReturnDate).ToString("yyyy-MM-dd");
+
+                SRPart.SRID = bean.cSRID;
+                SRPart.XCHP = bean.cXCHP;
+                SRPart.MaterialID = bean.cMaterialID;
+                SRPart.MaterialName = bean.cMaterialName;
+                SRPart.OldCT = bean.cOldCT;
+                SRPart.NewCT = bean.cNewCT;
+                SRPart.HPCT = bean.cHPCT;
+                SRPart.NewUEFI = bean.cNewUEFI;
+                SRPart.StandbySerialID = bean.cStandbySerialID;
+                SRPart.HPCaseID = bean.cHPCaseID;
+                SRPart.ArriveDate = cArriveDate;
+                SRPart.ReturnDate = cReturnDate;
+                SRPart.PersonalDamage = bean.cPersonalDamage;
+                SRPart.Note = bean.cNote;
+
+                tList.Add(SRPart);
+            }
+
+            return tList;
+        }
+        #endregion
 
         #region 取得所有第一階List清單(報修類別)
         /// <summary>
@@ -1749,11 +1874,12 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 組服務請求Mail相關資訊
         /// </summary>        
-        /// <param name="pOperationID_GenerallySR">程式作業編號檔系統ID</param>
+        /// <param name="cOperationID_GenerallySR">程式作業編號檔系統ID</param>
         /// <param name="cBUKRS">公司別(T012、T016、C069、T022)</param>
-        /// <param name="cSRID">SRID(服務案件ID)</param>         
-        /// <param name="pLoginName">登入人員姓名</param>
-        public void SetSRMailContent(string pOperationID_GenerallySR, string cBUKRS, string cSRID, string pLoginName)
+        /// <param name="cSRID">SRID(服務案件ID)</param>           
+        /// <param name="cLoginName">登入人員姓名</param>
+        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、SECFIX.二修、SAVE.保存、THRPARTY.3Party、CANCEL.取消)</param>
+        public void SetSRMailContent(string cOperationID_GenerallySR, string cBUKRS, string cSRID, string cLoginName, SRCondition cCondition)
         {          
             string tMailToTemp = string.Empty;
             string tMailCcTemp = string.Empty; 
@@ -1775,8 +1901,12 @@ namespace TSTI_API.Controllers
             string cAssENGEmail = string.Empty;     //指派工程師Email
             string cTechMGR = string.Empty;         //技術主管
             string cTechMGREmail = string.Empty;    //技術主管Email
-            string cContractID = string.Empty;      //合約文件編號
+
+            string cStatus = string.Empty;          //狀態
+            string cStatusDesc = string.Empty;      //狀態說明            
             string cCreatedDate = string.Empty;     //派單時間
+            string cContractID = string.Empty;      //合約文件編號
+            string cMAServiceType = string.Empty;   //維護服務種類
             string cSecFix = string.Empty;          //是否為二修
             string cDesc = string.Empty;            //需求說明            
             string cNotes = string.Empty;           //詳細描述
@@ -1789,17 +1919,16 @@ namespace TSTI_API.Controllers
             string cRepairEmail = string.Empty;     //報修人Email
 
             try
-            {
-                SRIDINFOByMail SRMain = new SRIDINFOByMail();
-                SRCONTACTINFO SRContact = new SRCONTACTINFO();
-                SRPARTSREPALCEINFO SRParts = new SRPARTSREPALCEINFO();
-                
-                List<SRTEAMORGINFO> SRTeam = new List<SRTEAMORGINFO>();
-                List<SREMPINFO> SRMainENG = new List<SREMPINFO>();
-                List<SREMPINFO> SRAssENG = new List<SREMPINFO>();
-                List<SREMPINFO> SRTechMGR = new List<SREMPINFO>();
+            {   
+                List<SRTEAMORGINFO> SRTeam_List = new List<SRTEAMORGINFO>();
+                List<SREMPINFO> SRMainENG_List = new List<SREMPINFO>();
+                List<SREMPINFO> SRAssENG_List = new List<SREMPINFO>();
+                List<SREMPINFO> SRTechMGR_List = new List<SREMPINFO>();
+                List<SRCONTACTINFO> SRContact_List = new List<SRCONTACTINFO>();
+                List<SRSERIALMATERIALINFO> SRSeiral_List = new List<SRSERIALMATERIALINFO>();
+                List<SRPARTSREPALCEINFO> SRParts_List = new List<SRPARTSREPALCEINFO>();
 
-                bool tIsFormal = getCallSAPERPPara(pOperationID_GenerallySR); //是否為正式區(true.是 false.不是)
+                bool tIsFormal = getCallSAPERPPara(cOperationID_GenerallySR); //是否為正式區(true.是 false.不是)
 
                 if (tIsFormal)
                 {
@@ -1814,236 +1943,274 @@ namespace TSTI_API.Controllers
 
                 if (beanM != null)
                 {
+                    #region -----↓↓↓↓↓主檔 ↓↓↓↓↓-----
+                    SRIDINFOByMail SRMain = new SRIDINFOByMail();
+
                     #region 服務團隊相關
-                    SRTeam = findSRTEAMORGINFO(beanM.cTeamID);
+                    SRTeam_List = findSRTEAMORGINFO(beanM.cTeamID);
                     cSRCase = findSRIDType(cSRID);
-                    cTeamName = findSRTeamName(SRTeam);
-                    cTeamMGR = findSRTeamMGRName(SRTeam);
-                    cTeamMGREmail = findSRTeamMGREmail(SRTeam);
+                    cTeamName = findSRTeamName(SRTeam_List);
+                    cTeamMGR = findSRTeamMGRName(SRTeam_List);
+                    cTeamMGREmail = findSRTeamMGREmail(SRTeam_List);
                     #endregion
 
                     #region L2工程師/指派工程師/技術主管相關
-                    SRMainENG = findSREMPINFO(beanM.cMainEngineerID);
-                    cMainENG = findSREMPName(SRMainENG);
-                    cMainENGEmail = findSREMPEmail(SRMainENG);
+                    SRMainENG_List = findSREMPINFO(beanM.cMainEngineerID);
+                    cMainENG = findSREMPName(SRMainENG_List);
+                    cMainENGEmail = findSREMPEmail(SRMainENG_List);
 
-                    SRAssENG = findSREMPINFO(beanM.cAssEngineerID);
-                    cAssENG = findSREMPName(SRAssENG);
-                    cAssENGEmail = findSREMPEmail(SRAssENG);
+                    SRAssENG_List = findSREMPINFO(beanM.cAssEngineerID);
+                    cAssENG = findSREMPName(SRAssENG_List);
+                    cAssENGEmail = findSREMPEmail(SRAssENG_List);
 
-                    SRTechMGR = findSREMPINFO(beanM.cTechManagerID);
-                    cTechMGR = findSREMPName(SRTechMGR);
-                    cTechMGREmail = findSREMPEmail(SRTechMGR);
-                    #endregion                    
+                    SRTechMGR_List = findSREMPINFO(beanM.cTechManagerID);
+                    cTechMGR = findSREMPName(SRTechMGR_List);
+                    cTechMGREmail = findSREMPEmail(SRTechMGR_List);
+                    #endregion                  
+
+                    #region 客戶報修窗口資料
+                    cCusName = beanM.cCustomerName;
+                    cRepairName = beanM.cRepairName;
+                    cRepairPhone = beanM.cRepairPhone;
+                    cRepairMobile = beanM.cRepairMobile;
+                    cRepairAddress = beanM.cRepairAddress;
+                    cRepairEmail = beanM.cRepairEmail;
+                    #endregion
+
+                    #region 其他主檔相關
+                    cContractID = findSRContractID(cSRID);
+                    cCreatedDate = Convert.ToDateTime(beanM.CreatedDate).ToString("yyyy-MM-dd");
+                    cStatus = beanM.cStatus;
+                    cStatusDesc = findSysParameterDescription(cOperationID_GenerallySR, "OTHER", "T012", "SRSTATUS", beanM.cStatus);                    
+                    cMAServiceType = findSysParameterDescription(cOperationID_GenerallySR, "OTHER", "T012", "SRMATYPE", beanM.cMAServiceType); 
+                    cSecFix = beanM.cIsSecondFix;
+                    cDesc = beanM.cDesc;
+                    cNotes = beanM.cNotes;
+                    #endregion
 
                     SRMain.SRID = cSRID;
-                    SRMain.Status = beanM.cStatus;
+                    SRMain.Status = cStatus;
+                    SRMain.StatusDesc = cStatusDesc;
                     SRMain.SRCase = cSRCase;
                     SRMain.TeamNAME = cTeamName;
                     SRMain.TeamMGR = cTeamMGR;
                     SRMain.MainENG = cMainENG;
                     SRMain.AssENG = cAssENG;
                     SRMain.TechMGR = cTechMGR;
-                    SRMain.SRID = cSRID;
-                    SRMain.SRID = cSRID;
-                    SRMain.SRID = cSRID;
+                    SRMain.ContractID = cContractID;
+                    SRMain.CreatedDate = cCreatedDate;
+                    SRMain.SecFix = cSecFix;
+                    SRMain.Desc = cDesc;
+                    SRMain.Notes = cNotes;
 
-                }              
+                    SRMain.CusName = cCusName;
+                    SRMain.RepairName = cRepairName;
+                    SRMain.RepairPhone = cRepairPhone;
+                    SRMain.RepairMobile = cRepairMobile;
+                    SRMain.RepairAddress = cRepairAddress;
+                    SRMain.RepairEmail = cRepairEmail;
+
+                    SRMain.TeamMGREmail = cTeamMGREmail;
+                    SRMain.MainENGEmail = cMainENGEmail;
+                    SRMain.AssENGEmail = cAssENGEmail;
+                    SRMain.TeamMGREmail = cTeamMGREmail;
+                    #endregion -----↑↑↑↑↑Mail相關 ↑↑↑↑↑-----  
+
+                    #region -----↓↓↓↓↓客戶聯絡窗口資料 ↓↓↓↓↓-----
+                    SRContact_List = findSRCONTACTINFO(cSRID);
+                    #endregion -----↑↑↑↑↑客戶聯絡窗口資料 ↑↑↑↑↑----- 
+
+                    #region -----↓↓↓↓↓產品序號資訊 ↓↓↓↓↓-----
+                    SRSeiral_List = findSRSERIALMATERIALINFO(cSRID);
+                    #endregion -----↑↑↑↑↑產品序號資訊 ↑↑↑↑↑----- 
+
+                    #region -----↓↓↓↓↓零件更換資訊 ↓↓↓↓↓-----
+                    SRParts_List = findSRPARTSREPALCEINFO(cSRID);
+                    #endregion -----↑↑↑↑↑零件更換資訊 ↑↑↑↑↑----- 
+
+                    SendSRMail(cSRID, cLoginName, SRMain, SRContact_List, SRSeiral_List, SRParts_List); //發送服務請求Mail相關資訊
+                }
             }
             catch (Exception ex)
             {
                 pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
                 pMsg += " 失敗行數：" + ex.ToString();
 
-                writeToLog(cSRID, "SetSRMailContent", pMsg, pLoginName);
+                writeToLog(cSRID, "SetSRMailContent", pMsg, cLoginName);
             }
         }
         #endregion
 
         #region 發送服務請求Mail相關資訊
-        ///// <summary>
-        ///// 組服務請求Mail相關資訊
-        ///// </summary>        
-        ///// <param name="pOperationID_GenerallySR">程式作業編號檔系統ID</param>
-        ///// <param name="cSRID">SRID</param>         
-        ///// <param name="pLoginName">登入人員姓名</param>
-        //public void SendSRMail(string pOperationID_GenerallySR, string cSRID, string pLoginName)
-        //{
-        //    List<string> tMailToList = new List<string>();
-        //    List<string> tMailCcList = new List<string>();
-        //    List<string> tMailBCcList = new List<string>();
+        /// <summary>
+        /// 發送服務請求Mail相關資訊
+        /// </summary>
+        /// <param name="cSRID">SRID</param>
+        /// <param name="cLoginName">登入人員姓名</param>
+        /// <param name="SRMain">服務請求主檔資訊(For Mail)</param>
+        /// <param name="SRContact_List">服務請求客戶聯絡人資訊清單</param>
+        /// <param name="SRSeiral_List">服務請求產品序號資訊清單</param>
+        /// <param name="SRParts_List">服務請求零件更換資訊清單</param>
+        public void SendSRMail(string cSRID, string cLoginName, SRIDINFOByMail SRMain, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List, List<SRPARTSREPALCEINFO> SRParts_List)
+        {
+            List<string> tMailToList = new List<string>();
+            List<string> tMailCcList = new List<string>();
+            List<string> tMailBCcList = new List<string>();
 
-        //    string tMailToTemp = string.Empty;
-        //    string tMailCcTemp = string.Empty;
-        //    string tMailBCcTemp = string.Empty;
+            string tMailToTemp = string.Empty;
+            string tMailCcTemp = string.Empty;
+            string tMailBCcTemp = string.Empty;
 
-        //    string tMailTo = string.Empty;          //收件者            
-        //    string tMailCc = string.Empty;          //副本            
-        //    string tMailBCc = string.Empty;         //密件副本
-        //    string tHypeLink = string.Empty;        //超連結
-        //    string tSeverName = string.Empty;       //主機名稱
+            string tMailTo = string.Empty;          //收件者            
+            string tMailCc = string.Empty;          //副本            
+            string tMailBCc = string.Empty;         //密件副本
+            string tHypeLink = string.Empty;        //超連結
+            string tSeverName = string.Empty;       //主機名稱
 
-        //    string tStatus = string.Empty;          //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
+            string tStatus = string.Empty;          //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
 
-        //    try
-        //    {
-        //        bool tIsFormal = getCallSAPERPPara(pOperationID_GenerallySR); //是否為正式區(true.是 false.不是)
+            try
+            {               
 
-        //        if (tIsFormal)
-        //        {
-        //            tSeverName = "172.31.7.56:32200";
-        //        }
-        //        else
-        //        {
-        //            tSeverName = "172.31.7.56:32200";
-        //        }
+                //#region 取得收件者
+                //if (tMailToTemp != "")
+                //{
+                //    foreach (string tValue in tMailToTemp.TrimEnd(';').Split(';'))
+                //    {
+                //        if (!tMailToList.Contains(tValue))
+                //        {
+                //            tMailToList.Add(tValue);
 
-        //        var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == cSRID);
+                //            tMailTo += tValue + ";";
+                //        }
+                //    }
 
-        //        if (beanM != null)
-        //        {
+                //    tMailTo = tMailTo.TrimEnd(';');
+                //}
+                //#endregion
 
-        //        }
+                //#region 取得副本
+                //if (tMailCcTemp != "")
+                //{
+                //    foreach (string tValue in tMailCcTemp.TrimEnd(';').Split(';'))
+                //    {
+                //        if (!tMailCcList.Contains(tValue))
+                //        {
+                //            tMailCcList.Add(tValue);
 
-        //        #region 取得收件者
-        //        if (tMailToTemp != "")
-        //        {
-        //            foreach (string tValue in tMailToTemp.TrimEnd(';').Split(';'))
-        //            {
-        //                if (!tMailToList.Contains(tValue))
-        //                {
-        //                    tMailToList.Add(tValue);
+                //            tMailCc += tValue + ";";
+                //        }
+                //    }
 
-        //                    tMailTo += tValue + ";";
-        //                }
-        //            }
+                //    tMailCc = tMailCc.TrimEnd(';');
+                //}
+                //#endregion
 
-        //            tMailTo = tMailTo.TrimEnd(';');
-        //        }
-        //        #endregion
+                //#region 取得密件副本
+                //if (tMailBCcTemp != "")
+                //{
+                //    foreach (string tValue in tMailBCcTemp.TrimEnd(';').Split(';'))
+                //    {
+                //        if (!tMailBCcList.Contains(tValue))
+                //        {
+                //            tMailBCcList.Add(tValue);
 
-        //        #region 取得副本
-        //        if (tMailCcTemp != "")
-        //        {
-        //            foreach (string tValue in tMailCcTemp.TrimEnd(';').Split(';'))
-        //            {
-        //                if (!tMailCcList.Contains(tValue))
-        //                {
-        //                    tMailCcList.Add(tValue);
+                //            tMailBCc += tValue + ";";
+                //        }
+                //    }
 
-        //                    tMailCc += tValue + ";";
-        //                }
-        //            }
+                //    tMailBCc = tMailBCc.TrimEnd(';');
+                //}
+                //#endregion
 
-        //            tMailCc = tMailCc.TrimEnd(';');
-        //        }
-        //        #endregion
+                //#region 是否為測試區
+                //string strTest = string.Empty;
 
-        //        #region 取得密件副本
-        //        if (tMailBCcTemp != "")
-        //        {
-        //            foreach (string tValue in tMailBCcTemp.TrimEnd(';').Split(';'))
-        //            {
-        //                if (!tMailBCcList.Contains(tValue))
-        //                {
-        //                    tMailBCcList.Add(tValue);
+                //if (!tIsFormal)
+                //{
+                //    strTest = "【*測試*】";
+                //}
+                //#endregion
 
-        //                    tMailBCc += tValue + ";";
-        //                }
-        //            }
+                //#region 郵件主旨
+                ////備品維修
+                ////(待發料)備品維修_陳大明_台灣大哥大股份有限公司_8100002643
+                ////((狀態)借用類型_申請人_客戶_SRID)
 
-        //            tMailBCc = tMailBCc.TrimEnd(';');
-        //        }
-        //        #endregion
+                ////內部借用
+                ////(待備品主管判斷備品周轉)內部借用_陳大明_20201001～20201031
+                ////((狀態)借用類型_申請人_借用起訖)
 
-        //        #region 是否為測試區
-        //        string strTest = string.Empty;
+                //string tMailSubject = string.Empty;
 
-        //        if (!tIsFormal)
-        //        {
-        //            strTest = "【*測試*】";
-        //        }
-        //        #endregion
+                ////tMailSubject = strTest + "(" + tStageName + ")" + cApplicationType + "_" + cApplyUser_Name + "_" + cSRCustName + "_" + cSRID;
+                //#endregion
 
-        //        #region 郵件主旨
-        //        //備品維修
-        //        //(待發料)備品維修_陳大明_台灣大哥大股份有限公司_8100002643
-        //        //((狀態)借用類型_申請人_客戶_SRID)
+                //#region 郵件內容
 
-        //        //內部借用
-        //        //(待備品主管判斷備品周轉)內部借用_陳大明_20201001～20201031
-        //        //((狀態)借用類型_申請人_借用起訖)
+                //#region 內容格式參考(備品維修)                
+                ////備品借用單SP-20200701-0010請協助發料，謝謝。
+                ////[服務案件明細]
+                ////服務案件ID: 8100002643
+                ////借用人:田巧如
+                ////填表人:吳若華
+                ////建立時間: 2020/10/08 12:58:05
+                ////客戶名稱: 台灣大哥大股份有限公司
+                ////需求說明: 【網路報修】加盟店-電腦維修無法連結印表機
+                ////主機訊息(序號，主機P/N，主機規格/說明): SGH747T67N，OOO，DL360
 
-        //        string tMailSubject = string.Empty;
+                ////[備品待辦清單]
+                ////查看待辦清單 =>超連結(http://psip-qas/Spare/Index?FormNo=SP-20200701-0010&SRID=8100002643&NowStage=3)
 
-        //        //tMailSubject = strTest + "(" + tStageName + ")" + cApplicationType + "_" + cApplyUser_Name + "_" + cSRCustName + "_" + cSRID;
-        //        #endregion
+                ////-------此信件由系統管理員發出，請勿回覆此信件-------
+                //#endregion
 
-        //        #region 郵件內容
+                //#region 內容格式參考(內部借用)                
+                ////備品借用單SP-20200701-0010請協助判斷備品周轉，謝謝。
+                ////[服務案件明細]
+                ////借用人:田巧如
+                ////填表人:吳若華
+                ////建立時間: 2020/10/08 12:58:05
+                ////借用起訖: 20201001~20201031
+                ////申請說明: POC電腦維修無法連結印表機
 
-        //        #region 內容格式參考(備品維修)                
-        //        //備品借用單SP-20200701-0010請協助發料，謝謝。
-        //        //[服務案件明細]
-        //        //服務案件ID: 8100002643
-        //        //借用人:田巧如
-        //        //填表人:吳若華
-        //        //建立時間: 2020/10/08 12:58:05
-        //        //客戶名稱: 台灣大哥大股份有限公司
-        //        //需求說明: 【網路報修】加盟店-電腦維修無法連結印表機
-        //        //主機訊息(序號，主機P/N，主機規格/說明): SGH747T67N，OOO，DL360
+                ////[備品待辦清單]
+                ////查看待辦清單 =>超連結(http://psip-qas/Spare/Index?FormNo=SP-20200701-0010&NowStage=2)
 
-        //        //[備品待辦清單]
-        //        //查看待辦清單 =>超連結(http://psip-qas/Spare/Index?FormNo=SP-20200701-0010&SRID=8100002643&NowStage=3)
+                ////-------此信件由系統管理員發出，請勿回覆此信件-------
+                //#endregion
 
-        //        //-------此信件由系統管理員發出，請勿回覆此信件-------
-        //        #endregion
+                //string tMailBody = string.Empty;
 
-        //        #region 內容格式參考(內部借用)                
-        //        //備品借用單SP-20200701-0010請協助判斷備品周轉，謝謝。
-        //        //[服務案件明細]
-        //        //借用人:田巧如
-        //        //填表人:吳若華
-        //        //建立時間: 2020/10/08 12:58:05
-        //        //借用起訖: 20201001~20201031
-        //        //申請說明: POC電腦維修無法連結印表機
+                //if (tStatus == "E0015") //取消
+                //{
+                //    tHypeLink = "http://" + tSeverName + "/ServiceRequest/GenerallySR?SRID=" + cSRID;
+                //}
+                //else
+                //{
+                //    tHypeLink = "http://" + tSeverName + "/ServiceRequest/ToDoList";
+                //}
 
-        //        //[備品待辦清單]
-        //        //查看待辦清單 =>超連結(http://psip-qas/Spare/Index?FormNo=SP-20200701-0010&NowStage=2)
+                //tMailBody = GetMailBody("WSSpareINTERNAL_MAIL");
 
-        //        //-------此信件由系統管理員發出，請勿回覆此信件-------
-        //        #endregion
+                //tMailBody = tMailBody.Replace("【<cFormNo>】", cFormNo).Replace("【<tStageName2>】", tStageName2);
+                //tMailBody = tMailBody.Replace("【<cApplyUser_Name>】", cApplyUser_Name).Replace("【<cFillUser_Name>】", cFillUser_Name);
+                //tMailBody = tMailBody.Replace("【<CreatedDate>】", CreatedDate).Replace("【<cStartDate>】", cStartDate).Replace("【<cEndDate>】", cEndDate);
+                //tMailBody = tMailBody.Replace("【<cApplicationNote>】", cApplicationNote).Replace("【<cSRInfo>】", cSRInfo).Replace("【<tNextStage>】", tNextStage);
+                //tMailBody = tMailBody.Replace("【<tComment>】", tComment).Replace("【<tHypeLink>】", tHypeLink);
+                //#endregion
 
-        //        string tMailBody = string.Empty;
+                ////呼叫寄送Mail
+                //SendMailByAPI("SendSRMail_API", null, tMailTo, tMailCc, tMailBCc, tMailSubject, tMailBody, "", "");
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
 
-        //        if (tStatus == "E0015") //取消
-        //        {
-        //            tHypeLink = "http://" + tSeverName + "/ServiceRequest/GenerallySR?SRID=" + cSRID;
-        //        }
-        //        else
-        //        {
-        //            tHypeLink = "http://" + tSeverName + "/ServiceRequest/ToDoList";
-        //        }
-
-        //        tMailBody = GetMailBody("WSSpareINTERNAL_MAIL");
-
-        //        tMailBody = tMailBody.Replace("【<cFormNo>】", cFormNo).Replace("【<tStageName2>】", tStageName2);
-        //        tMailBody = tMailBody.Replace("【<cApplyUser_Name>】", cApplyUser_Name).Replace("【<cFillUser_Name>】", cFillUser_Name);
-        //        tMailBody = tMailBody.Replace("【<CreatedDate>】", CreatedDate).Replace("【<cStartDate>】", cStartDate).Replace("【<cEndDate>】", cEndDate);
-        //        tMailBody = tMailBody.Replace("【<cApplicationNote>】", cApplicationNote).Replace("【<cSRInfo>】", cSRInfo).Replace("【<tNextStage>】", tNextStage);
-        //        tMailBody = tMailBody.Replace("【<tComment>】", tComment).Replace("【<tHypeLink>】", tHypeLink);
-        //        #endregion
-
-        //        //呼叫寄送Mail
-        //        SendMailByAPI("SendSRMail_API", null, tMailTo, tMailCc, tMailBCc, tMailSubject, tMailBody, "", "");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
-        //        pMsg += " 失敗行數：" + ex.ToString();
-
-        //        writeToLog(cSRID, "SendSRMail", pMsg, pLoginName);
-        //    }
-        //}
+                writeToLog(cSRID, "SendSRMail", pMsg, cLoginName);
+            }
+        }
         #endregion
 
         #region 以訊息中心發送Mail(新版)
