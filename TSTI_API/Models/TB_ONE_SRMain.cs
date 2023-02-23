@@ -19,7 +19,7 @@ namespace TSTI_API.Models
         public string cCustomerName { get; set; }
         public string cDesc { get; set; }
         public string cNotes { get; set; }
-        public string cAttatchement { get; set; }
+        public string cAttachement { get; set; }
         public string cStatus { get; set; }
         public string cMAServiceType { get; set; }
         public string cDelayReason { get; set; }

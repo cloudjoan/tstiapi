@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="TB_ONE_DOCUMENT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="REF_OBJ_ID" Type="nvarchar" MaxLength="50" />
+    <Property Name="FILE_ORG_NAME" Type="nvarchar" MaxLength="100" />
+    <Property Name="FILE_NAME" Type="nvarchar" MaxLength="50" />
+    <Property Name="FILE_EXT" Type="varchar" MaxLength="5" />
+    <Property Name="INSERT_TIME" Type="varchar" MaxLength="22" />
+  </EntityType>
   <EntityType Name="TB_ONE_LOG">
     <Key>
       <PropertyRef Name="cID" />
@@ -157,7 +168,7 @@
     <Property Name="cCustomerName" Type="nvarchar" MaxLength="35" />
     <Property Name="cDesc" Type="nvarchar" MaxLength="255" />
     <Property Name="cNotes" Type="nvarchar" MaxLength="2000" />
-    <Property Name="cAttatchement" Type="nvarchar(max)" />
+    <Property Name="cAttachement" Type="nvarchar(max)" />
     <Property Name="cStatus" Type="nvarchar" MaxLength="5" />
     <Property Name="cMAServiceType" Type="nvarchar" MaxLength="3" />
     <Property Name="cDelayReason" Type="nvarchar" MaxLength="255" />
@@ -239,6 +250,7 @@
     <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="TB_ONE_DOCUMENT" EntityType="Self.TB_ONE_DOCUMENT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_LOG" EntityType="Self.TB_ONE_LOG" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRCustomerEmailMapping" EntityType="Self.TB_ONE_SRCustomerEmailMapping" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRDetail_Contact" EntityType="Self.TB_ONE_SRDetail_Contact" Schema="dbo" store:Type="Tables" />

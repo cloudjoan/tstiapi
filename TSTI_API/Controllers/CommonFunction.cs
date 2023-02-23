@@ -407,6 +407,51 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 傳入服務團隊ID並取得公司別
+        /// <summary>
+        /// 傳入服務團隊ID並取得公司別
+        /// </summary>
+        /// <param name="TeamID">服務團隊ID</param>
+        /// <returns></returns>
+        public string findBUKRSByTeamID(string TeamID)
+        {
+            string reValue = "T012";
+
+            string[] AryTeamID = TeamID.Trim(';').Split(';');
+
+            foreach (string ID in AryTeamID)
+            {
+                var bean = dbOne.TB_ONE_SRTeamMapping.FirstOrDefault(x => x.Disabled == 0 && x.cTeamOldID == ID);
+
+                if (bean != null)
+                {
+                    switch (bean.cTeamNewID.Substring(0, 2))
+                    {
+                        case "12":
+                            reValue = "T012";
+                            break;
+
+                        case "16":
+                            reValue = "T016";
+                            break;
+
+                        case "69":
+                            reValue = "C069";
+                           break;
+
+                        case "22":
+                            reValue = "T022";
+                            break;
+                    }
+                }
+
+                break;
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得服務團隊資料
         /// <summary>
         /// 取得服務團隊資料
@@ -487,6 +532,31 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得服務團隊ID_名稱
+        /// <summary>
+        /// 取得服務團隊ID_名稱
+        /// </summary>
+        /// <param name="cTeamID">服務團隊ID(多筆以;號隔開)</param>
+        /// <returns></returns>
+        public string findSRTeamIDandName(string cTeamID)
+        {
+            string reValue = string.Empty;
+            
+            string[] AryTeamID = cTeamID.TrimEnd(';').Split(';');
+
+            var beans = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && AryTeamID.Contains(x.cTeamOldID));
+
+            foreach (var bean in beans)
+            {
+                reValue += bean.cTeamOldID + "_" + bean.cTeamOldName + ";";
+            }
+
+            reValue = reValue.TrimEnd(';');
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得服務團隊主管姓名
         /// <summary>
         /// 取得服務團隊主管姓名
@@ -522,6 +592,31 @@ namespace TSTI_API.Controllers
             {
                 reValue += bean.DEPTMGREMAIL + ";";
             }            
+
+            return reValue;
+        }
+        #endregion
+
+        #region 取得服務請求L2工程師/指派工程師/技術主管，員工ERPID_中文+英文姓名
+        /// <summary>
+        /// 服務請求L2工程師/指派工程師/技術主管相關資訊，員工ERPID_中文+英文姓名
+        /// </summary>
+        /// <param name="cERPID">員工編號(多筆以;號隔開)</param>
+        /// <returns></returns>        
+        public string findSREMPERPIDandNameByERPID(string cERPID)
+        {
+            string reValue = string.Empty;
+
+            string[] AryERPID = cERPID.TrimEnd(';').Split(';');
+
+            var beans = dbEIP.Person.Where(x => (x.Leave_Date == null && x.Leave_Reason == null) && AryERPID.Contains(x.ERP_ID));
+
+            foreach (var bean in beans)
+            {
+                reValue += bean.ERP_ID + "_" + bean.Name2 + " " + bean.Name + ";";
+            }
+
+            reValue = reValue.TrimEnd(';');
 
             return reValue;
         }
@@ -713,9 +808,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得產品序號資訊資訊
+        #region 取得產品序號資訊
         /// <summary>
-        /// 取得產品序號資訊資訊
+        /// 取得產品序號資訊
         /// </summary>
         /// <param name="cSRID">SRID</param>
         /// <returns></returns>        
@@ -737,6 +832,209 @@ namespace TSTI_API.Controllers
                 SRSerial.InstallID = bean.cInstallID;
 
                 tList.Add(SRSerial);
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得保固SLA資訊
+        /// <summary>
+        /// 取得保固SLA資訊
+        /// </summary>
+        /// <param name="cSRID">SRID</param>
+        /// <param name="tBPMURLName">BPM站台名稱</param>
+        /// <param name="tPSIPURLName">PSIP站台名稱</param>        
+        /// <returns></returns>        
+        public List<SRWTSLAINFO> findSRWTSLAINFO(string cSRID, string tBPMURLName, string tPSIPURLName)
+        {
+            List<SRWTSLAINFO> tList = new List<SRWTSLAINFO>();
+
+            string cCONTRACTIDUrl = string.Empty;            
+            string cBPMFormNoUrl = string.Empty;
+            string cSUBCONTRACTID = string.Empty;            
+            string cUSED = string.Empty;            
+
+            var beans = dbOne.TB_ONE_SRDetail_Warranty.Where(x => x.cSRID == cSRID);
+
+            foreach (var bean in beans)
+            {
+                cSUBCONTRACTID = string.IsNullOrEmpty(bean.cSubContractID) ? "" : bean.cSubContractID.Trim();
+                cUSED = bean.cUsed == "Y" ? "Y_使用" : "N_不使用";                
+
+                #region 取得BPM Url
+                if (bean.cContractID != "")
+                {
+                    try
+                    {
+                        Int32 ContractID = Int32.Parse(bean.cContractID);
+
+                        if (ContractID >= 10506151 && ContractID != 10506152 && ContractID != 10506157) //新的用印申請單
+                        {
+                            cBPMFormNoUrl = "http://" + tBPMURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/ContractSeals/ContractSealsForm.aspx?FormNo=" + bean.cBPMFormNo;
+                        }
+                        else //舊的用印申請單
+                        {
+                            cBPMFormNoUrl = "http://" + tBPMURLName + "/ContractSeals/_layouts/FormServer.aspx?XmlLocation=%2fContractSeals%2fBPMContractSealsForm%2f" + bean.cBPMFormNo + ".xml&ClientInstalled=true&DefaultItemOpen=1&source=/_layouts/TSTI.SharePoint.BPM/CloseWindow.aspx";
+                        }
+
+                        cCONTRACTIDUrl = "http://" + tPSIPURLName + "/Spare/QueryContractInfo?CONTRACTID=" + bean.cContractID; //合約編號URL
+                    }
+                    catch (Exception ex)
+                    {
+                        cCONTRACTIDUrl = "";                        
+                        cBPMFormNoUrl = "";
+                    }
+                }
+                else
+                {
+                    if (bean.cBPMFormNo.IndexOf("WTY") != -1)
+                    {
+                        cBPMFormNoUrl = "http://" + tBPMURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/Warranty/WarrantyForm.aspx?FormNo=" + bean.cBPMFormNo;
+                    }
+                    else
+                    {
+                        cBPMFormNoUrl = "http://" + tBPMURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Form/Guarantee/GuaranteeForm.aspx?FormNo=" + bean.cBPMFormNo;
+                    }
+                }
+                #endregion
+
+                SRWTSLAINFO SRWTSAL = new SRWTSLAINFO();
+
+                SRWTSAL.SRID = bean.cSRID;
+                SRWTSAL.SERIALID = bean.cSerialID;
+                SRWTSAL.WTYID = bean.cWTYID;
+                SRWTSAL.WTYName = bean.cWTYName;
+                SRWTSAL.WTYSDATE = Convert.ToDateTime(bean.cWTYSDATE).ToString("yyyy-MM-dd");
+                SRWTSAL.WTYEDATE = Convert.ToDateTime(bean.cWTYEDATE).ToString("yyyy-MM-dd");
+                SRWTSAL.SLARESP = bean.cSLARESP;
+
+                SRWTSAL.SLASRV = bean.cSLASRV;
+                SRWTSAL.CONTRACTID = bean.cContractID;
+                SRWTSAL.CONTRACTIDUrl = cCONTRACTIDUrl;
+                SRWTSAL.SUBCONTRACTID = cSUBCONTRACTID;
+                SRWTSAL.BPMFormNo = bean.cBPMFormNo;
+                SRWTSAL.BPMFormNoUrl = cBPMFormNoUrl;
+                SRWTSAL.ADVICE = bean.cAdvice;
+                SRWTSAL.USED = cUSED;
+
+                tList.Add(SRWTSAL);
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得處理與工時紀錄資訊
+        /// <summary>
+        /// 處理與工時紀錄資訊
+        /// </summary>
+        /// <param name="cSRID">SRID</param>
+        /// <param name="tAttachURLName">附件URL站台名稱</param>
+        /// <returns></returns>        
+        public List<SRRECORDINFO> findSRRECORDINFO(string cSRID, string tAttachURLName)
+        {
+            List<SRRECORDINFO> tList = new List<SRRECORDINFO>();
+
+            string cReceiveTime = string.Empty;
+            string cStartTime = string.Empty;
+            string cArriveTime = string.Empty;
+            string cFinishTime = string.Empty;
+            string cURLName = string.Empty;
+            string cSRReportURL = string.Empty;
+          
+            var beans = dbOne.TB_ONE_SRDetail_Record.Where(x => x.Disabled == 0 && x.cSRID == cSRID);
+
+            foreach (var bean in beans)
+            {
+                SRRECORDINFO SRRecord = new SRRECORDINFO();
+
+                cReceiveTime = bean.cReceiveTime == null ? "" : Convert.ToDateTime(bean.cReceiveTime).ToString("yyyy-MM-dd HH:mm");
+                cStartTime = bean.cStartTime == null ? "" : Convert.ToDateTime(bean.cStartTime).ToString("yyyy-MM-dd HH:mm");
+                cArriveTime = bean.cArriveTime == null ? "" : Convert.ToDateTime(bean.cArriveTime).ToString("yyyy-MM-dd HH:mm");
+                cFinishTime = bean.cFinishTime == null ? "" : Convert.ToDateTime(bean.cFinishTime).ToString("yyyy-MM-dd HH:mm");
+                cSRReportURL = findAttachUrl(bean.cSRReport, tAttachURLName);
+
+                SRRecord.CID = bean.cID.ToString();
+                SRRecord.SRID = bean.cSRID;
+                SRRecord.ENGID = bean.cEngineerID;
+                SRRecord.ENGNAME = bean.cEngineerName;
+                SRRecord.ReceiveTime = cReceiveTime;
+                SRRecord.StartTime = cStartTime;
+                SRRecord.ArriveTime = cArriveTime;
+                SRRecord.FinishTime = cFinishTime;
+                SRRecord.WorkHours = bean.cWorkHours.ToString();
+                SRRecord.Desc = bean.cDesc;
+                SRRecord.SRReportURL = cSRReportURL;                
+
+                tList.Add(SRRecord);
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得附件/服務報告書URL(多筆以;號隔開)
+        /// <summary>
+        /// 取得附件/服務報告書URL(多筆以;號隔開)
+        /// </summary>
+        /// <param name="tAttach">附件GUID(多筆以,號隔開)</param>
+        /// <param name="tAttachURLName">附件URL站台名稱</param>
+        /// <returns></returns>
+        public string findAttachUrl(string tAttach, string tAttachURLName)
+        {
+            string reValue = string.Empty;
+
+            List<SRATTACHINFO> SR_List = findSRATTACHINFO(tAttach, tAttachURLName);
+
+            foreach(var bean in SR_List)
+            {
+                reValue += bean.FILE_URL + ";";
+            }
+
+            reValue = reValue.TrimEnd(';');
+
+            return reValue;
+        }
+        #endregion
+
+        #region 取得附件相關資訊
+        /// <summary>
+        /// 取得附件相關資訊
+        /// </summary>
+        /// <param name="tAttach">附件GUID(多筆以,號隔開)</param>
+        /// <param name="tAttachURLName">附件URL站台名稱</param>
+        /// <returns></returns>
+        public List<SRATTACHINFO> findSRATTACHINFO(string tAttach, string tAttachURLName)
+        {
+            #region 範例Url
+            //http://tsticrmmbgw.etatung.com:8082/CSreport/a7f12260-0168-4cf8-a321-c2d410ac3536.txt
+            #endregion
+
+            List<SRATTACHINFO> tList = new List<SRATTACHINFO>();            
+           
+            string tURL = string.Empty;
+            string[] tAryAttach = tAttach.TrimEnd(',').Split(',');            
+
+            foreach (string tKey in tAryAttach)
+            {
+                var bean = dbOne.TB_ONE_DOCUMENT.FirstOrDefault(x => x.ID.ToString() == tKey);
+
+                if (bean != null)
+                {
+                    SRATTACHINFO beanSR = new SRATTACHINFO();
+
+                    tURL = "http://" + tAttachURLName + "/CSreport/" + bean.FILE_NAME;
+
+                    beanSR.ID = tKey;
+                    beanSR.FILE_ORG_NAME = bean.FILE_ORG_NAME;
+                    beanSR.FILE_NAME = bean.FILE_NAME;
+                    beanSR.FILE_EXT = bean.FILE_EXT;
+                    beanSR.FILE_URL = tURL;
+                    beanSR.INSERT_TIME = bean.INSERT_TIME;
+
+                    tList.Add(beanSR);
+                }
             }
 
             return tList;
@@ -765,6 +1063,7 @@ namespace TSTI_API.Controllers
                 cArriveDate = bean.cArriveDate == null ? "" : Convert.ToDateTime(bean.cArriveDate).ToString("yyyy-MM-dd");
                 cReturnDate = bean.cReturnDate == null ? "" : Convert.ToDateTime(bean.cReturnDate).ToString("yyyy-MM-dd");
 
+                SRPart.CID = bean.cID.ToString();
                 SRPart.SRID = bean.cSRID;
                 SRPart.XCHP = bean.cXCHP;
                 SRPart.MaterialID = bean.cMaterialID;
@@ -1105,11 +1404,11 @@ namespace TSTI_API.Controllers
         /// 呼叫RFC並回傳SLA Table清單
         /// </summary>        
         /// <param name="ArySERIAL">序號Array</param>        
-        /// <param name="tURLName">BPM站台名稱</param>
-        /// <param name="tSeverName">PSIP站台名稱</param>
+        /// <param name="tBPMURLName">BPM站台名稱</param>
+        /// <param name="tPSIPURLName">PSIP站台名稱</param>
         /// <param name="tAPIURLName">API站台名稱</param>
         /// <returns></returns>
-        public List<SRWarranty> ZFM_TICC_SERIAL_SEARCHWTYList(string[] ArySERIAL, string tURLName, string tSeverName, string tAPIURLName)
+        public List<SRWarranty> ZFM_TICC_SERIAL_SEARCHWTYList(string[] ArySERIAL, string tBPMURLName, string tPSIPURLName, string tAPIURLName)
         {
             List<SRWarranty> QueryToList = new List<SRWarranty>();
 
@@ -1191,14 +1490,14 @@ namespace TSTI_API.Controllers
 
                                     if (ContractID >= 10506151 && ContractID != 10506152 && ContractID != 10506157) //新的用印申請單
                                     {
-                                        tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/ContractSeals/ContractSealsForm.aspx?FormNo=" + tBPMNO;
+                                        tURL = "http://" + tBPMURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/ContractSeals/ContractSealsForm.aspx?FormNo=" + tBPMNO;
                                     }
                                     else //舊的用印申請單
                                     {
-                                        tURL = "http://" + tURLName + "/ContractSeals/_layouts/FormServer.aspx?XmlLocation=%2fContractSeals%2fBPMContractSealsForm%2f" + tBPMNO + ".xml&ClientInstalled=true&DefaultItemOpen=1&source=/_layouts/TSTI.SharePoint.BPM/CloseWindow.aspx";
+                                        tURL = "http://" + tBPMURLName + "/ContractSeals/_layouts/FormServer.aspx?XmlLocation=%2fContractSeals%2fBPMContractSealsForm%2f" + tBPMNO + ".xml&ClientInstalled=true&DefaultItemOpen=1&source=/_layouts/TSTI.SharePoint.BPM/CloseWindow.aspx";
                                     }
 
-                                    cContractIDURL = "http://" + tSeverName + "/Spare/QueryContractInfo?CONTRACTID=" + cContractID; //合約編號URL
+                                    cContractIDURL = "http://" + tPSIPURLName + "/Spare/QueryContractInfo?CONTRACTID=" + cContractID; //合約編號URL
                                 }
                                 catch (Exception ex)
                                 {
@@ -1211,11 +1510,11 @@ namespace TSTI_API.Controllers
                             {
                                 if (tBPMNO.IndexOf("WTY") != -1)
                                 {
-                                    tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/Warranty/WarrantyForm.aspx?FormNo=" + tBPMNO;
+                                    tURL = "http://" + tBPMURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/Warranty/WarrantyForm.aspx?FormNo=" + tBPMNO;
                                 }
                                 else
                                 {
-                                    tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Form/Guarantee/GuaranteeForm.aspx?FormNo=" + tBPMNO;
+                                    tURL = "http://" + tBPMURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Form/Guarantee/GuaranteeForm.aspx?FormNo=" + tBPMNO;
                                 }
                             }
                             #endregion
@@ -1301,6 +1600,7 @@ namespace TSTI_API.Controllers
             List<SRIDINFO> QuerySRToList = new List<SRIDINFO>();     //查詢出來的清單
             List<string> tListSRID = new List<string>();            //SRID清單
 
+            string tBUKRS = string.Empty;
             string tSRTYPE = string.Empty;
             string tSRTDESC = string.Empty;
             string tSTATUSDESC = string.Empty;
@@ -1347,7 +1647,8 @@ namespace TSTI_API.Controllers
                             break;
                     }
 
-                    tSTATUSDESC = findSysParameterDescription(pOperationID_GenerallySR, "OTHER", "T012", "SRSTATUS", bean.cStatus);
+                    tBUKRS = findBUKRSByTeamID(bean.cTeamID);
+                    tSTATUSDESC = findSysParameterDescription(pOperationID_GenerallySR, "OTHER", tBUKRS, "SRSTATUS", bean.cStatus);
                     tSRREPORTUrl = findSRReportURL(tSRID);
                     tASSENGNAME = findEmployeeCENameByERPID(bean.cAssEngineerID);
                     tTECHMAGNAME = findEmployeeCENameByERPID(bean.cTechManagerID);
@@ -2200,7 +2501,7 @@ namespace TSTI_API.Controllers
                 if (beanM != null)
                 {
                     #region -----↓↓↓↓↓主檔 ↓↓↓↓↓-----
-                    SRIDINFOByMail SRMain = new SRIDINFOByMail();
+                    SRIDMAININFO SRMain = new SRIDMAININFO();
 
                     #region 服務團隊相關
                     SRTeam_List = findSRTEAMORGINFO(beanM.cTeamID);
@@ -2237,8 +2538,8 @@ namespace TSTI_API.Controllers
                     cContractID = findSRContractID(cSRID);
                     cCreatedDate = Convert.ToDateTime(beanM.CreatedDate).ToString("yyyy-MM-dd");
                     cStatus = beanM.cStatus;
-                    cStatusDesc = findSysParameterDescription(cOperationID_GenerallySR, "OTHER", "T012", "SRSTATUS", beanM.cStatus);                    
-                    cMAServiceType = findSysParameterDescription(cOperationID_GenerallySR, "OTHER", "T012", "SRMATYPE", beanM.cMAServiceType); 
+                    cStatusDesc = findSysParameterDescription(cOperationID_GenerallySR, "OTHER", cBUKRS, "SRSTATUS", beanM.cStatus);                    
+                    cMAServiceType = findSysParameterDescription(cOperationID_GenerallySR, "OTHER", cBUKRS, "SRMATYPE", beanM.cMAServiceType); 
                     cSecFix = beanM.cIsSecondFix;
                     cDesc = beanM.cDesc;
                     cNotes = beanM.cNotes;
@@ -2309,7 +2610,7 @@ namespace TSTI_API.Controllers
         /// <param name="SRContact_List">服務請求客戶聯絡人資訊清單</param>
         /// <param name="SRSeiral_List">服務請求產品序號資訊清單</param>
         /// <param name="SRParts_List">服務請求零件更換資訊清單</param>
-        public void SendSRMail(SRCondition cCondition, string cSRID, string cLoginName, bool tIsFormal, SRIDINFOByMail SRMain, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List, List<SRPARTSREPALCEINFO> SRParts_List)
+        public void SendSRMail(SRCondition cCondition, string cSRID, string cLoginName, bool tIsFormal, SRIDMAININFO SRMain, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List, List<SRPARTSREPALCEINFO> SRParts_List)
         {
             List<string> tMailToList = new List<string>();
             List<string> tMailCcList = new List<string>();

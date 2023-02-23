@@ -188,8 +188,9 @@ namespace TSTI_API.Controllers
             string pLoginName = string.Empty;
             string pSRID = string.Empty;
             string OldCStatus = string.Empty;
-            string tURLName = string.Empty;
-            string tSeverName = string.Empty;
+            string tBPMURLName = string.Empty;
+            string tPSIPURLName = string.Empty;
+            string tAttachURLName = string.Empty;
             string tInvoiceNo = string.Empty;
             string tInvoiceItem = string.Empty;
 
@@ -205,6 +206,7 @@ namespace TSTI_API.Controllers
             string IV_MKIND3 = string.IsNullOrEmpty(bean.IV_MKIND3) ? "" : bean.IV_MKIND3.Trim();
             string IV_REPAIRNAME = string.IsNullOrEmpty(bean.IV_REPAIRNAME) ? "" : bean.IV_REPAIRNAME.Trim();
             string IV_REPAIRTEL = string.IsNullOrEmpty(bean.IV_REPAIRTEL) ? "" : bean.IV_REPAIRTEL.Trim();
+            string IV_REPAIRMOB = string.IsNullOrEmpty(bean.IV_REPAIRMOB) ? "" : bean.IV_REPAIRMOB.Trim();
             string IV_REPAIRADDR = string.IsNullOrEmpty(bean.IV_REPAIRADDR) ? "" : bean.IV_REPAIRADDR.Trim();
             string IV_REPAIREMAIL = string.IsNullOrEmpty(bean.IV_REPAIREMAIL) ? "" : bean.IV_REPAIREMAIL.Trim();            
             string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
@@ -230,19 +232,21 @@ namespace TSTI_API.Controllers
                 pLoginName = EmpBean.EmployeeCName;
             }
 
-            bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
+            bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)          
 
             if (tIsFormal)
             {
-                tURLName = "tsti-bpm01.etatung.com.tw";
-                tSeverName = "psip-prd-ap";
+                tBPMURLName = "tsti-bpm01.etatung.com.tw";
+                tPSIPURLName = "psip-prd-ap";
+                tAttachURLName = "tsticrmmbgw.etatung.com:8082";
             }
             else
             {
-                tURLName = "bpm-qas";
-                tSeverName = "psip-qas";
+                tBPMURLName = "bpm-qas";
+                tPSIPURLName = "psip-qas";
+                tAttachURLName = "tsticrmmbgw.etatung.com:8082";
             }
-            
+
             try
             {
                 if (tType == "ADD") 
@@ -269,6 +273,7 @@ namespace TSTI_API.Controllers
                     beanM.cRepairName = IV_REPAIRNAME;
                     beanM.cRepairAddress = IV_REPAIRADDR;
                     beanM.cRepairPhone = IV_REPAIRTEL;
+                    beanM.cRepairMobile = IV_REPAIRMOB;
                     beanM.cRepairEmail = IV_REPAIREMAIL;                   
                     beanM.cTeamID = IV_SRTEAM;
                     beanM.cSQPersonID = IV_SQEMPID;
@@ -360,7 +365,7 @@ namespace TSTI_API.Controllers
                         {
                             string tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
 
-                            QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(PRcSerialID, tURLName, tSeverName, tAPIURLName);
+                            QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(PRcSerialID, tBPMURLName, tPSIPURLName, tAPIURLName);
 
                             #region 保固，因RFC已經有回傳所有清單，這邊暫時先不用
                             //foreach (string IV_SERIAL in ArySERIAL)
@@ -530,7 +535,7 @@ namespace TSTI_API.Controllers
                         SROUT.EV_MSG = "";
 
                         #region 寄送Mail通知
-                        CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, EmpBean.BUKRS, pSRID, pLoginName);
+                        //CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, EmpBean.BUKRS, pSRID, pLoginName);
                         #endregion
                     }
                 }
@@ -898,6 +903,8 @@ namespace TSTI_API.Controllers
             public string IV_REPAIRNAME { get; set; }
             /// <summary>報修人電話</summary>
             public string IV_REPAIRTEL { get; set; }
+            /// <summary>報修人手機</summary>
+            public string IV_REPAIRMOB { get; set; }
             /// <summary>報修人地址</summary>
             public string IV_REPAIRADDR { get; set; }
             /// <summary>報修人Email</summary>
@@ -1602,6 +1609,224 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務請求資訊(List)、服務請求客戶聯絡人資訊(List)) ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓SRID相關資訊查詢(服務主檔資訊、客戶聯絡窗口資訊清單、產品序號資訊清單、保固SLA檔資訊清單、處理與工時紀錄清單、零件更換資訊清單) ↓↓↓↓↓-----
+
+        #region 查詢SRID相關資訊接口
+        [HttpPost]
+        public ActionResult API_SRIDINFO_SEARCH(SRIDSEARCH_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_SRID": "612211250004"            
+            //}
+            #endregion
+
+            SRIDSEARCH_OUTPUT ListOUT = new SRIDSEARCH_OUTPUT();
+
+            ListOUT = SRIDINFO_SEARCH(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得SRID相關資訊
+        private SRIDSEARCH_OUTPUT SRIDINFO_SEARCH(SRIDSEARCH_INPUT beanIN)
+        {
+            SRIDSEARCH_OUTPUT SROUT = new SRIDSEARCH_OUTPUT();
+
+            bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
+            string tBPMURLName = string.Empty;
+            string tPSIPURLName = string.Empty;
+            string tAttachURLName = string.Empty;
+
+            if (tIsFormal)
+            {
+                tBPMURLName = "tsti-bpm01.etatung.com.tw";
+                tPSIPURLName = "psip-prd-ap";
+                tAttachURLName = "tsticrmmbgw.etatung.com:8082";
+            }
+            else
+            {
+                tBPMURLName = "bpm-qas";
+                tPSIPURLName = "psip-qas";
+                tAttachURLName = "tsticrmmbgw.etatung.com:8082";
+            }
+
+            #region 取得主檔資訊
+            var MainBean = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == beanIN.IV_SRID.Trim());
+
+            if (MainBean.cSRID != null)
+            {
+                string cBUKRS = CMF.findBUKRSByTeamID(MainBean.cTeamID);
+                string cStatusDesc = CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRSTATUS", MainBean.cStatus);             
+                string cMAServiceTypeDesc = CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRMATYPE", MainBean.cMAServiceType);
+                string cSRTYPEONEDesc = CMF.findSRRepairTypeName(MainBean.cSRTypeOne);
+                string cSRTYPESECDesc = CMF.findSRRepairTypeName(MainBean.cSRTypeSec);
+                string cSRTYPETHRDesc = CMF.findSRRepairTypeName(MainBean.cSRTypeThr);
+                string cSRPATHWAYDesc =CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRPATH", MainBean.cSRPathWay);
+                string cSRPROCESSWAYDesc = CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRPROCESS", MainBean.cSRProcessWay);
+                string cISSECFIXDesc = MainBean.cIsSecondFix == "Y" ? "是" : "否";
+                string cSRTEAM = CMF.findSRTeamIDandName(MainBean.cTeamID);
+                string cMAINENG = CMF.findSREMPERPIDandNameByERPID(MainBean.cMainEngineerID);
+                string cASSENGN = CMF.findSREMPERPIDandNameByERPID(MainBean.cAssEngineerID);
+                string cTECHMAG = CMF.findSREMPERPIDandNameByERPID(MainBean.cTechManagerID);                
+                string cSALES = CMF.findSREMPERPIDandNameByERPID(MainBean.cSalesID);  
+                string cAttchURL = CMF.findAttachUrl(MainBean.cAttachement, tAttachURLName);
+
+                SROUT.SRID = MainBean.cSRID;
+                SROUT.STATUS = MainBean.cStatus + "_" + cStatusDesc;
+                SROUT.DESC = MainBean.cDesc;
+                SROUT.NOTES = MainBean.cNotes;
+                SROUT.CUSTOMER = MainBean.cCustomerID + "_" + MainBean.cCustomerName;
+                SROUT.MASERVICETYPE = MainBean.cMAServiceType + "_" + cMAServiceTypeDesc;
+                SROUT.CRDATE = Convert.ToDateTime(MainBean.CreatedDate).ToString("yyyy-MM-dd");
+                SROUT.SRTYPEONE = MainBean.cSRTypeOne + "_" + cSRTYPEONEDesc;
+                SROUT.SRTYPESEC = MainBean.cSRTypeSec + "_" + cSRTYPESECDesc;
+                SROUT.SRTYPETHR = MainBean.cSRTypeThr + "_" + cSRTYPETHRDesc;
+                SROUT.SRPATHWAY = MainBean.cSRPathWay + "_" + cSRPATHWAYDesc;
+                SROUT.SRPROCESSWAY = MainBean.cSRProcessWay + "_" + cSRPROCESSWAYDesc;
+                SROUT.DELAYREASON = MainBean.cDelayReason;
+                SROUT.ISSECFIX = MainBean.cIsSecondFix + "_" + cISSECFIXDesc;
+                SROUT.REPAIRNAME = MainBean.cRepairName;
+                SROUT.REPAIRADDR = MainBean.cRepairAddress;
+                SROUT.REPAIRTEL = MainBean.cRepairPhone;
+                SROUT.REPAIRMOB = MainBean.cRepairMobile;
+                SROUT.REPAIREMAIL = MainBean.cRepairEmail;
+                SROUT.SRTEAM = cSRTEAM;
+                SROUT.MAINENG = cMAINENG;
+                SROUT.ASSENGN = cASSENGN;
+                SROUT.TECHMAG = cTECHMAG;
+                SROUT.SQEMP = MainBean.cSQPersonID + "_" + MainBean.cSQPersonName;
+                SROUT.SALES = cSALES;
+                SROUT.ATTACHURL = cAttchURL;
+
+                SROUT.EV_MSGT = "Y";
+                SROUT.EV_MSG = "";
+            }
+            else
+            {               
+                SROUT.EV_MSGT = "E";
+                SROUT.EV_MSG = "查無SRID相關資訊！";
+            }
+            #endregion
+
+            if (MainBean.cSRID != "")
+            {
+                #region 【客戶聯絡人資訊】清單
+                List<SRCONTACTINFO> SRCONTACT_LIST = CMF.findSRCONTACTINFO(MainBean.cSRID);
+                SROUT.SRCONTACT_LIST = SRCONTACT_LIST;
+                #endregion
+
+                #region 【產品序號資訊】清單
+                List<SRSERIALMATERIALINFO> SRSERIAL_LIST = CMF.findSRSERIALMATERIALINFO(MainBean.cSRID);
+                SROUT.SRSERIAL_LIST = SRSERIAL_LIST;
+                #endregion
+
+                #region 【保固SLA資訊】清單
+                List<SRWTSLAINFO> SRWTSLA_LIST = CMF.findSRWTSLAINFO(MainBean.cSRID, tBPMURLName, tPSIPURLName);
+                SROUT.SRWTSLA_LIST = SRWTSLA_LIST;
+                #endregion
+
+                #region 【處理與工時紀錄資訊】清單
+                List<SRRECORDINFO> SRRECORD_LIST = CMF.findSRRECORDINFO(MainBean.cSRID, tAttachURLName);
+                SROUT.SRRECORD_LIST = SRRECORD_LIST;
+                #endregion
+
+                #region 【零件更換資訊】清單
+                List<SRPARTSREPALCEINFO> SRPARTS_LIST = CMF.findSRPARTSREPALCEINFO(MainBean.cSRID);
+                SROUT.SRPARTS_LIST = SRPARTS_LIST;
+                #endregion
+            }
+
+            return SROUT;
+        }
+        #endregion
+
+        #region SRID查詢INPUT資訊
+        /// <summary>SRID查詢INPUT資訊</summary>
+        public struct SRIDSEARCH_INPUT
+        {
+            /// <summary>序號ID</summary>
+            public string IV_SRID { get; set; }
+        }
+        #endregion
+
+        #region SRID查詢OUTPUT資訊
+        /// <summary>SRID查詢OUTPUT資訊</summary>
+        public struct SRIDSEARCH_OUTPUT
+        {
+            /// <summary>服務請求ID</summary>
+            public string SRID { get; set; }            
+            /// <summary>狀態</summary>
+            public string STATUS { get; set; }
+            /// <summary>說明</summary>
+            public string DESC { get; set; }
+            /// <summary>詳細描述</summary>
+            public string NOTES { get; set; }
+            /// <summary>客戶(</summary>
+            public string CUSTOMER { get; set; }
+            /// <summary>維護服務種類</summary>
+            public string MASERVICETYPE { get; set; }
+            /// <summary>建立開單時間</summary>
+            public string CRDATE { get; set; }
+            /// <summary>報修代碼(大類)</summary>
+            public string SRTYPEONE { get; set; }
+            /// <summary>報修代碼(中類)</summary>
+            public string SRTYPESEC { get; set; }
+            /// <summary>報修代碼(小類)</summary>
+            public string SRTYPETHR { get; set; }
+            /// <summary>報修管道</summary>
+            public string SRPATHWAY { get; set; }
+            /// <summary>處理方式</summary>
+            public string SRPROCESSWAY { get; set; }
+            /// <summary>延遲結案原因</summary>
+            public string DELAYREASON { get; set; }
+            /// <summary>是否為二修</summary>
+            public string ISSECFIX { get; set; }
+            /// <summary>報修人姓名</summary>
+            public string REPAIRNAME { get; set; }
+            /// <summary>報修人地址</summary>
+            public string REPAIRADDR { get; set; }
+            /// <summary>報修人電話</summary>
+            public string REPAIRTEL { get; set; }
+            /// <summary>報修人手機</summary>
+            public string REPAIRMOB { get; set; }            
+            /// <summary>報修人Email</summary>
+            public string REPAIREMAIL { get; set; }
+            /// <summary>服務團隊</summary>
+            public string SRTEAM { get; set; }
+            /// <summary>L2工程師</summary>
+            public string MAINENG { get; set; }
+            /// <summary>指派工程師</summary>
+            public string ASSENGN { get; set; }
+            /// <summary>技術主管</summary>
+            public string TECHMAG { get; set; }
+            /// <summary>SQL人員</summary>
+            public string SQEMP { get; set; }
+            /// <summary>計費業務</summary>
+            public string SALES { get; set; }
+            /// <summary>檢附文件URL</summary>
+            public string ATTACHURL { get; set; }
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>服務請求【客戶聯絡人資訊】清單</summary>
+            public List<SRCONTACTINFO> SRCONTACT_LIST { get; set; }
+            /// <summary>服務請求【產品序號資訊】清單</summary>
+            public List<SRSERIALMATERIALINFO> SRSERIAL_LIST { get; set; }
+            /// <summary>服務請求【保固SLA資訊】清單</summary>
+            public List<SRWTSLAINFO> SRWTSLA_LIST { get; set; }
+            /// <summary>服務請求【處理與工時紀錄資訊】清單</summary>
+            public List<SRRECORDINFO> SRRECORD_LIST { get; set; }
+            /// <summary>服務請求【零件更換資訊】清單</summary>
+            public List<SRPARTSREPALCEINFO> SRPARTS_LIST { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑SRID相關資訊查詢(服務主檔資訊、客戶聯絡窗口資訊清單、產品序號資訊清單、保固SLA檔資訊清單、處理與工時紀錄清單、零件更換資訊清單) ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓服務待辦清單查詢接口 ↓↓↓↓↓-----        
 
@@ -2585,6 +2810,24 @@ namespace TSTI_API.Controllers
         #endregion -----↑↑↑↑↑CALL RFC接口 ↑↑↑↑↑-----        
     }
 
+    #region 取得附件相關資訊
+    public class SRATTACHINFO
+    {
+        /// <summary>附件GUID</summary>
+        public string ID { get; set; }
+        /// <summary>附件原始檔名(含副檔名)</summary>
+        public string FILE_ORG_NAME { get; set; }
+        /// <summary>附件檔名(GUID，含副檔名)</summary>
+        public string FILE_NAME { get; set; }
+        /// <summary>副檔名</summary>
+        public string FILE_EXT { get; set; }
+        /// <summary>附件檔案路徑URL</summary>
+        public string FILE_URL { get; set; }
+        /// <summary>新增日期</summary>
+        public string INSERT_TIME { get; set; }        
+    }
+    #endregion
+
     #region 人員資訊相關
     public struct EmployeeBean
     {
@@ -2715,7 +2958,7 @@ namespace TSTI_API.Controllers
 
     #region 服務請求主檔資訊(For Mail)
     /// <summary>服務請求主檔資訊(For Mail)</summary>
-    public class SRIDINFOByMail
+    public class SRIDMAININFO
     {
         /// <summary>服務請求ID</summary>
         public string SRID { get; set; }
@@ -2810,10 +3053,78 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
+    #region 服務請求保固SLA資訊
+    /// <summary>服務請求保固SLA資訊</summary>
+    public class SRWTSLAINFO
+    {
+        /// <summary>服務請求ID</summary>
+        public string SRID { get; set; }
+        /// <summary>序號</summary>
+        public string SERIALID { get; set; }
+        /// <summary>保固代號</summary>
+        public string WTYID { get; set; }
+        /// <summary>保固說明</summary>
+        public string WTYName { get; set; }
+        /// <summary>保固開始日期</summary>
+        public string WTYSDATE { get; set; }
+        /// <summary>保固結束日期</summary>
+        public string WTYEDATE { get; set; }
+        /// <summary>回應條件</summary>
+        public string SLARESP { get; set; }
+        /// <summary>服務條件</summary>
+        public string SLASRV { get; set; }
+        /// <summary>合約編號</summary>
+        public string CONTRACTID { get; set; }
+        /// <summary>合約編號Url</summary>
+        public string CONTRACTIDUrl { get; set; }
+        /// <summary>下包文件編號</summary>
+        public string SUBCONTRACTID { get; set; }
+        /// <summary>保固申請(BPM表單編號)</summary>
+        public string BPMFormNo { get; set; }
+        /// <summary>保固申請Url(BPM表單編號Url)</summary>
+        public string BPMFormNoUrl { get; set; }
+        /// <summary>客服主管建議</summary>
+        public string ADVICE { get; set; }
+        /// <summary>本次使用</summary>
+        public string USED { get; set; }        
+    }
+    #endregion
+
+    #region 服務請求處理與工時紀錄資訊
+    /// <summary>服務請求處理與工時紀錄資訊</summary>
+    public class SRRECORDINFO
+    {
+        /// <summary>系統ID</summary>
+        public string CID { get; set; }
+        /// <summary>服務請求ID</summary>
+        public string SRID { get; set; }
+        /// <summary>服務工程師ERPID/技術主管ERPID</summary>
+        public string ENGID { get; set; }
+        /// <summary>服務工程師姓名/技術主管姓名</summary>
+        public string ENGNAME { get; set; }
+        /// <summary>接單時間</summary>
+        public string ReceiveTime { get; set; }
+        /// <summary>出發時間</summary>
+        public string StartTime { get; set; }
+        /// <summary>到場時間</summary>
+        public string ArriveTime { get; set; }
+        /// <summary>完成時間</summary>
+        public string FinishTime { get; set; }
+        /// <summary>工時(分鐘)</summary>
+        public string WorkHours { get; set; }
+        /// <summary>處理紀錄</summary>
+        public string Desc { get; set; }
+        /// <summary>服務報告書URL</summary>
+        public string SRReportURL { get; set; }
+    }
+    #endregion
+
     #region 服務請求零件更換資訊
     /// <summary>服務請求零件更換資訊</summary>
     public class SRPARTSREPALCEINFO
     {
+        /// <summary>系統ID</summary>
+        public string CID { get; set; }
         /// <summary>服務請求ID</summary>
         public string SRID { get; set; }
         /// <summary>XC HP申請零件</summary>
