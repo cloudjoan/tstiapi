@@ -776,7 +776,37 @@ namespace TSTI_API.Controllers
 
             return reValue;
         }
-        #endregion 
+        #endregion
+
+        #region 取得客戶報修窗口相關資訊
+        /// <summary>
+        /// 取得客戶報修窗口相關資訊
+        /// </summary>
+        /// <param name="cSRID">SRID</param>        
+        /// <param name="cRepairName">報修人</param>
+        /// <param name="cRepairPhone">報修人電話</param>
+        /// <param name="cRepairMobile">報修人手機</param>
+        /// <param name="cRepairAddress">報修人地址</param>
+        /// <param name="cRepairEmail">報修人Email</param>
+        /// <returns></returns>
+        public List<SRCONTACTINFO> findSRREPAIRINFO(string cSRID, string cRepairName, string cRepairPhone, string cRepairMobile, string cRepairAddress, string cRepairEmail)
+        {
+            List<SRCONTACTINFO> tList = new List<SRCONTACTINFO>();
+
+            SRCONTACTINFO SRCon = new SRCONTACTINFO();
+
+            SRCon.SRID = cSRID;
+            SRCon.CONTNAME = cRepairName;
+            SRCon.CONTADDR = cRepairAddress;
+            SRCon.CONTTEL = cRepairPhone;
+            SRCon.CONTMOBILE = cRepairMobile;
+            SRCon.CONTEMAIL = cRepairEmail;
+
+            tList.Add(SRCon);
+
+            return tList;
+        }
+        #endregion
 
         #region 取得客戶聯絡窗口相關資訊
         /// <summary>
@@ -2255,6 +2285,62 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得【一般服務】案件客戶報修窗口資訊Html Table
+        /// <summary>
+        /// 取得【一般服務】案件客戶報修窗口資訊Html Table
+        /// </summary>
+        /// <param name="SRRepair_List">服務請求客戶報修人資訊清單</param>
+        /// <param name="CusName">客戶名稱</param>
+        /// <returns></returns>
+        public string findGenerallySRRepair_Table(List<SRCONTACTINFO> SRRepair_List, string CusName)
+        {
+            #region 格式
+            //客戶名稱：OOO股份有限公司
+            //[客戶報修窗口資料]												
+            //報修人	報修人電話	報修人手機	報修人地址	報修人Email								
+            //OOO	042OOO	09OOO	台北市OOO	TEST@OOO								            
+            #endregion
+
+            StringBuilder strHTML = new StringBuilder();
+            string reValue = string.Empty;
+
+            if (SRRepair_List.Count > 0)
+            {
+                strHTML.AppendLine("<div>");
+                strHTML.AppendLine("    <p>&nbsp;</p>");
+                strHTML.AppendLine("    <p>客戶名稱："+ CusName +"</p>");
+                strHTML.AppendLine("    <p>[客戶報修窗口資訊]</p>");
+                strHTML.AppendLine("    <table style='width:720pt;font-family:微軟正黑體;' align='left' border='1'>");
+                strHTML.AppendLine("        <tr>");
+                strHTML.AppendLine("            <td>報修人</td>");
+                strHTML.AppendLine("            <td>報修人電話</td>");
+                strHTML.AppendLine("            <td>報修人手機</td>");
+                strHTML.AppendLine("            <td>報修人地址</td>");
+                strHTML.AppendLine("            <td>報修人Email</td>");
+                strHTML.AppendLine("        </tr>");
+
+                foreach (var bean in SRRepair_List)
+                {
+                    strHTML.AppendLine("        <tr>");
+                    strHTML.AppendLine("            <td>" + bean.CONTNAME + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.CONTTEL + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.CONTMOBILE + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.CONTADDR + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.CONTEMAIL + "</td>");
+                    strHTML.AppendLine("        </tr>");
+                }
+
+                strHTML.AppendLine("    </table>");
+                strHTML.AppendLine("</div>");
+                strHTML.AppendLine("<p>&nbsp;</p>");                
+            }
+
+            reValue = strHTML.ToString();
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得【一般服務】案件客戶聯絡窗口資訊Html Table
         /// <summary>
         /// 取得【一般服務】案件客戶聯絡窗口資訊Html Table
@@ -2276,8 +2362,9 @@ namespace TSTI_API.Controllers
             if (SRContact_List.Count > 0)
             {
                 strHTML.AppendLine("<div>");
+                strHTML.AppendLine("    <p>&nbsp;</p>");
                 strHTML.AppendLine("    <p>[客戶聯絡窗口資訊]</p>");
-                strHTML.AppendLine("    <table style='width:540.0pt;' width='720' align='left' border='1'>");
+                strHTML.AppendLine("    <table style='width:720pt;font-family:微軟正黑體;' align='left' border='1'>");
                 strHTML.AppendLine("        <tr>");
                 strHTML.AppendLine("            <td>聯絡人</td>");
                 strHTML.AppendLine("            <td>聯絡人電話</td>");
@@ -2298,7 +2385,9 @@ namespace TSTI_API.Controllers
                 }
 
                 strHTML.AppendLine("    </table>");
-                strHTML.AppendLine("</div>");               
+                strHTML.AppendLine("</div>");
+                strHTML.AppendLine("<p>&nbsp;</p>");
+                strHTML.AppendLine("<p>&nbsp;</p>");
             }
 
             reValue = strHTML.ToString();
@@ -2328,8 +2417,9 @@ namespace TSTI_API.Controllers
             if (SRSeiral_List.Count > 0)
             {
                 strHTML.AppendLine("<div>");
+                strHTML.AppendLine("    <p>&nbsp;</p>");
                 strHTML.AppendLine("    <p>[產品序號資訊]</p>");
-                strHTML.AppendLine("    <table style='width:540.0pt;' width='720' align='left' border='1'>");
+                strHTML.AppendLine("    <table style='width:720pt;font-family:微軟正黑體;' align='left' border='1'>");
                 strHTML.AppendLine("        <tr>");
                 strHTML.AppendLine("            <td>序號</td>");
                 strHTML.AppendLine("            <td>機器型號</td>");
@@ -2351,6 +2441,8 @@ namespace TSTI_API.Controllers
 
                 strHTML.AppendLine("    </table>");
                 strHTML.AppendLine("</div>");
+                strHTML.AppendLine("<p>&nbsp;</p>");
+                strHTML.AppendLine("<p>&nbsp;</p>");
             }
 
             reValue = strHTML.ToString();
@@ -2380,8 +2472,9 @@ namespace TSTI_API.Controllers
             if (SRParts_List.Count > 0)
             {
                 strHTML.AppendLine("<div>");
+                strHTML.AppendLine("    <p>&nbsp;</p>");
                 strHTML.AppendLine("    <p>[零件更換資訊]</p>");
-                strHTML.AppendLine("    <table style='width:540.0pt;' width='720' align='left' border='1'>");
+                strHTML.AppendLine("    <table style='width:720pt;font-family:微軟正黑體;' align='left' border='1'>");
                 strHTML.AppendLine("        <tr>");
                 strHTML.AppendLine("            <td>XC HP申請零件</td>");
                 strHTML.AppendLine("            <td>更換零件料號ID</td>");
@@ -2419,6 +2512,8 @@ namespace TSTI_API.Controllers
 
                 strHTML.AppendLine("    </table>");
                 strHTML.AppendLine("</div>");
+                strHTML.AppendLine("<p>&nbsp;</p>");
+                strHTML.AppendLine("<p>&nbsp;</p>");
             }
 
             reValue = strHTML.ToString();
@@ -2435,8 +2530,10 @@ namespace TSTI_API.Controllers
         /// <param name="cOperationID_GenerallySR">程式作業編號檔系統ID</param>
         /// <param name="cBUKRS">公司別(T012、T016、C069、T022)</param>
         /// <param name="cSRID">SRID(服務案件ID)</param>           
+        /// <param name="tONEURLName">One Service站台名稱</param>        
         /// <param name="cLoginName">登入人員姓名</param>
-        public void SetSRMailContent(SRCondition cCondition, string cOperationID_GenerallySR, string cBUKRS, string cSRID, string cLoginName)
+        /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
+        public void SetSRMailContent(SRCondition cCondition, string cOperationID_GenerallySR, string cBUKRS, string cSRID, string tONEURLName, string cLoginName, bool tIsFormal)
         {          
             string tMailToTemp = string.Empty;
             string tMailCcTemp = string.Empty; 
@@ -2481,20 +2578,10 @@ namespace TSTI_API.Controllers
                 List<SREMPINFO> SRMainENG_List = new List<SREMPINFO>();
                 List<SREMPINFO> SRAssENG_List = new List<SREMPINFO>();
                 List<SREMPINFO> SRTechMGR_List = new List<SREMPINFO>();
+                List<SRCONTACTINFO> SRRepair_List = new List<SRCONTACTINFO>();
                 List<SRCONTACTINFO> SRContact_List = new List<SRCONTACTINFO>();
                 List<SRSERIALMATERIALINFO> SRSeiral_List = new List<SRSERIALMATERIALINFO>();
-                List<SRPARTSREPALCEINFO> SRParts_List = new List<SRPARTSREPALCEINFO>();
-
-                bool tIsFormal = getCallSAPERPPara(cOperationID_GenerallySR); //是否為正式區(true.是 false.不是)
-
-                if (tIsFormal)
-                {
-                    tSeverName = "172.31.7.56:32200";
-                }
-                else
-                {
-                    tSeverName = "172.31.7.56:32200";
-                }
+                List<SRPARTSREPALCEINFO> SRParts_List = new List<SRPARTSREPALCEINFO>();                
 
                 var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == cSRID);
 
@@ -2556,6 +2643,7 @@ namespace TSTI_API.Controllers
                     SRMain.TechMGR = cTechMGR;
                     SRMain.ContractID = cContractID;
                     SRMain.CreatedDate = cCreatedDate;
+                    SRMain.MAServiceType = cMAServiceType;
                     SRMain.SecFix = cSecFix;
                     SRMain.Desc = cDesc;
                     SRMain.Notes = cNotes;
@@ -2570,8 +2658,12 @@ namespace TSTI_API.Controllers
                     SRMain.TeamMGREmail = cTeamMGREmail;
                     SRMain.MainENGEmail = cMainENGEmail;
                     SRMain.AssENGEmail = cAssENGEmail;
-                    SRMain.TeamMGREmail = cTeamMGREmail;
+                    SRMain.TechMGREmail = cTechMGREmail;
                     #endregion -----↑↑↑↑↑Mail相關 ↑↑↑↑↑-----  
+
+                    #region -----↓↓↓↓↓客戶報修窗口資料 ↓↓↓↓↓-----
+                    SRRepair_List = findSRREPAIRINFO(cSRID, cRepairName, cRepairPhone, cRepairMobile, cRepairAddress, cRepairEmail);
+                    #endregion -----↑↑↑↑↑客戶報修窗口資料 ↑↑↑↑↑----- 
 
                     #region -----↓↓↓↓↓客戶聯絡窗口資料 ↓↓↓↓↓-----
                     SRContact_List = findSRCONTACTINFO(cSRID);
@@ -2585,7 +2677,7 @@ namespace TSTI_API.Controllers
                     SRParts_List = findSRPARTSREPALCEINFO(cSRID);
                     #endregion -----↑↑↑↑↑零件更換資訊 ↑↑↑↑↑----- 
 
-                    SendSRMail(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRContact_List, SRSeiral_List, SRParts_List); //發送服務請求Mail相關資訊
+                    SendSRMail(cCondition, cSRID, tONEURLName, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRParts_List); //發送服務請求Mail相關資訊
                 }
             }
             catch (Exception ex)
@@ -2604,13 +2696,16 @@ namespace TSTI_API.Controllers
         /// </summary>
         /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、SECFIX.二修、SAVE.保存、THRPARTY.3Party、CANCEL.取消)</param>
         /// <param name="cSRID">SRID</param>
+        /// <param name="tONEURLName">One Service站台名稱</param>
         /// <param name="cLoginName">登入人員姓名</param>
         /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
         /// <param name="SRMain">服務請求主檔資訊(For Mail)</param>
+        /// <param name="SRRepair_List">服務請求客戶報修人資訊清單</param>
         /// <param name="SRContact_List">服務請求客戶聯絡人資訊清單</param>
         /// <param name="SRSeiral_List">服務請求產品序號資訊清單</param>
         /// <param name="SRParts_List">服務請求零件更換資訊清單</param>
-        public void SendSRMail(SRCondition cCondition, string cSRID, string cLoginName, bool tIsFormal, SRIDMAININFO SRMain, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List, List<SRPARTSREPALCEINFO> SRParts_List)
+        public void SendSRMail(SRCondition cCondition, string cSRID, string tONEURLName, string cLoginName, bool tIsFormal, SRIDMAININFO SRMain, 
+                              List<SRCONTACTINFO> SRRepair_List, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List, List<SRPARTSREPALCEINFO> SRParts_List)
         {
             List<string> tMailToList = new List<string>();
             List<string> tMailCcList = new List<string>();
@@ -2623,12 +2718,12 @@ namespace TSTI_API.Controllers
             string tMailTo = string.Empty;          //收件者            
             string tMailCc = string.Empty;          //副本            
             string tMailBCc = string.Empty;         //密件副本
-            string tHypeLink = string.Empty;        //超連結
-            string tSeverName = string.Empty;       //主機名稱
+            string tHypeLink = string.Empty;        //超連結            
 
             string tStatus = string.Empty;          //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
             string tContractID = string.Empty;      //合約文件編號
             string tSecFix = string.Empty;          //是否為二修
+            string tSRRepair_Table = string.Empty;
             string tSRContact_Table = string.Empty;
             string tSRSeiral_Table = string.Empty;
             string tSRParts_Table = string.Empty;
@@ -2713,6 +2808,8 @@ namespace TSTI_API.Controllers
 
                 #region 郵件主旨
                 string tMailSubject = findGenerallySRMailSubject(cCondition, cSRID, SRMain.CusName, SRMain.TeamNAME, SRMain.SRCase, SRMain.MainENG);
+
+                tMailSubject = strTest + tMailSubject;
                 #endregion
 
                 #region 郵件內容
@@ -2735,13 +2832,10 @@ namespace TSTI_API.Controllers
                 //需求說明:	pls. support BUG FIX onsite
                 //詳細描述:	硬體破損
 
-                //[客戶報修窗口資料]	
-                //客戶名稱:	
-                //報修人:	
-                //報修人電話:	
-                //報修人手機:	
-                //報修人地址:	
-                //報修人Email:
+                //客戶名稱：OOO股份有限公司
+                //[客戶報修窗口資料]												
+                //報修人	報修人電話	報修人手機	報修人地址	報修人Email								
+                //OOO	042OOO	09OOO	台北市OOO	TEST@OOO	
 
                 //[客戶聯絡窗口資料]												
                 //聯絡人	聯絡人電話	聯絡人手機	聯絡人地址	聯絡人Email								
@@ -2769,11 +2863,11 @@ namespace TSTI_API.Controllers
 
                 if (tStatus == "E0015") //取消
                 {
-                    tHypeLink = "http://" + tSeverName + "/ServiceRequest/GenerallySR?SRID=" + cSRID;
+                    tHypeLink = "http://" + tONEURLName + "/ServiceRequest/GenerallySR?SRID=" + cSRID;
                 }
                 else
                 {
-                    tHypeLink = "http://" + tSeverName + "/ServiceRequest/ToDoList";
+                    tHypeLink = "http://" + tONEURLName + "/ServiceRequest/ToDoList";
                 }
 
                 if (SRMain.ContractID != "")
@@ -2785,6 +2879,10 @@ namespace TSTI_API.Controllers
                 {
                     tSecFix = "<p>是否為二修：【" + SRMain.SecFix + "】</p>";
                 }
+
+                #region 取得【一般服務】案件客戶報修窗口資訊Html Table
+                tSRRepair_Table = findGenerallySRRepair_Table(SRRepair_List, SRMain.CusName);
+                #endregion
 
                 #region 取得【一般服務】案件客戶聯絡窗口資訊Html Table
                 tSRContact_Table = findGenerallySRContact_Table(SRContact_List);
@@ -2801,20 +2899,19 @@ namespace TSTI_API.Controllers
                 tMailBody = GetMailBody("ONEGenerally_MAIL");
 
                 tMailBody = tMailBody.Replace("【<SRID>】", cSRID).Replace("【<SRCase>】", SRMain.SRCase).Replace("【<TeamNAME>】", SRMain.TeamNAME);
-                tMailBody += tMailBody.Replace("【<TeamMGR>】", SRMain.TeamMGR).Replace("【<MainENG>】", SRMain.MainENG).Replace("【<AssENG>】", SRMain.AssENG);                
-                tMailBody += tMailBody.Replace("【<TechMGR>】", SRMain.TechMGR).Replace("【<StatusDesc>】", SRMain.StatusDesc).Replace("【<CreatedDate>】", SRMain.CreatedDate);
-                tMailBody += tMailBody.Replace("<ContractID>", tContractID).Replace("【<MAServiceType>】", SRMain.MAServiceType).Replace("<SecFix>", tSecFix);
-                tMailBody += tMailBody.Replace("【<Desc>】", SRMain.Desc).Replace("【<Notes>】", SRMain.Notes);
-                tMailBody += tMailBody.Replace("【<CusName>】", SRMain.CusName).Replace("【<RepairName>】", SRMain.RepairName).Replace("【<RepairPhone>】", SRMain.RepairPhone);
-                tMailBody += tMailBody.Replace("【<RepairMobile>】", SRMain.RepairMobile).Replace("【<RepairAddress>】", SRMain.RepairAddress).Replace("【<RepairEmail>】", SRMain.RepairEmail);
-                tMailBody += tMailBody.Replace("<SRContact_List>", tSRContact_Table).Replace("<SRSeiral_List>", tSRSeiral_Table).Replace("<SRParts_List>", tSRParts_Table);
-                tMailBody += tMailBody.Replace("【<tHypeLink>】", tHypeLink);
+                tMailBody = tMailBody.Replace("【<TeamMGR>】", SRMain.TeamMGR).Replace("【<MainENG>】", SRMain.MainENG).Replace("【<AssENG>】", SRMain.AssENG);                
+                tMailBody = tMailBody.Replace("【<TechMGR>】", SRMain.TechMGR).Replace("【<StatusDesc>】", SRMain.StatusDesc).Replace("【<CreatedDate>】", SRMain.CreatedDate);
+                tMailBody = tMailBody.Replace("<ContractID>", tContractID).Replace("【<MAServiceType>】", SRMain.MAServiceType).Replace("<SecFix>", tSecFix);
+                tMailBody = tMailBody.Replace("【<Desc>】", SRMain.Desc).Replace("【<Notes>】", SRMain.Notes);                
+                tMailBody = tMailBody.Replace("<SRRepair_List>", tSRRepair_Table).Replace("<SRContact_List>", tSRContact_Table);
+                tMailBody = tMailBody.Replace("<SRSeiral_List>", tSRSeiral_Table).Replace("<SRParts_List>", tSRParts_Table);
+                tMailBody = tMailBody.Replace("【<tHypeLink>】", tHypeLink);
                 #endregion
 
                 #region 測試用
-                //tMailTo = "elvis.chang@etatung.com";
-                //tMailCc = "";
-                //tMailBCc = "";
+                tMailTo = "elvis.chang@etatung.com";
+                tMailCc = "";
+                tMailBCc = "";
                 #endregion
 
                 //呼叫寄送Mail

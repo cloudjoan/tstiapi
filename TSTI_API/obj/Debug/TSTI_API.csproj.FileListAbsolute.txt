@@ -220,3 +220,4 @@ D:\GIT\tstiapi\TSTI_API\bin\System.ValueTuple.xml
 D:\GIT\tstiapi\TSTI_API\bin\zh-Hant\EntityFramework.SqlServer.resources.dll
 D:\GIT\tstiapi\TSTI_API\bin\sapnco.dll
 D:\GIT\tstiapi\TSTI_API\bin\sapnco_utils.dll
+D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.csprojAssemblyReference.cache

@@ -188,6 +188,7 @@ namespace TSTI_API.Controllers
             string pLoginName = string.Empty;
             string pSRID = string.Empty;
             string OldCStatus = string.Empty;
+            string tONEURLName = string.Empty;
             string tBPMURLName = string.Empty;
             string tPSIPURLName = string.Empty;
             string tAttachURLName = string.Empty;
@@ -236,14 +237,16 @@ namespace TSTI_API.Controllers
 
             if (tIsFormal)
             {
+                tONEURLName = "172.31.7.56:32200";
                 tBPMURLName = "tsti-bpm01.etatung.com.tw";
                 tPSIPURLName = "psip-prd-ap";
                 tAttachURLName = "tsticrmmbgw.etatung.com:8082";
             }
             else
             {
-                tBPMURLName = "bpm-qas";
-                tPSIPURLName = "psip-qas";
+                tONEURLName = "172.31.7.56:32200";
+                tBPMURLName = "tsti-bpm01.etatung.com.tw";
+                tPSIPURLName = "psip-prd-ap";
                 tAttachURLName = "tsticrmmbgw.etatung.com:8082";
             }
 
@@ -283,6 +286,7 @@ namespace TSTI_API.Controllers
                     beanM.cMainEngineerName = CMainEngineerName;
                     beanM.cMainEngineerID = IV_EMPNO;
                     beanM.cAssEngineerID = "";
+                    beanM.cTechManagerID = "";
                     beanM.cSystemGUID = Guid.NewGuid();
 
                     beanM.CreatedDate = DateTime.Now;
@@ -535,7 +539,7 @@ namespace TSTI_API.Controllers
                         SROUT.EV_MSG = "";
 
                         #region 寄送Mail通知
-                        //CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, EmpBean.BUKRS, pSRID, pLoginName);
+                        CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, EmpBean.BUKRS, pSRID, tONEURLName, pLoginName, tIsFormal);
                         #endregion
                     }
                 }
@@ -1648,8 +1652,8 @@ namespace TSTI_API.Controllers
             }
             else
             {
-                tBPMURLName = "bpm-qas";
-                tPSIPURLName = "psip-qas";
+                tBPMURLName = "tsti-bpm01.etatung.com.tw";
+                tPSIPURLName = "psip-prd-ap";
                 tAttachURLName = "tsticrmmbgw.etatung.com:8082";
             }
 
