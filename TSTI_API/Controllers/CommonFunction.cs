@@ -440,7 +440,7 @@ namespace TSTI_API.Controllers
                 {
                     tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + prBean.KNB1_BUKRS.Trim().Replace(" ", "") + "|" + prBean.ContactEmail.Trim().Replace(" ", "");
 
-                    if (!tTempList.Contains(tTempValue)) //判斷客戶ID、公司別、聯絡人名姓名不重覆才要顯示
+                    if (!tTempList.Contains(tTempValue)) //判斷個人客戶ID、公司別、聯絡人名姓名不重覆才要顯示
                     {
                         tTempList.Add(tTempValue);
 
