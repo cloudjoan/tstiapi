@@ -1454,6 +1454,244 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑法人客戶聯絡人資料/修改 ↑↑↑↑↑-----  
 
+        #region -----↓↓↓↓↓個人客戶資料 ↓↓↓↓↓-----        
+
+        #region 查詢個人客戶資料接口
+        [HttpPost]
+        public ActionResult API_PERSONALINFO_GET(PERSONALINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_PERSONAL": "張豐穎"
+            //}
+            #endregion
+
+            PERSONALINFO_OUTPUT ListOUT = new PERSONALINFO_OUTPUT();
+
+            ListOUT = PERSONALINFO_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得個人客戶資料
+        private PERSONALINFO_OUTPUT PERSONALINFO_GET(PERSONALINFO_INPUT beanIN)
+        {
+            PERSONALINFO_OUTPUT OUTBean = new PERSONALINFO_OUTPUT();
+
+            try
+            {
+                var tList = CMF.findPERSONALINFO(beanIN.IV_PERSONAL.Trim());
+
+                if (tList.Count == 0)
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無個人客戶資料，請重新查詢！";
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    #region 取得個人客戶資料List
+                    List<PERSONALINFO_LIST> tCustList = new List<PERSONALINFO_LIST>();
+
+                    foreach (var bean in tList)
+                    {
+                        PERSONALINFO_LIST beanCust = new PERSONALINFO_LIST();
+
+                        beanCust.PERSONALID = bean.KNA1_KUNNR.Trim();
+                        beanCust.PERSONALNAME = bean.KNA1_NAME1.Trim();
+
+                        tCustList.Add(beanCust);
+                    }
+
+                    OUTBean.PERSONALINFO_LIST = tCustList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "PERSONALINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢個人客戶資料INPUT資訊
+        /// <summary>查詢個人客戶資料資料INPUT資訊</summary>
+        public struct PERSONALINFO_INPUT
+        {
+            /// <summary>個人客戶(個人編號/客戶名稱)</summary>
+            public string IV_PERSONAL { get; set; }
+        }
+        #endregion
+
+        #region 查詢個人客戶資料OUTPUT資訊
+        /// <summary>查詢個人客戶資料OUTPUT資訊</summary>
+        public struct PERSONALINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>個人客戶資料清單</summary>
+            public List<PERSONALINFO_LIST> PERSONALINFO_LIST { get; set; }
+        }
+
+        public struct PERSONALINFO_LIST
+        {
+            /// <summary>個人客戶代號</summary>
+            public string PERSONALID { get; set; }
+            /// <summary>個人客戶名稱</summary>
+            public string PERSONALNAME { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑個人客戶資料 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓個人客戶聯絡人資料 ↓↓↓↓↓-----
+
+        #region 查詢個人客戶聯絡人資料接口
+        [HttpPost]
+        public ActionResult API_PERSONALCONTACTINFO_GET(PERSONALCONTACTINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //   "IV_PERSONALID": "P00000001",
+            //   "IV_CONTACTNAME": "",
+            //   "IV_CONTACTTEL": "",
+            //   "IV_CONTACTMOBILE": "",
+            //   "IV_CONTACTEMAIL": ""
+            //}
+            #endregion
+
+            PERSONALCONTACTINFO_OUTPUT ListOUT = new PERSONALCONTACTINFO_OUTPUT();
+
+            ListOUT = PERSONALCONTACTINFO_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得個人客戶聯絡人資料
+        private PERSONALCONTACTINFO_OUTPUT PERSONALCONTACTINFO_GET(PERSONALCONTACTINFO_INPUT beanIN)
+        {
+            PERSONALCONTACTINFO_OUTPUT OUTBean = new PERSONALCONTACTINFO_OUTPUT();
+
+            try
+            {
+                string PERSONALID = string.IsNullOrEmpty(beanIN.IV_PERSONALID) ? "" : beanIN.IV_PERSONALID.Trim();
+                string CONTACTNAME = string.IsNullOrEmpty(beanIN.IV_CONTACTNAME) ? "" : beanIN.IV_CONTACTNAME.Trim();
+                string CONTACTTEL = string.IsNullOrEmpty(beanIN.IV_CONTACTTEL) ? "" : beanIN.IV_CONTACTTEL.Trim();
+                string CONTACTMOBILE = string.IsNullOrEmpty(beanIN.IV_CONTACTMOBILE) ? "" : beanIN.IV_CONTACTMOBILE.Trim();
+                string CONTACTEMAIL = string.IsNullOrEmpty(beanIN.IV_CONTACTEMAIL) ? "" : beanIN.IV_CONTACTEMAIL.Trim();
+
+                var tList = CMF.findPERSONALCONTACTINFO(PERSONALID, CONTACTNAME, CONTACTTEL, CONTACTMOBILE, CONTACTEMAIL);
+
+                if (tList.Count == 0)
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無個人客戶聯絡人資料，請重新查詢！";
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    #region 取得個人客戶資料List
+                    List<PERSONALCONTACTINFO_LIST> tCustList = new List<PERSONALCONTACTINFO_LIST>();
+
+                    foreach (var bean in tList)
+                    {
+                        PERSONALCONTACTINFO_LIST beanCust = new PERSONALCONTACTINFO_LIST();
+
+                        beanCust.CONTACTNAME = bean.Name;
+                        beanCust.CONTACTCITY = bean.City;
+                        beanCust.CONTACTADDRESS = bean.Address;
+                        beanCust.CONTACTTEL = bean.Phone;
+                        beanCust.CONTACTMOBILE = bean.Mobile;
+                        beanCust.CONTACTEMAIL = bean.Email;
+
+                        tCustList.Add(beanCust);
+                    }
+
+                    OUTBean.PERSONALCONTACTINFO_LIST = tCustList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "PERSONALCONTACTINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢個人客戶聯絡人資料INPUT資訊
+        /// <summary>查詢個人客戶聯絡人資料資料INPUT資訊</summary>
+        public struct PERSONALCONTACTINFO_INPUT
+        {
+            /// <summary>個人客戶代號</summary>
+            public string IV_PERSONALID { get; set; }
+            /// <summary>聯絡人姓名</summary>
+            public string IV_CONTACTNAME { get; set; }
+            /// <summary>聯絡人電話</summary>
+            public string IV_CONTACTTEL { get; set; }
+            /// <summary>聯絡人手機</summary>
+            public string IV_CONTACTMOBILE { get; set; }
+            /// <summary>聯絡人Email</summary>
+            public string IV_CONTACTEMAIL { get; set; }
+        }
+        #endregion
+
+        #region 查詢個人客戶聯絡人資料OUTPUT資訊
+        /// <summary>查詢個人客戶聯絡人資料OUTPUT資訊</summary>
+        public struct PERSONALCONTACTINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>個人客戶聯絡人資料清單</summary>
+            public List<PERSONALCONTACTINFO_LIST> PERSONALCONTACTINFO_LIST { get; set; }
+        }
+
+        public struct PERSONALCONTACTINFO_LIST
+        {
+            /// <summary>聯絡人姓名</summary>
+            public string CONTACTNAME { get; set; }
+            /// <summary>聯絡人城市</summary>
+            public string CONTACTCITY { get; set; }
+            /// <summary>聯絡人地址</summary>
+            public string CONTACTADDRESS { get; set; }
+            /// <summary>聯絡人電話</summary>
+            public string CONTACTTEL { get; set; }
+            /// <summary>聯絡人手機</summary>
+            public string CONTACTMOBILE { get; set; }
+            /// <summary>聯絡人Email</summary>
+            public string CONTACTEMAIL { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑個人客戶聯絡人資料建立 ↑↑↑↑↑-----  
+
         #region -----↓↓↓↓↓序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務請求資訊(List)、服務請求客戶聯絡人資訊(List)) ↓↓↓↓↓-----
 
         #region 查詢序號相關資訊接口

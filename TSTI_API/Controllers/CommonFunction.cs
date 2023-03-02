@@ -388,6 +388,87 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得個人客戶資料
+        /// <summary>
+        /// 取得個人客戶資料
+        /// </summary>
+        /// <param name="keyword">客戶代號/客戶名稱</param>
+        /// <returns></returns>
+        public List<PERSONAL_Contact> findPERSONALINFO(string keyword)
+        {
+            List<PERSONAL_Contact> tList = new List<PERSONAL_Contact>();
+
+            if (keyword != "")
+            {
+                tList = dbProxy.PERSONAL_Contact.Where(x => x.Disabled == 0 && x.KNA1_KUNNR.Contains(keyword.Trim()) || x.KNA1_NAME1.Contains(keyword.Trim())).Take(30).ToList();
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得個人客戶聯絡人資料
+        /// <summary>
+        /// 取得個人客戶聯絡人資料
+        /// </summary>
+        /// <param name="PERSONALID">個人客戶代號</param>
+        /// <param name="CONTACTNAME">聯絡人姓名</param>        
+        /// <param name="CONTACTTEL">聯絡人電話</param>
+        /// <param name="CONTACTMOBILE">聯絡人手機</param>
+        /// <param name="CONTACTEMAIL">聯絡人Email</param>
+        /// <returns></returns>
+        public List<PCustomerContact> findPERSONALCONTACTINFO(string PERSONALID, string CONTACTNAME, string CONTACTTEL, string CONTACTMOBILE, string CONTACTEMAIL)
+        {
+            var qPjRec = dbProxy.PERSONAL_Contact.OrderByDescending(x => x.ModifiedDate).
+                                               Where(x => x.Disabled == 0 && x.KNA1_KUNNR == PERSONALID &&
+                                                          x.ContactName != "" && x.ContactCity != "" &&
+                                                          x.ContactAddress != "" && x.ContactPhone != "" &&
+                                                          (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
+                                                          (string.IsNullOrEmpty(CONTACTTEL) ? true : x.ContactPhone.Contains(CONTACTTEL)) &&
+                                                          (string.IsNullOrEmpty(CONTACTMOBILE) ? true : x.ContactMobile.Contains(CONTACTMOBILE)) &&
+                                                          (string.IsNullOrEmpty(CONTACTEMAIL) ? true : x.ContactEmail.Contains(CONTACTEMAIL))).ToList();
+
+            List<string> tTempList = new List<string>();
+
+            string tTempValue = string.Empty;
+            string ContactMobile = string.Empty;
+
+            List<PCustomerContact> liPCContact = new List<PCustomerContact>();
+            if (qPjRec != null && qPjRec.Count() > 0)
+            {
+                foreach (var prBean in qPjRec)
+                {
+                    tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + prBean.KNB1_BUKRS.Trim().Replace(" ", "") + "|" + prBean.ContactEmail.Trim().Replace(" ", "");
+
+                    if (!tTempList.Contains(tTempValue)) //判斷客戶ID、公司別、聯絡人名姓名不重覆才要顯示
+                    {
+                        tTempList.Add(tTempValue);
+
+                        ContactMobile = string.IsNullOrEmpty(prBean.ContactMobile) ? "" : prBean.ContactMobile.Trim().Replace(" ", "");
+
+                        PCustomerContact prDocBean = new PCustomerContact();
+
+                        prDocBean.ContactID = prBean.ContactID.ToString();
+                        prDocBean.CustomerID = prBean.KNA1_KUNNR.Trim().Replace(" ", "");
+                        prDocBean.CustomerName = prBean.KNA1_NAME1.Trim().Replace(" ", "");
+                        prDocBean.BUKRS = prBean.KNB1_BUKRS.Trim().Replace(" ", "");
+                        prDocBean.Name = prBean.ContactName.Trim().Replace(" ", "");
+                        prDocBean.City = prBean.ContactCity.Trim().Replace(" ", "");
+                        prDocBean.Address = prBean.ContactAddress.Trim().Replace(" ", "");
+                        prDocBean.Email = prBean.ContactEmail.Trim().Replace(" ", "");
+                        prDocBean.Phone = prBean.ContactPhone.Trim().Replace(" ", "");
+                        prDocBean.Mobile = ContactMobile;
+                        prDocBean.BPMNo = "GenerallySR";
+
+                        liPCContact.Add(prDocBean);
+                    }
+                }
+            }
+
+            return liPCContact;
+        }
+        #endregion
+
         #region 取得員工資料
         /// <summary>
         /// 取得員工資料
