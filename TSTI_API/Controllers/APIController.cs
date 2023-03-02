@@ -1664,12 +1664,19 @@ namespace TSTI_API.Controllers
             {
                 string cBUKRS = CMF.findBUKRSByTeamID(MainBean.cTeamID);
                 string cStatusDesc = CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRSTATUS", MainBean.cStatus);             
-                string cMAServiceTypeDesc = CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRMATYPE", MainBean.cMAServiceType);
+                string cMASERVICETYPE = string.IsNullOrEmpty(MainBean.cMAServiceType) ? "" : MainBean.cMAServiceType;
+                string cMAServiceTypeDesc = CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRMATYPE", MainBean.cMAServiceType);                
+                string cSRTYPEONE = string.IsNullOrEmpty(MainBean.cSRTypeOne) ? "" : MainBean.cSRTypeOne;
                 string cSRTYPEONEDesc = CMF.findSRRepairTypeName(MainBean.cSRTypeOne);
+                string cSRTYPESEC = string.IsNullOrEmpty(MainBean.cSRTypeSec) ? "" : MainBean.cSRTypeSec;
                 string cSRTYPESECDesc = CMF.findSRRepairTypeName(MainBean.cSRTypeSec);
+                string cSRTYPETHR = string.IsNullOrEmpty(MainBean.cSRTypeThr) ? "" : MainBean.cSRTypeThr;
                 string cSRTYPETHRDesc = CMF.findSRRepairTypeName(MainBean.cSRTypeThr);
-                string cSRPATHWAYDesc =CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRPATH", MainBean.cSRPathWay);
+                string cSRPATHWAY = string.IsNullOrEmpty(MainBean.cSRPathWay) ? "" : MainBean.cSRPathWay;
+                string cSRPATHWAYDesc = CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRPATH", MainBean.cSRPathWay);
+                string cSRPROCESSWAY = string.IsNullOrEmpty(MainBean.cSRProcessWay) ? "" : MainBean.cSRProcessWay;
                 string cSRPROCESSWAYDesc = CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRPROCESS", MainBean.cSRProcessWay);
+                string cISSECFIX = string.IsNullOrEmpty(MainBean.cIsSecondFix) ? "" : MainBean.cIsSecondFix;
                 string cISSECFIXDesc = MainBean.cIsSecondFix == "Y" ? "是" : "否";
                 string cSRTEAM = CMF.findSRTeamIDandName(MainBean.cTeamID);
                 string cMAINENG = CMF.findSREMPERPIDandNameByERPID(MainBean.cMainEngineerID);
@@ -1677,31 +1684,37 @@ namespace TSTI_API.Controllers
                 string cTECHMAG = CMF.findSREMPERPIDandNameByERPID(MainBean.cTechManagerID);                
                 string cSALES = CMF.findSREMPERPIDandNameByERPID(MainBean.cSalesID);  
                 string cAttchURL = CMF.findAttachUrl(MainBean.cAttachement, tAttachURLName);
+                string cREPAIRNAME = string.IsNullOrEmpty(MainBean.cRepairName) ? "" : MainBean.cRepairName;
+                string cREPAIRADDR = string.IsNullOrEmpty(MainBean.cRepairAddress) ? "" : MainBean.cRepairAddress;
+                string cREPAIRTEL = string.IsNullOrEmpty(MainBean.cRepairPhone) ? "" : MainBean.cRepairPhone;
+                string cREPAIRMOB = string.IsNullOrEmpty(MainBean.cRepairMobile) ? "" : MainBean.cRepairMobile;
+                string cREPAIREMAIL = string.IsNullOrEmpty(MainBean.cRepairEmail) ? "" : MainBean.cRepairEmail;
+                string cSQEMP = string.IsNullOrEmpty(MainBean.cSQPersonID) ? "" : MainBean.cSQPersonID;
 
                 SROUT.SRID = MainBean.cSRID;
                 SROUT.STATUS = MainBean.cStatus + "_" + cStatusDesc;
                 SROUT.DESC = MainBean.cDesc;
                 SROUT.NOTES = MainBean.cNotes;
                 SROUT.CUSTOMER = MainBean.cCustomerID + "_" + MainBean.cCustomerName;
-                SROUT.MASERVICETYPE = MainBean.cMAServiceType + "_" + cMAServiceTypeDesc;
+                SROUT.MASERVICETYPE = string.IsNullOrEmpty(cMASERVICETYPE) ? "" : cMASERVICETYPE + "_" + cMAServiceTypeDesc;
                 SROUT.CRDATE = Convert.ToDateTime(MainBean.CreatedDate).ToString("yyyy-MM-dd");
-                SROUT.SRTYPEONE = MainBean.cSRTypeOne + "_" + cSRTYPEONEDesc;
-                SROUT.SRTYPESEC = MainBean.cSRTypeSec + "_" + cSRTYPESECDesc;
-                SROUT.SRTYPETHR = MainBean.cSRTypeThr + "_" + cSRTYPETHRDesc;
-                SROUT.SRPATHWAY = MainBean.cSRPathWay + "_" + cSRPATHWAYDesc;
-                SROUT.SRPROCESSWAY = MainBean.cSRProcessWay + "_" + cSRPROCESSWAYDesc;
+                SROUT.SRTYPEONE = string.IsNullOrEmpty(cSRTYPEONE) ? "" : cSRTYPEONE + "_" + cSRTYPEONEDesc;
+                SROUT.SRTYPESEC = string.IsNullOrEmpty(cSRTYPESEC) ? "" : cSRTYPESEC + "_" + cSRTYPESECDesc;
+                SROUT.SRTYPETHR = string.IsNullOrEmpty(cSRTYPETHR) ? "" : cSRTYPETHR + "_" + cSRTYPETHRDesc;
+                SROUT.SRPATHWAY = string.IsNullOrEmpty(cSRPATHWAY) ? "" : cSRPATHWAY + "_" + cSRPATHWAYDesc;
+                SROUT.SRPROCESSWAY = string.IsNullOrEmpty(cSRPROCESSWAY) ? "" : cSRPROCESSWAY + "_" + cSRPROCESSWAYDesc;
                 SROUT.DELAYREASON = MainBean.cDelayReason;
-                SROUT.ISSECFIX = MainBean.cIsSecondFix + "_" + cISSECFIXDesc;
-                SROUT.REPAIRNAME = MainBean.cRepairName;
-                SROUT.REPAIRADDR = MainBean.cRepairAddress;
-                SROUT.REPAIRTEL = MainBean.cRepairPhone;
-                SROUT.REPAIRMOB = MainBean.cRepairMobile;
-                SROUT.REPAIREMAIL = MainBean.cRepairEmail;
+                SROUT.ISSECFIX = string.IsNullOrEmpty(cISSECFIX) ? "" : cISSECFIX + "_" + cISSECFIXDesc;
+                SROUT.REPAIRNAME = cREPAIRNAME;
+                SROUT.REPAIRADDR = cREPAIRADDR;
+                SROUT.REPAIRTEL = cREPAIRTEL;
+                SROUT.REPAIRMOB = cREPAIRMOB;
+                SROUT.REPAIREMAIL = cREPAIREMAIL;
                 SROUT.SRTEAM = cSRTEAM;
                 SROUT.MAINENG = cMAINENG;
                 SROUT.ASSENGN = cASSENGN;
                 SROUT.TECHMAG = cTECHMAG;
-                SROUT.SQEMP = MainBean.cSQPersonID + "_" + MainBean.cSQPersonName;
+                SROUT.SQEMP = string.IsNullOrEmpty(cSQEMP) ? "" : cSQEMP + "_" + MainBean.cSQPersonName;
                 SROUT.SALES = cSALES;
                 SROUT.ATTACHURL = cAttchURL;
 
@@ -1891,7 +1904,7 @@ namespace TSTI_API.Controllers
 
                     foreach (string[] tAry in tList)
                     {
-                        if (EmpBean.IsManager && tAry[10] != "E0001")
+                        if (EmpBean.IsManager && tAry[12] != "E0001")
                         {
                             //判斷是主管且【不為L2工程師】且【也不為技術主管】才跳過
                             if (tERPID != tAry[6] && tAry[8].IndexOf(tERPID) == -1)
@@ -1909,8 +1922,10 @@ namespace TSTI_API.Controllers
                         beanTODO.PATHWAY = tAry[4];
                         beanTODO.SRTYPE = tAry[5];
                         beanTODO.MAINENGNAME = tAry[7];
-                        beanTODO.MODIFDATE = tAry[9];
-                        beanTODO.STATUSDESC = tAry[11];
+                        beanTODO.SLARESP = tAry[9];
+                        beanTODO.SLASRV = tAry[10];
+                        beanTODO.MODIFDATE = tAry[11];
+                        beanTODO.STATUSDESC = tAry[13];
 
                         tTODOList.Add(beanTODO);
                     }
@@ -2885,6 +2900,10 @@ namespace TSTI_API.Controllers
         public string SRTYPE { get; set; }
         /// <summary>L2工程師</summary>
         public string MAINENGNAME { get; set; }
+        /// <summary>回應條件</summary>
+        public string SLARESP { get; set; }
+        /// <summary>服務條件</summary>
+        public string SLASRV { get; set; }
         /// <summary>最後編輯日期</summary>
         public string MODIFDATE { get; set; }
         /// <summary>狀態</summary>

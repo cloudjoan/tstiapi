@@ -136,48 +136,25 @@
           <Property Name="StorageBlock" Type="nvarchar" MaxLength="20" />
           <Property Name="BasicContent" Type="nvarchar(max)" />
         </EntityType>
-        <EntityType Name="STOCKALL">
+        <EntityType Name="PERSONAL_Contact">
           <Key>
-            <PropertyRef Name="IV_SERIAL" />
+            <PropertyRef Name="ContactID" />
           </Key>
-          <Property Name="IV_SERIAL" Type="nvarchar" MaxLength="40" Nullable="false" />
-          <Property Name="IV_VENDOR" Type="nvarchar" MaxLength="10" />
-          <Property Name="IV_VNAME" Type="nvarchar" MaxLength="40" />
-          <Property Name="IV_PONO" Type="nvarchar" MaxLength="10" />
-          <Property Name="IV_GRDATE" Type="datetime" />
-          <Property Name="ProdID" Type="nvarchar" MaxLength="40" Nullable="false" />
-          <Property Name="Product" Type="nvarchar" MaxLength="50" />
-          <Property Name="ProdHierarchy" Type="nvarchar" MaxLength="18" />
-          <Property Name="SoNo" Type="nvarchar" MaxLength="10" />
-          <Property Name="SoAmount" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="SoSales" Type="nvarchar" MaxLength="20" />
-          <Property Name="SoSalesName" Type="nvarchar" MaxLength="20" />
-          <Property Name="INTERNALNO" Type="nvarchar" MaxLength="20" />
-          <Property Name="IV_DNDATE" Type="datetime" />
-          <Property Name="CustomerID" Type="nvarchar" MaxLength="10" />
-          <Property Name="CustomerName" Type="nvarchar" MaxLength="35" />
-          <Property Name="IV_SLASRV" Type="nvarchar" MaxLength="10" />
-          <Property Name="IV_SLARESP" Type="nvarchar" MaxLength="10" />
-          <Property Name="OppNo" Type="nvarchar" MaxLength="10" />
-          <Property Name="ProjName" Type="nvarchar" MaxLength="200" />
-          <Property Name="VENDOROM_WTYID" Type="nvarchar" MaxLength="40" />
-          <Property Name="VENDOROM_SDATE" Type="datetime" />
-          <Property Name="VENDOROM_EDATE" Type="datetime" />
-          <Property Name="OM_WTYID" Type="nvarchar" MaxLength="40" />
-          <Property Name="OM_SDATE" Type="datetime" />
-          <Property Name="OM_EDATE" Type="datetime" />
-          <Property Name="EX_WTYID" Type="nvarchar" MaxLength="40" />
-          <Property Name="EX_SDATE" Type="datetime" />
-          <Property Name="EX_EDATE" Type="datetime" />
-          <Property Name="TM_WTYID" Type="nvarchar" MaxLength="40" />
-          <Property Name="TM_SDATE" Type="datetime" />
-          <Property Name="TM_EDATE" Type="datetime" />
-          <Property Name="ContractID" Type="nvarchar" MaxLength="10" />
-          <Property Name="ContractName" Type="nvarchar" MaxLength="255" />
-          <Property Name="ContractSDATE" Type="datetime" />
-          <Property Name="ContractEDate" Type="datetime" />
-          <Property Name="RenewStatus" Type="varchar" MaxLength="2" />
-          <Property Name="CR_DATE" Type="datetime" />
+          <Property Name="ContactID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="KNA1_KUNNR" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="KNA1_NAME1" Type="nvarchar" MaxLength="35" />
+          <Property Name="KNB1_BUKRS" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="ContactName" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="ContactCity" Type="nvarchar" MaxLength="10" />
+          <Property Name="ContactAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="ContactEmail" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ContactPhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="ContactMobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="Disabled" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TB_MAIL_CONTENT">
           <Key>
@@ -219,7 +196,7 @@
           <EntitySet Name="CUSTOMER_Contact" EntityType="Self.CUSTOMER_Contact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="F4501" EntityType="Self.F4501" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MATERIAL" EntityType="Self.MATERIAL" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="STOCKALL" EntityType="Self.STOCKALL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PERSONAL_Contact" EntityType="Self.PERSONAL_Contact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_MAIL_CONTENT" EntityType="Self.TB_MAIL_CONTENT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VIEW_CUSTOMER_2" EntityType="Self.VIEW_CUSTOMER_2" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -263,6 +240,7 @@
           <EntitySet Name="STOCKALL" EntityType="ERP_PROXY_DBModel.STOCKALL" />
           <EntitySet Name="CUSTOMER_Contact" EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" />
           <EntitySet Name="TB_MAIL_CONTENT" EntityType="ERP_PROXY_DBModel.TB_MAIL_CONTENT" />
+          <EntitySet Name="PERSONAL_Contact" EntityType="ERP_PROXY_DBModel.PERSONAL_Contact" />
         </EntityContainer>
         <EntityType Name="VIEW_MATERIAL_ByComp">
           <Key>
@@ -460,6 +438,26 @@
           <Property Name="MAIL_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MAIL_CONTENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="PERSONAL_Contact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+          </Key>
+          <Property Name="ContactID" Type="Guid" Nullable="false" />
+          <Property Name="KNA1_KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="KNA1_NAME1" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="KNB1_BUKRS" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="ContactName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="ContactCity" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ContactAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ContactEmail" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContactMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Disabled" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -591,50 +589,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="STOCKALL">
-            <EntityTypeMapping TypeName="ERP_PROXY_DBModel.STOCKALL">
-              <MappingFragment StoreEntitySet="STOCKALL">
-                <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
-                <ScalarProperty Name="RenewStatus" ColumnName="RenewStatus" />
-                <ScalarProperty Name="ContractEDate" ColumnName="ContractEDate" />
-                <ScalarProperty Name="ContractSDATE" ColumnName="ContractSDATE" />
-                <ScalarProperty Name="ContractName" ColumnName="ContractName" />
-                <ScalarProperty Name="ContractID" ColumnName="ContractID" />
-                <ScalarProperty Name="TM_EDATE" ColumnName="TM_EDATE" />
-                <ScalarProperty Name="TM_SDATE" ColumnName="TM_SDATE" />
-                <ScalarProperty Name="TM_WTYID" ColumnName="TM_WTYID" />
-                <ScalarProperty Name="EX_EDATE" ColumnName="EX_EDATE" />
-                <ScalarProperty Name="EX_SDATE" ColumnName="EX_SDATE" />
-                <ScalarProperty Name="EX_WTYID" ColumnName="EX_WTYID" />
-                <ScalarProperty Name="OM_EDATE" ColumnName="OM_EDATE" />
-                <ScalarProperty Name="OM_SDATE" ColumnName="OM_SDATE" />
-                <ScalarProperty Name="OM_WTYID" ColumnName="OM_WTYID" />
-                <ScalarProperty Name="VENDOROM_EDATE" ColumnName="VENDOROM_EDATE" />
-                <ScalarProperty Name="VENDOROM_SDATE" ColumnName="VENDOROM_SDATE" />
-                <ScalarProperty Name="VENDOROM_WTYID" ColumnName="VENDOROM_WTYID" />
-                <ScalarProperty Name="ProjName" ColumnName="ProjName" />
-                <ScalarProperty Name="OppNo" ColumnName="OppNo" />
-                <ScalarProperty Name="IV_SLARESP" ColumnName="IV_SLARESP" />
-                <ScalarProperty Name="IV_SLASRV" ColumnName="IV_SLASRV" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="IV_DNDATE" ColumnName="IV_DNDATE" />
-                <ScalarProperty Name="INTERNALNO" ColumnName="INTERNALNO" />
-                <ScalarProperty Name="SoSalesName" ColumnName="SoSalesName" />
-                <ScalarProperty Name="SoSales" ColumnName="SoSales" />
-                <ScalarProperty Name="SoAmount" ColumnName="SoAmount" />
-                <ScalarProperty Name="SoNo" ColumnName="SoNo" />
-                <ScalarProperty Name="ProdHierarchy" ColumnName="ProdHierarchy" />
-                <ScalarProperty Name="Product" ColumnName="Product" />
-                <ScalarProperty Name="ProdID" ColumnName="ProdID" />
-                <ScalarProperty Name="IV_GRDATE" ColumnName="IV_GRDATE" />
-                <ScalarProperty Name="IV_PONO" ColumnName="IV_PONO" />
-                <ScalarProperty Name="IV_VNAME" ColumnName="IV_VNAME" />
-                <ScalarProperty Name="IV_VENDOR" ColumnName="IV_VENDOR" />
-                <ScalarProperty Name="IV_SERIAL" ColumnName="IV_SERIAL" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CUSTOMER_Contact">
             <EntityTypeMapping TypeName="ERP_PROXY_DBModel.CUSTOMER_Contact">
               <MappingFragment StoreEntitySet="CUSTOMER_Contact">
@@ -669,6 +623,27 @@
                 <ScalarProperty Name="MAIL_CONTENT" ColumnName="MAIL_CONTENT" />
                 <ScalarProperty Name="MAIL_TYPE" ColumnName="MAIL_TYPE" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERSONAL_Contact">
+            <EntityTypeMapping TypeName="ERP_PROXY_DBModel.PERSONAL_Contact">
+              <MappingFragment StoreEntitySet="PERSONAL_Contact">
+                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="ContactMobile" ColumnName="ContactMobile" />
+                <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+                <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
+                <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
+                <ScalarProperty Name="ContactCity" ColumnName="ContactCity" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="KNB1_BUKRS" ColumnName="KNB1_BUKRS" />
+                <ScalarProperty Name="KNA1_NAME1" ColumnName="KNA1_NAME1" />
+                <ScalarProperty Name="KNA1_KUNNR" ColumnName="KNA1_KUNNR" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

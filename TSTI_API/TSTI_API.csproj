@@ -316,6 +316,9 @@
     <Compile Include="Models\Person.cs">
       <DependentUpon>ModelEIPDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PERSONAL_Contact.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\STOCKALL.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>

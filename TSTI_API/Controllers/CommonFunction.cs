@@ -607,6 +607,8 @@ namespace TSTI_API.Controllers
         {
             string reValue = string.Empty;
 
+            cERPID = string.IsNullOrEmpty(cERPID) ? "" : cERPID;
+
             string[] AryERPID = cERPID.TrimEnd(';').Split(';');
 
             var beans = dbEIP.Person.Where(x => (x.Leave_Date == null && x.Leave_Reason == null) && AryERPID.Contains(x.ERP_ID));
@@ -736,6 +738,30 @@ namespace TSTI_API.Controllers
             if (bean != null)
             {
                 reValue = bean.cContractID;
+            }
+
+            return reValue;
+        }
+        #endregion
+
+        #region 取得保固SLA資訊的「回應條件和服務條件」有勾選本次使用的號碼
+        /// <summary>
+        /// 取得保固SLA資訊的「回應條件和服務條件」有勾選本次使用的號碼
+        /// </summary>
+        /// <param name="cSRID">SRID</param>
+        /// <returns></returns>
+        public string[] findSRSLACondition(string cSRID)
+        {
+            string[] reValue = new string[2];
+            reValue[0] = "";
+            reValue[1] = "";
+
+            var bean = dbOne.TB_ONE_SRDetail_Warranty.FirstOrDefault(x => x.cUsed == "Y" && x.cSRID == cSRID);
+
+            if (bean != null)
+            {
+                reValue[0] = bean.cSLARESP;
+                reValue[1] = bean.cSLASRV;
             }
 
             return reValue;
@@ -1041,8 +1067,10 @@ namespace TSTI_API.Controllers
             //http://tsticrmmbgw.etatung.com:8082/CSreport/a7f12260-0168-4cf8-a321-c2d410ac3536.txt
             #endregion
 
-            List<SRATTACHINFO> tList = new List<SRATTACHINFO>();            
-           
+            tAttach = string.IsNullOrEmpty(tAttach) ? "" : tAttach;
+
+            List<SRATTACHINFO> tList = new List<SRATTACHINFO>();              
+
             string tURL = string.Empty;
             string[] tAryAttach = tAttach.TrimEnd(',').Split(',');            
 
@@ -1933,6 +1961,8 @@ namespace TSTI_API.Controllers
         {
             List<string[]> SRIDUserToList = new List<string[]>();   //組SRID清單
 
+            string[] tArySLA = new string[2];
+
             string tSRPathWay = string.Empty;           //報修管理
             string tSRType = string.Empty;              //報修類別
             string tMainEngineerID = string.Empty;      //L2工程師ERPID
@@ -1940,6 +1970,8 @@ namespace TSTI_API.Controllers
             string cTechManagerID = string.Empty;       //技術主管ERPID            
             string tModifiedDate = string.Empty;        //最後編輯日期
             string tSTATUSDESC = string.Empty;          //狀態說明
+            string tSLARESP = string.Empty;             //回應條件
+            string tSLASRV = string.Empty;              //服務條件
 
             List<TB_ONE_SRMain> beans = new List<TB_ONE_SRMain>();
 
@@ -1972,9 +2004,12 @@ namespace TSTI_API.Controllers
                     cTechManagerID = dr["cTechManagerID"].ToString();
                     tModifiedDate = dr["ModifiedDate"].ToString() != "" ? Convert.ToDateTime(dr["ModifiedDate"].ToString()).ToString("yyyy-MM-dd HH:mm:ss") : "";
                     tSTATUSDESC = TransSRSTATUS(ListStatus, dr["cStatus"].ToString());
+                    tArySLA = findSRSLACondition(dr["cSRID"].ToString());
+                    tSLARESP = tArySLA[0];
+                    tSLASRV = tArySLA[1];
 
                     #region 組待處理服務
-                    string[] ProcessInfo = new string[12];
+                    string[] ProcessInfo = new string[14];
 
                     ProcessInfo[0] = dr["cSRID"].ToString();             //SRID
                     ProcessInfo[1] = dr["cCustomerName"].ToString();      //客戶
@@ -1985,9 +2020,11 @@ namespace TSTI_API.Controllers
                     ProcessInfo[6] = tMainEngineerID;                   //L2工程師ERPID
                     ProcessInfo[7] = tMainEngineerName;                 //L2工程師姓名
                     ProcessInfo[8] = cTechManagerID;                    //技術主管ERPID                    
-                    ProcessInfo[9] = tModifiedDate;                     //最後編輯日期
-                    ProcessInfo[10] = dr["cStatus"].ToString();           //狀態
-                    ProcessInfo[11] = tSTATUSDESC;                      //狀態+狀態說明
+                    ProcessInfo[9] = tSLARESP;                          //回應條件
+                    ProcessInfo[10] = tSLASRV;                          //服務條件
+                    ProcessInfo[11] = tModifiedDate;                    //最後編輯日期                    
+                    ProcessInfo[12] = dr["cStatus"].ToString();           //狀態
+                    ProcessInfo[13] = tSTATUSDESC;                      //狀態+狀態說明
 
                     SRIDUserToList.Add(ProcessInfo);
                     #endregion
@@ -2006,9 +2043,12 @@ namespace TSTI_API.Controllers
                     cTechManagerID = string.IsNullOrEmpty(bean.cTechManagerID) ? "" : bean.cTechManagerID;
                     tModifiedDate = bean.ModifiedDate == DateTime.MinValue ? "" : Convert.ToDateTime(bean.ModifiedDate).ToString("yyyy-MM-dd HH:mm:ss");
                     tSTATUSDESC = TransSRSTATUS(ListStatus, bean.cStatus);
+                    tArySLA = findSRSLACondition(bean.cSRID);
+                    tSLARESP = tArySLA[0];
+                    tSLASRV = tArySLA[1];
 
                     #region 組待處理服務
-                    string[] ProcessInfo = new string[12];
+                    string[] ProcessInfo = new string[14];
 
                     ProcessInfo[0] = bean.cSRID;            //SRID
                     ProcessInfo[1] = bean.cCustomerName;     //客戶
@@ -2018,10 +2058,12 @@ namespace TSTI_API.Controllers
                     ProcessInfo[5] = tSRType;              //報修類別
                     ProcessInfo[6] = tMainEngineerID;      //L2工程師ERPID
                     ProcessInfo[7] = tMainEngineerName;    //L2工程師姓名
-                    ProcessInfo[8] = cTechManagerID;       //技術主管ERPID                    
-                    ProcessInfo[9] = tModifiedDate;        //最後編輯日期
-                    ProcessInfo[10] = bean.cStatus;         //狀態
-                    ProcessInfo[11] = tSTATUSDESC;         //狀態+狀態說明
+                    ProcessInfo[8] = cTechManagerID;       //技術主管ERPID                                        
+                    ProcessInfo[9] = tSLARESP;             //回應條件
+                    ProcessInfo[10] = tSLASRV;             //服務條件
+                    ProcessInfo[11] = tModifiedDate;       //最後編輯日期
+                    ProcessInfo[12] = bean.cStatus;         //狀態
+                    ProcessInfo[13] = tSTATUSDESC;         //狀態+狀態說明
 
                     SRIDUserToList.Add(ProcessInfo);
                     #endregion
