@@ -469,6 +469,33 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 新增時取得個人客戶流水號ID
+        /// <summary>
+        /// 新增時取得個人客戶流水號ID
+        /// </summary>
+        /// <returns></returns>
+        public string findPERSONALISerialID()
+        {
+            string reValue = string.Empty;
+
+            int tSerialID = 1;
+
+            var bean = dbProxy.PERSONAL_Contact.OrderByDescending(x => x.KNA1_KUNNR).FirstOrDefault();
+
+            if (bean != null)
+            {
+                tSerialID = int.Parse(bean.KNA1_KUNNR.Replace("P", "")) + 1;
+                reValue = "P" + tSerialID.ToString().PadLeft(8, '0');
+            }
+            else
+            {
+                reValue = "P00000001";
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得員工資料
         /// <summary>
         /// 取得員工資料

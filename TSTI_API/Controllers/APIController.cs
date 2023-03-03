@@ -1330,6 +1330,7 @@ namespace TSTI_API.Controllers
             else
             {
                 pLoginName = EmpBean.EmployeeCName;
+                cBUKRS = EmpBean.BUKRS;
             }
 
             try
@@ -1387,7 +1388,7 @@ namespace TSTI_API.Controllers
                     }
                     else
                     {
-                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "儲存失敗！" + Environment.NewLine;
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "儲存失敗！請重新確認傳入的法人客戶資料是否有誤！" + Environment.NewLine;
                     }
 
                     CMF.writeToLog("", "SaveCONTACT_API", pMsg, pLoginName);
@@ -1691,6 +1692,219 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑個人客戶聯絡人資料建立 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓個人客戶聯絡人資料建立/修改 ↓↓↓↓↓-----
+
+        #region 個人客戶聯絡人資料新增接口
+        [HttpPost]
+        public ActionResult API_PERSONALCONTACT_CREATE(PERSONALCONTACTCREATE_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINACCOUNT": "etatung\\elvis.chang",            
+            //    "IV_PERSONALNAME": "個人客戶-田巧如",
+            //    "IV_CONTACTNAME": "田巧如",
+            //    "IV_CONTACTCITY": "台中市",
+            //    "IV_CONTACTADDRESS": "南屯區五權西路二段236號6樓之2",
+            //    "IV_CONTACTTEL": "04-24713300",
+            //    "IV_CONTACTMOBILE": "0928",
+            //    "IV_CONTACTEMAIL": "Cara.Tien@etatung.com"
+            //}
+            #endregion
+
+            var bean = SavePERSONALCONTACT(beanIN);
+
+            return Json(bean);
+        }
+        #endregion
+
+        #region 個人客戶聯絡人資料更新接口
+        [HttpPost]
+        public ActionResult API_PERSONALCONTACT_UPDATE(PERSONALCONTACTCREATE_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINACCOUNT": "etatung\\elvis.chang",
+            //    "IV_PERSONALID": "P00000003",
+            //    "IV_PERSONALNAME": "個人客戶-田巧如",
+            //    "IV_CONTACTNAME": "田巧如",
+            //    "IV_CONTACTCITY": "台中市",
+            //    "IV_CONTACTADDRESS": "南屯區五權西路二段236號6樓之2",
+            //    "IV_CONTACTTEL": "04-24713300#111",
+            //    "IV_CONTACTMOBILE": "0928000000",
+            //    "IV_CONTACTEMAIL": "Cara.Tien@etatung.com",
+            //    "IV_ISDELETE": "N"
+            //}
+            #endregion            
+
+            var bean = SavePERSONALCONTACT(beanIN);
+
+            return Json(bean);
+        }
+        #endregion
+
+        #region 儲存個人客戶聯絡人資料
+        /// <summary>
+        /// 儲存個人客戶聯絡人資料
+        /// </summary>
+        /// <param name="beanIN">傳入資料</param>        
+        /// <returns></returns>
+        private PERSONALCONTACTCREATE_OUTPUT SavePERSONALCONTACT(PERSONALCONTACTCREATE_INPUT beanIN)
+        {
+            PERSONALCONTACTCREATE_OUTPUT SROUT = new PERSONALCONTACTCREATE_OUTPUT();
+            
+            string cBUKRS = "T012";
+            string pLoginName = string.Empty;
+            
+            string IV_LOGINACCOUNT = string.IsNullOrEmpty(beanIN.IV_LOGINACCOUNT) ? "" : beanIN.IV_LOGINACCOUNT.Trim();
+            string IV_PERSONALID = string.IsNullOrEmpty(beanIN.IV_PERSONALID) ? "" : beanIN.IV_PERSONALID.Trim();
+            string IV_PERSONALNAME = string.IsNullOrEmpty(beanIN.IV_PERSONALNAME) ? "" : beanIN.IV_PERSONALNAME.Trim();
+            string IV_ISDELETE = string.IsNullOrEmpty(beanIN.IV_ISDELETE) ? "" : beanIN.IV_ISDELETE.Trim();
+
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByAccount(IV_LOGINACCOUNT);
+
+            if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
+            {
+                pLoginName = IV_LOGINACCOUNT;
+            }
+            else
+            {
+                pLoginName = EmpBean.EmployeeCName;
+                cBUKRS = EmpBean.BUKRS;
+            }
+
+            try
+            {
+                if (IV_PERSONALID != "") //修改
+                {
+                    var bean = dbProxy.PERSONAL_Contact.FirstOrDefault(x => x.Disabled == 0 && x.KNB1_BUKRS == cBUKRS &&
+                                                                        x.KNA1_KUNNR == IV_PERSONALID && x.ContactName == beanIN.IV_CONTACTNAME.Trim());
+
+                    if (bean != null)
+                    {
+                        bean.KNA1_NAME1 = IV_PERSONALNAME;
+                        bean.ContactCity = beanIN.IV_CONTACTCITY.Trim();
+                        bean.ContactAddress = beanIN.IV_CONTACTADDRESS.Trim();
+                        bean.ContactPhone = beanIN.IV_CONTACTTEL.Trim();
+                        bean.ContactMobile = beanIN.IV_CONTACTMOBILE.Trim();
+                        bean.ContactEmail = beanIN.IV_CONTACTEMAIL.Trim();
+
+                        if (IV_ISDELETE == "Y")
+                        {
+                            bean.Disabled = 1;
+                        }
+
+                        bean.ModifiedUserName = pLoginName;
+                        bean.ModifiedDate = DateTime.Now;
+                    }
+                }
+                else //新增
+                {
+                    var bean = dbProxy.PERSONAL_Contact.FirstOrDefault(x => x.Disabled == 0 && x.KNB1_BUKRS == cBUKRS &&
+                                                                        x.KNA1_NAME1 == IV_PERSONALNAME && x.ContactName == beanIN.IV_CONTACTNAME.Trim());
+
+                    if (bean == null)
+                    {
+                        PERSONAL_Contact bean1 = new PERSONAL_Contact();
+
+                        bean1.ContactID = Guid.NewGuid();
+                        bean1.KNA1_KUNNR = CMF.findPERSONALISerialID();
+                        bean1.KNA1_NAME1 = IV_PERSONALNAME;
+                        bean1.KNB1_BUKRS = cBUKRS;
+                        bean1.ContactName = beanIN.IV_CONTACTNAME.Trim();
+                        bean1.ContactCity = beanIN.IV_CONTACTCITY.Trim();
+                        bean1.ContactAddress = beanIN.IV_CONTACTADDRESS.Trim();
+                        bean1.ContactPhone = beanIN.IV_CONTACTTEL.Trim();
+                        bean1.ContactMobile = beanIN.IV_CONTACTMOBILE.Trim();
+                        bean1.ContactEmail = beanIN.IV_CONTACTEMAIL.Trim();
+                        bean1.Disabled = 0;
+
+                        bean1.CreatedUserName = pLoginName;
+                        bean1.CreatedDate = DateTime.Now;
+
+                        dbProxy.PERSONAL_Contact.Add(bean1);
+                    }                  
+                }
+
+                var result = dbProxy.SaveChanges();
+
+                if (result <= 0)
+                {
+                    if (IV_ISDELETE == "Y") //刪除
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "刪除失敗！請確認要刪除的聯絡人，是透過TICC或One Service建立的才可以刪除！" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "儲存失敗！請重新確認傳入的個人客戶資料是否有誤或已存在！" + Environment.NewLine;
+                    }
+
+                    CMF.writeToLog("", "SavePERSONALCONTACT_API", pMsg, pLoginName);
+
+                    SROUT.EV_MSGT = "E";
+                    SROUT.EV_MSG = pMsg;
+                }
+                else
+                {
+                    SROUT.EV_MSGT = "Y";
+                    SROUT.EV_MSG = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "SavePERSONALCONTACT_API", pMsg, pLoginName);
+
+                SROUT.EV_MSGT = "E";
+                SROUT.EV_MSG = ex.Message;
+            }
+
+            return SROUT;
+        }
+        #endregion
+
+        #region 個人客戶聯絡人資料新增INPUT資訊
+        /// <summary>個人客戶聯絡人資料新增資料INPUT資訊</summary>
+        public struct PERSONALCONTACTCREATE_INPUT
+        {
+            /// <summary>建立者AD帳號</summary>
+            public string IV_LOGINACCOUNT { get; set; }
+            /// <summary>個人客戶代號</summary>
+            public string IV_PERSONALID { get; set; }
+            /// <summary>個人客戶名稱</summary>
+            public string IV_PERSONALNAME { get; set; }
+            /// <summary>聯絡人姓名</summary>
+            public string IV_CONTACTNAME { get; set; }
+            /// <summary>聯絡人城市</summary>
+            public string IV_CONTACTCITY { get; set; }
+            /// <summary>聯絡人地址</summary>
+            public string IV_CONTACTADDRESS { get; set; }
+            /// <summary>聯絡人電話</summary>
+            public string IV_CONTACTTEL { get; set; }
+            /// <summary>聯絡人手機</summary>
+            public string IV_CONTACTMOBILE { get; set; }
+            /// <summary>聯絡人Email</summary>
+            public string IV_CONTACTEMAIL { get; set; }
+            /// <summary>是否要刪除</summary>
+            public string IV_ISDELETE { get; set; }
+        }
+        #endregion
+
+        #region 個人客戶聯絡人資料新增OUTPUT資訊
+        /// <summary>個人客戶聯絡人資料新增OUTPUT資訊</summary>
+        public struct PERSONALCONTACTCREATE_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑個人客戶聯絡人資料/修改 ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務請求資訊(List)、服務請求客戶聯絡人資訊(List)) ↓↓↓↓↓-----
 
