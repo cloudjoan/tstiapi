@@ -121,7 +121,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式，一筆(建立GENERALSR_CREATEByAPI)
             //{
-            //     "IV_LOGINACCOUNT": "etatung\\elvis.chang",
+            //     "IV_LOGINEMPNO": "99120894",
             //     "IV_CUSTOMER": "D03251108",
             //     "IV_SRTEAM": "SRV.12211000",
             //     "IV_RKIND": "Z01",
@@ -195,7 +195,7 @@ namespace TSTI_API.Controllers
             string tInvoiceNo = string.Empty;
             string tInvoiceItem = string.Empty;
 
-            string IV_LOGINACCOUNT = string.IsNullOrEmpty(bean.IV_LOGINACCOUNT) ? "" : bean.IV_LOGINACCOUNT.Trim();
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
             string IV_CUSTOMER = string.IsNullOrEmpty(bean.IV_CUSTOMER) ? "" : bean.IV_CUSTOMER.Trim();            
             string IV_SRTEAM = string.IsNullOrEmpty(bean.IV_SRTEAM) ? "" : bean.IV_SRTEAM.Trim();
             string IV_RKIND = string.IsNullOrEmpty(bean.IV_RKIND) ? "" : bean.IV_RKIND.Trim();
@@ -222,11 +222,11 @@ namespace TSTI_API.Controllers
             string CMainEngineerName = CMF.findEmployeeName(IV_EMPNO);
 
             EmployeeBean EmpBean = new EmployeeBean();
-            EmpBean = CMF.findEmployeeInfoByAccount(IV_LOGINACCOUNT);
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
 
             if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
             {
-                pLoginName = IV_LOGINACCOUNT;
+                pLoginName = IV_LOGINEMPNO;
             }
             else
             {
@@ -883,8 +883,8 @@ namespace TSTI_API.Controllers
         /// <summary>一般服務請求主檔INPUT資訊</summary>
         public struct SRMain_GENERALSR_INPUT
         {
-            /// <summary>建立者AD帳號</summary>
-            public string IV_LOGINACCOUNT { get; set; }
+            /// <summary>建立者員工編號ERPID</summary>
+            public string IV_LOGINEMPNO { get; set; }
             /// <summary>客戶ID</summary>
             public string IV_CUSTOMER { get; set; }            
             /// <summary>服務團隊ID</summary>
@@ -959,7 +959,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式
             //{
-            //     "IV_EMPNO": "99120894",
+            //     "IV_LOGINEMPNO": "99120894",
             //     "IV_SRID": "612211250004",
             //     "IV_STATUS": "E0005"            
             //}
@@ -980,16 +980,16 @@ namespace TSTI_API.Controllers
 
             string pLoginName = string.Empty;            
             string tONEURLName = string.Empty;
-            string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
             string IV_SRID = string.IsNullOrEmpty(bean.IV_SRID) ? "" : bean.IV_SRID.Trim();
             string IV_STATUS = string.IsNullOrEmpty(bean.IV_STATUS) ? "" : bean.IV_STATUS.Trim();          
 
             EmployeeBean EmpBean = new EmployeeBean();
-            EmpBean = CMF.findEmployeeInfoByERPID(IV_EMPNO);
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
 
             if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
             {
-                pLoginName = IV_EMPNO;
+                pLoginName = IV_LOGINEMPNO;
             }
             else
             {
@@ -1103,7 +1103,7 @@ namespace TSTI_API.Controllers
         public struct SRMain_GENERALSRSTATUS_INPUT
         {
             /// <summary>修改者員工編號ERPID</summary>
-            public string IV_EMPNO { get; set; }
+            public string IV_LOGINEMPNO { get; set; }
             /// <summary>服務請求ID</summary>
             public string IV_SRID { get; set; }
             /// <summary>服務狀態ID</summary>
@@ -1439,7 +1439,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_LOGINACCOUNT": "etatung\\elvis.chang",
+            //    "IV_LOGINEMPNO": "etatung\\elvis.chang",
             //    "IV_CUSTOMEID": "D16151427",
             //    "IV_CONTACTNAME": "張豐穎",
             //    "IV_CONTACTCITY": "台中市",
@@ -1462,7 +1462,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_LOGINACCOUNT": "etatung\\elvis.chang",
+            //    "IV_LOGINEMPNO": "etatung\\elvis.chang",
             //    "IV_CUSTOMEID": "D16151427",
             //    "IV_CONTACTNAME": "張豐穎",
             //    "IV_CONTACTCITY": "台中市",
@@ -1495,15 +1495,15 @@ namespace TSTI_API.Controllers
             string pLoginName = string.Empty;
 
             string CCustomerName = CMF.findCustName(beanIN.IV_CUSTOMEID);
-            string IV_LOGINACCOUNT = string.IsNullOrEmpty(beanIN.IV_LOGINACCOUNT) ? "" : beanIN.IV_LOGINACCOUNT.Trim();
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
             string IV_ISDELETE = string.IsNullOrEmpty(beanIN.IV_ISDELETE) ? "" : beanIN.IV_ISDELETE.Trim();
 
             EmployeeBean EmpBean = new EmployeeBean();
-            EmpBean = CMF.findEmployeeInfoByAccount(IV_LOGINACCOUNT);
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
 
             if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
             {
-                pLoginName = IV_LOGINACCOUNT;
+                pLoginName = IV_LOGINEMPNO;
             }
             else
             {
@@ -1599,8 +1599,8 @@ namespace TSTI_API.Controllers
         /// <summary>法人客戶聯絡人資料新增資料INPUT資訊</summary>
         public struct CONTACTCREATE_INPUT
         {
-            /// <summary>建立者AD帳號</summary>
-            public string IV_LOGINACCOUNT { get; set; }
+            /// <summary>建立者員工編號ERPID</summary>
+            public string IV_LOGINEMPNO { get; set; }
             /// <summary>法人客戶代號</summary>
             public string IV_CUSTOMEID { get; set; }
             /// <summary>聯絡人姓名</summary>
@@ -1879,7 +1879,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_LOGINACCOUNT": "etatung\\elvis.chang",            
+            //    "IV_LOGINEMPNO": "99120894",            
             //    "IV_PERSONALNAME": "個人客戶-田巧如",
             //    "IV_CONTACTNAME": "田巧如",
             //    "IV_CONTACTCITY": "台中市",
@@ -1902,7 +1902,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_LOGINACCOUNT": "etatung\\elvis.chang",
+            //    "IV_LOGINEMPNO": "99120894",
             //    "IV_PERSONALID": "P00000003",
             //    "IV_PERSONALNAME": "個人客戶-田巧如",
             //    "IV_CONTACTNAME": "田巧如",
@@ -1934,17 +1934,17 @@ namespace TSTI_API.Controllers
             string cBUKRS = "T012";
             string pLoginName = string.Empty;
             
-            string IV_LOGINACCOUNT = string.IsNullOrEmpty(beanIN.IV_LOGINACCOUNT) ? "" : beanIN.IV_LOGINACCOUNT.Trim();
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
             string IV_PERSONALID = string.IsNullOrEmpty(beanIN.IV_PERSONALID) ? "" : beanIN.IV_PERSONALID.Trim();
             string IV_PERSONALNAME = string.IsNullOrEmpty(beanIN.IV_PERSONALNAME) ? "" : beanIN.IV_PERSONALNAME.Trim();
             string IV_ISDELETE = string.IsNullOrEmpty(beanIN.IV_ISDELETE) ? "" : beanIN.IV_ISDELETE.Trim();
 
             EmployeeBean EmpBean = new EmployeeBean();
-            EmpBean = CMF.findEmployeeInfoByAccount(IV_LOGINACCOUNT);
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
 
             if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
             {
-                pLoginName = IV_LOGINACCOUNT;
+                pLoginName = IV_LOGINEMPNO;
             }
             else
             {
@@ -2048,8 +2048,8 @@ namespace TSTI_API.Controllers
         /// <summary>個人客戶聯絡人資料新增資料INPUT資訊</summary>
         public struct PERSONALCONTACTCREATE_INPUT
         {
-            /// <summary>建立者AD帳號</summary>
-            public string IV_LOGINACCOUNT { get; set; }
+            /// <summary>建立者員工編號ERPID</summary>
+            public string IV_LOGINEMPNO { get; set; }
             /// <summary>個人客戶代號</summary>
             public string IV_PERSONALID { get; set; }
             /// <summary>個人客戶名稱</summary>
