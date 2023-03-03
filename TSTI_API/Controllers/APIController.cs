@@ -108,7 +108,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region -----↓↓↓↓↓一般服務請求 ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓一般服務請求建立 ↓↓↓↓↓-----
 
         #region 建立ONE SERVICE報修SR（一般服務請求）接口
         /// <summary>
@@ -877,7 +877,7 @@ namespace TSTI_API.Controllers
 
             return strCNO;
         }
-        #endregion
+        #endregion       
 
         #region 一般服務請求主檔INPUT資訊
         /// <summary>一般服務請求主檔INPUT資訊</summary>
@@ -944,7 +944,185 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑一般服務請求 ↑↑↑↑↑-----      
+        #endregion -----↑↑↑↑↑一般服務請求建立 ↑↑↑↑↑-----    
+
+        #region -----↓↓↓↓↓一般服務請求狀態更新 ↓↓↓↓↓-----
+
+        #region ONE SERVICE（一般服務請求）狀態更新接口
+        /// <summary>
+        /// ONE SERVICE（一般服務請求）狀態更新接口
+        /// </summary>
+        /// <param name="bean"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GENERALSRSTATUS_UPDATE(SRMain_GENERALSRSTATUS_INPUT beanIN)
+        {
+            #region Json範列格式
+            //{
+            //     "IV_EMPNO": "99120894",
+            //     "IV_SRID": "612211250004",
+            //     "IV_STATUS": "E0005"            
+            //}
+            #endregion
+
+            SRMain_GENERALSRSTATUS_OUTPUT SROUT = new SRMain_GENERALSRSTATUS_OUTPUT();
+
+            SROUT = GenerallySRSTATUS_Update(beanIN);
+
+            return Json(SROUT);
+        }
+        #endregion
+
+        #region 更新（一般服務請求）狀態
+        private SRMain_GENERALSRSTATUS_OUTPUT GenerallySRSTATUS_Update(SRMain_GENERALSRSTATUS_INPUT bean)
+        {
+            SRMain_GENERALSRSTATUS_OUTPUT SROUT = new SRMain_GENERALSRSTATUS_OUTPUT();
+
+            string pLoginName = string.Empty;            
+            string tONEURLName = string.Empty;
+            string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
+            string IV_SRID = string.IsNullOrEmpty(bean.IV_SRID) ? "" : bean.IV_SRID.Trim();
+            string IV_STATUS = string.IsNullOrEmpty(bean.IV_STATUS) ? "" : bean.IV_STATUS.Trim();          
+
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_EMPNO);
+
+            if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
+            {
+                pLoginName = IV_EMPNO;
+            }
+            else
+            {
+                pLoginName = EmpBean.EmployeeCName;
+            }
+
+            bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)          
+
+            if (tIsFormal)
+            {
+                tONEURLName = "172.31.7.56:32200";                     
+            }
+            else
+            {
+                tONEURLName = "172.31.7.56:32200";             
+            }          
+
+            try
+            {               
+                SRCondition tCondition = new SRCondition();
+
+                var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
+
+                if (beanM != null)
+                {
+                    #region 判斷寄送Mail的狀態
+                    if (beanM.cStatus != IV_STATUS)
+                    {
+                        switch(IV_STATUS)
+                        {
+                            case "E0002": //L2處理中
+                            case "E0003": //報價中
+                            case "E0005": //L3處理中
+                            case "E0013": //HPGCSN 完成
+                                tCondition = SRCondition.SAVE;
+                                break;
+
+                            case "E0004": //3rd Party處理中                            
+                                tCondition = SRCondition.THRPARTY;
+                                break;
+
+                            case "E0006": //完修                   
+                                tCondition = SRCondition.DONE;
+                                break;
+
+                            case "E0007": //技術支援升級           
+                                tCondition = SRCondition.SUPPORT;
+                                break;
+
+                            case "E0012": //HPGCSN 申請           
+                                tCondition = SRCondition.HPGCSN;
+                                break;
+
+                            case "E0014": //駁回       
+                                tCondition = SRCondition.REJECT;
+                                break;
+
+                            case "E0015": //取消
+                                tCondition = SRCondition.CANCEL;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        tCondition = SRCondition.SAVE;
+                    }
+                    #endregion
+
+                    beanM.cStatus = IV_STATUS;
+                    beanM.ModifiedDate = DateTime.Now;
+                    beanM.ModifiedUserName = pLoginName;
+
+                    int result = dbOne.SaveChanges();
+
+                    if (result <= 0)
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！" + Environment.NewLine;
+                        CMF.writeToLog(IV_SRID, "SaveGenerallySR_API", pMsg, pLoginName);
+
+                        SROUT.EV_MSGT = "E";
+                        SROUT.EV_MSG = pMsg;
+                    }
+                    else
+                    {
+                        SROUT.EV_MSGT = "Y";
+                        SROUT.EV_MSG = "";
+
+                        #region 寄送Mail通知
+                        CMF.SetSRMailContent(tCondition, pOperationID_GenerallySR, EmpBean.BUKRS, IV_SRID, tONEURLName, pLoginName, tIsFormal);
+                        #endregion
+                    }
+                }                
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog(IV_SRID, "GenerallySRSTATUS_Update_API", pMsg, pLoginName);
+                
+                SROUT.EV_MSGT = "E";
+                SROUT.EV_MSG = ex.Message;
+            }
+
+            return SROUT;
+        }
+        #endregion
+
+        #region 一般服務請求狀態更新INPUT資訊
+        /// <summary>一般服務請求狀態更新INPUT資訊</summary>
+        public struct SRMain_GENERALSRSTATUS_INPUT
+        {
+            /// <summary>修改者員工編號ERPID</summary>
+            public string IV_EMPNO { get; set; }
+            /// <summary>服務請求ID</summary>
+            public string IV_SRID { get; set; }
+            /// <summary>服務狀態ID</summary>
+            public string IV_STATUS { get; set; }            
+        }
+        #endregion
+
+        #region 一般服務請求狀態更新OUTPUT資訊
+        /// <summary>一般服務請求狀態更新OUTPUT資訊</summary>
+        public struct SRMain_GENERALSRSTATUS_OUTPUT
+        {            
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑一般服務請求狀態更新 ↑↑↑↑↑-----    
 
         #region -----↓↓↓↓↓法人客戶資料 ↓↓↓↓↓-----
 
@@ -3844,6 +4022,11 @@ namespace TSTI_API.Controllers
         SAVE,
 
         /// <summary>
+        /// 技術支援升級
+        /// </summary>
+        SUPPORT,
+
+        /// <summary>
         /// 3 Party
         /// </summary>
         THRPARTY,
@@ -3851,7 +4034,12 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取消
         /// </summary>
-        CANCEL
+        CANCEL,
+
+        /// <summary>
+        /// 完修
+        /// </summary>
+        DONE
     }
     #endregion
 }

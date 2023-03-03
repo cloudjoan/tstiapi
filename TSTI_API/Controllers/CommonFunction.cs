@@ -2415,6 +2415,11 @@ namespace TSTI_API.Controllers
                     reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 二修通知[" + SRID + "]";
                     break;
 
+                case SRCondition.SUPPORT:
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 技術支援升級通知[<服務ID>]
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 技術支援升級通知[" + SRID + "]";
+                    break;
+
                 case SRCondition.SAVE:
                     //[<客戶名稱>] <服務團隊>_<服務案件種類> 異動通知[<服務ID>]
                     reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 異動通知[" + SRID + "]";
@@ -2428,6 +2433,11 @@ namespace TSTI_API.Controllers
                 case SRCondition.CANCEL:
                     //[<客戶名稱>] <服務團隊>_<服務案件種類> 取消通知[<服務ID>]，請關注！
                     reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 取消通知[" + SRID + "]，請關注！";
+                    break;
+
+                case SRCondition.DONE:
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 完修通知[<服務ID>]
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 完修通知[" + SRID + "]";
                     break;
             }
 
@@ -2676,7 +2686,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 組服務請求Mail相關資訊
         /// </summary>
-        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、SECFIX.二修、SAVE.保存、THRPARTY.3Party、CANCEL.取消)</param>
+        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、SECFIX.二修、SAVE.保存、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
         /// <param name="cOperationID_GenerallySR">程式作業編號檔系統ID</param>
         /// <param name="cBUKRS">公司別(T012、T016、C069、T022)</param>
         /// <param name="cSRID">SRID(服務案件ID)</param>           
