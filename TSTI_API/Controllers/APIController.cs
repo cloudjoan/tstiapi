@@ -121,7 +121,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式，一筆(建立GENERALSR_CREATEByAPI)
             //{
-            //     "IV_LOGINEMPNO": "99120894",
+            //    "IV_LOGINEMPNO": "99120894",
             //     "IV_CUSTOMER": "D03251108",
             //     "IV_SRTEAM": "SRV.12211000",
             //     "IV_RKIND": "Z01",
@@ -147,7 +147,7 @@ namespace TSTI_API.Controllers
             //     "IV_REFIX": "N",
             //     "CREATECONTACT_LIST": [
             //        {
-            //            "SRID": "612211250004",
+            //        "SRID": "612211250004",
             //            "CONTNAME": "賴淑瑛",
             //            "CONTADDR": "台北市信義區菸廠路88號12樓",
             //            "CONTTEL": "(02)6638-6888#13158",
@@ -155,7 +155,7 @@ namespace TSTI_API.Controllers
             //            "CONTEMAIL": "winnielai@taiwanmobile.com"
             //        },
             //        {
-            //            "SRID": "612211250004",
+            //        "SRID": "612211250004",
             //            "CONTNAME": "廖勇翔",
             //            "CONTADDR": "台北市信義區菸廠路88號12樓",
             //            "CONTTEL": "02-6638-6888#13124",
@@ -230,7 +230,7 @@ namespace TSTI_API.Controllers
             }
             else
             {
-                pLoginName = EmpBean.EmployeeCName;
+                pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
             }
 
             bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)          
@@ -993,7 +993,7 @@ namespace TSTI_API.Controllers
             }
             else
             {
-                pLoginName = EmpBean.EmployeeCName;
+                pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
             }
 
             bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)          
@@ -1439,7 +1439,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_LOGINEMPNO": "etatung\\elvis.chang",
+            //    "IV_LOGINEMPNO": "99120894",
             //    "IV_CUSTOMEID": "D16151427",
             //    "IV_CONTACTNAME": "張豐穎",
             //    "IV_CONTACTCITY": "台中市",
@@ -1462,7 +1462,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_LOGINEMPNO": "etatung\\elvis.chang",
+            //    "IV_LOGINEMPNO": "99120894",
             //    "IV_CUSTOMEID": "D16151427",
             //    "IV_CONTACTNAME": "張豐穎",
             //    "IV_CONTACTCITY": "台中市",
@@ -1507,7 +1507,7 @@ namespace TSTI_API.Controllers
             }
             else
             {
-                pLoginName = EmpBean.EmployeeCName;
+                pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
                 cBUKRS = EmpBean.BUKRS;
             }
 
@@ -1948,7 +1948,7 @@ namespace TSTI_API.Controllers
             }
             else
             {
-                pLoginName = EmpBean.EmployeeCName;
+                pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
                 cBUKRS = EmpBean.BUKRS;
             }
 
