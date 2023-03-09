@@ -515,6 +515,27 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得員工Email(傳入ERPID)
+        /// <summary>
+        /// 取得員工Email(傳入ERPID)
+        /// </summary>
+        /// <param name="tERPID">ERPID</param>
+        /// <returns></returns>
+        public string findEMPEmail(string tERPID)
+        {
+            string reValue = string.Empty;
+
+            var bean = dbEIP.Person.FirstOrDefault(x => (x.Leave_Date == null && x.Leave_Reason == null) && x.ERP_ID == tERPID.Trim());
+
+            if (bean != null)
+            {
+                reValue = bean.Email;
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region 傳入服務團隊ID並取得公司別
         /// <summary>
         /// 傳入服務團隊ID並取得公司別
@@ -1137,6 +1158,45 @@ namespace TSTI_API.Controllers
             return tList;
         }
         #endregion
+
+        #region 取得處理與工時紀錄裡的服務報告書序號
+        /// <summary>
+        /// 取得處理與工時紀錄裡的服務報告書序號
+        /// </summary>
+        /// <param name="cSRID">SRID</param>        
+        /// <returns></returns>
+        public string GetReportSerialID(string cSRID)
+        {
+            string strCNO = "";          
+
+            #region 取號
+            var bean = dbOne.TB_ONE_ReportFormat.FirstOrDefault(x => x.cTitle == cSRID);
+
+            if (bean == null) //若沒有資料，則新增一筆當月的資料
+            {
+                TB_ONE_ReportFormat FormNoTable = new TB_ONE_ReportFormat();
+
+                FormNoTable.cTitle = cSRID;                
+                FormNoTable.cNO = "00";
+
+                dbOne.TB_ONE_ReportFormat.Add(FormNoTable);
+                dbOne.SaveChanges();
+            }
+
+            bean = dbOne.TB_ONE_ReportFormat.FirstOrDefault(x => x.cTitle == cSRID);
+
+            if (bean != null)
+            {
+                strCNO = cSRID + "_" + (int.Parse(bean.cNO) + 1).ToString().PadLeft(2, '0');
+                bean.cNO = (int.Parse(bean.cNO) + 1).ToString().PadLeft(2, '0');
+
+                dbOne.SaveChanges();
+            }
+            #endregion
+
+            return strCNO;
+        }
+        #endregion     
 
         #region 取得附件/服務報告書URL(多筆以;號隔開)
         /// <summary>
@@ -2020,7 +2080,7 @@ namespace TSTI_API.Controllers
 
             return dt;
         }
-        #endregion       
+        #endregion               
 
         #region -----↓↓↓↓↓待辦清單 ↓↓↓↓↓-----
 

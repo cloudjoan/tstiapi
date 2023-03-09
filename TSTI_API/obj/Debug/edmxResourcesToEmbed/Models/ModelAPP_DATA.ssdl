@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="APP_DATAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
+    <Key>
+      <PropertyRef Name="hash" />
+    </Key>
+    <Property Name="hash" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="ID" Type="nvarchar" MaxLength="20" />
+    <Property Name="svid" Type="nvarchar" MaxLength="20" />
+    <Property Name="status" Type="nvarchar" MaxLength="20" />
+    <Property Name="emp_erpid" Type="nvarchar" MaxLength="10" />
+    <Property Name="emp_name" Type="nvarchar" MaxLength="20" />
+    <Property Name="submitTime" Type="nvarchar" MaxLength="22" />
+    <Property Name="srid" Type="nvarchar" MaxLength="10" />
+    <Property Name="product_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="product_serial_no" Type="nvarchar" MaxLength="50" />
+    <Property Name="maintain_type" Type="nvarchar" MaxLength="200" />
+    <Property Name="host_engine" Type="nvarchar" MaxLength="10" />
+    <Property Name="ho_panel_led" Type="nvarchar" MaxLength="10" />
+    <Property Name="ho_cooling_fan" Type="nvarchar" MaxLength="10" />
+    <Property Name="ho_power_module" Type="nvarchar" MaxLength="10" />
+    <Property Name="ho_raid_panel_led" Type="nvarchar" MaxLength="10" />
+    <Property Name="ho_raid_cooling_fan" Type="nvarchar" MaxLength="10" />
+    <Property Name="ho_raid_power_module" Type="nvarchar" MaxLength="10" />
+    <Property Name="ho_raid_event_log" Type="nvarchar" MaxLength="10" />
+    <Property Name="ho_manage_interface_event_log" Type="nvarchar" MaxLength="10" />
+    <Property Name="ho_os_event_log" Type="nvarchar" MaxLength="10" />
+    <Property Name="ho_equip_network_light" Type="nvarchar" MaxLength="10" />
+    <Property Name="ho_others" Type="nvarchar" MaxLength="2000" />
+    <Property Name="network" Type="nvarchar" MaxLength="10" />
+    <Property Name="net_backup_config" Type="nvarchar" MaxLength="10" />
+    <Property Name="net_log" Type="nvarchar" MaxLength="10" />
+    <Property Name="net_cpu" Type="nvarchar" MaxLength="10" />
+    <Property Name="net_memory" Type="nvarchar" MaxLength="10" />
+    <Property Name="net_port" Type="nvarchar" MaxLength="10" />
+    <Property Name="net_others" Type="nvarchar" MaxLength="2000" />
+    <Property Name="storage" Type="nvarchar" MaxLength="10" />
+    <Property Name="sto_panel_light" Type="nvarchar" MaxLength="10" />
+    <Property Name="sto_cooling_fan" Type="nvarchar" MaxLength="10" />
+    <Property Name="sto_power_module" Type="nvarchar" MaxLength="10" />
+    <Property Name="sto_network_light" Type="nvarchar" MaxLength="10" />
+    <Property Name="sto_fc_iscsi_light" Type="nvarchar" MaxLength="10" />
+    <Property Name="sto_is_severe_error" Type="nvarchar" MaxLength="10" />
+    <Property Name="sto_capacity_over_20" Type="nvarchar" MaxLength="10" />
+    <Property Name="sto_iops_over_60" Type="nvarchar" MaxLength="10" />
+    <Property Name="sto_others" Type="nvarchar" MaxLength="2000" />
+    <Property Name="vmware" Type="nvarchar" MaxLength="10" />
+    <Property Name="vm_esxi_host_cpu" Type="nvarchar" MaxLength="10" />
+    <Property Name="vm_esxi_host_memory" Type="nvarchar" MaxLength="10" />
+    <Property Name="vm_esxi_datastore" Type="nvarchar" MaxLength="10" />
+    <Property Name="vm_guest_os_cpu" Type="nvarchar" MaxLength="10" />
+    <Property Name="vm_guest_os_memory" Type="nvarchar" MaxLength="10" />
+    <Property Name="vm_high_availability_state" Type="nvarchar" MaxLength="10" />
+    <Property Name="vm_esxi_event_log" Type="nvarchar" MaxLength="10" />
+    <Property Name="vm_horizon_view" Type="nvarchar" MaxLength="10" />
+    <Property Name="vm_nsx" Type="nvarchar" MaxLength="10" />
+    <Property Name="vm_vrops" Type="nvarchar" MaxLength="10" />
+    <Property Name="vm_others" Type="nvarchar" MaxLength="2000" />
+    <Property Name="hyper_v" Type="nvarchar" MaxLength="10" />
+    <Property Name="hy_event_log" Type="nvarchar" MaxLength="10" />
+    <Property Name="hy_cluster_health" Type="nvarchar" MaxLength="10" />
+    <Property Name="hy_datastore_usage" Type="nvarchar" MaxLength="10" />
+    <Property Name="hy_usage" Type="nvarchar" MaxLength="10" />
+    <Property Name="hy_availability_state" Type="nvarchar" MaxLength="10" />
+    <Property Name="hy_others" Type="nvarchar" MaxLength="2000" />
+    <Property Name="ad" Type="nvarchar" MaxLength="10" />
+    <Property Name="ad_event_log" Type="nvarchar" MaxLength="10" />
+    <Property Name="ad_dcdiag_check" Type="nvarchar" MaxLength="10" />
+    <Property Name="ad_replication_health" Type="nvarchar" MaxLength="10" />
+    <Property Name="ad_kcc_health" Type="nvarchar" MaxLength="10" />
+    <Property Name="ad_others" Type="nvarchar" MaxLength="2000" />
+    <Property Name="wsus" Type="nvarchar" MaxLength="10" />
+    <Property Name="ws_event_log" Type="nvarchar" MaxLength="10" />
+    <Property Name="ws_services_health" Type="nvarchar" MaxLength="10" />
+    <Property Name="ws_update_patch_approved" Type="nvarchar" MaxLength="10" />
+    <Property Name="ws_others" Type="nvarchar" MaxLength="2000" />
+    <Property Name="network_equipment" Type="nvarchar" MaxLength="10" />
+    <Property Name="net_eq_ip" Type="nvarchar" MaxLength="50" />
+    <Property Name="net_eq_light" Type="nvarchar" MaxLength="10" />
+    <Property Name="net_eq_contact_loose" Type="nvarchar" MaxLength="10" />
+    <Property Name="net_eq_port" Type="nvarchar" MaxLength="10" />
+    <Property Name="net_eq_log_information" Type="nvarchar" MaxLength="10" />
+    <Property Name="net_eq_others" Type="nvarchar" MaxLength="2000" />
+    <Property Name="others" Type="nvarchar" MaxLength="2000" />
+    <Property Name="InsertTime" Type="nvarchar" MaxLength="22" />
+    <Property Name="UpdateTime" Type="nvarchar" MaxLength="22" />
+    <Property Name="communication" Type="nvarchar" MaxLength="10" />
+    <Property Name="enviornment_check" Type="nvarchar" MaxLength="10" />
+    <Property Name="env_temperature" Type="nvarchar" MaxLength="10" />
+    <Property Name="env_humidity" Type="nvarchar" MaxLength="10" />
+    <Property Name="env_ventilation" Type="nvarchar" MaxLength="10" />
+    <Property Name="env_cleanness" Type="nvarchar" MaxLength="10" />
+    <Property Name="power_backup_system" Type="nvarchar" MaxLength="30" />
+    <Property Name="powergroup_check" Type="nvarchar" MaxLength="10" />
+    <Property Name="powg_type" Type="nvarchar" MaxLength="50" />
+    <Property Name="powg_appearance" Type="nvarchar" MaxLength="10" />
+    <Property Name="powg_unit_voltage" Type="nvarchar" MaxLength="10" />
+    <Property Name="powg_sum_voltage" Type="nvarchar" MaxLength="10" />
+    <Property Name="power_supllier" Type="nvarchar" MaxLength="10" />
+    <Property Name="pows_type" Type="nvarchar" MaxLength="50" />
+    <Property Name="pows_ac_ups_voltage" Type="nvarchar" MaxLength="50" />
+    <Property Name="pows_dc_charger_voltage" Type="nvarchar" MaxLength="50" />
+    <Property Name="pows_charger_value" Type="nvarchar" MaxLength="10" />
+    <Property Name="switch_check" Type="nvarchar" MaxLength="10" />
+    <Property Name="swi_filter_ventilation" Type="varchar" MaxLength="10" />
+    <Property Name="swi_suppllier_led" Type="varchar" MaxLength="10" />
+    <Property Name="swi_interface_led" Type="varchar" MaxLength="10" />
+    <Property Name="swi_hardware_test" Type="varchar" MaxLength="10" />
+    <Property Name="swi_software_text" Type="varchar" MaxLength="10" />
+    <Property Name="swi_systemdata_copy" Type="varchar" MaxLength="10" />
+    <Property Name="attached_equipment" Type="varchar" MaxLength="10" />
+    <Property Name="att_auto" Type="varchar" MaxLength="10" />
+    <Property Name="att_voice_mailbox" Type="varchar" MaxLength="10" />
+    <Property Name="att_accounting" Type="varchar" MaxLength="10" />
+    <Property Name="att_keepmusic" Type="varchar" MaxLength="10" />
+    <Property Name="att_pc_controller" Type="varchar" MaxLength="10" />
+    <Property Name="trunk_error" Type="varchar" MaxLength="10" />
+    <Property Name="tru_line_condition" Type="varchar" MaxLength="10" />
+    <Property Name="tru_co_interface" Type="varchar" MaxLength="10" />
+    <Property Name="tru_did_interface" Type="varchar" MaxLength="10" />
+    <Property Name="tru_ti_interface" Type="varchar" MaxLength="10" />
+    <Property Name="tru_other_interface" Type="varchar" MaxLength="10" />
+    <Property Name="opinions_from_engineer" Type="varchar" MaxLength="30" />
+    <Property Name="opi_maintain" Type="varchar" MaxLength="2000" />
+  </EntityType>
+  <EntityType Name="TB_SURVEY_QUS_MAINTAIN">
+    <Key>
+      <PropertyRef Name="ITEM_ALIAS" />
+    </Key>
+    <Property Name="ITEM_ALIAS" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ITEM_NAME" Type="nvarchar" MaxLength="50" />
+    <Property Name="SORT" Type="int" />
+    <Property Name="DISABLED" Type="int" />
+    <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+    <Property Name="UPDATE_TIME" Type="nvarchar" MaxLength="22" />
+  </EntityType>
+  <EntityContainer Name="APP_DATAModelStoreContainer">
+    <EntitySet Name="TB_SURVEY_ANS_MAINTAIN" EntityType="Self.TB_SURVEY_ANS_MAINTAIN" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_SURVEY_QUS_MAINTAIN" EntityType="Self.TB_SURVEY_QUS_MAINTAIN" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

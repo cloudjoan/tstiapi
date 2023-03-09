@@ -5,8 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d53e69e523bf4d55acbbd82d1a662a98" Name="Diagram1">
-        <EntityTypeShape EntityType="MCSWorkflowModel.Department" Width="1.5" PointX="2.75" PointY="1.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="MCSWorkflowModel.Person" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="MCSWorkflowModel.Department" Width="2.125" PointX="0.5" PointY="1" IsExpanded="false" />
+        <EntityTypeShape EntityType="MCSWorkflowModel.Person" Width="2.125" PointX="0.5" PointY="0.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="MCSWorkflowModel.TB_SERVICES_APP_STATE" Width="2.125" PointX="0.5" PointY="1.5" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

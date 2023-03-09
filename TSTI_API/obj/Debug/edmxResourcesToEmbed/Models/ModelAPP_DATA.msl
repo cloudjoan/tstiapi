@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="APP_DATAModelStoreContainer" CdmEntityContainer="APP_DATAEntities">
+    <EntitySetMapping Name="TB_SURVEY_ANS_MAINTAIN">
+      <EntityTypeMapping TypeName="APP_DATAModel.TB_SURVEY_ANS_MAINTAIN">
+        <MappingFragment StoreEntitySet="TB_SURVEY_ANS_MAINTAIN">
+          <ScalarProperty Name="opi_maintain" ColumnName="opi_maintain" />
+          <ScalarProperty Name="opinions_from_engineer" ColumnName="opinions_from_engineer" />
+          <ScalarProperty Name="tru_other_interface" ColumnName="tru_other_interface" />
+          <ScalarProperty Name="tru_ti_interface" ColumnName="tru_ti_interface" />
+          <ScalarProperty Name="tru_did_interface" ColumnName="tru_did_interface" />
+          <ScalarProperty Name="tru_co_interface" ColumnName="tru_co_interface" />
+          <ScalarProperty Name="tru_line_condition" ColumnName="tru_line_condition" />
+          <ScalarProperty Name="trunk_error" ColumnName="trunk_error" />
+          <ScalarProperty Name="att_pc_controller" ColumnName="att_pc_controller" />
+          <ScalarProperty Name="att_keepmusic" ColumnName="att_keepmusic" />
+          <ScalarProperty Name="att_accounting" ColumnName="att_accounting" />
+          <ScalarProperty Name="att_voice_mailbox" ColumnName="att_voice_mailbox" />
+          <ScalarProperty Name="att_auto" ColumnName="att_auto" />
+          <ScalarProperty Name="attached_equipment" ColumnName="attached_equipment" />
+          <ScalarProperty Name="swi_systemdata_copy" ColumnName="swi_systemdata_copy" />
+          <ScalarProperty Name="swi_software_text" ColumnName="swi_software_text" />
+          <ScalarProperty Name="swi_hardware_test" ColumnName="swi_hardware_test" />
+          <ScalarProperty Name="swi_interface_led" ColumnName="swi_interface_led" />
+          <ScalarProperty Name="swi_suppllier_led" ColumnName="swi_suppllier_led" />
+          <ScalarProperty Name="swi_filter_ventilation" ColumnName="swi_filter_ventilation" />
+          <ScalarProperty Name="switch_check" ColumnName="switch_check" />
+          <ScalarProperty Name="pows_charger_value" ColumnName="pows_charger_value" />
+          <ScalarProperty Name="pows_dc_charger_voltage" ColumnName="pows_dc_charger_voltage" />
+          <ScalarProperty Name="pows_ac_ups_voltage" ColumnName="pows_ac_ups_voltage" />
+          <ScalarProperty Name="pows_type" ColumnName="pows_type" />
+          <ScalarProperty Name="power_supllier" ColumnName="power_supllier" />
+          <ScalarProperty Name="powg_sum_voltage" ColumnName="powg_sum_voltage" />
+          <ScalarProperty Name="powg_unit_voltage" ColumnName="powg_unit_voltage" />
+          <ScalarProperty Name="powg_appearance" ColumnName="powg_appearance" />
+          <ScalarProperty Name="powg_type" ColumnName="powg_type" />
+          <ScalarProperty Name="powergroup_check" ColumnName="powergroup_check" />
+          <ScalarProperty Name="power_backup_system" ColumnName="power_backup_system" />
+          <ScalarProperty Name="env_cleanness" ColumnName="env_cleanness" />
+          <ScalarProperty Name="env_ventilation" ColumnName="env_ventilation" />
+          <ScalarProperty Name="env_humidity" ColumnName="env_humidity" />
+          <ScalarProperty Name="env_temperature" ColumnName="env_temperature" />
+          <ScalarProperty Name="enviornment_check" ColumnName="enviornment_check" />
+          <ScalarProperty Name="communication" ColumnName="communication" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+          <ScalarProperty Name="others" ColumnName="others" />
+          <ScalarProperty Name="net_eq_others" ColumnName="net_eq_others" />
+          <ScalarProperty Name="net_eq_log_information" ColumnName="net_eq_log_information" />
+          <ScalarProperty Name="net_eq_port" ColumnName="net_eq_port" />
+          <ScalarProperty Name="net_eq_contact_loose" ColumnName="net_eq_contact_loose" />
+          <ScalarProperty Name="net_eq_light" ColumnName="net_eq_light" />
+          <ScalarProperty Name="net_eq_ip" ColumnName="net_eq_ip" />
+          <ScalarProperty Name="network_equipment" ColumnName="network_equipment" />
+          <ScalarProperty Name="ws_others" ColumnName="ws_others" />
+          <ScalarProperty Name="ws_update_patch_approved" ColumnName="ws_update_patch_approved" />
+          <ScalarProperty Name="ws_services_health" ColumnName="ws_services_health" />
+          <ScalarProperty Name="ws_event_log" ColumnName="ws_event_log" />
+          <ScalarProperty Name="wsus" ColumnName="wsus" />
+          <ScalarProperty Name="ad_others" ColumnName="ad_others" />
+          <ScalarProperty Name="ad_kcc_health" ColumnName="ad_kcc_health" />
+          <ScalarProperty Name="ad_replication_health" ColumnName="ad_replication_health" />
+          <ScalarProperty Name="ad_dcdiag_check" ColumnName="ad_dcdiag_check" />
+          <ScalarProperty Name="ad_event_log" ColumnName="ad_event_log" />
+          <ScalarProperty Name="ad" ColumnName="ad" />
+          <ScalarProperty Name="hy_others" ColumnName="hy_others" />
+          <ScalarProperty Name="hy_availability_state" ColumnName="hy_availability_state" />
+          <ScalarProperty Name="hy_usage" ColumnName="hy_usage" />
+          <ScalarProperty Name="hy_datastore_usage" ColumnName="hy_datastore_usage" />
+          <ScalarProperty Name="hy_cluster_health" ColumnName="hy_cluster_health" />
+          <ScalarProperty Name="hy_event_log" ColumnName="hy_event_log" />
+          <ScalarProperty Name="hyper_v" ColumnName="hyper_v" />
+          <ScalarProperty Name="vm_others" ColumnName="vm_others" />
+          <ScalarProperty Name="vm_vrops" ColumnName="vm_vrops" />
+          <ScalarProperty Name="vm_nsx" ColumnName="vm_nsx" />
+          <ScalarProperty Name="vm_horizon_view" ColumnName="vm_horizon_view" />
+          <ScalarProperty Name="vm_esxi_event_log" ColumnName="vm_esxi_event_log" />
+          <ScalarProperty Name="vm_high_availability_state" ColumnName="vm_high_availability_state" />
+          <ScalarProperty Name="vm_guest_os_memory" ColumnName="vm_guest_os_memory" />
+          <ScalarProperty Name="vm_guest_os_cpu" ColumnName="vm_guest_os_cpu" />
+          <ScalarProperty Name="vm_esxi_datastore" ColumnName="vm_esxi_datastore" />
+          <ScalarProperty Name="vm_esxi_host_memory" ColumnName="vm_esxi_host_memory" />
+          <ScalarProperty Name="vm_esxi_host_cpu" ColumnName="vm_esxi_host_cpu" />
+          <ScalarProperty Name="vmware" ColumnName="vmware" />
+          <ScalarProperty Name="sto_others" ColumnName="sto_others" />
+          <ScalarProperty Name="sto_iops_over_60" ColumnName="sto_iops_over_60" />
+          <ScalarProperty Name="sto_capacity_over_20" ColumnName="sto_capacity_over_20" />
+          <ScalarProperty Name="sto_is_severe_error" ColumnName="sto_is_severe_error" />
+          <ScalarProperty Name="sto_fc_iscsi_light" ColumnName="sto_fc_iscsi_light" />
+          <ScalarProperty Name="sto_network_light" ColumnName="sto_network_light" />
+          <ScalarProperty Name="sto_power_module" ColumnName="sto_power_module" />
+          <ScalarProperty Name="sto_cooling_fan" ColumnName="sto_cooling_fan" />
+          <ScalarProperty Name="sto_panel_light" ColumnName="sto_panel_light" />
+          <ScalarProperty Name="storage" ColumnName="storage" />
+          <ScalarProperty Name="net_others" ColumnName="net_others" />
+          <ScalarProperty Name="net_port" ColumnName="net_port" />
+          <ScalarProperty Name="net_memory" ColumnName="net_memory" />
+          <ScalarProperty Name="net_cpu" ColumnName="net_cpu" />
+          <ScalarProperty Name="net_log" ColumnName="net_log" />
+          <ScalarProperty Name="net_backup_config" ColumnName="net_backup_config" />
+          <ScalarProperty Name="network" ColumnName="network" />
+          <ScalarProperty Name="ho_others" ColumnName="ho_others" />
+          <ScalarProperty Name="ho_equip_network_light" ColumnName="ho_equip_network_light" />
+          <ScalarProperty Name="ho_os_event_log" ColumnName="ho_os_event_log" />
+          <ScalarProperty Name="ho_manage_interface_event_log" ColumnName="ho_manage_interface_event_log" />
+          <ScalarProperty Name="ho_raid_event_log" ColumnName="ho_raid_event_log" />
+          <ScalarProperty Name="ho_raid_power_module" ColumnName="ho_raid_power_module" />
+          <ScalarProperty Name="ho_raid_cooling_fan" ColumnName="ho_raid_cooling_fan" />
+          <ScalarProperty Name="ho_raid_panel_led" ColumnName="ho_raid_panel_led" />
+          <ScalarProperty Name="ho_power_module" ColumnName="ho_power_module" />
+          <ScalarProperty Name="ho_cooling_fan" ColumnName="ho_cooling_fan" />
+          <ScalarProperty Name="ho_panel_led" ColumnName="ho_panel_led" />
+          <ScalarProperty Name="host_engine" ColumnName="host_engine" />
+          <ScalarProperty Name="maintain_type" ColumnName="maintain_type" />
+          <ScalarProperty Name="product_serial_no" ColumnName="product_serial_no" />
+          <ScalarProperty Name="product_name" ColumnName="product_name" />
+          <ScalarProperty Name="srid" ColumnName="srid" />
+          <ScalarProperty Name="submitTime" ColumnName="submitTime" />
+          <ScalarProperty Name="emp_name" ColumnName="emp_name" />
+          <ScalarProperty Name="emp_erpid" ColumnName="emp_erpid" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="svid" ColumnName="svid" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="hash" ColumnName="hash" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_SURVEY_QUS_MAINTAIN">
+      <EntityTypeMapping TypeName="APP_DATAModel.TB_SURVEY_QUS_MAINTAIN">
+        <MappingFragment StoreEntitySet="TB_SURVEY_QUS_MAINTAIN">
+          <ScalarProperty Name="UPDATE_TIME" ColumnName="UPDATE_TIME" />
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="DISABLED" ColumnName="DISABLED" />
+          <ScalarProperty Name="SORT" ColumnName="SORT" />
+          <ScalarProperty Name="ITEM_NAME" ColumnName="ITEM_NAME" />
+          <ScalarProperty Name="ITEM_ALIAS" ColumnName="ITEM_ALIAS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

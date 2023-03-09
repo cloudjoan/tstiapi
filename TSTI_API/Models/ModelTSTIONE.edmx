@@ -27,6 +27,15 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="TB_ONE_ReportFormat">
+          <Key>
+            <PropertyRef Name="cID" />
+            <PropertyRef Name="cTitle" />
+          </Key>
+          <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cTitle" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="cNO" Type="varchar" MaxLength="4" Nullable="false" />
+        </EntityType>
         <EntityType Name="TB_ONE_SRCustomerEmailMapping">
           <Key>
             <PropertyRef Name="cID" />
@@ -257,6 +266,7 @@
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="TB_ONE_DOCUMENT" EntityType="Self.TB_ONE_DOCUMENT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_LOG" EntityType="Self.TB_ONE_LOG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_ONE_ReportFormat" EntityType="Self.TB_ONE_ReportFormat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_SRCustomerEmailMapping" EntityType="Self.TB_ONE_SRCustomerEmailMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_SRDetail_Contact" EntityType="Self.TB_ONE_SRDetail_Contact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_SRDetail_PartsReplace" EntityType="Self.TB_ONE_SRDetail_PartsReplace" Schema="dbo" store:Type="Tables" />
@@ -287,6 +297,7 @@
           <EntitySet Name="TB_ONE_SRTeamMapping" EntityType="Model.TB_ONE_SRTeamMapping" />
           <EntitySet Name="TB_ONE_DOCUMENT" EntityType="Model.TB_ONE_DOCUMENT" />
           <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
+          <EntitySet Name="TB_ONE_ReportFormat" EntityType="Model.TB_ONE_ReportFormat" />
           </EntityContainer>
         <EntityType Name="TB_ONE_SRDetail_Contact">
           <Key>
@@ -536,6 +547,15 @@
           <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_ONE_ReportFormat">
+          <Key>
+            <PropertyRef Name="cID" />
+            <PropertyRef Name="cTitle" />
+          </Key>
+          <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cTitle" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="cNO" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -798,6 +818,15 @@
                 <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
                 <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
                 <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_ONE_ReportFormat">
+            <EntityTypeMapping TypeName="Model.TB_ONE_ReportFormat">
+              <MappingFragment StoreEntitySet="TB_ONE_ReportFormat">
+                <ScalarProperty Name="cNO" ColumnName="cNO" />
+                <ScalarProperty Name="cTitle" ColumnName="cTitle" />
+                <ScalarProperty Name="cID" ColumnName="cID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

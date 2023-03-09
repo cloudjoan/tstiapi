@@ -18,6 +18,7 @@
         <EntityTypeShape EntityType="Model.TB_ONE_SRTeamMapping" Width="2.25" PointX="3.125" PointY="3" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_DOCUMENT" Width="2.25" PointX="3.125" PointY="3.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRMain" Width="2.125" PointX="0.875" PointY="0.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="Model.TB_ONE_ReportFormat" Width="2.25" PointX="3.125" PointY="4" IsExpanded="false" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

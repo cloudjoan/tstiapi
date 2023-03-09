@@ -27,5 +27,6 @@ namespace TSTI_API.Models
     
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Person> Person { get; set; }
+        public virtual DbSet<TB_SERVICES_APP_STATE> TB_SERVICES_APP_STATE { get; set; }
     }
 }

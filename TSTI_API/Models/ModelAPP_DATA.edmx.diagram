@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f204569979d842d19268078b22f02e99" Name="Diagram1" ZoomLevel="93">
+        <EntityTypeShape EntityType="APP_DATAModel.TB_SURVEY_ANS_MAINTAIN" Width="2.25" PointX="0.5" PointY="0.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="APP_DATAModel.TB_SURVEY_QUS_MAINTAIN" Width="2.25" PointX="0.5" PointY="1.125" IsExpanded="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

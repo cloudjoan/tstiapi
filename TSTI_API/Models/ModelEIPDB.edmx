@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MCSWorkflowModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MCSWorkflowModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Department">
           <Key>
             <PropertyRef Name="ID" />
@@ -92,7 +92,7 @@
           <Property Name="Position2" Type="char" MaxLength="10" />
           <Property Name="Position_Date" Type="datetime" />
           <Property Name="Comp_Phone" Type="varchar" MaxLength="20" />
-          <Property Name="Extension" Type="varchar" MaxLength="20" />
+          <Property Name="Extension" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Nationality" Type="char" MaxLength="10" />
           <Property Name="Blood_Type" Type="char" MaxLength="2" />
           <Property Name="CR_USER" Type="varchar" MaxLength="50" Nullable="false" />
@@ -105,12 +105,26 @@
           <Property Name="Center" Type="char" MaxLength="20" />
           <Property Name="Account" Type="nvarchar" MaxLength="108" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
+        <EntityType Name="TB_SERVICES_APP_STATE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SRID" Type="nvarchar" MaxLength="12" />
+          <Property Name="EMP_NAME" Type="nvarchar" MaxLength="30" />
+          <Property Name="ACCOUNT" Type="nvarchar" MaxLength="50" />
+          <Property Name="ERP_ID" Type="nvarchar" MaxLength="20" />
+          <Property Name="DEVICE" Type="nvarchar" MaxLength="30" />
+          <Property Name="APP_VERSION" Type="nvarchar" MaxLength="10" />
+          <Property Name="STATE" Type="nvarchar(max)" />
+          <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+        </EntityType>
         <EntityContainer Name="MCSWorkflowModelStoreContainer">
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_SERVICES_APP_STATE" EntityType="Self.TB_SERVICES_APP_STATE" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MCSWorkflowModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -201,7 +215,7 @@
           <Property Name="Position2" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="Position_Date" Type="DateTime" Precision="3" />
           <Property Name="Comp_Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Extension" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Extension" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Nationality" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="Blood_Type" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
           <Property Name="CR_USER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
@@ -217,7 +231,22 @@
         <EntityContainer Name="MCSWorkflowEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Department" EntityType="Self.Department" />
           <EntitySet Name="Person" EntityType="Self.Person" />
+          <EntitySet Name="TB_SERVICES_APP_STATE" EntityType="MCSWorkflowModel.TB_SERVICES_APP_STATE" />
         </EntityContainer>
+        <EntityType Name="TB_SERVICES_APP_STATE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SRID" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="EMP_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ACCOUNT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ERP_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DEVICE" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="APP_VERSION" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="STATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -323,6 +352,21 @@
                 <ScalarProperty Name="Workers" ColumnName="Workers" />
                 <ScalarProperty Name="Center" ColumnName="Center" />
                 <ScalarProperty Name="Account" ColumnName="Account" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_SERVICES_APP_STATE">
+            <EntityTypeMapping TypeName="MCSWorkflowModel.TB_SERVICES_APP_STATE">
+              <MappingFragment StoreEntitySet="TB_SERVICES_APP_STATE">
+                <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="APP_VERSION" ColumnName="APP_VERSION" />
+                <ScalarProperty Name="DEVICE" ColumnName="DEVICE" />
+                <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+                <ScalarProperty Name="ACCOUNT" ColumnName="ACCOUNT" />
+                <ScalarProperty Name="EMP_NAME" ColumnName="EMP_NAME" />
+                <ScalarProperty Name="SRID" ColumnName="SRID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -45,11 +45,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -223,6 +229,21 @@
     <Compile Include="Models\MATERIAL.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ModelAPP_DATA.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelAPP_DATA.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelAPP_DATA.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelAPP_DATA.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelAPP_DATA.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\ModelEIPDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -334,6 +355,9 @@
     <Compile Include="Models\TB_ONE_LOG.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_ONE_ReportFormat.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_ONE_SRCustomerEmailMapping.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>
@@ -373,6 +397,15 @@
     <Compile Include="Models\TB_PIS_INSTALLMaterial.cs">
       <DependentUpon>ModelPSIP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_SERVICES_APP_STATE.cs">
+      <DependentUpon>ModelEIPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_SURVEY_ANS_MAINTAIN.cs">
+      <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_SURVEY_QUS_MAINTAIN.cs">
+      <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\VIEW_CUSTOMER_2.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
@@ -390,6 +423,17 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="img\white.png" />
+    <Content Include="Models\ModelAPP_DATA.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelAPP_DATA.edmx</DependentUpon>
+      <LastGenOutput>ModelAPP_DATA.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelAPP_DATA.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelAPP_DATA.edmx</DependentUpon>
+      <LastGenOutput>ModelAPP_DATA.cs</LastGenOutput>
+    </Content>
     <Content Include="Models\ModelEIPDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelEIPDB.edmx</DependentUpon>
@@ -513,6 +557,22 @@
     <Content Include="Models\ModelTSTIDW.edmx.diagram">
       <DependentUpon>ModelTSTIDW.edmx</DependentUpon>
     </Content>
+    <EntityDeploy Include="Models\ModelAPP_DATA.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelAPP_DATA.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelAPP_DATA.edmx.diagram">
+      <DependentUpon>ModelAPP_DATA.edmx</DependentUpon>
+    </Content>
+    <Content Include="fonts\consola.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\msjh.ttc" />
+    <Content Include="fonts\msjh.ttf" />
+    <Content Include="fonts\WINGDNG2.TTF" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -536,6 +596,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="REPORT\" />
     <Folder Include="Views\API\" />
   </ItemGroup>
   <ItemGroup>

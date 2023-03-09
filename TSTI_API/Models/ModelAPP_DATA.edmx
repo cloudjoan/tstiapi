@@ -1,0 +1,453 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="APP_DATAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
+          <Key>
+            <PropertyRef Name="hash" />
+          </Key>
+          <Property Name="hash" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ID" Type="nvarchar" MaxLength="20" />
+          <Property Name="svid" Type="nvarchar" MaxLength="20" />
+          <Property Name="status" Type="nvarchar" MaxLength="20" />
+          <Property Name="emp_erpid" Type="nvarchar" MaxLength="10" />
+          <Property Name="emp_name" Type="nvarchar" MaxLength="20" />
+          <Property Name="submitTime" Type="nvarchar" MaxLength="22" />
+          <Property Name="srid" Type="nvarchar" MaxLength="10" />
+          <Property Name="product_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="product_serial_no" Type="nvarchar" MaxLength="50" />
+          <Property Name="maintain_type" Type="nvarchar" MaxLength="200" />
+          <Property Name="host_engine" Type="nvarchar" MaxLength="10" />
+          <Property Name="ho_panel_led" Type="nvarchar" MaxLength="10" />
+          <Property Name="ho_cooling_fan" Type="nvarchar" MaxLength="10" />
+          <Property Name="ho_power_module" Type="nvarchar" MaxLength="10" />
+          <Property Name="ho_raid_panel_led" Type="nvarchar" MaxLength="10" />
+          <Property Name="ho_raid_cooling_fan" Type="nvarchar" MaxLength="10" />
+          <Property Name="ho_raid_power_module" Type="nvarchar" MaxLength="10" />
+          <Property Name="ho_raid_event_log" Type="nvarchar" MaxLength="10" />
+          <Property Name="ho_manage_interface_event_log" Type="nvarchar" MaxLength="10" />
+          <Property Name="ho_os_event_log" Type="nvarchar" MaxLength="10" />
+          <Property Name="ho_equip_network_light" Type="nvarchar" MaxLength="10" />
+          <Property Name="ho_others" Type="nvarchar" MaxLength="2000" />
+          <Property Name="network" Type="nvarchar" MaxLength="10" />
+          <Property Name="net_backup_config" Type="nvarchar" MaxLength="10" />
+          <Property Name="net_log" Type="nvarchar" MaxLength="10" />
+          <Property Name="net_cpu" Type="nvarchar" MaxLength="10" />
+          <Property Name="net_memory" Type="nvarchar" MaxLength="10" />
+          <Property Name="net_port" Type="nvarchar" MaxLength="10" />
+          <Property Name="net_others" Type="nvarchar" MaxLength="2000" />
+          <Property Name="storage" Type="nvarchar" MaxLength="10" />
+          <Property Name="sto_panel_light" Type="nvarchar" MaxLength="10" />
+          <Property Name="sto_cooling_fan" Type="nvarchar" MaxLength="10" />
+          <Property Name="sto_power_module" Type="nvarchar" MaxLength="10" />
+          <Property Name="sto_network_light" Type="nvarchar" MaxLength="10" />
+          <Property Name="sto_fc_iscsi_light" Type="nvarchar" MaxLength="10" />
+          <Property Name="sto_is_severe_error" Type="nvarchar" MaxLength="10" />
+          <Property Name="sto_capacity_over_20" Type="nvarchar" MaxLength="10" />
+          <Property Name="sto_iops_over_60" Type="nvarchar" MaxLength="10" />
+          <Property Name="sto_others" Type="nvarchar" MaxLength="2000" />
+          <Property Name="vmware" Type="nvarchar" MaxLength="10" />
+          <Property Name="vm_esxi_host_cpu" Type="nvarchar" MaxLength="10" />
+          <Property Name="vm_esxi_host_memory" Type="nvarchar" MaxLength="10" />
+          <Property Name="vm_esxi_datastore" Type="nvarchar" MaxLength="10" />
+          <Property Name="vm_guest_os_cpu" Type="nvarchar" MaxLength="10" />
+          <Property Name="vm_guest_os_memory" Type="nvarchar" MaxLength="10" />
+          <Property Name="vm_high_availability_state" Type="nvarchar" MaxLength="10" />
+          <Property Name="vm_esxi_event_log" Type="nvarchar" MaxLength="10" />
+          <Property Name="vm_horizon_view" Type="nvarchar" MaxLength="10" />
+          <Property Name="vm_nsx" Type="nvarchar" MaxLength="10" />
+          <Property Name="vm_vrops" Type="nvarchar" MaxLength="10" />
+          <Property Name="vm_others" Type="nvarchar" MaxLength="2000" />
+          <Property Name="hyper_v" Type="nvarchar" MaxLength="10" />
+          <Property Name="hy_event_log" Type="nvarchar" MaxLength="10" />
+          <Property Name="hy_cluster_health" Type="nvarchar" MaxLength="10" />
+          <Property Name="hy_datastore_usage" Type="nvarchar" MaxLength="10" />
+          <Property Name="hy_usage" Type="nvarchar" MaxLength="10" />
+          <Property Name="hy_availability_state" Type="nvarchar" MaxLength="10" />
+          <Property Name="hy_others" Type="nvarchar" MaxLength="2000" />
+          <Property Name="ad" Type="nvarchar" MaxLength="10" />
+          <Property Name="ad_event_log" Type="nvarchar" MaxLength="10" />
+          <Property Name="ad_dcdiag_check" Type="nvarchar" MaxLength="10" />
+          <Property Name="ad_replication_health" Type="nvarchar" MaxLength="10" />
+          <Property Name="ad_kcc_health" Type="nvarchar" MaxLength="10" />
+          <Property Name="ad_others" Type="nvarchar" MaxLength="2000" />
+          <Property Name="wsus" Type="nvarchar" MaxLength="10" />
+          <Property Name="ws_event_log" Type="nvarchar" MaxLength="10" />
+          <Property Name="ws_services_health" Type="nvarchar" MaxLength="10" />
+          <Property Name="ws_update_patch_approved" Type="nvarchar" MaxLength="10" />
+          <Property Name="ws_others" Type="nvarchar" MaxLength="2000" />
+          <Property Name="network_equipment" Type="nvarchar" MaxLength="10" />
+          <Property Name="net_eq_ip" Type="nvarchar" MaxLength="50" />
+          <Property Name="net_eq_light" Type="nvarchar" MaxLength="10" />
+          <Property Name="net_eq_contact_loose" Type="nvarchar" MaxLength="10" />
+          <Property Name="net_eq_port" Type="nvarchar" MaxLength="10" />
+          <Property Name="net_eq_log_information" Type="nvarchar" MaxLength="10" />
+          <Property Name="net_eq_others" Type="nvarchar" MaxLength="2000" />
+          <Property Name="others" Type="nvarchar" MaxLength="2000" />
+          <Property Name="InsertTime" Type="nvarchar" MaxLength="22" />
+          <Property Name="UpdateTime" Type="nvarchar" MaxLength="22" />
+          <Property Name="communication" Type="nvarchar" MaxLength="10" />
+          <Property Name="enviornment_check" Type="nvarchar" MaxLength="10" />
+          <Property Name="env_temperature" Type="nvarchar" MaxLength="10" />
+          <Property Name="env_humidity" Type="nvarchar" MaxLength="10" />
+          <Property Name="env_ventilation" Type="nvarchar" MaxLength="10" />
+          <Property Name="env_cleanness" Type="nvarchar" MaxLength="10" />
+          <Property Name="power_backup_system" Type="nvarchar" MaxLength="30" />
+          <Property Name="powergroup_check" Type="nvarchar" MaxLength="10" />
+          <Property Name="powg_type" Type="nvarchar" MaxLength="50" />
+          <Property Name="powg_appearance" Type="nvarchar" MaxLength="10" />
+          <Property Name="powg_unit_voltage" Type="nvarchar" MaxLength="10" />
+          <Property Name="powg_sum_voltage" Type="nvarchar" MaxLength="10" />
+          <Property Name="power_supllier" Type="nvarchar" MaxLength="10" />
+          <Property Name="pows_type" Type="nvarchar" MaxLength="50" />
+          <Property Name="pows_ac_ups_voltage" Type="nvarchar" MaxLength="50" />
+          <Property Name="pows_dc_charger_voltage" Type="nvarchar" MaxLength="50" />
+          <Property Name="pows_charger_value" Type="nvarchar" MaxLength="10" />
+          <Property Name="switch_check" Type="nvarchar" MaxLength="10" />
+          <Property Name="swi_filter_ventilation" Type="varchar" MaxLength="10" />
+          <Property Name="swi_suppllier_led" Type="varchar" MaxLength="10" />
+          <Property Name="swi_interface_led" Type="varchar" MaxLength="10" />
+          <Property Name="swi_hardware_test" Type="varchar" MaxLength="10" />
+          <Property Name="swi_software_text" Type="varchar" MaxLength="10" />
+          <Property Name="swi_systemdata_copy" Type="varchar" MaxLength="10" />
+          <Property Name="attached_equipment" Type="varchar" MaxLength="10" />
+          <Property Name="att_auto" Type="varchar" MaxLength="10" />
+          <Property Name="att_voice_mailbox" Type="varchar" MaxLength="10" />
+          <Property Name="att_accounting" Type="varchar" MaxLength="10" />
+          <Property Name="att_keepmusic" Type="varchar" MaxLength="10" />
+          <Property Name="att_pc_controller" Type="varchar" MaxLength="10" />
+          <Property Name="trunk_error" Type="varchar" MaxLength="10" />
+          <Property Name="tru_line_condition" Type="varchar" MaxLength="10" />
+          <Property Name="tru_co_interface" Type="varchar" MaxLength="10" />
+          <Property Name="tru_did_interface" Type="varchar" MaxLength="10" />
+          <Property Name="tru_ti_interface" Type="varchar" MaxLength="10" />
+          <Property Name="tru_other_interface" Type="varchar" MaxLength="10" />
+          <Property Name="opinions_from_engineer" Type="varchar" MaxLength="30" />
+          <Property Name="opi_maintain" Type="varchar" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="TB_SURVEY_QUS_MAINTAIN">
+          <Key>
+            <PropertyRef Name="ITEM_ALIAS" />
+          </Key>
+          <Property Name="ITEM_ALIAS" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ITEM_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="SORT" Type="int" />
+          <Property Name="DISABLED" Type="int" />
+          <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+          <Property Name="UPDATE_TIME" Type="nvarchar" MaxLength="22" />
+        </EntityType>
+        <EntityContainer Name="APP_DATAModelStoreContainer">
+          <EntitySet Name="TB_SURVEY_ANS_MAINTAIN" EntityType="Self.TB_SURVEY_ANS_MAINTAIN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_SURVEY_QUS_MAINTAIN" EntityType="Self.TB_SURVEY_QUS_MAINTAIN" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="APP_DATAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="APP_DATAEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TB_SURVEY_ANS_MAINTAIN" EntityType="APP_DATAModel.TB_SURVEY_ANS_MAINTAIN" />
+          <EntitySet Name="TB_SURVEY_QUS_MAINTAIN" EntityType="APP_DATAModel.TB_SURVEY_QUS_MAINTAIN" />
+        </EntityContainer>
+        <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
+          <Key>
+            <PropertyRef Name="hash" />
+          </Key>
+          <Property Name="hash" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="svid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="emp_erpid" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="emp_name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="submitTime" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="srid" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="product_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="product_serial_no" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="maintain_type" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="host_engine" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ho_panel_led" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ho_cooling_fan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ho_power_module" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ho_raid_panel_led" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ho_raid_cooling_fan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ho_raid_power_module" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ho_raid_event_log" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ho_manage_interface_event_log" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ho_os_event_log" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ho_equip_network_light" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ho_others" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="network" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="net_backup_config" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="net_log" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="net_cpu" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="net_memory" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="net_port" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="net_others" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="storage" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sto_panel_light" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sto_cooling_fan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sto_power_module" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sto_network_light" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sto_fc_iscsi_light" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sto_is_severe_error" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sto_capacity_over_20" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sto_iops_over_60" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sto_others" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="vmware" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="vm_esxi_host_cpu" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="vm_esxi_host_memory" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="vm_esxi_datastore" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="vm_guest_os_cpu" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="vm_guest_os_memory" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="vm_high_availability_state" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="vm_esxi_event_log" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="vm_horizon_view" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="vm_nsx" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="vm_vrops" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="vm_others" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="hyper_v" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="hy_event_log" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="hy_cluster_health" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="hy_datastore_usage" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="hy_usage" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="hy_availability_state" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="hy_others" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="ad" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ad_event_log" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ad_dcdiag_check" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ad_replication_health" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ad_kcc_health" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ad_others" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="wsus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ws_event_log" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ws_services_health" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ws_update_patch_approved" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ws_others" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="network_equipment" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="net_eq_ip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="net_eq_light" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="net_eq_contact_loose" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="net_eq_port" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="net_eq_log_information" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="net_eq_others" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="others" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="InsertTime" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateTime" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="communication" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="enviornment_check" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="env_temperature" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="env_humidity" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="env_ventilation" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="env_cleanness" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="power_backup_system" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="powergroup_check" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="powg_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="powg_appearance" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="powg_unit_voltage" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="powg_sum_voltage" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="power_supllier" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="pows_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="pows_ac_ups_voltage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="pows_dc_charger_voltage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="pows_charger_value" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="switch_check" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="swi_filter_ventilation" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="swi_suppllier_led" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="swi_interface_led" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="swi_hardware_test" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="swi_software_text" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="swi_systemdata_copy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="attached_equipment" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="att_auto" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="att_voice_mailbox" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="att_accounting" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="att_keepmusic" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="att_pc_controller" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="trunk_error" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="tru_line_condition" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="tru_co_interface" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="tru_did_interface" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="tru_ti_interface" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="tru_other_interface" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="opinions_from_engineer" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="opi_maintain" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TB_SURVEY_QUS_MAINTAIN">
+          <Key>
+            <PropertyRef Name="ITEM_ALIAS" />
+          </Key>
+          <Property Name="ITEM_ALIAS" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ITEM_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SORT" Type="Int32" />
+          <Property Name="DISABLED" Type="Int32" />
+          <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="UPDATE_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="APP_DATAModelStoreContainer" CdmEntityContainer="APP_DATAEntities">
+          <EntitySetMapping Name="TB_SURVEY_ANS_MAINTAIN">
+            <EntityTypeMapping TypeName="APP_DATAModel.TB_SURVEY_ANS_MAINTAIN">
+              <MappingFragment StoreEntitySet="TB_SURVEY_ANS_MAINTAIN">
+                <ScalarProperty Name="opi_maintain" ColumnName="opi_maintain" />
+                <ScalarProperty Name="opinions_from_engineer" ColumnName="opinions_from_engineer" />
+                <ScalarProperty Name="tru_other_interface" ColumnName="tru_other_interface" />
+                <ScalarProperty Name="tru_ti_interface" ColumnName="tru_ti_interface" />
+                <ScalarProperty Name="tru_did_interface" ColumnName="tru_did_interface" />
+                <ScalarProperty Name="tru_co_interface" ColumnName="tru_co_interface" />
+                <ScalarProperty Name="tru_line_condition" ColumnName="tru_line_condition" />
+                <ScalarProperty Name="trunk_error" ColumnName="trunk_error" />
+                <ScalarProperty Name="att_pc_controller" ColumnName="att_pc_controller" />
+                <ScalarProperty Name="att_keepmusic" ColumnName="att_keepmusic" />
+                <ScalarProperty Name="att_accounting" ColumnName="att_accounting" />
+                <ScalarProperty Name="att_voice_mailbox" ColumnName="att_voice_mailbox" />
+                <ScalarProperty Name="att_auto" ColumnName="att_auto" />
+                <ScalarProperty Name="attached_equipment" ColumnName="attached_equipment" />
+                <ScalarProperty Name="swi_systemdata_copy" ColumnName="swi_systemdata_copy" />
+                <ScalarProperty Name="swi_software_text" ColumnName="swi_software_text" />
+                <ScalarProperty Name="swi_hardware_test" ColumnName="swi_hardware_test" />
+                <ScalarProperty Name="swi_interface_led" ColumnName="swi_interface_led" />
+                <ScalarProperty Name="swi_suppllier_led" ColumnName="swi_suppllier_led" />
+                <ScalarProperty Name="swi_filter_ventilation" ColumnName="swi_filter_ventilation" />
+                <ScalarProperty Name="switch_check" ColumnName="switch_check" />
+                <ScalarProperty Name="pows_charger_value" ColumnName="pows_charger_value" />
+                <ScalarProperty Name="pows_dc_charger_voltage" ColumnName="pows_dc_charger_voltage" />
+                <ScalarProperty Name="pows_ac_ups_voltage" ColumnName="pows_ac_ups_voltage" />
+                <ScalarProperty Name="pows_type" ColumnName="pows_type" />
+                <ScalarProperty Name="power_supllier" ColumnName="power_supllier" />
+                <ScalarProperty Name="powg_sum_voltage" ColumnName="powg_sum_voltage" />
+                <ScalarProperty Name="powg_unit_voltage" ColumnName="powg_unit_voltage" />
+                <ScalarProperty Name="powg_appearance" ColumnName="powg_appearance" />
+                <ScalarProperty Name="powg_type" ColumnName="powg_type" />
+                <ScalarProperty Name="powergroup_check" ColumnName="powergroup_check" />
+                <ScalarProperty Name="power_backup_system" ColumnName="power_backup_system" />
+                <ScalarProperty Name="env_cleanness" ColumnName="env_cleanness" />
+                <ScalarProperty Name="env_ventilation" ColumnName="env_ventilation" />
+                <ScalarProperty Name="env_humidity" ColumnName="env_humidity" />
+                <ScalarProperty Name="env_temperature" ColumnName="env_temperature" />
+                <ScalarProperty Name="enviornment_check" ColumnName="enviornment_check" />
+                <ScalarProperty Name="communication" ColumnName="communication" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+                <ScalarProperty Name="others" ColumnName="others" />
+                <ScalarProperty Name="net_eq_others" ColumnName="net_eq_others" />
+                <ScalarProperty Name="net_eq_log_information" ColumnName="net_eq_log_information" />
+                <ScalarProperty Name="net_eq_port" ColumnName="net_eq_port" />
+                <ScalarProperty Name="net_eq_contact_loose" ColumnName="net_eq_contact_loose" />
+                <ScalarProperty Name="net_eq_light" ColumnName="net_eq_light" />
+                <ScalarProperty Name="net_eq_ip" ColumnName="net_eq_ip" />
+                <ScalarProperty Name="network_equipment" ColumnName="network_equipment" />
+                <ScalarProperty Name="ws_others" ColumnName="ws_others" />
+                <ScalarProperty Name="ws_update_patch_approved" ColumnName="ws_update_patch_approved" />
+                <ScalarProperty Name="ws_services_health" ColumnName="ws_services_health" />
+                <ScalarProperty Name="ws_event_log" ColumnName="ws_event_log" />
+                <ScalarProperty Name="wsus" ColumnName="wsus" />
+                <ScalarProperty Name="ad_others" ColumnName="ad_others" />
+                <ScalarProperty Name="ad_kcc_health" ColumnName="ad_kcc_health" />
+                <ScalarProperty Name="ad_replication_health" ColumnName="ad_replication_health" />
+                <ScalarProperty Name="ad_dcdiag_check" ColumnName="ad_dcdiag_check" />
+                <ScalarProperty Name="ad_event_log" ColumnName="ad_event_log" />
+                <ScalarProperty Name="ad" ColumnName="ad" />
+                <ScalarProperty Name="hy_others" ColumnName="hy_others" />
+                <ScalarProperty Name="hy_availability_state" ColumnName="hy_availability_state" />
+                <ScalarProperty Name="hy_usage" ColumnName="hy_usage" />
+                <ScalarProperty Name="hy_datastore_usage" ColumnName="hy_datastore_usage" />
+                <ScalarProperty Name="hy_cluster_health" ColumnName="hy_cluster_health" />
+                <ScalarProperty Name="hy_event_log" ColumnName="hy_event_log" />
+                <ScalarProperty Name="hyper_v" ColumnName="hyper_v" />
+                <ScalarProperty Name="vm_others" ColumnName="vm_others" />
+                <ScalarProperty Name="vm_vrops" ColumnName="vm_vrops" />
+                <ScalarProperty Name="vm_nsx" ColumnName="vm_nsx" />
+                <ScalarProperty Name="vm_horizon_view" ColumnName="vm_horizon_view" />
+                <ScalarProperty Name="vm_esxi_event_log" ColumnName="vm_esxi_event_log" />
+                <ScalarProperty Name="vm_high_availability_state" ColumnName="vm_high_availability_state" />
+                <ScalarProperty Name="vm_guest_os_memory" ColumnName="vm_guest_os_memory" />
+                <ScalarProperty Name="vm_guest_os_cpu" ColumnName="vm_guest_os_cpu" />
+                <ScalarProperty Name="vm_esxi_datastore" ColumnName="vm_esxi_datastore" />
+                <ScalarProperty Name="vm_esxi_host_memory" ColumnName="vm_esxi_host_memory" />
+                <ScalarProperty Name="vm_esxi_host_cpu" ColumnName="vm_esxi_host_cpu" />
+                <ScalarProperty Name="vmware" ColumnName="vmware" />
+                <ScalarProperty Name="sto_others" ColumnName="sto_others" />
+                <ScalarProperty Name="sto_iops_over_60" ColumnName="sto_iops_over_60" />
+                <ScalarProperty Name="sto_capacity_over_20" ColumnName="sto_capacity_over_20" />
+                <ScalarProperty Name="sto_is_severe_error" ColumnName="sto_is_severe_error" />
+                <ScalarProperty Name="sto_fc_iscsi_light" ColumnName="sto_fc_iscsi_light" />
+                <ScalarProperty Name="sto_network_light" ColumnName="sto_network_light" />
+                <ScalarProperty Name="sto_power_module" ColumnName="sto_power_module" />
+                <ScalarProperty Name="sto_cooling_fan" ColumnName="sto_cooling_fan" />
+                <ScalarProperty Name="sto_panel_light" ColumnName="sto_panel_light" />
+                <ScalarProperty Name="storage" ColumnName="storage" />
+                <ScalarProperty Name="net_others" ColumnName="net_others" />
+                <ScalarProperty Name="net_port" ColumnName="net_port" />
+                <ScalarProperty Name="net_memory" ColumnName="net_memory" />
+                <ScalarProperty Name="net_cpu" ColumnName="net_cpu" />
+                <ScalarProperty Name="net_log" ColumnName="net_log" />
+                <ScalarProperty Name="net_backup_config" ColumnName="net_backup_config" />
+                <ScalarProperty Name="network" ColumnName="network" />
+                <ScalarProperty Name="ho_others" ColumnName="ho_others" />
+                <ScalarProperty Name="ho_equip_network_light" ColumnName="ho_equip_network_light" />
+                <ScalarProperty Name="ho_os_event_log" ColumnName="ho_os_event_log" />
+                <ScalarProperty Name="ho_manage_interface_event_log" ColumnName="ho_manage_interface_event_log" />
+                <ScalarProperty Name="ho_raid_event_log" ColumnName="ho_raid_event_log" />
+                <ScalarProperty Name="ho_raid_power_module" ColumnName="ho_raid_power_module" />
+                <ScalarProperty Name="ho_raid_cooling_fan" ColumnName="ho_raid_cooling_fan" />
+                <ScalarProperty Name="ho_raid_panel_led" ColumnName="ho_raid_panel_led" />
+                <ScalarProperty Name="ho_power_module" ColumnName="ho_power_module" />
+                <ScalarProperty Name="ho_cooling_fan" ColumnName="ho_cooling_fan" />
+                <ScalarProperty Name="ho_panel_led" ColumnName="ho_panel_led" />
+                <ScalarProperty Name="host_engine" ColumnName="host_engine" />
+                <ScalarProperty Name="maintain_type" ColumnName="maintain_type" />
+                <ScalarProperty Name="product_serial_no" ColumnName="product_serial_no" />
+                <ScalarProperty Name="product_name" ColumnName="product_name" />
+                <ScalarProperty Name="srid" ColumnName="srid" />
+                <ScalarProperty Name="submitTime" ColumnName="submitTime" />
+                <ScalarProperty Name="emp_name" ColumnName="emp_name" />
+                <ScalarProperty Name="emp_erpid" ColumnName="emp_erpid" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="svid" ColumnName="svid" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="hash" ColumnName="hash" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_SURVEY_QUS_MAINTAIN">
+            <EntityTypeMapping TypeName="APP_DATAModel.TB_SURVEY_QUS_MAINTAIN">
+              <MappingFragment StoreEntitySet="TB_SURVEY_QUS_MAINTAIN">
+                <ScalarProperty Name="UPDATE_TIME" ColumnName="UPDATE_TIME" />
+                <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+                <ScalarProperty Name="DISABLED" ColumnName="DISABLED" />
+                <ScalarProperty Name="SORT" ColumnName="SORT" />
+                <ScalarProperty Name="ITEM_NAME" ColumnName="ITEM_NAME" />
+                <ScalarProperty Name="ITEM_ALIAS" ColumnName="ITEM_ALIAS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

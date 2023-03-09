@@ -103,5 +103,20 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_SERVICES_APP_STATE">
+      <EntityTypeMapping TypeName="MCSWorkflowModel.TB_SERVICES_APP_STATE">
+        <MappingFragment StoreEntitySet="TB_SERVICES_APP_STATE">
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="STATE" ColumnName="STATE" />
+          <ScalarProperty Name="APP_VERSION" ColumnName="APP_VERSION" />
+          <ScalarProperty Name="DEVICE" ColumnName="DEVICE" />
+          <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+          <ScalarProperty Name="ACCOUNT" ColumnName="ACCOUNT" />
+          <ScalarProperty Name="EMP_NAME" ColumnName="EMP_NAME" />
+          <ScalarProperty Name="SRID" ColumnName="SRID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
