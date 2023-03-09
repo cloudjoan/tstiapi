@@ -2388,6 +2388,145 @@ namespace TSTI_API.Controllers
         }
         #endregion       
 
+        #region 取得服務請求case內容
+        /// <summary>
+        /// 取得服務請求case內容
+        /// </summary>
+        /// <param name="IV_SRID">SRID</param>
+        /// <param name="pOperationID_GenerallySR">程式作業編號檔系統ID(一般服務)</param>
+        /// <returns></returns>
+        public Dictionary<string, object> GetSRDetail(string IV_SRID, string pOperationID_GenerallySR)
+        {
+            Dictionary<string, object> results = new Dictionary<string, object>();
+
+            string EV_TYPE = "ZSR1";            
+            string EV_SLASRV = string.Empty;
+            string EV_SLARESP = string.Empty;
+            string EV_WTYKIND = string.Empty;
+
+            var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
+
+            if (beanM != null)
+            {
+                switch (IV_SRID.Substring(0, 2))
+                {
+                    case "61": //一般服務
+                        EV_TYPE = "ZSR1";
+                        break;
+                    case "63": //裝機服務
+                        EV_TYPE = "ZSR3";
+                        break;
+                    case "65": //定維服務
+                        EV_TYPE = "ZSR5";
+                        break;
+                }
+
+                EmployeeBean EmpBean = new EmployeeBean();
+                EmpBean = findEmployeeInfoByERPID(beanM.cMainEngineerID);
+
+                string[] tArySLA = findSRSLACondition(IV_SRID);
+                EV_SLARESP = tArySLA[0];
+                EV_SLASRV = tArySLA[1];
+
+                EV_WTYKIND = findSysParameterDescription(pOperationID_GenerallySR, "OTHER", EmpBean.BUKRS, "SRMATYPE", beanM.cMAServiceType);
+
+                results.Add("EV_CUSTOMER", beanM.cCustomerName);       //客戶名稱
+                results.Add("EV_DESC", beanM.cDesc);                  //說明                
+                results.Add("EV_PROBLEM", beanM.cNotes);              //詳細描述
+                results.Add("EV_MAINENG", beanM.cMainEngineerName);    //L2工程師姓名
+                results.Add("EV_MAINENGID", beanM.cMainEngineerID);    //L2工程師ERPID                
+                results.Add("EV_CONTACT", beanM.cRepairName);         //報修人姓名
+                results.Add("EV_ADDR", beanM.cRepairAddress);         //報修人地址
+                results.Add("EV_TEL", beanM.cRepairPhone);           //報修人電話
+                results.Add("EV_MOBILE", beanM.cRepairMobile);       //報修人手機
+                results.Add("EV_EMAIL", beanM.cRepairEmail);         //報修人Email
+                results.Add("EV_TYPE", EV_TYPE);                   //服務種類
+                results.Add("EV_COUNTIN", "");                      //計數器進(群輝用，先保持空白)
+                results.Add("EV_COUNTOUT", "");                     //計數器出(群輝用，先保持空白)
+                results.Add("EV_SQ", beanM.cSQPersonName);          //SQ人員名稱
+                results.Add("EV_DEPARTMENT", EmpBean.BUKRS);        //公司別(T012、T016、C069、t022)
+                results.Add("EV_SLASRV", EV_SLASRV);               //SLA服務條件
+                results.Add("EV_WTYKIND", EV_WTYKIND);             //維護服務種類(Z01.保固內、Z02.保固外、Z03.合約、Z04.3rd Party)
+            }
+
+            if (!string.IsNullOrEmpty(IV_SRID))
+            {
+                #region 聯絡人窗口資訊
+                var beanD_Con = dbOne.TB_ONE_SRDetail_Contact.FirstOrDefault(x => x.Disabled == 0 && x.cSRID == IV_SRID);
+
+                if (beanD_Con != null)
+                {
+                    results.Add("EV_REPORT", beanD_Con.cContactName);       //聯絡人姓名                    
+                    results.Add("EV_RADDR", beanD_Con.cContactAddress);     //聯絡人地址
+                    results.Add("EV_RTEL", beanD_Con.cContactPhone);        //聯絡人電話
+                    results.Add("EV_RMOBILE", beanD_Con.cContactMobile);    //聯絡人手機
+                    results.Add("EV_EMAIL_R", beanD_Con.cContactEmail);     //聯絡人Email
+                }
+                #endregion
+
+                #region 產品序號資訊
+                var beanD_Prd = dbOne.TB_ONE_SRDetail_Product.Where(x => x.Disabled == 0 && x.cSRID == IV_SRID);
+
+                List<SNLIST> snList = new List<SNLIST>();
+
+                foreach (var beanD in beanD_Prd)
+                {
+                    SNLIST snBean = new SNLIST();
+                    snBean.SNNO = beanD.cSerialID;              //機器序號
+                    snBean.PRDID = beanD.cMaterialName;         //機器型號
+                    snBean.PRDNUMBER = beanD.cProductNumber;    //Product Number
+
+                    snList.Add(snBean);
+                }
+
+                results.Add("table_ET_SNLIST", snList);
+                #endregion
+
+                #region 處理與工時紀錄
+                var beanD_Rec = dbOne.TB_ONE_SRDetail_Record.Where(x => x.Disabled == 0 && x.cSRID == IV_SRID);
+
+                List<ENGProcessLIST> ENGPList = new List<ENGProcessLIST>();
+
+                foreach (var beanD in beanD_Rec)
+                {
+                    ENGProcessLIST ENGBean = new ENGProcessLIST();
+                    ENGBean.ENGID = beanD.cEngineerID;
+                    ENGBean.ENGNAME = beanD.cEngineerName;
+                    ENGBean.ENGEMAIL = findEMPEmail(beanD.cEngineerID);
+
+                    ENGPList.Add(ENGBean);
+                }
+
+                results.Add("table_ET_LABORLIST", ENGPList);
+                #endregion
+
+                #region 零件更換資訊
+                var beanD_Part = dbOne.TB_ONE_SRDetail_PartsReplace.Where(x => x.Disabled == 0 && x.cSRID == IV_SRID);
+
+                List<XCLIST> xcList = new List<XCLIST>();
+
+                foreach (var beanD in beanD_Part)
+                {
+                    XCLIST xcBean = new XCLIST();
+                    xcBean.HPXC = beanD.cXCHP;                  //XC HP申請零件
+                    xcBean.OLDCT = beanD.cOldCT;                //OLD CT
+                    xcBean.NEWCT = beanD.cNewCT;                //NEW CT
+                    xcBean.UEFI = beanD.cNewUEFI;               //UEFI
+                    xcBean.BACKUPSN = beanD.cStandbySerialID;    //備機序號
+                    xcBean.HPCT = beanD.cHPCT;                 //HPCT
+                    xcBean.CHANGEPART = beanD.cMaterialID;      //更換零件ID
+                    xcBean.CHANGEPARTNAME = beanD.cMaterialName; //料號說明
+
+                    xcList.Add(xcBean);
+                }
+                results.Add("table_ET_XCLIST", xcList);
+                #endregion
+            }
+
+            return results;
+        }
+        #endregion
+
         #region 傳入語法回傳DataTable(根據資料庫名稱)
         /// <summary>
         /// 傳入語法回傳DataTable(根據資料庫名稱)
@@ -3143,6 +3282,140 @@ namespace TSTI_API.Controllers
                 pMsg += " 失敗行數：" + ex.ToString();
 
                 writeToLog(cSRID, "SendSRMail", pMsg, cLoginName);
+            }
+        }
+        #endregion
+
+        #region 呼叫發送服務報告書report給客戶
+        /// <summary>
+        /// 呼叫發送服務報告書report給客戶
+        /// </summary>
+        /// <param name="pOperationID_GenerallySR">程式作業編號檔系統ID(一般服務)</param>        
+        /// <param name="srId">SRID</param>
+        /// <param name="pdfPath">服務報告書檔案路徑</param>
+        /// <param name="pdfFileName">服務報告書檔名</param>
+        /// <param name="mainEgnrName">處理工程師姓名</param>
+        /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
+        public void callSendReport(string pOperationID_GenerallySR, string srId, string pdfPath, string pdfFileName, string mainEgnrName, bool tIsFormal)
+        {
+            #region -- 發送Report給客戶 --
+            string email = string.Empty;
+            string CUSTOMER = string.Empty;
+            string ENGINEER = string.Empty;
+            string NOTES = string.Empty;
+
+            // 獲得需求單明細資料
+            Dictionary<string, object> srdetail = GetSRDetail(srId, pOperationID_GenerallySR);
+
+            //設定寄信內容變數
+            //如果客戶(報修人)沒有email，則先寄給rita，原本是空值
+            email = (srdetail["EV_EMAIL"] != null && !String.IsNullOrEmpty(srdetail["EV_EMAIL"].ToString())) ? srdetail["EV_EMAIL"].ToString() : "";
+
+            //客戶聯絡人
+            if (srdetail["EV_EMAIL_R"] != null && !string.IsNullOrEmpty(srdetail["EV_EMAIL_R"].ToString()))
+            {
+                if (email.IndexOf(srdetail["EV_EMAIL_R"].ToString()) == -1)
+                {
+                    email += ";" + srdetail["EV_EMAIL_R"].ToString();
+                }
+            }
+
+            CUSTOMER = srdetail["EV_CUSTOMER"].ToString();
+            if (CUSTOMER.IndexOf(' ') != -1)
+            {
+                CUSTOMER = CUSTOMER.Split(' ')[0];
+            }
+
+            ENGINEER = string.IsNullOrEmpty(mainEgnrName) ? srdetail["EV_MAINENG"].ToString() : mainEgnrName;
+
+            NOTES = srdetail["EV_PROBLEM"].ToString();
+
+            //一併發送給L2工程師及支援工程師
+            List<string> ccs = new List<string>();
+            List<ENGProcessLIST> lbList = srdetail.ContainsKey("table_ET_LABORLIST") ? (List<ENGProcessLIST>)srdetail["table_ET_LABORLIST"] : new List<ENGProcessLIST>();
+
+            foreach (var lbBean in lbList)
+            {
+                string _engrErpId = lbBean.ENGID;
+
+                if (!string.IsNullOrEmpty(_engrErpId))
+                {
+                    string tEmail = findEMPEmail(_engrErpId);
+
+                    if (tEmail != "" && !ccs.Contains(tEmail))
+                    {
+                        ccs.Add(tEmail);
+                    }
+                    else continue;
+                }
+                else continue;
+            }         
+
+            SendReport(email, string.Join(";", ccs), srId, CUSTOMER, ENGINEER, NOTES, pdfPath, pdfFileName, mainEgnrName, tIsFormal); //發送服務報告書report給客戶
+            #endregion
+        }
+        #endregion
+
+        #region 發送服務報告書report給客戶
+        /// <summary>
+        /// 發送服務報告書report給客戶
+        /// </summary>
+        /// <param name="receiver">收件人</param>
+        /// <param name="ccs">副本</param>
+        /// <param name="SRID">SRID</param>
+        /// <param name="CUSTOMER">客戶名稱</param>
+        /// <param name="ENGINEER">負責工程師姓名</param>
+        /// <param name="NOTES">詳細描述</param>        
+        /// <param name="pdfPath">服務報告書檔案路徑</param>
+        /// <param name="pdfFileName">服務報告書檔名</param>
+        /// <param name="mainEgnrName">處理工程師姓名</param>
+        /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
+        /// <returns></returns>
+        private void SendReport(string receiver, string ccs, string SRID, string CUSTOMER, string ENGINEER, string NOTES, string pdfPath, string pdfFileName, string mainEgnrName, bool tIsFormal)
+        {
+            #region 範例內容
+            //<body style="font-family:微軟正黑體; ">親愛的用戶您好，<br/>" +
+            //    <br/>您此次的服務已處理，提供服務報告書如附件，謝謝!!<br/>" +
+            //    <br/>[服務明細]" +
+            //    <br/>服務ID：【<SRID>】" +
+            //    <br/>客戶名稱：【<CUSTOMER>】" +
+            //    <br/>負責工程師：【<ENGINEER>】" +
+            //    <br/>需求事項：【<DESC>】" +
+            //    <br/>狀態：已處理<br/>" +
+            //<body>
+            #endregion
+
+            try
+            {
+                string tMailSubject = string.Empty;
+                string tMailBody = string.Empty;
+
+                #region 是否為測試區
+                string strTest = string.Empty;
+
+                if (!tIsFormal)
+                {
+                    strTest = "【*測試*】";
+                    receiver = "elvis.chang@etatung.com";
+                    ccs = "elvis.chang@etatung.com";
+                }
+                #endregion
+
+                tMailSubject = strTest + "[大同世界科技 服務ID：" + SRID + " 已處理通知]";
+
+                tMailBody = GetMailBody("ONESendReport_MAIL");
+                tMailBody = tMailBody.Replace("【<SRID>】", SRID).Replace("【<CUSTOMER>】", CUSTOMER);
+                tMailBody = tMailBody.Replace("【<ENGINEER>】", ENGINEER).Replace("【<NOTES>】", NOTES);
+
+                SendMailByAPI("SendReport_API", "Crmwebadmin@etatung.com", receiver, ccs, "", tMailSubject, tMailBody, pdfFileName, pdfPath);
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                writeToLog(SRID, "SendReport_API", pMsg, mainEgnrName);
+                SendMailByAPI("SendReport_API", null, "elvis.chang@etatung.com", "", "", "發送服務報告書report給客戶錯誤 - " + SRID, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "<br>" + ex.ToString(), null, null);
             }
         }
         #endregion

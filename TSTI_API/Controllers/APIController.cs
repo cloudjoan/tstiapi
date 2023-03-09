@@ -2675,9 +2675,13 @@ namespace TSTI_API.Controllers
             string cSRReport = string.Empty;
             string cReportID = string.Empty;            
             string cSRReportFileName = string.Empty;
+            string cPDFPath = string.Empty;         //服務報告書路徑
+            string cPDFFileName = string.Empty;     //服務報告書檔名
 
             try
             {
+                bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)          
+
                 cID = string.IsNullOrEmpty(beanIN.IV_CID) ? 0 : int.Parse(beanIN.IV_CID);
                 cSRID = string.IsNullOrEmpty(beanIN.IV_SRID) ? "" : beanIN.IV_SRID;
                 cENGID = string.IsNullOrEmpty(beanIN.IV_EMPNO) ? "" : beanIN.IV_EMPNO;                
@@ -2735,7 +2739,7 @@ namespace TSTI_API.Controllers
                                 fileGuid = Guid.NewGuid();
                                 cSRReport = fileGuid.ToString() + ",";
                                 
-                                bool tIsOK = qas_UploadMultPics(picPathList, fileGuid.ToString(), cSRID, cDesc, cENGNAME);                               
+                                bool tIsOK = UploadMultPics(picPathList, fileGuid.ToString(), cSRID, cENGNAME, tIsFormal);                               
                                 #endregion
 
                                 if (tIsOK)
@@ -2744,7 +2748,10 @@ namespace TSTI_API.Controllers
                                     cReportID = CMF.GetReportSerialID(cSRID);
 
                                     fileOrgName = cReportID + ".pdf";
-                                    fileName = fileGuid.ToString() + ".pdf";                                    
+                                    fileName = fileGuid.ToString() + ".pdf";
+
+                                    cPDFPath = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+                                    cPDFFileName = fileName;
                                     #endregion
 
                                     #region table部份                                        
@@ -2821,6 +2828,9 @@ namespace TSTI_API.Controllers
                         {
                             #region 有簽名檔
                             cSRReport = cSRReportFileName.Replace(".pdf", "") + ",";
+
+                            cPDFPath = Path.Combine(Server.MapPath("~/REPORT"), cSRReportFileName);
+                            cPDFFileName = cSRReportFileName;
                             #endregion
                         }
                     }
@@ -2900,6 +2910,8 @@ namespace TSTI_API.Controllers
                     {
                         OUTBean.EV_CID = cID.ToString();
                     }
+
+                    CMF.callSendReport(pOperationID_GenerallySR, cSRID, cPDFPath, cPDFFileName, cENGNAME, tIsFormal); //呼叫發送服務報告書report給客戶
                 }
             }
             catch (Exception ex)
@@ -2924,13 +2936,13 @@ namespace TSTI_API.Controllers
         /// </summary>
         /// <param name="picPathList">圖片路徑清單</param>        
         /// <param name="filename">檔名</param>
-        /// <param name="srId">SRID</param>
-        /// <param name="DESC">處理紀錄</param>
+        /// <param name="srId">SRID</param>        
         /// <param name="mainEgnrName">處理工程師姓名</param>
+        /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
         /// <returns></returns>
-        public bool qas_UploadMultPics(List<string> picPathList, string filename, string srId, string DESC, string mainEgnrName)
+        public bool UploadMultPics(List<string> picPathList, string filename, string srId, string mainEgnrName, bool tIsFormal)
         {
-            bool reValue = false;
+            bool reValue = false;          
 
             try
             {
@@ -2977,60 +2989,20 @@ namespace TSTI_API.Controllers
                         System.IO.File.Delete(picPath);
                     }
                 }
-                #endregion
-
-                #region -- 發送Report給客戶 --
-                //// 獲得需求單明細資料
-                //Dictionary<string, object> srdetail = qas_GetSRDetail(srId);
-
-                ////設定寄信內容變數
-                ////如果客戶沒有email，則先寄給rita，原本是空值
-                //string email = (srdetail["EV_EMAIL"] != null && !String.IsNullOrEmpty(srdetail["EV_EMAIL"].ToString())) ? srdetail["EV_EMAIL"].ToString() : "";
-                ////20210617_Rita_add: 服務報告書也發給現場聯絡人(CRM web右邊的聯絡人)
-                //if (srdetail["EV_EMAIL_R"] != null && !string.IsNullOrEmpty(srdetail["EV_EMAIL_R"].ToString())) email += ";" + srdetail["EV_EMAIL_R"].ToString();
-
-                //string CUSTOMER = srdetail["EV_CUSTOMER"].ToString();
-                //if (CUSTOMER.IndexOf(' ') != -1) CUSTOMER = CUSTOMER.Split(' ')[0];
-                ////string ENGINEER = srdetail["EV_MAINENG"].ToString();
-                //string ENGINEER = string.IsNullOrEmpty(mainEgnrName) ? srdetail["EV_MAINENG"].ToString() : mainEgnrName;
-
-                ////一併發送給主要及支援工程師
-                //List<string> ccs = new List<string>();
-                //List<IRfcStructure> lbList = srdetail.ContainsKey("table_ET_LABORLIST") ? (List<IRfcStructure>)srdetail["table_ET_LABORLIST"] : new List<IRfcStructure>();
-
-                //if (lbList != null && lbList.Count > 0)
-                //{
-                //    foreach (var lbBean in lbList)
-                //    {
-                //        string _engrErpId = lbBean["ENGINEERID"].GetString();
-
-                //        if (!string.IsNullOrEmpty(_engrErpId))
-                //        {
-                //            var qEmp = eipDB.Person.FirstOrDefault(x => x.ERP_ID == _engrErpId);
-                //            if (qEmp != null && !ccs.Contains(qEmp.Email)) ccs.Add(qEmp.Email);
-                //            else continue;
-                //        }
-                //        else continue;
-                //    }
-                //}
-
-                //var pdfUrl = @"http://tsticrmmbgw.etatung.com:8081/CSreport/" + pdfFileName;
-                ////SendReport(email, string.Join(";", ccs), srId, CUSTOMER, ENGINEER, DESC, pdfUrl, pdfPath, pdfFileName);
-                //SendReport("leon.huang@etatung.com", "", srId, CUSTOMER, ENGINEER, DESC, pdfUrl, pdfPath, pdfFileName, statusCode);
-                #endregion
+                #endregion               
             }
             catch (Exception ex)
             {
                 pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
                 pMsg += " 失敗行數：" + ex.ToString();
 
-                CMF.writeToLog(srId, "qas_UploadMultPics_API", pMsg, mainEgnrName);
-                CMF.SendMailByAPI("qas_UploadMultPics_API", null, "elvis.chang@etatung.com", "", "", "(測試)qas_UploadMultPics錯誤 - " + srId, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "<br>" + ex.ToString(), null, null);
+                CMF.writeToLog(srId, "UploadMultPics_API", pMsg, mainEgnrName);
+                CMF.SendMailByAPI("UploadMultPics_API", null, "elvis.chang@etatung.com", "", "", "UploadMultPics錯誤 - " + srId, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "<br>" + ex.ToString(), null, null);
             }
 
             return reValue;
         }
-        #endregion
+        #endregion        
 
         #region 異動處理與工時紀錄相關INPUT資訊
         /// <summary>異動處理與工時紀錄相關INPUT資訊</summary>
@@ -3150,7 +3122,7 @@ namespace TSTI_API.Controllers
             #endregion
 
             // 獲得需求單明細資料
-            Dictionary<string, object> srdetail = GetSRDetail(IV_SRID);
+            Dictionary<string, object> srdetail = CMF.GetSRDetail(IV_SRID, pOperationID_GenerallySR);
 
             pMsg += "Upload PDF Method start";
 
@@ -5062,16 +5034,7 @@ namespace TSTI_API.Controllers
                     espace.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
                     espace.Border = iTextSharp.text.Rectangle.NO_BORDER; // 無邊框                    
                     espace.Colspan = 8;
-                    pTable.AddCell(espace);
-
-                    #region 報修人Email + 聯絡人Email
-                    string email = (srdetail["EV_EMAIL"] != null && !String.IsNullOrEmpty(srdetail["EV_EMAIL"].ToString())) ? srdetail["EV_EMAIL"].ToString() : ""; //報修人Email
-
-                    if (srdetail["EV_EMAIL_R"] != null && !string.IsNullOrEmpty(srdetail["EV_EMAIL_R"].ToString())) //聯絡人Email
-                    {
-                        email += ";" + srdetail["EV_EMAIL_R"].ToString();
-                    }
-                    #endregion
+                    pTable.AddCell(espace);                  
 
                     PdfPTable uTable = new PdfPTable(new float[] { 1 });
                     uTable.SpacingBefore = 2;
@@ -5174,40 +5137,7 @@ namespace TSTI_API.Controllers
                     {
                         if (doc1.IsOpen()) doc1.Close();
                     }
-                    #endregion
-
-                    #region -- 發送 report --
-                    ////一併發送給主要及支援工程師
-                    //List<string> ccs = new List<string>();
-                    //List<IRfcStructure> lbList = srdetail.ContainsKey("table_ET_LABORLIST") ? (List<IRfcStructure>)srdetail["table_ET_LABORLIST"] : new List<IRfcStructure>();
-
-                    //if (lbList != null && lbList.Count > 0)
-                    //{
-                    //    foreach (var lbBean in lbList)
-                    //    {
-                    //        string _engrErpId = lbBean["ENGINEERID"].GetString();
-
-                    //        if (!string.IsNullOrEmpty(_engrErpId))
-                    //        {
-                    //            var qEmp = eipDB.Person.FirstOrDefault(x => x.ERP_ID == _engrErpId);
-                    //            if (qEmp != null && !ccs.Contains(qEmp.Email)) ccs.Add(qEmp.Email);
-                    //            else continue;
-                    //        }
-                    //        else continue;
-                    //    }
-                    //}
-
-                    //var pdfUrl = "";
-                    //try
-                    //{
-                    //    pdfUrl = @"http://tsticrmmbgw.etatung.com:8081/CSreport/" + pdfFileName;
-                    //    SendReport(email, string.Join(";", ccs), srId, CUSTOMER, firstEgnrName, DESC, pdfUrl, pdfPath, pdfFileName, statusCode);
-                    //}
-                    //catch (Exception e)
-                    //{
-                    //    CMF.SendMailByAPI("tsti_services App API", null, "Christine.Chu@etatung.com", "", "", "tsti_services App發信錯誤 - " + srId, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "<br>" + e.ToString(), null, null);
-                    //}
-                    #endregion                    
+                    #endregion                   
 
                     pMsg += "PDF產生並上傳成功！" + Environment.NewLine;
                     CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
@@ -5235,146 +5165,7 @@ namespace TSTI_API.Controllers
 
             return OUTBean;
         }
-        #endregion
-
-        #region 取得服務請求case內容
-        /// <summary>
-        /// 取得服務請求case內容
-        /// </summary>
-        /// <param name="IV_SRID">SRID</param>
-        /// <returns></returns>
-        public Dictionary<string, object> GetSRDetail(string IV_SRID)
-        {
-            Dictionary<string, object> results = new Dictionary<string, object>();
-
-            string EV_TYPE = "ZSR1";
-            string EV_DEPARTMENT = "T012";
-            string EV_SLASRV = string.Empty;
-            string EV_SLARESP = string.Empty;
-            string EV_WTYKIND = string.Empty;
-
-            var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
-
-            if (beanM != null)
-            {
-                switch (IV_SRID.Substring(0, 2))
-                {
-                    case "61": //一般服務
-                        EV_TYPE = "ZSR1";
-                        break;
-                    case "63": //裝機服務
-                        EV_TYPE = "ZSR3";
-                        break;
-                    case "65": //定維服務
-                        EV_TYPE = "ZSR5";
-                        break;
-                }
-
-                EmployeeBean EmpBean = new EmployeeBean();
-                EmpBean = CMF.findEmployeeInfoByERPID(beanM.cMainEngineerID);
-
-                string[] tArySLA = CMF.findSRSLACondition(IV_SRID);
-                EV_SLARESP = tArySLA[0];
-                EV_SLASRV = tArySLA[1];
-
-                EV_WTYKIND = CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", EmpBean.BUKRS, "SRMATYPE", beanM.cMAServiceType);
-
-                results.Add("EV_CUSTOMER", beanM.cCustomerName);       //客戶名稱
-                results.Add("EV_DESC", beanM.cDesc);                  //說明                
-                results.Add("EV_PROBLEM", beanM.cNotes);              //詳細描述
-                results.Add("EV_MAINENG", beanM.cMainEngineerName);    //L2工程師姓名
-                results.Add("EV_MAINENGID", beanM.cMainEngineerID);    //L2工程師ERPID                
-                results.Add("EV_CONTACT", beanM.cRepairName);         //報修人姓名
-                results.Add("EV_ADDR", beanM.cRepairAddress);         //報修人地址
-                results.Add("EV_TEL", beanM.cRepairPhone);           //報修人電話
-                results.Add("EV_MOBILE", beanM.cRepairMobile);       //報修人手機
-                results.Add("EV_EMAIL", beanM.cRepairEmail);         //報修人Email
-                results.Add("EV_TYPE", EV_TYPE);                   //服務種類
-                results.Add("EV_COUNTIN", "");                      //計數器進(群輝用，先保持空白)
-                results.Add("EV_COUNTOUT", "");                     //計數器出(群輝用，先保持空白)
-                results.Add("EV_SQ", beanM.cSQPersonName);          //SQ人員名稱
-                results.Add("EV_DEPARTMENT", EmpBean.BUKRS);        //公司別(T012、T016、C069、t022)
-                results.Add("EV_SLASRV", EV_SLASRV);               //SLA服務條件
-                results.Add("EV_WTYKIND", EV_WTYKIND);             //維護服務種類(Z01.保固內、Z02.保固外、Z03.合約、Z04.3rd Party)
-            }
-
-            if (!string.IsNullOrEmpty(IV_SRID))
-            {
-                #region 聯絡人窗口資訊
-                var beanD_Con = dbOne.TB_ONE_SRDetail_Contact.FirstOrDefault(x => x.Disabled == 0 && x.cSRID == IV_SRID);
-
-                if (beanD_Con != null)
-                {
-                    results.Add("EV_REPORT", beanD_Con.cContactName);       //聯絡人姓名                    
-                    results.Add("EV_RADDR", beanD_Con.cContactAddress);     //聯絡人地址
-                    results.Add("EV_RTEL", beanD_Con.cContactPhone);        //聯絡人電話
-                    results.Add("EV_RMOBILE", beanD_Con.cContactMobile);    //聯絡人手機
-                    results.Add("EV_EMAIL_R", beanD_Con.cContactEmail);     //聯絡人Email
-                }
-                #endregion
-
-                #region 產品序號資訊
-                var beanD_Prd = dbOne.TB_ONE_SRDetail_Product.Where(x => x.Disabled == 0 && x.cSRID == IV_SRID);
-
-                List<SNLIST> snList = new List<SNLIST>();
-
-                foreach (var beanD in beanD_Prd)
-                {
-                    SNLIST snBean = new SNLIST();
-                    snBean.SNNO = beanD.cSerialID;              //機器序號
-                    snBean.PRDID = beanD.cMaterialName;         //機器型號
-                    snBean.PRDNUMBER = beanD.cProductNumber;    //Product Number
-
-                    snList.Add(snBean);
-                }
-
-                results.Add("table_ET_SNLIST", snList);
-                #endregion
-
-                #region 處理與工時紀錄
-                var beanD_Rec = dbOne.TB_ONE_SRDetail_Record.Where(x => x.Disabled == 0 && x.cSRID == IV_SRID);
-
-                List<ENGProcessLIST> ENGPList = new List<ENGProcessLIST>();
-
-                foreach (var beanD in beanD_Rec)
-                {
-                    ENGProcessLIST ENGBean = new ENGProcessLIST();
-                    ENGBean.ENGID = beanD.cEngineerID;
-                    ENGBean.ENGNAME = beanD.cEngineerName;
-                    ENGBean.ENGEMAIL = CMF.findEMPEmail(beanD.cEngineerID);
-
-                    ENGPList.Add(ENGBean);
-                }
-
-                results.Add("table_ET_LABORLIST", ENGPList);
-                #endregion
-
-                #region 零件更換資訊
-                var beanD_Part = dbOne.TB_ONE_SRDetail_PartsReplace.Where(x => x.Disabled == 0 && x.cSRID == IV_SRID);
-
-                List<XCLIST> xcList = new List<XCLIST>();
-
-                foreach (var beanD in beanD_Part)
-                {
-                    XCLIST xcBean = new XCLIST();
-                    xcBean.HPXC = beanD.cXCHP;                  //XC HP申請零件
-                    xcBean.OLDCT = beanD.cOldCT;                //OLD CT
-                    xcBean.NEWCT = beanD.cNewCT;                //NEW CT
-                    xcBean.UEFI = beanD.cNewUEFI;               //UEFI
-                    xcBean.BACKUPSN = beanD.cStandbySerialID;    //備機序號
-                    xcBean.HPCT = beanD.cHPCT;                 //HPCT
-                    xcBean.CHANGEPART = beanD.cMaterialID;      //更換零件ID
-                    xcBean.CHANGEPARTNAME = beanD.cMaterialName; //料號說明
-
-                    xcList.Add(xcBean);
-                }
-                results.Add("table_ET_XCLIST", xcList);
-                #endregion
-            }
-
-            return results;
-        }
-        #endregion
+        #endregion        
 
         #region -- 取得定維問券題目及答案 --
         /// <summary>
@@ -5647,35 +5438,7 @@ namespace TSTI_API.Controllers
 
             return Json(liQnA, JsonRequestBehavior.AllowGet);
         }
-        #endregion
-
-        #region -- struct SNLIST、ENGProcessLIST、XCLIST --
-        public struct SNLIST
-        {
-            public string SNNO { get; set; }
-            public string PRDID { get; set; }
-            public string PRDNUMBER { get; set; }
-        }
-
-        public struct ENGProcessLIST
-        {
-            public string ENGID { get; set; }
-            public string ENGNAME { get; set; }
-            public string ENGEMAIL { get; set; }
-        }
-
-        public struct XCLIST
-        {
-            public string HPXC { get; set; }
-            public string OLDCT { get; set; }
-            public string NEWCT { get; set; }
-            public string UEFI { get; set; }
-            public string BACKUPSN { get; set; }
-            public string HPCT { get; set; }
-            public string CHANGEPART { get; set; }
-            public string CHANGEPARTNAME { get; set; }
-        }
-        #endregion
+        #endregion        
 
         #region 客戶手寫簽名圖片上傳並產生服務報告書pdf INPUT資訊
         /// <summary>客戶手寫簽名圖片上傳並產生服務報告書pdf INPUT資訊</summary>
@@ -5695,7 +5458,7 @@ namespace TSTI_API.Controllers
             public string IV_Desc { get; set; }
             /// <summary>客戶意見/備註</summary>
             public string IV_CusOpinion { get; set; }
-            /// <summary>服務報告書圖檔</summary>
+            /// <summary>簽名圖檔</summary>
             public HttpPostedFileBase IV_SRReportFile { get; set; }            
         }
         #endregion
@@ -7355,6 +7118,34 @@ namespace TSTI_API.Controllers
         public string NOTES;
         /// <summary>下包文件編號</summary>
         public string SUB_CONTRACTID;
+    }
+    #endregion
+
+    #region -- struct SNLIST、ENGProcessLIST、XCLIST --
+    public struct SNLIST
+    {
+        public string SNNO { get; set; }
+        public string PRDID { get; set; }
+        public string PRDNUMBER { get; set; }
+    }
+
+    public struct ENGProcessLIST
+    {
+        public string ENGID { get; set; }
+        public string ENGNAME { get; set; }
+        public string ENGEMAIL { get; set; }
+    }
+
+    public struct XCLIST
+    {
+        public string HPXC { get; set; }
+        public string OLDCT { get; set; }
+        public string NEWCT { get; set; }
+        public string UEFI { get; set; }
+        public string BACKUPSN { get; set; }
+        public string HPCT { get; set; }
+        public string CHANGEPART { get; set; }
+        public string CHANGEPARTNAME { get; set; }
     }
     #endregion
 
