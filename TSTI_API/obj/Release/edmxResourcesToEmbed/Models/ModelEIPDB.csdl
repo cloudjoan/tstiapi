@@ -87,7 +87,7 @@
     <Property Name="Position2" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
     <Property Name="Position_Date" Type="DateTime" Precision="3" />
     <Property Name="Comp_Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Extension" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Extension" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Nationality" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
     <Property Name="Blood_Type" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
     <Property Name="CR_USER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
@@ -103,5 +103,20 @@
   <EntityContainer Name="MCSWorkflowEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Department" EntityType="Self.Department" />
     <EntitySet Name="Person" EntityType="Self.Person" />
+    <EntitySet Name="TB_SERVICES_APP_STATE" EntityType="MCSWorkflowModel.TB_SERVICES_APP_STATE" />
   </EntityContainer>
+  <EntityType Name="TB_SERVICES_APP_STATE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SRID" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+    <Property Name="EMP_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="ACCOUNT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ERP_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="DEVICE" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="APP_VERSION" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="STATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+  </EntityType>
 </Schema>

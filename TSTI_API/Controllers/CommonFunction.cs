@@ -141,6 +141,31 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得所有客服人員帳號和Email
+        /// <summary>
+        /// 取得所有客服人員帳號和Email
+        /// </summary>
+        /// <param name="cOperationID">程式作業編號檔系統ID</param>
+        /// <returns></returns>
+        public Dictionary<string,string> getCUSTOMERSERVICEInfo(string cOperationID)
+        {
+            Dictionary<string, string> Dic = new Dictionary<string, string>();
+
+            string tEmail = string.Empty;
+
+            List<SelectListItem> tList = findSysParameterList(cOperationID, "ACCOUNT", "ALL", "CUSTOMERSERVICE");
+            
+            foreach(var bean in tList)
+            {
+                tEmail = bean.Value.Replace("etatung\\", "") + "@etatung.com";
+                
+                Dic.Add(bean.Value, tEmail);
+            }            
+
+            return Dic;
+        }
+        #endregion
+
         #region 取得系統參數清單
         /// <summary>
         /// 取得系統參數清單
@@ -763,20 +788,25 @@ namespace TSTI_API.Controllers
         {
             List<SREMPINFO> tList = new List<SREMPINFO>();
 
-            string[] AryERPID = cERPID.TrimEnd(';').Split(';');
+            cERPID = string.IsNullOrEmpty(cERPID) ? "" : cERPID;
 
-            var beans = dbEIP.Person.Where(x => (x.Leave_Date == null && x.Leave_Reason == null) && AryERPID.Contains(x.ERP_ID));
-
-            foreach (var bean in beans)
+            if (cERPID != "")
             {
-                SREMPINFO SREmp = new SREMPINFO();
+                string[] AryERPID = cERPID.TrimEnd(';').Split(';');
 
-                SREmp.ERPID = bean.ERP_ID;
-                SREmp.ACCOUNT = bean.Account;
-                SREmp.NAME = bean.Name2 + " " + bean.Name;
-                SREmp.EMAIL = bean.Email;
+                var beans = dbEIP.Person.Where(x => (x.Leave_Date == null && x.Leave_Reason == null) && AryERPID.Contains(x.ERP_ID));
 
-                tList.Add(SREmp);
+                foreach (var bean in beans)
+                {
+                    SREMPINFO SREmp = new SREMPINFO();
+
+                    SREmp.ERPID = bean.ERP_ID;
+                    SREmp.ACCOUNT = bean.Account;
+                    SREmp.NAME = bean.Name2 + " " + bean.Name;
+                    SREmp.EMAIL = bean.Email;
+
+                    tList.Add(SREmp);
+                }
             }
 
             return tList;
@@ -2576,7 +2606,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【一般服務】案件種類的郵件主旨
         /// </summary>
-        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、SECFIX.二修、SAVE.保存、THRPARTY.3Party、CANCEL.取消)</param>
+        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
         /// <param name="SRID">服務ID</param>
         /// <param name="CusName">客戶名稱</param>
         /// <param name="TeamNAME">服務團隊</param>
@@ -2609,6 +2639,11 @@ namespace TSTI_API.Controllers
                     reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 派單通知[" + SRID + "]，需下料。";
                     break;
 
+                case SRCondition.HPGCSNDONE:
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 派單通知[<服務ID>]，HPGCSN 已完成。
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 派單通知[" + SRID + "]，HPGCSN 已完成。";
+                    break;
+
                 case SRCondition.SECFIX:
                     //[<客戶名稱>] <服務團隊>_<服務案件種類> 二修通知[<服務ID>]
                     reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 二修通知[" + SRID + "]";
@@ -2637,6 +2672,35 @@ namespace TSTI_API.Controllers
                 case SRCondition.DONE:
                     //[<客戶名稱>] <服務團隊>_<服務案件種類> 完修通知[<服務ID>]
                     reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 完修通知[" + SRID + "]";
+                    break;
+            }
+
+            return reValue;
+        }
+        #endregion
+
+        #region 取得【一般服務】案件種類的郵件主旨(for客戶)
+        /// <summary>
+        /// 取得【一般服務】案件種類的郵件主旨(for客戶)
+        /// </summary>
+        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
+        /// <param name="SRID">服務ID</param>
+        /// <param name="CusName">客戶名稱</param>        
+        /// <returns></returns>
+        public string findGenerallySRMailSubject_ToCustomer(SRCondition cCondition, string SRID, string CusName)
+        {
+            string reValue = string.Empty;
+
+            switch (cCondition)
+            {
+                case SRCondition.ADD:
+                    //大同世界科技[<服務ID>] ，報修通知                 
+                    reValue = "大同世界科技[" + SRID + "]，報修通知";
+                    break;               
+
+                case SRCondition.DONE:
+                    //大同世界科技[<客戶名稱>]您的服務[<服務ID>]已完成
+                    reValue = "大同世界科技[" + CusName + "] 您的服務[" + SRID + "]已完成";
                     break;
             }
 
@@ -2885,7 +2949,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 組服務請求Mail相關資訊
         /// </summary>
-        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、SECFIX.二修、SAVE.保存、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
+        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
         /// <param name="cOperationID_GenerallySR">程式作業編號檔系統ID</param>
         /// <param name="cBUKRS">公司別(T012、T016、C069、T022)</param>
         /// <param name="cSRID">SRID(服務案件ID)</param>           
@@ -2982,7 +3046,7 @@ namespace TSTI_API.Controllers
 
                     #region 其他主檔相關
                     cContractID = findSRContractID(cSRID);
-                    cCreatedDate = Convert.ToDateTime(beanM.CreatedDate).ToString("yyyy-MM-dd");
+                    cCreatedDate = Convert.ToDateTime(beanM.CreatedDate).ToString("yyyy-MM-dd HH:mm");
                     cStatus = beanM.cStatus;
                     cStatusDesc = findSysParameterDescription(cOperationID_GenerallySR, "OTHER", cBUKRS, "SRSTATUS", beanM.cStatus);                    
                     cMAServiceType = findSysParameterDescription(cOperationID_GenerallySR, "OTHER", cBUKRS, "SRMATYPE", beanM.cMAServiceType); 
@@ -3034,9 +3098,18 @@ namespace TSTI_API.Controllers
 
                     #region -----↓↓↓↓↓零件更換資訊 ↓↓↓↓↓-----
                     SRParts_List = findSRPARTSREPALCEINFO(cSRID);
-                    #endregion -----↑↑↑↑↑零件更換資訊 ↑↑↑↑↑----- 
+                    #endregion -----↑↑↑↑↑零件更換資訊 ↑↑↑↑↑-----                     
 
-                    SendSRMail(cCondition, cSRID, tONEURLName, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRParts_List); //發送服務請求Mail相關資訊
+                    #region 發送服務請求Mail相關資訊(for客戶)，新建或完修才要發給客戶
+                    if (cCondition == SRCondition.ADD || cCondition == SRCondition.DONE)
+                    {
+                        SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List);
+                    }
+                    #endregion
+
+                    #region 發送服務請求Mail相關資訊  
+                    SendSRMail(cCondition, cSRID, tONEURLName, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRParts_List);
+                    #endregion
                 }
             }
             catch (Exception ex)
@@ -3053,7 +3126,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 發送服務請求Mail相關資訊
         /// </summary>
-        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、SECFIX.二修、SAVE.保存、THRPARTY.3Party、CANCEL.取消)</param>
+        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
         /// <param name="cSRID">SRID</param>
         /// <param name="tONEURLName">One Service站台名稱</param>
         /// <param name="cLoginName">登入人員姓名</param>
@@ -3090,14 +3163,35 @@ namespace TSTI_API.Controllers
             try
             {
                 #region 取得收件者
-                if (SRMain.MainENGEmail != "") //有指派L2工程師
+                if (cCondition == SRCondition.HPGCSN || cCondition == SRCondition.HPGCSNDONE) //HPGCSN申請、HPGCSN完成
                 {
-                    tMailToTemp = SRMain.MainENGEmail + SRMain.AssENGEmail + SRMain.TechMGREmail;
+                    #region L2工程師
+                    if (SRMain.MainENGEmail != "")
+                    {
+                        tMailToTemp = SRMain.MainENGEmail;
+                    }
+                    #endregion
+
+                    #region 若為E0012.HPGCSN 申請、E0013.HPGCSN 完成則要給所有客服人員
+                    Dictionary<string, string> Dic = getCUSTOMERSERVICEInfo(pSysOperationID);
+
+                    foreach (KeyValuePair<string, string> item in Dic)
+                    {
+                        tMailToTemp += item.Value + ";";
+                    }
+                    #endregion
                 }
-                else //未指派L2工程師
+                else
                 {
-                    tMailToTemp = SRMain.TeamMGREmail + SRMain.MainENGEmail + SRMain.AssENGEmail + SRMain.TechMGREmail;
-                }
+                    if (SRMain.MainENGEmail != "") //有指派L2工程師
+                    {
+                        tMailToTemp = SRMain.MainENGEmail + SRMain.AssENGEmail + SRMain.TechMGREmail;
+                    }
+                    else //未指派L2工程師
+                    {
+                        tMailToTemp = SRMain.TeamMGREmail + SRMain.MainENGEmail + SRMain.AssENGEmail + SRMain.TechMGREmail;
+                    }
+                }               
 
                 if (tMailToTemp != "")
                 {
@@ -3162,6 +3256,8 @@ namespace TSTI_API.Controllers
                 if (!tIsFormal)
                 {
                     strTest = "【*測試*】";
+                    tMailTo = "Elvis.Chang@etatung.com";
+                    tMailCc = "Elvis.Chang@etatung.com";
                 }
                 #endregion
 
@@ -3231,12 +3327,12 @@ namespace TSTI_API.Controllers
 
                 if (SRMain.ContractID != "")
                 {
-                    tContractID = "<p>合約文件編號：【" + SRMain.ContractID + "】</p>";
+                    tContractID = "合約文件編號：【" + SRMain.ContractID + "】</br>";
                 }
                 
                 if (SRMain.SecFix == "Y")
                 {
-                    tSecFix = "<p>是否為二修：【" + SRMain.SecFix + "】</p>";
+                    tSecFix = "是否為二修：【" + SRMain.SecFix + "】</br>";
                 }
 
                 #region 取得【一般服務】案件客戶報修窗口資訊Html Table
@@ -3265,13 +3361,7 @@ namespace TSTI_API.Controllers
                 tMailBody = tMailBody.Replace("<SRRepair_List>", tSRRepair_Table).Replace("<SRContact_List>", tSRContact_Table);
                 tMailBody = tMailBody.Replace("<SRSeiral_List>", tSRSeiral_Table).Replace("<SRParts_List>", tSRParts_Table);
                 tMailBody = tMailBody.Replace("【<tHypeLink>】", tHypeLink);
-                #endregion
-
-                #region 測試用
-                tMailTo = "elvis.chang@etatung.com";
-                tMailCc = "";
-                tMailBCc = "";
-                #endregion
+                #endregion               
 
                 //呼叫寄送Mail
                 SendMailByAPI("SendSRMail_API", null, tMailTo, tMailCc, tMailBCc, tMailSubject, tMailBody, "", "");
@@ -3282,6 +3372,191 @@ namespace TSTI_API.Controllers
                 pMsg += " 失敗行數：" + ex.ToString();
 
                 writeToLog(cSRID, "SendSRMail", pMsg, cLoginName);
+            }
+        }
+        #endregion
+
+        #region 發送服務請求Mail相關資訊(for客戶)
+        /// <summary>
+        /// 發送服務請求Mail相關資訊(for客戶)
+        /// </summary>
+        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
+        /// <param name="cSRID">SRID</param>        
+        /// <param name="cLoginName">登入人員姓名</param>
+        /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
+        /// <param name="SRMain">服務請求主檔資訊(For Mail)</param>
+        /// <param name="SRRepair_List">服務請求客戶報修人資訊清單</param>   
+        /// <param name="SRContact_List">服務請求客戶聯絡人資訊清單</param>
+        /// <param name="SRSeiral_List">服務請求產品序號資訊清單</param>
+        public void SendSRMail_ToCustomer(SRCondition cCondition, string cSRID, string cLoginName, bool tIsFormal, SRIDMAININFO SRMain, 
+                                         List<SRCONTACTINFO> SRRepair_List, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List)
+        {
+            List<string> tMailToList = new List<string>();
+            List<string> tMailCcList = new List<string>();
+            List<string> tMailBCcList = new List<string>();
+
+            string tMailToTemp = string.Empty;
+            string tMailCcTemp = string.Empty;
+            string tMailBCcTemp = string.Empty;
+
+            string tMailTo = string.Empty;          //收件者            
+            string tMailCc = string.Empty;          //副本            
+            string tMailBCc = string.Empty;         //密件副本
+            string tHypeLink = string.Empty;        //超連結            
+
+            string tStatus = string.Empty;          //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
+            string tContractID = string.Empty;      //合約文件編號
+            string tSecFix = string.Empty;          //是否為二修
+            string tSRRepair_Table = string.Empty;
+            string tSRContact_Table = string.Empty;
+            string tSRSeiral_Table = string.Empty;
+            string tSRParts_Table = string.Empty;
+
+            try
+            {
+                #region 取得收件者
+                if (SRMain.RepairEmail != "") //有客戶報修人Email
+                {
+                    tMailToTemp = SRMain.RepairEmail;
+                }              
+
+                if (tMailToTemp != "")
+                {
+                    foreach (string tValue in tMailToTemp.TrimEnd(';').Split(';'))
+                    {
+                        if (!tMailToList.Contains(tValue))
+                        {
+                            tMailToList.Add(tValue);
+
+                            tMailTo += tValue + ";";
+                        }
+                    }
+
+                    tMailTo = tMailTo.TrimEnd(';');
+                }
+                #endregion
+
+                #region 取得副本
+                if (SRMain.TeamMGREmail != "") //服務團隊主管Email
+                {
+                    tMailCcTemp = SRMain.TeamMGREmail;
+                }
+
+                if (tMailCcTemp != "")
+                {
+                    foreach (string tValue in tMailCcTemp.TrimEnd(';').Split(';'))
+                    {
+                        if (!tMailCcList.Contains(tValue))
+                        {
+                            tMailCcList.Add(tValue);
+
+                            tMailCc += tValue + ";";
+                        }
+                    }
+
+                    tMailCc = tMailCc.TrimEnd(';');
+                }
+                #endregion
+
+                #region 取得密件副本
+                tMailBCcTemp = "Elvis.Chang@etatung.com"; //測試用，等都正常了就註解掉
+
+                if (tMailBCcTemp != "")
+                {
+                    foreach (string tValue in tMailBCcTemp.TrimEnd(';').Split(';'))
+                    {
+                        if (!tMailBCcList.Contains(tValue))
+                        {
+                            tMailBCcList.Add(tValue);
+
+                            tMailBCc += tValue + ";";
+                        }
+                    }
+
+                    tMailBCc = tMailBCc.TrimEnd(';');
+                }
+                #endregion
+
+                #region 是否為測試區
+                string strTest = string.Empty;
+
+                if (!tIsFormal)
+                {
+                    strTest = "【*測試*】";
+                    tMailTo = "Elvis.Chang@etatung.com";
+                    tMailCc = "Elvis.Chang@etatung.com";
+                }
+                #endregion
+
+                #region 郵件主旨
+                string tMailSubject = findGenerallySRMailSubject_ToCustomer(cCondition, cSRID, SRMain.CusName);
+
+                tMailSubject = strTest + tMailSubject;
+                #endregion
+
+                #region 郵件內容
+
+                #region 內容格式參考(一般服務)                
+                //親愛的客戶，您好
+                //我們已經收到您的報修需求，會盡速處理您的問題!
+                //以下是報修內容：
+                //報修時間： 2023-03-10 13:33
+                //報修單號： 61OOO
+                //機器明細： DL360pG8OOO_SGH1OOO_654081OOO
+                //問題描述： TEST 888
+
+                //客戶名稱：OOO股份有限公司
+                //[客戶報修窗口資料]												
+                //報修人	報修人電話	報修人手機	報修人地址	報修人Email								
+                //OOO	042OOO	09OOO	台北市OOO	TEST@OOO	
+
+                //若後續維修上有任何問題，請儘速與我們連絡 0800-066-038 ，或至線上報修系統網站報修，謝謝!!
+                //大同世界科技線上報修系統網站：www.etatung.com
+                //-------此信件由系統管理員發出，請勿回覆此信件-------
+                #endregion
+
+                string tMailBody = string.Empty;                
+
+                #region 取得【一般服務】案件客戶報修窗口資訊Html Table
+                tSRRepair_Table = findGenerallySRRepair_Table(SRRepair_List, SRMain.CusName);               
+                #endregion
+
+                #region 取得【一般服務】案件客戶聯絡窗口資訊Html Table
+                tSRContact_Table = findGenerallySRContact_Table(SRContact_List);
+                #endregion
+
+                #region 取的產品序號資訊檔(基本上只會有一個序號，所以只要抓第一筆就行了)
+                string MaterialName = "";
+                string SerialID = "";
+                string ProductNumber = "";
+
+                foreach(var bean in SRSeiral_List)
+                {
+                    MaterialName = bean.MaterialName;
+                    SerialID = bean.SerialID;
+                    ProductNumber = bean.ProductNumber;
+                    
+                    break;
+                }
+                #endregion
+
+                tMailBody = GetMailBody("ONECustomerRepair_MAIL");
+
+                tMailBody = tMailBody.Replace("【<CreatedDate>】", SRMain.CreatedDate).Replace("【<SRID>】", cSRID);
+                tMailBody = tMailBody.Replace("【<MaterialName>】", MaterialName).Replace("【<SerialID>】", SerialID).Replace("【<ProductNumber>】", ProductNumber);                
+                tMailBody = tMailBody.Replace("【<Notes>】", SRMain.Notes);
+                tMailBody = tMailBody.Replace("<SRRepair_List>", tSRRepair_Table).Replace("<SRContact_List>", tSRContact_Table);                
+                #endregion              
+
+                //呼叫寄送Mail
+                SendMailByAPI("SendSRMail_API", null, tMailTo, tMailCc, tMailBCc, tMailSubject, tMailBody, "", "");
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                writeToLog(cSRID, "SendSRMail_ToCustomer", pMsg, cLoginName);
             }
         }
         #endregion

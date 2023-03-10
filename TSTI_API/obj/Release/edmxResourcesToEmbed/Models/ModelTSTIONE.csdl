@@ -14,6 +14,7 @@
     <EntitySet Name="TB_ONE_SRTeamMapping" EntityType="Model.TB_ONE_SRTeamMapping" />
     <EntitySet Name="TB_ONE_DOCUMENT" EntityType="Model.TB_ONE_DOCUMENT" />
     <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
+    <EntitySet Name="TB_ONE_ReportFormat" EntityType="Model.TB_ONE_ReportFormat" />
   </EntityContainer>
   <EntityType Name="TB_ONE_SRDetail_Contact">
     <Key>
@@ -263,5 +264,14 @@
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_ONE_ReportFormat">
+    <Key>
+      <PropertyRef Name="cID" />
+      <PropertyRef Name="cTitle" />
+    </Key>
+    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cTitle" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="cNO" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

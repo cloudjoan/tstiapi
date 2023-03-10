@@ -22,6 +22,15 @@
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="TB_ONE_ReportFormat">
+    <Key>
+      <PropertyRef Name="cID" />
+      <PropertyRef Name="cTitle" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cTitle" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="cNO" Type="varchar" MaxLength="4" Nullable="false" />
+  </EntityType>
   <EntityType Name="TB_ONE_SRCustomerEmailMapping">
     <Key>
       <PropertyRef Name="cID" />
@@ -252,6 +261,7 @@
   <EntityContainer Name="ModelStoreContainer">
     <EntitySet Name="TB_ONE_DOCUMENT" EntityType="Self.TB_ONE_DOCUMENT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_LOG" EntityType="Self.TB_ONE_LOG" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_ReportFormat" EntityType="Self.TB_ONE_ReportFormat" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRCustomerEmailMapping" EntityType="Self.TB_ONE_SRCustomerEmailMapping" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRDetail_Contact" EntityType="Self.TB_ONE_SRDetail_Contact" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRDetail_PartsReplace" EntityType="Self.TB_ONE_SRDetail_PartsReplace" Schema="dbo" store:Type="Tables" />

@@ -138,11 +138,7 @@ namespace TSTI_API.Controllers
             //     "IV_REPAIRNAME": "王炯凱",
             //     "IV_REPAIRTEL": "02-2506-2121#1239",
             //     "IV_REPAIRADDR": "台北市中山區松江路121號13樓",
-            //     "IV_REPAIREMAIL": "CARRYWANG@hotaimotor.com.tw",
-            //     "IV_CONTNAME": "周可斌",
-            //     "IV_CONTTEL": "(02)6638-6888EXT.13104",
-            //     "IV_CONTADDR": "信義區菸廠路88號12樓",
-            //     "IV_CONTEMAIL": "AlexChou@taiwanmobile.com",
+            //     "IV_REPAIREMAIL": "elvis.chang@etatung.com",            
             //     "IV_EMPNO": "10001567",
             //     "IV_SQEMPID": "ZC103",
             //     "IV_SERIAL": "SGH33223R6",
@@ -156,7 +152,7 @@ namespace TSTI_API.Controllers
             //            "CONTADDR": "台北市信義區菸廠路88號12樓",
             //            "CONTTEL": "(02)6638-6888#13158",
             //            "CONTMOBILE": "",
-            //            "CONTEMAIL": "winnielai@taiwanmobile.com"
+            //            "CONTEMAIL": "elvis.chang@etatung.com"
             //        },
             //        {
             //        "SRID": "612211250004",
@@ -164,7 +160,7 @@ namespace TSTI_API.Controllers
             //            "CONTADDR": "台北市信義區菸廠路88號12樓",
             //            "CONTTEL": "02-6638-6888#13124",
             //            "CONTMOBILE": "",
-            //            "CONTEMAIL": "AllenLiao@taiwanmobile.com"
+            //            "CONTEMAIL": "elvis.chang@etatung.com"
             //        }                 
             //    ]
             //}
@@ -546,281 +542,7 @@ namespace TSTI_API.Controllers
                         CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, EmpBean.BUKRS, pSRID, tONEURLName, pLoginName, tIsFormal);
                         #endregion
                     }
-                }
-                else
-                {
-                    #region 註解
-                    ////#region 修改主檔  
-                    //var beanNowM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == pSRID);
-
-                    ////主表資料
-                    //OldCStatus = beanNowM.CStatus;
-
-                    //beanNowM.CStatus = CStatus;
-                    //beanNowM.CCustomerName = CCustomerName;
-                    //beanNowM.CCustomerId = CCustomerId;                    
-                    //beanNowM.CDesc = CDesc;
-                    //beanNowM.CNotes = CNotes;
-                    //beanNowM.CMaserviceType = CMaserviceType;
-                    //beanNowM.CSrtypeOne = CSrtypeOne;
-                    //beanNowM.CSrtypeSec = CSrtypeSec;
-                    //beanNowM.CSrtypeThr = CSrtypeThr;
-                    //beanNowM.CSrpathWay = CSrpathWay;
-                    //beanNowM.CSrprocessWay = CSrprocessWay;
-                    //beanNowM.CIsSecondFix = CIsSecondFix;
-                    //beanNowM.CRepairName = CRepairName;
-                    //beanNowM.CRepairAddress = CRepairAddress;
-                    //beanNowM.CRepairPhone = CRepairPhone;
-                    //beanNowM.CRepairEmail = CRepairEmail;
-                    //beanNowM.CContacterName = CContacterName;
-                    //beanNowM.CContactAddress = CContactAddress;
-                    //beanNowM.CContactPhone = CContactPhone;
-                    //beanNowM.CContactEmail = CContactEmail;
-                    //beanNowM.CTeamId = CTeamId;
-                    //beanNowM.CSqpersonId = CSqpersonId;
-                    //beanNowM.CSqpersonName = CSqpersonName;
-                    //beanNowM.CSalesName = CSalesName;
-                    //beanNowM.CSalesId = CSalesId;
-                    //beanNowM.CMainEngineerName = CMainEngineerName;
-                    //beanNowM.CMainEngineerId = CMainEngineerId;
-                    //beanNowM.CAssEngineerId = CAssEngineerId;
-                    //beanNowM.CSystemGuid = Guid.NewGuid();
-
-                    //beanNowM.ModifiedDate = DateTime.Now;
-                    //beanNowM.ModifiedUserName = LoginUser_Name;
-                    //#endregion
-
-                    //#region -----↓↓↓↓↓產品序號資訊↓↓↓↓↓-----
-
-                    //#region 刪除明細                    
-                    //dbOne.TbOneSrdetailProducts.RemoveRange(dbOne.TbOneSrdetailProducts.Where(x => x.Disabled == 0 && x.CSrid == pSRID));
-                    //#endregion
-
-                    //#region 新增明細
-                    //string[] PRcSerialID = formCollection["tbx_PRcSerialID"];
-                    //string[] PRcMaterialID = formCollection["tbx_PRcMaterialID"];
-                    //string[] PRcMaterialName = formCollection["tbx_PRcMaterialName"];
-                    //string[] PRcProductNumber = formCollection["tbx_PRcProductNumber"];
-                    //string[] PRcInstallID = formCollection["tbx_PRcInstallID"];
-                    //string[] PRcDisabled = formCollection["hid_PRcDisabled"];
-
-                    //int countPR = PRcSerialID.Length;
-
-                    //for (int i = 0; i < countPR; i++)
-                    //{
-                    //    TbOneSrdetailProduct beanD = new TbOneSrdetailProduct();
-
-                    //    beanD.CSrid = pSRID;
-                    //    beanD.CSerialId = PRcSerialID[i];
-                    //    beanD.CMaterialId = PRcMaterialID[i];
-                    //    beanD.CMaterialName = PRcMaterialName[i];
-                    //    beanD.CProductNumber = PRcProductNumber[i];
-                    //    beanD.CInstallId = PRcInstallID[i];
-                    //    beanD.Disabled = int.Parse(PRcDisabled[i]);
-
-                    //    beanD.CreatedDate = DateTime.Now;
-                    //    beanD.CreatedUserName = LoginUser_Name;
-
-                    //    dbOne.TbOneSrdetailProducts.Add(beanD);
-                    //}
-                    //#endregion
-
-                    //#endregion -----↑↑↑↑↑產品序號資訊 ↑↑↑↑↑-----
-
-                    //#region -----↓↓↓↓↓保固SLA資訊↓↓↓↓↓-----
-
-                    //#region 刪除明細
-                    //dbOne.TbOneSrdetailWarranties.RemoveRange(dbOne.TbOneSrdetailWarranties.Where(x => x.CSrid == pSRID));
-                    //#endregion
-
-                    //#region 新增明細
-                    //string[] WAcSerialID = formCollection["hidcSerialID"];
-                    //string[] WAcWTYID = formCollection["hidcWTYID"];
-                    //string[] WAcWTYName = formCollection["hidcWTYName"];
-                    //string[] WAcWTYSDATE = formCollection["hidcWTYSDATE"];
-                    //string[] WAcWTYEDATE = formCollection["hidcWTYEDATE"];
-                    //string[] WAcSLARESP = formCollection["hidcSLARESP"];
-                    //string[] WAcSLASRV = formCollection["hidcSLASRV"];
-                    //string[] WAcContractID = formCollection["hidcContractID"];
-                    //string[] WAcBPMFormNo = formCollection["hidcBPMFormNo"];
-                    //string[] WACheckUsed = formCollection["hid_CheckUsed"];
-
-                    //int countWA = WAcSerialID.Length;
-
-                    //for (int i = 0; i < countWA; i++)
-                    //{
-                    //    TbOneSrdetailWarranty beanD = new TbOneSrdetailWarranty();
-
-                    //    beanD.CSrid = pSRID;
-                    //    beanD.CSerialId = WAcSerialID[i];
-                    //    beanD.CWtyid = WAcWTYID[i];
-                    //    beanD.CWtyname = WAcWTYName[i];
-
-                    //    if (WAcWTYSDATE[i] != "")
-                    //    {
-                    //        beanD.CWtysdate = Convert.ToDateTime(WAcWTYSDATE[i]);
-                    //    }
-
-                    //    if (WAcWTYEDATE[i] != "")
-                    //    {
-                    //        beanD.CWtyedate = Convert.ToDateTime(WAcWTYEDATE[i]);
-                    //    }
-
-                    //    beanD.CSlaresp = WAcSLARESP[i];
-                    //    beanD.CSlasrv = WAcSLASRV[i];
-                    //    beanD.CContractId = WAcContractID[i];
-                    //    beanD.CBpmformNo = WAcBPMFormNo[i];
-                    //    beanD.CUsed = WACheckUsed[i];
-
-                    //    beanD.CreatedDate = DateTime.Now;
-                    //    beanD.CreatedUserName = LoginUser_Name;
-
-                    //    dbOne.TbOneSrdetailWarranties.Add(beanD);
-                    //}
-                    //#endregion
-
-                    //#endregion -----↑↑↑↑↑保固SLA資訊 ↑↑↑↑↑-----
-
-                    //#region -----↓↓↓↓↓處理與工時紀錄↓↓↓↓↓-----
-
-                    //#region 刪除明細
-                    //dbOne.TbOneSrdetailRecords.RemoveRange(dbOne.TbOneSrdetailRecords.Where(x => x.Disabled == 0 && x.CSrid == pSRID));
-                    //#endregion
-
-                    //#region 新增明細
-                    //string[] REcEngineerName = formCollection["tbx_REcEngineerName"];
-                    //string[] REcEngineerID = formCollection["hid_REcEngineerID"];
-                    //string[] REcReceiveTime = formCollection["tbx_REcReceiveTime"];
-                    //string[] REcStartTime = formCollection["tbx_REcStartTime"];
-                    //string[] REcArriveTime = formCollection["tbx_REcArriveTime"];
-                    //string[] REcFinishTime = formCollection["tbx_REcFinishTime"];
-                    //string[] REcWorkHours = formCollection["tbx_REcWorkHours"];
-                    //string[] REcDesc = formCollection["tbx_REcDesc"];
-                    //string[] REcSRReport = formCollection["hid_filezoneRE"];
-                    //string[] REcDisabled = formCollection["hid_REcDisabled"];
-
-                    //int countRE = REcEngineerName.Length;
-
-                    //for (int i = 0; i < countRE; i++)
-                    //{
-                    //    TbOneSrdetailRecord beanD = new TbOneSrdetailRecord();
-
-                    //    beanD.CSrid = pSRID;
-                    //    beanD.CEngineerName = REcEngineerName[i];
-                    //    beanD.CEngineerId = REcEngineerID[i];
-
-                    //    if (REcReceiveTime[i] != "")
-                    //    {
-                    //        beanD.CReceiveTime = Convert.ToDateTime(REcReceiveTime[i]);
-                    //    }
-
-                    //    if (REcStartTime[i] != "")
-                    //    {
-                    //        beanD.CStartTime = Convert.ToDateTime(REcStartTime[i]);
-                    //    }
-
-                    //    if (REcArriveTime[i] != "")
-                    //    {
-                    //        beanD.CArriveTime = Convert.ToDateTime(REcArriveTime[i]);
-                    //    }
-
-                    //    if (REcFinishTime[i] != "")
-                    //    {
-                    //        beanD.CFinishTime = Convert.ToDateTime(REcFinishTime[i]);
-                    //    }
-
-                    //    beanD.CWorkHours = decimal.Parse(REcWorkHours[i]);
-                    //    beanD.CDesc = REcDesc[i];
-                    //    beanD.CSrreport = REcSRReport[i];
-                    //    beanD.Disabled = int.Parse(REcDisabled[i]);
-
-                    //    beanD.CreatedDate = DateTime.Now;
-                    //    beanD.CreatedUserName = LoginUser_Name;
-
-                    //    dbOne.TbOneSrdetailRecords.Add(beanD);
-                    //}
-                    //#endregion
-
-                    //#endregion -----↑↑↑↑↑處理與工時紀錄 ↑↑↑↑↑-----
-
-                    //#region -----↓↓↓↓↓零件更換資訊↓↓↓↓↓-----
-
-                    //#region 刪除明細                   
-                    //dbOne.TbOneSrdetailPartsReplaces.RemoveRange(dbOne.TbOneSrdetailPartsReplaces.Where(x => x.Disabled == 0 && x.CSrid == pSRID));
-                    //#endregion
-
-                    //#region 新增明細
-                    //string[] PAcXCHP = formCollection["tbx_PAcXCHP"];
-                    //string[] PAcMaterialID = formCollection["tbx_PAcMaterialID"];
-                    //string[] PAcMaterialName = formCollection["tbx_PAcMaterialName"];
-                    //string[] PAcOldCT = formCollection["tbx_PAcOldCT"];
-                    //string[] PAcNewCT = formCollection["tbx_PAcNewCT"];
-                    //string[] PAcHPCT = formCollection["tbx_PAcHPCT"];
-                    //string[] PAcNewUEFI = formCollection["tbx_PAcNewUEFI"];
-                    //string[] PAcStandbySerialID = formCollection["tbx_PAcStandbySerialID"];
-                    //string[] PAcHPCaseID = formCollection["tbx_PAcHPCaseID"];
-                    //string[] PAcArriveDate = formCollection["tbx_PAcArriveDate"];
-                    //string[] PAcReturnDate = formCollection["tbx_PAcReturnDate"];
-                    //string[] PAcMaterialItem = formCollection["tbx_PAcMaterialItem"];
-                    //string[] PAcNote = formCollection["tbx_PAcNote"];
-                    //string[] PAcDisabled = formCollection["hid_PAcDisabled"];
-
-                    //int countPA = PAcMaterialID.Length;
-
-                    //for (int i = 0; i < countPA; i++)
-                    //{
-                    //    TbOneSrdetailPartsReplace beanD = new TbOneSrdetailPartsReplace();
-
-                    //    beanD.CSrid = pSRID;
-                    //    beanD.CXchp = PAcXCHP[i];
-                    //    beanD.CMaterialId = PAcMaterialID[i];
-                    //    beanD.CMaterialName = PAcMaterialName[i];
-                    //    beanD.COldCt = PAcOldCT[i];
-                    //    beanD.CNewCt = PAcNewCT[i];
-                    //    beanD.CHpct = PAcHPCT[i];
-                    //    beanD.CNewUefi = PAcNewUEFI[i];
-                    //    beanD.CStandbySerialId = PAcStandbySerialID[i];
-                    //    beanD.CHpcaseId = PAcHPCaseID[i];
-
-                    //    if (PAcArriveDate[i] != "")
-                    //    {
-                    //        beanD.CArriveDate = Convert.ToDateTime(PAcArriveDate[i]);
-                    //    }
-
-                    //    if (PAcReturnDate[i] != "")
-                    //    {
-                    //        beanD.CReturnDate = Convert.ToDateTime(PAcReturnDate[i]);
-                    //    }
-
-                    //    beanD.CMaterialItem = PAcMaterialItem[i];
-                    //    beanD.CNote = PAcNote[i];
-                    //    beanD.Disabled = int.Parse(PAcDisabled[i]);
-
-                    //    beanD.CreatedDate = DateTime.Now;
-                    //    beanD.CreatedUserName = LoginUser_Name;
-
-                    //    dbOne.TbOneSrdetailPartsReplaces.Add(beanD);
-                    //}
-                    //#endregion
-
-                    //#endregion -----↑↑↑↑↑零件更換資訊 ↑↑↑↑↑-----
-
-                    //int result = dbOne.SaveChanges();
-
-                    //if (result <= 0)
-                    //{
-                    //    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "提交失敗(編輯)" + Environment.NewLine;
-                    //    CMF.writeToLog(pSRID, "SaveGenerallySR", pMsg, LoginUser_Name);
-                    //}
-                    //else
-                    //{
-                    //    #region 紀錄修改log
-                    //    string tLog = "SR狀態_舊值: " + OldCStatus + "; 新值: " + CStatus;
-                    //    CMF.writeToLog(pSRID, "SaveGenerallySR", tLog, LoginUser_Name);
-                    //    #endregion
-                    //}
-                    #endregion
-                }
+                }                
             }
             catch (Exception ex)
             {
@@ -959,7 +681,7 @@ namespace TSTI_API.Controllers
         /// <param name="bean"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult GENERALSRSTATUS_UPDATE(SRMain_GENERALSRSTATUS_INPUT beanIN)
+        public ActionResult API_GENERALSRSTATUS_UPDATE(SRMain_GENERALSRSTATUS_INPUT beanIN)
         {
             #region Json範列格式
             //{
@@ -1026,8 +748,7 @@ namespace TSTI_API.Controllers
                         {
                             case "E0002": //L2處理中
                             case "E0003": //報價中
-                            case "E0005": //L3處理中
-                            case "E0013": //HPGCSN 完成
+                            case "E0005": //L3處理中                            
                                 tCondition = SRCondition.SAVE;
                                 break;
 
@@ -1045,6 +766,10 @@ namespace TSTI_API.Controllers
 
                             case "E0012": //HPGCSN 申請           
                                 tCondition = SRCondition.HPGCSN;
+                                break;
+
+                            case "E0013": //HPGCSN 完成
+                                tCondition = SRCondition.HPGCSNDONE;
                                 break;
 
                             case "E0014": //駁回       
@@ -7174,6 +6899,11 @@ namespace TSTI_API.Controllers
         /// HPGCSN申請
         /// </summary>
         HPGCSN,
+
+        /// <summary>
+        /// HPGCSN完成
+        /// </summary>
+        HPGCSNDONE,
 
         /// <summary>
         /// 二修

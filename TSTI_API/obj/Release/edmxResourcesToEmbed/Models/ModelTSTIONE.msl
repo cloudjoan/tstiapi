@@ -259,5 +259,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_ReportFormat">
+      <EntityTypeMapping TypeName="Model.TB_ONE_ReportFormat">
+        <MappingFragment StoreEntitySet="TB_ONE_ReportFormat">
+          <ScalarProperty Name="cNO" ColumnName="cNO" />
+          <ScalarProperty Name="cTitle" ColumnName="cTitle" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

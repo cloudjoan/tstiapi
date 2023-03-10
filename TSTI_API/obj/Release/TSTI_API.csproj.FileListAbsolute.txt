@@ -121,3 +121,6 @@ D:\GIT\tstiapi\TSTI_API\obj\Release\TSTI_API.csproj.CoreCompileInputs.cache
 D:\GIT\tstiapi\TSTI_API\obj\Release\TSTI_API.csproj.CopyComplete
 D:\GIT\tstiapi\TSTI_API\obj\Release\TSTI_API.dll
 D:\GIT\tstiapi\TSTI_API\obj\Release\TSTI_API.pdb
+D:\GIT\tstiapi\TSTI_API\bin\BouncyCastle.Crypto.dll
+D:\GIT\tstiapi\TSTI_API\bin\itextsharp.dll
+D:\GIT\tstiapi\TSTI_API\bin\itextsharp.xml

@@ -87,7 +87,7 @@
     <Property Name="Position2" Type="char" MaxLength="10" />
     <Property Name="Position_Date" Type="datetime" />
     <Property Name="Comp_Phone" Type="varchar" MaxLength="20" />
-    <Property Name="Extension" Type="varchar" MaxLength="20" />
+    <Property Name="Extension" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Nationality" Type="char" MaxLength="10" />
     <Property Name="Blood_Type" Type="char" MaxLength="2" />
     <Property Name="CR_USER" Type="varchar" MaxLength="50" Nullable="false" />
@@ -100,8 +100,23 @@
     <Property Name="Center" Type="char" MaxLength="20" />
     <Property Name="Account" Type="nvarchar" MaxLength="108" StoreGeneratedPattern="Computed" Nullable="false" />
   </EntityType>
+  <EntityType Name="TB_SERVICES_APP_STATE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SRID" Type="nvarchar" MaxLength="12" />
+    <Property Name="EMP_NAME" Type="nvarchar" MaxLength="30" />
+    <Property Name="ACCOUNT" Type="nvarchar" MaxLength="50" />
+    <Property Name="ERP_ID" Type="nvarchar" MaxLength="20" />
+    <Property Name="DEVICE" Type="nvarchar" MaxLength="30" />
+    <Property Name="APP_VERSION" Type="nvarchar" MaxLength="10" />
+    <Property Name="STATE" Type="nvarchar(max)" />
+    <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+  </EntityType>
   <EntityContainer Name="MCSWorkflowModelStoreContainer">
     <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_SERVICES_APP_STATE" EntityType="Self.TB_SERVICES_APP_STATE" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>
