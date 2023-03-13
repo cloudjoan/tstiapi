@@ -751,9 +751,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得服務請求L2工程師/指派工程師/技術主管，員工ERPID_中文+英文姓名
+        #region 取得服務案件L2工程師/指派工程師/技術主管，員工ERPID_中文+英文姓名
         /// <summary>
-        /// 服務請求L2工程師/指派工程師/技術主管相關資訊，員工ERPID_中文+英文姓名
+        /// 服務案件L2工程師/指派工程師/技術主管相關資訊，員工ERPID_中文+英文姓名
         /// </summary>
         /// <param name="cERPID">員工編號(多筆以;號隔開)</param>
         /// <returns></returns>        
@@ -778,9 +778,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得服務請求L2工程師/指派工程師/技術主管相關資訊
+        #region 取得服務案件L2工程師/指派工程師/技術主管相關資訊
         /// <summary>
-        /// 服務請求L2工程師/指派工程師/技術主管相關資訊
+        /// 服務案件L2工程師/指派工程師/技術主管相關資訊
         /// </summary>
         /// <param name="cERPID">員工編號(多筆以;號隔開)</param>
         /// <returns></returns>        
@@ -813,11 +813,11 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得服務請求L2工程師/指派工程師/技術主管姓名
+        #region 取得服務案件L2工程師/指派工程師/技術主管姓名
         /// <summary>
-        /// 取得服務請求L2工程師/指派工程師/技術主管姓名
+        /// 取得服務案件L2工程師/指派工程師/技術主管姓名
         /// </summary>
-        /// <param name="SREmp">服務請求L2工程師/指派工程師/技術主管相關資訊清單</param>
+        /// <param name="SREmp">服務案件L2工程師/指派工程師/技術主管相關資訊清單</param>
         /// <returns></returns>
         public string findSREMPName(List<SREMPINFO> SREmp)
         {
@@ -834,11 +834,11 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得服務請求L2工程師/指派工程師/技術主管Email
+        #region 取得服務案件L2工程師/指派工程師/技術主管Email
         /// <summary>
-        /// 取得服務請求L2工程師/指派工程師/技術主管Email
+        /// 取得服務案件L2工程師/指派工程師/技術主管Email
         /// </summary>
-        /// <param name="SREmp">服務請求L2工程師/指派工程師/技術主管相關資訊清單</param>
+        /// <param name="SREmp">服務案件L2工程師/指派工程師/技術主管相關資訊清單</param>
         /// <returns></returns>
         public string findSREMPEmail(List<SREMPINFO> SREmp)
         {
@@ -1844,9 +1844,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得服務請求主檔資訊清單
+        #region 取得服務案件主檔資訊清單
         /// <summary>
-        /// 取得服務請求主檔資訊清單
+        /// 取得服務案件主檔資訊清單
         /// </summary>
         /// <param name="pOperationID_GenerallySR">程式作業編號檔系統ID(一般服務)</param>
         /// <param name="IV_SERIAL">序號</param>
@@ -1930,11 +1930,11 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 服務請求客戶聯絡人資訊清單
+        #region 服務案件客戶聯絡人資訊清單
         /// <summary>
-        /// 服務請求客戶聯絡人資訊清單
+        /// 服務案件客戶聯絡人資訊清單
         /// </summary>
-        /// <param name="tSRIDList">服務請求ID清單</param>
+        /// <param name="tSRIDList">服務案件ID清單</param>
         /// <returns></returns>
         public List<SRCONTACTINFO> findSRCONTACTList(List<string> tSRIDList)
         {
@@ -2344,9 +2344,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得服務請求狀態值說明
+        #region 取得服務案件狀態值說明
         /// <summary>
-        /// 取得服務請求狀態值說明
+        /// 取得服務案件狀態值說明
         /// </summary>
         /// <param name="ListStatus">狀態清單</param>
         /// <param name="cSTATUS">狀態</param>
@@ -2418,9 +2418,9 @@ namespace TSTI_API.Controllers
         }
         #endregion       
 
-        #region 取得服務請求case內容
+        #region 取得服務案件case內容
         /// <summary>
-        /// 取得服務請求case內容
+        /// 取得服務案件case內容
         /// </summary>
         /// <param name="IV_SRID">SRID</param>
         /// <param name="pOperationID_GenerallySR">程式作業編號檔系統ID(一般服務)</param>
@@ -2606,7 +2606,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【一般服務】案件種類的郵件主旨
         /// </summary>
-        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
         /// <param name="SRID">服務ID</param>
         /// <param name="CusName">客戶名稱</param>
         /// <param name="TeamNAME">服務團隊</param>
@@ -2671,7 +2671,7 @@ namespace TSTI_API.Controllers
 
                 case SRCondition.DONE:
                     //[<客戶名稱>] <服務團隊>_<服務案件種類> 完修通知[<服務ID>]
-                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 完修通知[" + SRID + "]";
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 完修通知[" + SRID + "]，已完修！";
                     break;
             }
 
@@ -2683,7 +2683,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【一般服務】案件種類的郵件主旨(for客戶)
         /// </summary>
-        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
         /// <param name="SRID">服務ID</param>
         /// <param name="CusName">客戶名稱</param>        
         /// <returns></returns>
@@ -2712,7 +2712,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【一般服務】案件客戶報修窗口資訊Html Table
         /// </summary>
-        /// <param name="SRRepair_List">服務請求客戶報修人資訊清單</param>
+        /// <param name="SRRepair_List">服務案件客戶報修人資訊清單</param>
         /// <param name="CusName">客戶名稱</param>
         /// <returns></returns>
         public string findGenerallySRRepair_Table(List<SRCONTACTINFO> SRRepair_List, string CusName)
@@ -2768,7 +2768,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【一般服務】案件客戶聯絡窗口資訊Html Table
         /// </summary>
-        /// <param name="SRContact_List">服務請求客戶聯絡人資訊清單</param>
+        /// <param name="SRContact_List">服務案件客戶聯絡人資訊清單</param>
         /// <returns></returns>
         public string findGenerallySRContact_Table(List<SRCONTACTINFO> SRContact_List)
         {
@@ -2823,7 +2823,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【一般服務】案件產品序號資訊Html Table
         /// </summary>
-        /// <param name="SRSeiral_List">服務請求產品序號資訊清單</param>
+        /// <param name="SRSeiral_List">服務案件產品序號資訊清單</param>
         /// <returns></returns>
         public string findGenerallySRSeiral_Table(List<SRSERIALMATERIALINFO> SRSeiral_List)
         {
@@ -2878,7 +2878,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【一般服務】案件零件更換資訊Html Table
         /// </summary>
-        /// <param name="SRParts_List">服務請求零件更換資訊清單</param>
+        /// <param name="SRParts_List">服務案件零件更換資訊清單</param>
         /// <returns></returns>
         public string findGenerallySRParts_Table(List<SRPARTSREPALCEINFO> SRParts_List)
         {
@@ -2945,11 +2945,11 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 組服務請求Mail相關資訊
+        #region 組服務案件Mail相關資訊
         /// <summary>
-        /// 組服務請求Mail相關資訊
+        /// 組服務案件Mail相關資訊
         /// </summary>
-        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
         /// <param name="cOperationID_GenerallySR">程式作業編號檔系統ID</param>
         /// <param name="cBUKRS">公司別(T012、T016、C069、T022)</param>
         /// <param name="cSRID">SRID(服務案件ID)</param>           
@@ -3100,14 +3100,14 @@ namespace TSTI_API.Controllers
                     SRParts_List = findSRPARTSREPALCEINFO(cSRID);
                     #endregion -----↑↑↑↑↑零件更換資訊 ↑↑↑↑↑-----                     
 
-                    #region 發送服務請求Mail相關資訊(for客戶)，新建或完修才要發給客戶
+                    #region 發送服務案件Mail相關資訊(for客戶)，新建或完修才要發給客戶
                     if (cCondition == SRCondition.ADD || cCondition == SRCondition.DONE)
                     {
                         SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List);
                     }
                     #endregion
 
-                    #region 發送服務請求Mail相關資訊  
+                    #region 發送服務案件Mail相關資訊  
                     SendSRMail(cCondition, cSRID, tONEURLName, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRParts_List);
                     #endregion
                 }
@@ -3122,20 +3122,20 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 發送服務請求Mail相關資訊
+        #region 發送服務案件Mail相關資訊
         /// <summary>
-        /// 發送服務請求Mail相關資訊
+        /// 發送服務案件Mail相關資訊
         /// </summary>
-        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
         /// <param name="cSRID">SRID</param>
         /// <param name="tONEURLName">One Service站台名稱</param>
         /// <param name="cLoginName">登入人員姓名</param>
         /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
-        /// <param name="SRMain">服務請求主檔資訊(For Mail)</param>
-        /// <param name="SRRepair_List">服務請求客戶報修人資訊清單</param>
-        /// <param name="SRContact_List">服務請求客戶聯絡人資訊清單</param>
-        /// <param name="SRSeiral_List">服務請求產品序號資訊清單</param>
-        /// <param name="SRParts_List">服務請求零件更換資訊清單</param>
+        /// <param name="SRMain">服務案件主檔資訊(For Mail)</param>
+        /// <param name="SRRepair_List">服務案件客戶報修人資訊清單</param>
+        /// <param name="SRContact_List">服務案件客戶聯絡人資訊清單</param>
+        /// <param name="SRSeiral_List">服務案件產品序號資訊清單</param>
+        /// <param name="SRParts_List">服務案件零件更換資訊清單</param>
         public void SendSRMail(SRCondition cCondition, string cSRID, string tONEURLName, string cLoginName, bool tIsFormal, SRIDMAININFO SRMain, 
                               List<SRCONTACTINFO> SRRepair_List, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List, List<SRPARTSREPALCEINFO> SRParts_List)
         {
@@ -3376,18 +3376,18 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 發送服務請求Mail相關資訊(for客戶)
+        #region 發送服務案件Mail相關資訊(for客戶)
         /// <summary>
-        /// 發送服務請求Mail相關資訊(for客戶)
+        /// 發送服務案件Mail相關資訊(for客戶)
         /// </summary>
-        /// <param name="cCondition">服務請求執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修)</param>
         /// <param name="cSRID">SRID</param>        
         /// <param name="cLoginName">登入人員姓名</param>
         /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
-        /// <param name="SRMain">服務請求主檔資訊(For Mail)</param>
-        /// <param name="SRRepair_List">服務請求客戶報修人資訊清單</param>   
-        /// <param name="SRContact_List">服務請求客戶聯絡人資訊清單</param>
-        /// <param name="SRSeiral_List">服務請求產品序號資訊清單</param>
+        /// <param name="SRMain">服務案件主檔資訊(For Mail)</param>
+        /// <param name="SRRepair_List">服務案件客戶報修人資訊清單</param>   
+        /// <param name="SRContact_List">服務案件客戶聯絡人資訊清單</param>
+        /// <param name="SRSeiral_List">服務案件產品序號資訊清單</param>
         public void SendSRMail_ToCustomer(SRCondition cCondition, string cSRID, string cLoginName, bool tIsFormal, SRIDMAININFO SRMain, 
                                          List<SRCONTACTINFO> SRRepair_List, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List)
         {
@@ -3495,26 +3495,6 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 郵件內容
-
-                #region 內容格式參考(一般服務)                
-                //親愛的客戶，您好
-                //我們已經收到您的報修需求，會盡速處理您的問題!
-                //以下是報修內容：
-                //報修時間： 2023-03-10 13:33
-                //報修單號： 61OOO
-                //機器明細： DL360pG8OOO_SGH1OOO_654081OOO
-                //問題描述： TEST 888
-
-                //客戶名稱：OOO股份有限公司
-                //[客戶報修窗口資料]												
-                //報修人	報修人電話	報修人手機	報修人地址	報修人Email								
-                //OOO	042OOO	09OOO	台北市OOO	TEST@OOO	
-
-                //若後續維修上有任何問題，請儘速與我們連絡 0800-066-038 ，或至線上報修系統網站報修，謝謝!!
-                //大同世界科技線上報修系統網站：www.etatung.com
-                //-------此信件由系統管理員發出，請勿回覆此信件-------
-                #endregion
-
                 string tMailBody = string.Empty;                
 
                 #region 取得【一般服務】案件客戶報修窗口資訊Html Table
@@ -3540,12 +3520,62 @@ namespace TSTI_API.Controllers
                 }
                 #endregion
 
-                tMailBody = GetMailBody("ONECustomerRepair_MAIL");
+                if (cCondition == SRCondition.ADD) //新建
+                {
+                    #region 內容格式參考(一般服務)新建
+                    //親愛的客戶，您好
+                    //我們已經收到您的報修需求，會盡速處理您的問題!
+                    //以下是報修內容：
+                    //報修時間： 2023-03-10 13:33
+                    //報修單號： 61OOO
+                    //機器明細： DL360pG8OOO_SGH1OOO_654081OOO
+                    //問題描述： TEST 888
 
-                tMailBody = tMailBody.Replace("【<CreatedDate>】", SRMain.CreatedDate).Replace("【<SRID>】", cSRID);
-                tMailBody = tMailBody.Replace("【<MaterialName>】", MaterialName).Replace("【<SerialID>】", SerialID).Replace("【<ProductNumber>】", ProductNumber);                
+                    //客戶名稱：OOO股份有限公司
+                    //[客戶報修窗口資料]												
+                    //報修人	報修人電話	報修人手機	報修人地址	報修人Email								
+                    //OOO	042OOO	09OOO	台北市OOO	TEST@OOO	
+
+                    //若後續維修上有任何問題，請儘速與我們連絡 0800-066-038 ，或至線上報修系統網站報修，謝謝!!
+                    //大同世界科技線上報修系統網站：www.etatung.com
+                    //-------此信件由系統管理員發出，請勿回覆此信件-------
+                    #endregion
+
+                    tMailBody = GetMailBody("ONECustomerRepair_MAIL");                    
+                }
+                else if (cCondition == SRCondition.DONE) //完修
+                {
+                    #region 內容格式參考(一般服務)完修
+                    //親愛的客戶您好，
+                    //您的服務已完修，明細如下：                    
+                    //服務案件ID：8100190298
+                    //產品：      430G7/i5-10210U/8G/500G/S256/acB/Cam/W10
+                    //產品描述：  6YX14AV
+                    //產品序號：  5CD0149HZP
+                    //案件開始日期：2023/1/5
+                    //案件結束日期：2023/1/6
+
+                    //客戶名稱：OOO股份有限公司
+                    //[客戶報修窗口資料]												
+                    //報修人	報修人電話	報修人手機	報修人地址	報修人Email								
+                    //OOO	042OOO	09OOO	台北市OOO	TEST@OOO	
+
+                    //[客戶聯絡窗口資料]
+                    //聯絡人	聯絡人電話	聯絡人手機	聯絡人地址	聯絡人Email								
+                    //OOO	042OOO	09OOO	台北市OOO	TEST@OOO                    
+
+                    //若後續維修上有任何問題，請儘速與我們連絡 0800-066-038 ，或至線上報修系統網站報修，謝謝!!
+                    //大同世界科技線上報修系統網站：www.etatung.com
+                    //-------此信件由系統管理員發出，請勿回覆此信件-------
+                    #endregion
+
+                    tMailBody = GetMailBody("ONECustomerFinished_MAIL");                    
+                }
+
+                tMailBody = tMailBody.Replace("【<CreatedDate>】", Convert.ToDateTime(SRMain.CreatedDate).ToString("yyyy-MM-dd")).Replace("【<FinishedDate>】", DateTime.Now.ToString("yyyy-MM-dd"));
+                tMailBody = tMailBody.Replace("【<SRID>】", cSRID).Replace("【<MaterialName>】", MaterialName).Replace("【<SerialID>】", SerialID).Replace("【<ProductNumber>】", ProductNumber);
                 tMailBody = tMailBody.Replace("【<Notes>】", SRMain.Notes);
-                tMailBody = tMailBody.Replace("<SRRepair_List>", tSRRepair_Table).Replace("<SRContact_List>", tSRContact_Table);                
+                tMailBody = tMailBody.Replace("<SRRepair_List>", tSRRepair_Table).Replace("<SRContact_List>", tSRContact_Table);
                 #endregion              
 
                 //呼叫寄送Mail

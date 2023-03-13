@@ -112,11 +112,11 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region -----↓↓↓↓↓一般服務請求建立 ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓一般服務案件建立 ↓↓↓↓↓-----
 
-        #region 建立ONE SERVICE報修SR（一般服務請求）接口
+        #region 建立ONE SERVICE報修SR（一般服務案件）接口
         /// <summary>
-        /// 建立ONE SERVICE報修SR（一般服務請求）接口
+        /// 建立ONE SERVICE報修SR（一般服務案件）接口
         /// </summary>
         /// <param name="bean"></param>
         /// <returns></returns>
@@ -174,11 +174,11 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 儲存一般服務請求
+        #region 儲存一般服務案件
         /// <summary>
-        /// 儲存一般服務請求
+        /// 儲存一般服務案件
         /// </summary>
-        /// <param name="bean">一般服務請求主檔資訊</param>
+        /// <param name="bean">一般服務案件主檔資訊</param>
         /// <param name="tType">ADD.新增 EDIT.修改</param>
         /// <returns></returns>
         private SRMain_GENERALSR_OUTPUT SaveGenerallySR(SRMain_GENERALSR_INPUT bean, string tType)
@@ -605,8 +605,8 @@ namespace TSTI_API.Controllers
         }
         #endregion       
 
-        #region 一般服務請求主檔INPUT資訊
-        /// <summary>一般服務請求主檔INPUT資訊</summary>
+        #region 一般服務案件主檔INPUT資訊
+        /// <summary>一般服務案件主檔INPUT資訊</summary>
         public struct SRMain_GENERALSR_INPUT
         {
             /// <summary>建立者員工編號ERPID</summary>
@@ -619,7 +619,7 @@ namespace TSTI_API.Controllers
             public string IV_RKIND { get; set; }
             /// <summary>報修管道</summary>
             public string IV_PATHWAY { get; set; }
-            /// <summary>服務請求說明</summary>
+            /// <summary>服務案件說明</summary>
             public string IV_DESC { get; set; }
             /// <summary>詳細描述</summary>
             public string IV_LTXT { get; set; }
@@ -652,13 +652,13 @@ namespace TSTI_API.Controllers
             /// <summary>是否為二修(Y.是 N.否)</summary>
             public string IV_REFIX { get; set; }
 
-            /// <summary>服務請求客戶聯絡人資訊</summary>
+            /// <summary>服務案件客戶聯絡人資訊</summary>
             public List<CREATECONTACTINFO> CREATECONTACT_LIST { get; set; }
         }
         #endregion
 
-        #region 一般服務請求主檔OUTPUT資訊
-        /// <summary>一般服務請求主檔OUTPUT資訊</summary>
+        #region 一般服務案件主檔OUTPUT資訊
+        /// <summary>一般服務案件主檔OUTPUT資訊</summary>
         public struct SRMain_GENERALSR_OUTPUT
         {
             /// <summary>SRID</summary>
@@ -670,13 +670,13 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑一般服務請求建立 ↑↑↑↑↑-----    
+        #endregion -----↑↑↑↑↑一般服務案件建立 ↑↑↑↑↑-----    
 
-        #region -----↓↓↓↓↓一般服務請求狀態更新 ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓一般服務案件狀態更新 ↓↓↓↓↓-----
 
-        #region ONE SERVICE（一般服務請求）狀態更新接口
+        #region ONE SERVICE（一般服務案件）狀態更新接口
         /// <summary>
-        /// ONE SERVICE（一般服務請求）狀態更新接口
+        /// ONE SERVICE（一般服務案件）狀態更新接口
         /// </summary>
         /// <param name="bean"></param>
         /// <returns></returns>
@@ -699,7 +699,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 更新（一般服務請求）狀態
+        #region 更新（一般服務案件）狀態
         private SRMain_GENERALSRSTATUS_OUTPUT GenerallySRSTATUS_Update(SRMain_GENERALSRSTATUS_INPUT bean)
         {
             SRMain_GENERALSRSTATUS_OUTPUT SROUT = new SRMain_GENERALSRSTATUS_OUTPUT();
@@ -827,21 +827,21 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 一般服務請求狀態更新INPUT資訊
-        /// <summary>一般服務請求狀態更新INPUT資訊</summary>
+        #region 一般服務案件狀態更新INPUT資訊
+        /// <summary>一般服務案件狀態更新INPUT資訊</summary>
         public struct SRMain_GENERALSRSTATUS_INPUT
         {
             /// <summary>修改者員工編號ERPID</summary>
             public string IV_LOGINEMPNO { get; set; }
-            /// <summary>服務請求ID</summary>
+            /// <summary>服務案件ID</summary>
             public string IV_SRID { get; set; }
             /// <summary>服務狀態ID</summary>
             public string IV_STATUS { get; set; }            
         }
         #endregion
 
-        #region 一般服務請求狀態更新OUTPUT資訊
-        /// <summary>一般服務請求狀態更新OUTPUT資訊</summary>
+        #region 一般服務案件狀態更新OUTPUT資訊
+        /// <summary>一般服務案件狀態更新OUTPUT資訊</summary>
         public struct SRMain_GENERALSRSTATUS_OUTPUT
         {            
             /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
@@ -851,7 +851,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑一般服務請求狀態更新 ↑↑↑↑↑-----    
+        #endregion -----↑↑↑↑↑一般服務案件狀態更新 ↑↑↑↑↑-----    
 
         #region -----↓↓↓↓↓法人客戶資料 ↓↓↓↓↓-----
 
@@ -1813,7 +1813,7 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑個人客戶聯絡人資料/修改 ↑↑↑↑↑-----  
 
-        #region -----↓↓↓↓↓序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務請求資訊(List)、服務請求客戶聯絡人資訊(List)) ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務案件資訊(List)、服務案件客戶聯絡人資訊(List)) ↓↓↓↓↓-----
 
         #region 查詢序號相關資訊接口
         [HttpPost]
@@ -1894,7 +1894,7 @@ namespace TSTI_API.Controllers
                 SROUT.WTSLA_LIST = QueryToList;
                 #endregion
 
-                #region 服務請求主檔資訊清單
+                #region 服務案件主檔資訊清單
                 List<SRIDINFO> QuerySRToList = new List<SRIDINFO>();    //查詢出來的清單
 
                 QuerySRToList = CMF.findSRMAINList(pOperationID_GenerallySR, beanIN.IV_SERIAL.Trim());
@@ -1902,7 +1902,7 @@ namespace TSTI_API.Controllers
                 SROUT.SRMAIN_LIST = QuerySRToList;
                 #endregion
 
-                #region 服務請求客戶聯絡人資訊清單
+                #region 服務案件客戶聯絡人資訊清單
 
                 #region 先取得SRID清單
                 List<string> tSRIDList = new List<string>();
@@ -1964,14 +1964,14 @@ namespace TSTI_API.Controllers
 
             /// <summary>保固SLA資訊清單</summary>
             public List<SRWarranty> WTSLA_LIST { get; set; }
-            /// <summary>服務請求主檔資訊清單</summary>
+            /// <summary>服務案件主檔資訊清單</summary>
             public List<SRIDINFO> SRMAIN_LIST { get; set; }
-            /// <summary>服務請求客戶聯絡人資訊</summary>
+            /// <summary>服務案件客戶聯絡人資訊</summary>
             public List<SRCONTACTINFO> SRCONTACT_LIST { get; set; }
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務請求資訊(List)、服務請求客戶聯絡人資訊(List)) ↑↑↑↑↑-----  
+        #endregion -----↑↑↑↑↑序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務案件資訊(List)、服務案件客戶聯絡人資訊(List)) ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓SRID相關資訊查詢(服務主檔資訊、客戶聯絡窗口資訊清單、產品序號資訊清單、保固SLA檔資訊清單、處理與工時紀錄清單、零件更換資訊清單) ↓↓↓↓↓-----
 
@@ -2132,7 +2132,7 @@ namespace TSTI_API.Controllers
         /// <summary>SRID查詢OUTPUT資訊</summary>
         public struct SRIDSEARCH_OUTPUT
         {
-            /// <summary>服務請求ID</summary>
+            /// <summary>服務案件ID</summary>
             public string SRID { get; set; }            
             /// <summary>狀態</summary>
             public string STATUS { get; set; }
@@ -2189,15 +2189,15 @@ namespace TSTI_API.Controllers
             /// <summary>消息內容</summary>
             public string EV_MSG { get; set; }
 
-            /// <summary>服務請求【客戶聯絡人資訊】清單</summary>
+            /// <summary>服務案件【客戶聯絡人資訊】清單</summary>
             public List<SRCONTACTINFO> SRCONTACT_LIST { get; set; }
-            /// <summary>服務請求【產品序號資訊】清單</summary>
+            /// <summary>服務案件【產品序號資訊】清單</summary>
             public List<SRSERIALMATERIALINFO> SRSERIAL_LIST { get; set; }
-            /// <summary>服務請求【保固SLA資訊】清單</summary>
+            /// <summary>服務案件【保固SLA資訊】清單</summary>
             public List<SRWTSLAINFO> SRWTSLA_LIST { get; set; }
-            /// <summary>服務請求【處理與工時紀錄資訊】清單</summary>
+            /// <summary>服務案件【處理與工時紀錄資訊】清單</summary>
             public List<SRRECORDINFO> SRRECORD_LIST { get; set; }
-            /// <summary>服務請求【零件更換資訊】清單</summary>
+            /// <summary>服務案件【零件更換資訊】清單</summary>
             public List<SRPARTSREPALCEINFO> SRPARTS_LIST { get; set; }
         }
         #endregion
@@ -2735,7 +2735,7 @@ namespace TSTI_API.Controllers
         {
             /// <summary>系統ID</summary>
             public string IV_CID { get; set; }
-            /// <summary>服務請求ID</summary>
+            /// <summary>服務案件ID</summary>
             public string IV_SRID { get; set; }
             /// <summary>服務工程師ERPID/技術主管ERPID</summary>
             public string IV_EMPNO { get; set; }
@@ -2858,7 +2858,7 @@ namespace TSTI_API.Controllers
 
             try
             {
-                #region -- 服務請求工時更新(前面已更新，此處僅設定呈現資料) --
+                #region -- 服務案件工時更新(前面已更新，此處僅設定呈現資料) --
                 //測試用
                 //IV_StartTime = "2023/01/15 08:00:00";
                 //IV_ArriveTime = "2023/01/15 08:30:00";
@@ -4833,7 +4833,7 @@ namespace TSTI_API.Controllers
                         doc1.Add(hTable);
                         doc1.Add(pTable);
                         doc1.Add(uTable);
-                        doc1.AddTitle("[大同世界科技 服務請求ID：" + IV_SRID + " 已處理通知]");
+                        doc1.AddTitle("[大同世界科技 服務案件ID：" + IV_SRID + " 已處理通知]");
                         doc1.AddAuthor("大同世界科技");
                         doc1.AddSubject("服務報告書");
                         doc1.AddKeywords("TSTI, SAP CRM, PDF");
@@ -5169,7 +5169,7 @@ namespace TSTI_API.Controllers
         /// <summary>客戶手寫簽名圖片上傳並產生服務報告書pdf INPUT資訊</summary>
         public struct SRSIGNPDFINFO_INPUT
         {            
-            /// <summary>服務請求ID</summary>
+            /// <summary>服務案件ID</summary>
             public string IV_SRID { get; set; }
             /// <summary>服務工程師ERPID/技術主管ERPID</summary>
             public string IV_EMPNO { get; set; }            
@@ -5417,7 +5417,7 @@ namespace TSTI_API.Controllers
         {
             /// <summary>系統ID</summary>
             public string IV_CID { get; set; }
-            /// <summary>服務請求ID</summary>
+            /// <summary>服務案件ID</summary>
             public string IV_SRID { get; set; }
             /// <summary>服務工程師ERPID</summary>
             public string IV_EMPNO { get; set; }
@@ -6018,7 +6018,7 @@ namespace TSTI_API.Controllers
         }
         #endregion       
 
-        #region 查詢一般服務請求狀態接口
+        #region 查詢一般服務案件狀態接口
         [HttpPost]
         public ActionResult API_GENERALSRSTATUS_GET(OPTION_INPUT beanIV)
         {
@@ -6377,9 +6377,9 @@ namespace TSTI_API.Controllers
     #region 服務待辦清單資訊
     public class SRTODOLISTINFO
     {
-        /// <summary>服務請求ID</summary>
+        /// <summary>服務案件ID</summary>
         public string SRID { get; set; }
-        /// <summary>服務請求說明</summary>
+        /// <summary>服務案件說明</summary>
         public string SRDESC { get; set; }
         /// <summary>客戶</summary>
         public string CUSTOMERNAME { get; set; }
@@ -6439,15 +6439,15 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
-    #region 服務請求主檔資訊
-    /// <summary>服務請求主檔資訊</summary>
+    #region 服務案件主檔資訊
+    /// <summary>服務案件主檔資訊</summary>
     public class SRIDINFO
     {
-        /// <summary>服務請求ID</summary>
+        /// <summary>服務案件ID</summary>
         public string SRID { get; set; }
-        /// <summary>服務請求說明</summary>
+        /// <summary>服務案件說明</summary>
         public string SRDESC { get; set; }
-        /// <summary>服務請求開單日期</summary>
+        /// <summary>服務案件開單日期</summary>
         public string SRDATE { get; set; }
         /// <summary>SR類型代號</summary>
         public string SRTYPE { get; set; }
@@ -6470,11 +6470,11 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
-    #region 服務請求主檔資訊(For Mail)
-    /// <summary>服務請求主檔資訊(For Mail)</summary>
+    #region 服務案件主檔資訊(For Mail)
+    /// <summary>服務案件主檔資訊(For Mail)</summary>
     public class SRIDMAININFO
     {
-        /// <summary>服務請求ID</summary>
+        /// <summary>服務案件ID</summary>
         public string SRID { get; set; }
         /// <summary>狀態ID</summary>
         public string Status { get; set; }
@@ -6528,11 +6528,11 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
-    #region 服務請求客戶聯絡人資訊
-    /// <summary>服務請求客戶聯絡人資訊</summary>
+    #region 服務案件客戶聯絡人資訊
+    /// <summary>服務案件客戶聯絡人資訊</summary>
     public class SRCONTACTINFO
     {
-        /// <summary>服務請求ID</summary>
+        /// <summary>服務案件ID</summary>
         public string SRID { get; set; }       
         /// <summary>聯絡人姓名</summary>
         public string CONTNAME { get; set; }
@@ -6548,11 +6548,11 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
-    #region 服務請求產品序號資訊
-    /// <summary>服務請求產品序號資訊</summary>
+    #region 服務案件產品序號資訊
+    /// <summary>服務案件產品序號資訊</summary>
     public class SRSERIALMATERIALINFO
     {
-        /// <summary>服務請求ID</summary>
+        /// <summary>服務案件ID</summary>
         public string SRID { get; set; }
         /// <summary>序號</summary>
         public string SerialID { get; set; }
@@ -6567,11 +6567,11 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
-    #region 服務請求保固SLA資訊
-    /// <summary>服務請求保固SLA資訊</summary>
+    #region 服務案件保固SLA資訊
+    /// <summary>服務案件保固SLA資訊</summary>
     public class SRWTSLAINFO
     {
-        /// <summary>服務請求ID</summary>
+        /// <summary>服務案件ID</summary>
         public string SRID { get; set; }
         /// <summary>序號</summary>
         public string SERIALID { get; set; }
@@ -6604,13 +6604,13 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
-    #region 服務請求處理與工時紀錄資訊
-    /// <summary>服務請求處理與工時紀錄資訊</summary>
+    #region 服務案件處理與工時紀錄資訊
+    /// <summary>服務案件處理與工時紀錄資訊</summary>
     public class SRRECORDINFO
     {
         /// <summary>系統ID</summary>
         public string CID { get; set; }
-        /// <summary>服務請求ID</summary>
+        /// <summary>服務案件ID</summary>
         public string SRID { get; set; }
         /// <summary>服務工程師ERPID/技術主管ERPID</summary>
         public string ENGID { get; set; }
@@ -6633,13 +6633,13 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
-    #region 服務請求零件更換資訊
-    /// <summary>服務請求零件更換資訊</summary>
+    #region 服務案件零件更換資訊
+    /// <summary>服務案件零件更換資訊</summary>
     public class SRPARTSREPALCEINFO
     {
         /// <summary>系統ID</summary>
         public string CID { get; set; }
-        /// <summary>服務請求ID</summary>
+        /// <summary>服務案件ID</summary>
         public string SRID { get; set; }
         /// <summary>XC HP申請零件</summary>
         public string XCHP { get; set; }
@@ -6694,8 +6694,8 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
-    #region 服務請求L2工程師/指派工程師/技術主管相關資訊
-    /// <summary>服務請求L2工程師/指派工程師/技術主管相關資訊</summary>
+    #region 服務案件L2工程師/指派工程師/技術主管相關資訊
+    /// <summary>服務案件L2工程師/指派工程師/技術主管相關資訊</summary>
     public class SREMPINFO
     {       
         /// <summary>ERPID</summary>
@@ -6874,9 +6874,9 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
-    #region 服務請求執行條件
+    #region 服務案件執行條件
     /// <summary>
-    /// 服務請求執行條件
+    /// 服務案件執行條件
     /// </summary>
     public enum SRCondition
     {
