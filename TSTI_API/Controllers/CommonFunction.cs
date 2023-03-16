@@ -355,7 +355,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得法人客戶聯絡人資料
         /// </summary>
-        /// <param name="CustomerID">客戶代號</param>
+        /// <param name="CustomerID">客戶代號/名稱</param>
         /// <param name="CONTACTNAME">聯絡人姓名</param>        
         /// <param name="CONTACTTEL">聯絡人電話</param>
         /// <param name="CONTACTMOBILE">聯絡人手機</param>
@@ -364,9 +364,10 @@ namespace TSTI_API.Controllers
         public List<PCustomerContact> findCONTACTINFO(string CustomerID, string CONTACTNAME, string CONTACTTEL, string CONTACTMOBILE, string CONTACTEMAIL)
         {
             var qPjRec = dbProxy.CUSTOMER_Contact.OrderByDescending(x => x.ModifiedDate).
-                                               Where(x => (x.Disabled == null || x.Disabled != 1) && x.KNA1_KUNNR == CustomerID &&
+                                               Where(x => (x.Disabled == null || x.Disabled != 1) &&
                                                           x.ContactName != "" && x.ContactCity != "" &&
                                                           x.ContactAddress != "" && x.ContactPhone != "" &&
+                                                          (string.IsNullOrEmpty(CustomerID) ? true : (x.KNA1_KUNNR.Contains(CustomerID) || x.KNA1_NAME1.Contains(CustomerID))) &&
                                                           (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
                                                           (string.IsNullOrEmpty(CONTACTTEL) ? true : x.ContactPhone.Contains(CONTACTTEL)) &&
                                                           (string.IsNullOrEmpty(CONTACTMOBILE) ? true : x.ContactMobile.Contains(CONTACTMOBILE)) &&
@@ -436,7 +437,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得個人客戶聯絡人資料
         /// </summary>
-        /// <param name="PERSONALID">個人客戶代號</param>
+        /// <param name="PERSONALID">個人客戶代號/名稱</param>
         /// <param name="CONTACTNAME">聯絡人姓名</param>        
         /// <param name="CONTACTTEL">聯絡人電話</param>
         /// <param name="CONTACTMOBILE">聯絡人手機</param>
@@ -445,9 +446,10 @@ namespace TSTI_API.Controllers
         public List<PCustomerContact> findPERSONALCONTACTINFO(string PERSONALID, string CONTACTNAME, string CONTACTTEL, string CONTACTMOBILE, string CONTACTEMAIL)
         {
             var qPjRec = dbProxy.PERSONAL_Contact.OrderByDescending(x => x.ModifiedDate).
-                                               Where(x => x.Disabled == 0 && x.KNA1_KUNNR == PERSONALID &&
+                                               Where(x => x.Disabled == 0 && 
                                                           x.ContactName != "" && x.ContactCity != "" &&
                                                           x.ContactAddress != "" && x.ContactPhone != "" &&
+                                                          (string.IsNullOrEmpty(PERSONALID) ? true : (x.KNA1_KUNNR.Contains(PERSONALID) || x.KNA1_NAME1.Contains(PERSONALID))) &&
                                                           (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
                                                           (string.IsNullOrEmpty(CONTACTTEL) ? true : x.ContactPhone.Contains(CONTACTTEL)) &&
                                                           (string.IsNullOrEmpty(CONTACTMOBILE) ? true : x.ContactMobile.Contains(CONTACTMOBILE)) &&

@@ -1063,37 +1063,47 @@ namespace TSTI_API.Controllers
                 string CONTACTMOBILE = string.IsNullOrEmpty(beanIN.IV_CONTACTMOBILE) ? "" : beanIN.IV_CONTACTMOBILE.Trim();
                 string CONTACTEMAIL = string.IsNullOrEmpty(beanIN.IV_CONTACTEMAIL) ? "" : beanIN.IV_CONTACTEMAIL.Trim();
 
-                var tList = CMF.findCONTACTINFO(CUSTOMEID, CONTACTNAME, CONTACTTEL, CONTACTMOBILE, CONTACTEMAIL);
-
-                if (tList.Count == 0)
+                if (CUSTOMEID == "" && CONTACTNAME == "" && CONTACTTEL == "" && CONTACTMOBILE == "" && CONTACTEMAIL == "")
                 {
                     OUTBean.EV_MSGT = "E";
-                    OUTBean.EV_MSG = "查無法人客戶聯絡人資料，請重新查詢！";
+                    OUTBean.EV_MSG = "請至少輸入一項查詢條件！";
                 }
                 else
                 {
-                    OUTBean.EV_MSGT = "Y";
-                    OUTBean.EV_MSG = "";
+                    var tList = CMF.findCONTACTINFO(CUSTOMEID, CONTACTNAME, CONTACTTEL, CONTACTMOBILE, CONTACTEMAIL);
 
-                    #region 取得法人客戶資料List
-                    List<CONTACTINFO_LIST> tCustList = new List<CONTACTINFO_LIST>();
-
-                    foreach (var bean in tList)
+                    if (tList.Count == 0)
                     {
-                        CONTACTINFO_LIST beanCust = new CONTACTINFO_LIST();
-
-                        beanCust.CONTACTNAME = bean.Name;
-                        beanCust.CONTACTCITY = bean.City;
-                        beanCust.CONTACTADDRESS = bean.Address;
-                        beanCust.CONTACTTEL = bean.Phone;
-                        beanCust.CONTACTMOBILE = bean.Mobile;
-                        beanCust.CONTACTEMAIL = bean.Email;
-
-                        tCustList.Add(beanCust);
+                        OUTBean.EV_MSGT = "E";
+                        OUTBean.EV_MSG = "查無法人客戶聯絡人資料，請重新查詢！";
                     }
+                    else
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
 
-                    OUTBean.CONTACTINFO_LIST = tCustList;
-                    #endregion
+                        #region 取得法人客戶資料List
+                        List<CONTACTINFO_LIST> tCustList = new List<CONTACTINFO_LIST>();
+
+                        foreach (var bean in tList)
+                        {
+                            CONTACTINFO_LIST beanCust = new CONTACTINFO_LIST();
+
+                            beanCust.CUSTOMERID = bean.CustomerID;
+                            beanCust.CUSTOMERNAME = bean.CustomerName;
+                            beanCust.CONTACTNAME = bean.Name;
+                            beanCust.CONTACTCITY = bean.City;
+                            beanCust.CONTACTADDRESS = bean.Address;
+                            beanCust.CONTACTTEL = bean.Phone;
+                            beanCust.CONTACTMOBILE = bean.Mobile;
+                            beanCust.CONTACTEMAIL = bean.Email;
+
+                            tCustList.Add(beanCust);
+                        }
+
+                        OUTBean.CONTACTINFO_LIST = tCustList;
+                        #endregion
+                    }
                 }
             }
             catch (Exception ex)
@@ -1143,6 +1153,10 @@ namespace TSTI_API.Controllers
 
         public struct CONTACTINFO_LIST
         {
+            /// <summary>客戶代號</summary>
+            public string CUSTOMERID { get; set; }
+            /// <summary>客戶名稱</summary>
+            public string CUSTOMERNAME { get; set; }
             /// <summary>聯絡人姓名</summary>
             public string CONTACTNAME { get; set; }
             /// <summary>聯絡人城市</summary>
@@ -1503,37 +1517,47 @@ namespace TSTI_API.Controllers
                 string CONTACTMOBILE = string.IsNullOrEmpty(beanIN.IV_CONTACTMOBILE) ? "" : beanIN.IV_CONTACTMOBILE.Trim();
                 string CONTACTEMAIL = string.IsNullOrEmpty(beanIN.IV_CONTACTEMAIL) ? "" : beanIN.IV_CONTACTEMAIL.Trim();
 
-                var tList = CMF.findPERSONALCONTACTINFO(PERSONALID, CONTACTNAME, CONTACTTEL, CONTACTMOBILE, CONTACTEMAIL);
-
-                if (tList.Count == 0)
+                if (PERSONALID == "" && CONTACTNAME == "" && CONTACTTEL == "" && CONTACTMOBILE == "" && CONTACTEMAIL == "")
                 {
                     OUTBean.EV_MSGT = "E";
-                    OUTBean.EV_MSG = "查無個人客戶聯絡人資料，請重新查詢！";
+                    OUTBean.EV_MSG = "請至少輸入一項查詢條件！";
                 }
                 else
                 {
-                    OUTBean.EV_MSGT = "Y";
-                    OUTBean.EV_MSG = "";
+                    var tList = CMF.findPERSONALCONTACTINFO(PERSONALID, CONTACTNAME, CONTACTTEL, CONTACTMOBILE, CONTACTEMAIL);
 
-                    #region 取得個人客戶資料List
-                    List<PERSONALCONTACTINFO_LIST> tCustList = new List<PERSONALCONTACTINFO_LIST>();
-
-                    foreach (var bean in tList)
+                    if (tList.Count == 0)
                     {
-                        PERSONALCONTACTINFO_LIST beanCust = new PERSONALCONTACTINFO_LIST();
-
-                        beanCust.CONTACTNAME = bean.Name;
-                        beanCust.CONTACTCITY = bean.City;
-                        beanCust.CONTACTADDRESS = bean.Address;
-                        beanCust.CONTACTTEL = bean.Phone;
-                        beanCust.CONTACTMOBILE = bean.Mobile;
-                        beanCust.CONTACTEMAIL = bean.Email;
-
-                        tCustList.Add(beanCust);
+                        OUTBean.EV_MSGT = "E";
+                        OUTBean.EV_MSG = "查無個人客戶聯絡人資料，請重新查詢！";
                     }
+                    else
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
 
-                    OUTBean.PERSONALCONTACTINFO_LIST = tCustList;
-                    #endregion
+                        #region 取得個人客戶資料List
+                        List<PERSONALCONTACTINFO_LIST> tCustList = new List<PERSONALCONTACTINFO_LIST>();
+
+                        foreach (var bean in tList)
+                        {
+                            PERSONALCONTACTINFO_LIST beanCust = new PERSONALCONTACTINFO_LIST();
+
+                            beanCust.PERSONALID = bean.CustomerID;
+                            beanCust.PERSONALNAME = bean.CustomerName;
+                            beanCust.CONTACTNAME = bean.Name;
+                            beanCust.CONTACTCITY = bean.City;
+                            beanCust.CONTACTADDRESS = bean.Address;
+                            beanCust.CONTACTTEL = bean.Phone;
+                            beanCust.CONTACTMOBILE = bean.Mobile;
+                            beanCust.CONTACTEMAIL = bean.Email;
+
+                            tCustList.Add(beanCust);
+                        }
+
+                        OUTBean.PERSONALCONTACTINFO_LIST = tCustList;
+                        #endregion
+                    }
                 }
             }
             catch (Exception ex)
@@ -1583,6 +1607,10 @@ namespace TSTI_API.Controllers
 
         public struct PERSONALCONTACTINFO_LIST
         {
+            /// <summary>個人客戶代號</summary>
+            public string PERSONALID { get; set; }
+            /// <summary>個人客戶名稱</summary>
+            public string PERSONALNAME { get; set; }
             /// <summary>聯絡人姓名</summary>
             public string CONTACTNAME { get; set; }
             /// <summary>聯絡人城市</summary>
@@ -1841,6 +1869,7 @@ namespace TSTI_API.Controllers
             bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
             string tURLName = string.Empty;
             string tSeverName = string.Empty;
+            string tAPIURLName = string.Empty;
             string[] ArySERIAL = new string[1];
 
             if (tIsFormal)
@@ -1881,7 +1910,7 @@ namespace TSTI_API.Controllers
             
             if (beanIN.IV_SERIAL.Trim() != "")
             {
-                string tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+                tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
 
                 #region 保固SLA資訊(List)
                 List<SRWarranty> QueryToList = new List<SRWarranty>();    //查詢出來的清單                
