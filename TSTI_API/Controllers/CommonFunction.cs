@@ -365,8 +365,7 @@ namespace TSTI_API.Controllers
         {
             var qPjRec = dbProxy.CUSTOMER_Contact.OrderByDescending(x => x.ModifiedDate).
                                                Where(x => (x.Disabled == null || x.Disabled != 1) &&
-                                                          x.ContactName != "" && x.ContactCity != "" &&
-                                                          x.ContactAddress != "" && x.ContactPhone != "" &&
+                                                          x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&                                                           
                                                           (string.IsNullOrEmpty(CustomerID) ? true : (x.KNA1_KUNNR.Contains(CustomerID) || x.KNA1_NAME1.Contains(CustomerID))) &&
                                                           (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
                                                           (string.IsNullOrEmpty(CONTACTTEL) ? true : x.ContactPhone.Contains(CONTACTTEL)) &&
@@ -447,8 +446,7 @@ namespace TSTI_API.Controllers
         {
             var qPjRec = dbProxy.PERSONAL_Contact.OrderByDescending(x => x.ModifiedDate).
                                                Where(x => x.Disabled == 0 && 
-                                                          x.ContactName != "" && x.ContactCity != "" &&
-                                                          x.ContactAddress != "" && x.ContactPhone != "" &&
+                                                          x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&                                                           
                                                           (string.IsNullOrEmpty(PERSONALID) ? true : (x.KNA1_KUNNR.Contains(PERSONALID) || x.KNA1_NAME1.Contains(PERSONALID))) &&
                                                           (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
                                                           (string.IsNullOrEmpty(CONTACTTEL) ? true : x.ContactPhone.Contains(CONTACTTEL)) &&
