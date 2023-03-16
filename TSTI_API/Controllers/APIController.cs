@@ -1238,7 +1238,14 @@ namespace TSTI_API.Controllers
             string pLoginName = string.Empty;
 
             string CCustomerName = CMF.findCustName(beanIN.IV_CUSTOMEID);
-            string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();            
+            string IV_CUSTOMEID = string.IsNullOrEmpty(beanIN.IV_CUSTOMEID) ? "" : beanIN.IV_CUSTOMEID.Trim();
+            string IV_CONTACTNAME = string.IsNullOrEmpty(beanIN.IV_CONTACTNAME) ? "" : beanIN.IV_CONTACTNAME.Trim();
+            string IV_CONTACTCITY = string.IsNullOrEmpty(beanIN.IV_CONTACTCITY) ? "" : beanIN.IV_CONTACTCITY.Trim();
+            string IV_CONTACTADDRESS = string.IsNullOrEmpty(beanIN.IV_CONTACTADDRESS) ? "" : beanIN.IV_CONTACTADDRESS.Trim();
+            string IV_CONTACTTEL = string.IsNullOrEmpty(beanIN.IV_CONTACTTEL) ? "" : beanIN.IV_CONTACTTEL.Trim();
+            string IV_CONTACTMOBILE = string.IsNullOrEmpty(beanIN.IV_CONTACTMOBILE) ? "" : beanIN.IV_CONTACTMOBILE.Trim();
+            string IV_CONTACTEMAIL = string.IsNullOrEmpty(beanIN.IV_CONTACTEMAIL) ? "" : beanIN.IV_CONTACTEMAIL.Trim();
             string IV_ISDELETE = string.IsNullOrEmpty(beanIN.IV_ISDELETE) ? "" : beanIN.IV_ISDELETE.Trim();
 
             EmployeeBean EmpBean = new EmployeeBean();
@@ -1261,11 +1268,11 @@ namespace TSTI_API.Controllers
 
                 if (bean != null) //修改
                 {
-                    bean.ContactCity = beanIN.IV_CONTACTCITY.Trim();
-                    bean.ContactAddress = beanIN.IV_CONTACTADDRESS.Trim();
-                    bean.ContactPhone = beanIN.IV_CONTACTTEL.Trim();
-                    bean.ContactMobile = beanIN.IV_CONTACTMOBILE.Trim();
-                    bean.ContactEmail = beanIN.IV_CONTACTEMAIL.Trim();
+                    bean.ContactCity = IV_CONTACTCITY;
+                    bean.ContactAddress = IV_CONTACTADDRESS;
+                    bean.ContactPhone = IV_CONTACTTEL;
+                    bean.ContactMobile = IV_CONTACTMOBILE;
+                    bean.ContactEmail = IV_CONTACTEMAIL;
 
                     if (IV_ISDELETE == "Y")
                     {
@@ -1280,16 +1287,16 @@ namespace TSTI_API.Controllers
                     CUSTOMER_Contact bean1 = new CUSTOMER_Contact();
 
                     bean1.ContactID = Guid.NewGuid();
-                    bean1.KNA1_KUNNR = beanIN.IV_CUSTOMEID.Trim();
+                    bean1.KNA1_KUNNR = IV_CUSTOMEID;
                     bean1.KNA1_NAME1 = CCustomerName;
                     bean1.KNB1_BUKRS = cBUKRS;
                     bean1.ContactType = "5"; //One Service
-                    bean1.ContactName = beanIN.IV_CONTACTNAME.Trim();
-                    bean1.ContactCity = beanIN.IV_CONTACTCITY.Trim();
-                    bean1.ContactAddress = beanIN.IV_CONTACTADDRESS.Trim();
-                    bean1.ContactPhone = beanIN.IV_CONTACTTEL.Trim();
-                    bean1.ContactMobile = beanIN.IV_CONTACTMOBILE.Trim();
-                    bean1.ContactEmail = beanIN.IV_CONTACTEMAIL.Trim();
+                    bean1.ContactName = IV_CONTACTNAME;
+                    bean1.ContactCity = IV_CONTACTCITY;
+                    bean1.ContactAddress = IV_CONTACTADDRESS;
+                    bean1.ContactPhone = IV_CONTACTTEL;
+                    bean1.ContactMobile = IV_CONTACTMOBILE;
+                    bean1.ContactEmail = IV_CONTACTEMAIL;
                     bean1.BpmNo = tBpmNo;
                     bean1.Disabled = 0;
 
@@ -1693,7 +1700,14 @@ namespace TSTI_API.Controllers
             
             string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
             string IV_PERSONALID = string.IsNullOrEmpty(beanIN.IV_PERSONALID) ? "" : beanIN.IV_PERSONALID.Trim();
-            string IV_PERSONALNAME = string.IsNullOrEmpty(beanIN.IV_PERSONALNAME) ? "" : beanIN.IV_PERSONALNAME.Trim();
+            string IV_PERSONALNAME = string.IsNullOrEmpty(beanIN.IV_PERSONALNAME) ? "" : beanIN.IV_PERSONALNAME.Trim();            
+            string IV_CONTACTNAME = string.IsNullOrEmpty(beanIN.IV_CONTACTNAME) ? "" : beanIN.IV_CONTACTNAME.Trim();
+            string IV_CONTACTCITY = string.IsNullOrEmpty(beanIN.IV_CONTACTCITY) ? "" : beanIN.IV_CONTACTCITY.Trim();
+            string IV_CONTACTADDRESS = string.IsNullOrEmpty(beanIN.IV_CONTACTADDRESS) ? "" : beanIN.IV_CONTACTADDRESS.Trim();
+            string IV_CONTACTTEL = string.IsNullOrEmpty(beanIN.IV_CONTACTTEL) ? "" : beanIN.IV_CONTACTTEL.Trim();
+            string IV_CONTACTMOBILE = string.IsNullOrEmpty(beanIN.IV_CONTACTMOBILE) ? "" : beanIN.IV_CONTACTMOBILE.Trim();
+            string IV_CONTACTEMAIL = string.IsNullOrEmpty(beanIN.IV_CONTACTEMAIL) ? "" : beanIN.IV_CONTACTEMAIL.Trim();
+
             string IV_ISDELETE = string.IsNullOrEmpty(beanIN.IV_ISDELETE) ? "" : beanIN.IV_ISDELETE.Trim();
 
             EmployeeBean EmpBean = new EmployeeBean();
@@ -1719,11 +1733,11 @@ namespace TSTI_API.Controllers
                     if (bean != null)
                     {
                         bean.KNA1_NAME1 = IV_PERSONALNAME;
-                        bean.ContactCity = beanIN.IV_CONTACTCITY.Trim();
-                        bean.ContactAddress = beanIN.IV_CONTACTADDRESS.Trim();
-                        bean.ContactPhone = beanIN.IV_CONTACTTEL.Trim();
-                        bean.ContactMobile = beanIN.IV_CONTACTMOBILE.Trim();
-                        bean.ContactEmail = beanIN.IV_CONTACTEMAIL.Trim();
+                        bean.ContactCity = IV_CONTACTCITY;
+                        bean.ContactAddress = IV_CONTACTADDRESS;
+                        bean.ContactPhone = IV_CONTACTTEL;
+                        bean.ContactMobile = IV_CONTACTMOBILE;
+                        bean.ContactEmail = IV_CONTACTEMAIL;
 
                         if (IV_ISDELETE == "Y")
                         {
@@ -1747,12 +1761,12 @@ namespace TSTI_API.Controllers
                         bean1.KNA1_KUNNR = CMF.findPERSONALISerialID();
                         bean1.KNA1_NAME1 = IV_PERSONALNAME;
                         bean1.KNB1_BUKRS = cBUKRS;
-                        bean1.ContactName = beanIN.IV_CONTACTNAME.Trim();
-                        bean1.ContactCity = beanIN.IV_CONTACTCITY.Trim();
-                        bean1.ContactAddress = beanIN.IV_CONTACTADDRESS.Trim();
-                        bean1.ContactPhone = beanIN.IV_CONTACTTEL.Trim();
-                        bean1.ContactMobile = beanIN.IV_CONTACTMOBILE.Trim();
-                        bean1.ContactEmail = beanIN.IV_CONTACTEMAIL.Trim();
+                        bean1.ContactName = IV_CONTACTNAME;
+                        bean1.ContactCity = IV_CONTACTCITY;
+                        bean1.ContactAddress = IV_CONTACTADDRESS;
+                        bean1.ContactPhone = IV_CONTACTTEL;
+                        bean1.ContactMobile = IV_CONTACTMOBILE;
+                        bean1.ContactEmail = IV_CONTACTEMAIL;
                         bean1.Disabled = 0;
 
                         bean1.CreatedUserName = pLoginName;
