@@ -704,11 +704,20 @@ namespace TSTI_API.Controllers
         {
             SRMain_GENERALSRSTATUS_OUTPUT SROUT = new SRMain_GENERALSRSTATUS_OUTPUT();
 
+            string tExcType = string.Empty;
             string pLoginName = string.Empty;            
             string tONEURLName = string.Empty;
             string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
             string IV_SRID = string.IsNullOrEmpty(bean.IV_SRID) ? "" : bean.IV_SRID.Trim();
-            string IV_STATUS = string.IsNullOrEmpty(bean.IV_STATUS) ? "" : bean.IV_STATUS.Trim();          
+            string IV_STATUS = string.IsNullOrEmpty(bean.IV_STATUS) ? "" : bean.IV_STATUS.Trim();
+
+            if (IV_STATUS.IndexOf("TRANS") >= 0 || IV_STATUS.IndexOf("ADD") >= 0) //轉單或新建
+            {
+                string[] tArySTATUS = IV_STATUS.Split('|');
+
+                IV_STATUS = tArySTATUS[0]; //狀態
+                tExcType = tArySTATUS[1];  //執行動作
+            }            
 
             EmployeeBean EmpBean = new EmployeeBean();
             EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
@@ -742,55 +751,60 @@ namespace TSTI_API.Controllers
                 if (beanM != null)
                 {
                     #region 判斷寄送Mail的狀態
-                    if (beanM.cStatus != IV_STATUS)
+                    if (tExcType == "ADD") //新建
                     {
-                        switch(IV_STATUS)
-                        {
-                            case "E0001|E0001": //新建
-                            case "E0001|E0005": //新建
-                                tCondition = SRCondition.ADD;
-                                IV_STATUS = IV_STATUS.Split('|')[1]; //第二個才是實際狀態
-                                break;
-
-                            case "E0002": //L2處理中
-                            case "E0003": //報價中
-                            case "E0005": //L3處理中                            
-                                tCondition = SRCondition.SAVE;
-                                break;
-
-                            case "E0004": //3rd Party處理中                            
-                                tCondition = SRCondition.THRPARTY;
-                                break;
-
-                            case "E0006": //完修                   
-                                tCondition = SRCondition.DONE;
-                                break;
-
-                            case "E0007": //技術支援升級           
-                                tCondition = SRCondition.SUPPORT;
-                                break;
-
-                            case "E0012": //HPGCSN 申請           
-                                tCondition = SRCondition.HPGCSN;
-                                break;
-
-                            case "E0013": //HPGCSN 完成
-                                tCondition = SRCondition.HPGCSNDONE;
-                                break;
-
-                            case "E0014": //駁回       
-                                tCondition = SRCondition.REJECT;
-                                break;
-
-                            case "E0015": //取消
-                                tCondition = SRCondition.CANCEL;
-                                break;
-                        }
+                        tCondition = SRCondition.ADD;
+                    }
+                    else if (tExcType == "TRANS") //轉單
+                    {
+                        tCondition = SRCondition.TRANS;
                     }
                     else
                     {
-                        tCondition = SRCondition.SAVE;
-                    }
+                        if (beanM.cStatus != IV_STATUS)
+                        {
+                            switch (IV_STATUS)
+                            {
+                                case "E0002": //L2處理中
+                                case "E0003": //報價中
+                                case "E0005": //L3處理中                            
+                                    tCondition = SRCondition.SAVE;
+                                    break;
+
+                                case "E0004": //3rd Party處理中                            
+                                    tCondition = SRCondition.THRPARTY;
+                                    break;
+
+                                case "E0006": //完修                   
+                                    tCondition = SRCondition.DONE;
+                                    break;
+
+                                case "E0007": //技術支援升級           
+                                    tCondition = SRCondition.SUPPORT;
+                                    break;
+
+                                case "E0012": //HPGCSN 申請           
+                                    tCondition = SRCondition.HPGCSN;
+                                    break;
+
+                                case "E0013": //HPGCSN 完成
+                                    tCondition = SRCondition.HPGCSNDONE;
+                                    break;
+
+                                case "E0014": //駁回       
+                                    tCondition = SRCondition.REJECT;
+                                    break;
+
+                                case "E0015": //取消
+                                    tCondition = SRCondition.CANCEL;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            tCondition = SRCondition.SAVE; //保存
+                        }
+                    }                    
                     #endregion
 
                     beanM.cStatus = IV_STATUS;
