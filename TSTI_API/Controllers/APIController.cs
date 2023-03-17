@@ -746,6 +746,12 @@ namespace TSTI_API.Controllers
                     {
                         switch(IV_STATUS)
                         {
+                            case "E0001|E0001": //新建
+                            case "E0001|E0005": //新建
+                                tCondition = SRCondition.ADD;
+                                IV_STATUS = IV_STATUS.Split('|')[1]; //第二個才是實際狀態
+                                break;
+
                             case "E0002": //L2處理中
                             case "E0003": //報價中
                             case "E0005": //L3處理中                            
