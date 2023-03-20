@@ -228,5 +228,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="VIEW_CUSTOMER_WithAddress">
+      <EntityTypeMapping TypeName="ERP_PROXY_DBModel.VIEW_CUSTOMER_WithAddress">
+        <MappingFragment StoreEntitySet="VIEW_CUSTOMER_WithAddress">
+          <ScalarProperty Name="TEL" ColumnName="TEL" />
+          <ScalarProperty Name="STREET" ColumnName="STREET" />
+          <ScalarProperty Name="CITY" ColumnName="CITY" />
+          <ScalarProperty Name="KNVV_KDGRP" ColumnName="KNVV_KDGRP" />
+          <ScalarProperty Name="KNVV_VKORG" ColumnName="KNVV_VKORG" />
+          <ScalarProperty Name="KNA1_NAME1" ColumnName="KNA1_NAME1" />
+          <ScalarProperty Name="KNA1_KUNNR" ColumnName="KNA1_KUNNR" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

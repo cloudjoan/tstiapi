@@ -338,13 +338,13 @@ namespace TSTI_API.Controllers
         /// </summary>
         /// <param name="keyword">客戶代號/客戶名稱</param>
         /// <returns></returns>
-        public List<VIEW_CUSTOMER_2> findCUSTOMERINFO(string keyword)
+        public List<VIEW_CUSTOMER_WithAddress> findCUSTOMERINFO(string keyword)
         {
-            List<VIEW_CUSTOMER_2> tList = new List<VIEW_CUSTOMER_2>();
+            List<VIEW_CUSTOMER_WithAddress> tList = new List<VIEW_CUSTOMER_WithAddress>();
 
             if (keyword != "")
             {
-                tList = dbProxy.VIEW_CUSTOMER_2.Where(x => x.KNA1_KUNNR.Contains(keyword.Trim()) || x.KNA1_NAME1.Contains(keyword.Trim())).Take(30).ToList();               
+                tList = dbProxy.VIEW_CUSTOMER_WithAddress.Where(x => x.KNA1_KUNNR.Contains(keyword.Trim()) || x.KNA1_NAME1.Contains(keyword.Trim())).Take(30).ToList();               
             }
 
             return tList;

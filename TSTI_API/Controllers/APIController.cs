@@ -986,12 +986,20 @@ namespace TSTI_API.Controllers
 
                     foreach (var bean in tList)
                     {
-                        CUSTOMERINFO_LIST beanCust = new CUSTOMERINFO_LIST();
+                        bool tIsExits = checkCustomerIDIsExits(bean.KNA1_KUNNR.Trim(), tCustList);
 
-                        beanCust.CUSTOMERID = bean.KNA1_KUNNR.Trim();
-                        beanCust.CUSTOMERNAME = bean.KNA1_NAME1.Trim();
+                        if (!tIsExits)
+                        {
+                            CUSTOMERINFO_LIST beanCust = new CUSTOMERINFO_LIST();
 
-                        tCustList.Add(beanCust);
+                            beanCust.CUSTOMERID = bean.KNA1_KUNNR.Trim();
+                            beanCust.CUSTOMERNAME = bean.KNA1_NAME1.Trim();
+                            beanCust.CUSTOMERCITY = bean.CITY.Trim();
+                            beanCust.CUSTOMERADDRESS = bean.STREET.Trim();
+                            beanCust.CUSTOMERTEL = bean.TEL.Trim();
+
+                            tCustList.Add(beanCust);
+                        }
                     }
 
                     OUTBean.CUSTOMERINFO_LIST = tCustList;
@@ -1010,6 +1018,30 @@ namespace TSTI_API.Controllers
             }
 
             return OUTBean;
+        }
+        #endregion
+
+        #region 檢查法人客戶ID是否重覆
+        /// <summary>
+        /// 檢查法人客戶ID是否重覆
+        /// </summary>
+        /// <param name="CUSTOMERID">客戶ID</param>
+        /// <param name="tCustList">法人客戶資料OUTPUT資訊清單</param>
+        /// <returns></returns>
+        private bool checkCustomerIDIsExits(string CUSTOMERID, List<CUSTOMERINFO_LIST> tCustList)
+        {
+            bool reValue = false;
+
+            foreach(var tList in tCustList)
+            {
+                if (tList.CUSTOMERID == CUSTOMERID)
+                {
+                    reValue = true;
+                    break;
+                }
+            }
+
+            return reValue;
         }
         #endregion
 
@@ -1040,7 +1072,13 @@ namespace TSTI_API.Controllers
             /// <summary>客戶代號</summary>
             public string CUSTOMERID { get; set; }
             /// <summary>客戶名稱</summary>
-            public string CUSTOMERNAME { get; set; }           
+            public string CUSTOMERNAME { get; set; }
+            /// <summary>客戶公司城市</summary>
+            public string CUSTOMERCITY { get; set; }
+            /// <summary>客戶公司地址</summary>
+            public string CUSTOMERADDRESS { get; set; }
+            /// <summary>客戶公司電話</summary>
+            public string CUSTOMERTEL { get; set; }
         }
         #endregion
 
@@ -1426,7 +1464,7 @@ namespace TSTI_API.Controllers
         #region 取得個人客戶資料
         private PERSONALINFO_OUTPUT PERSONALINFO_GET(PERSONALINFO_INPUT beanIN)
         {
-            PERSONALINFO_OUTPUT OUTBean = new PERSONALINFO_OUTPUT();
+            PERSONALINFO_OUTPUT OUTBean = new PERSONALINFO_OUTPUT();            
 
             try
             {
@@ -1447,12 +1485,21 @@ namespace TSTI_API.Controllers
 
                     foreach (var bean in tList)
                     {
-                        PERSONALINFO_LIST beanCust = new PERSONALINFO_LIST();
+                        bool tIsExits = checkPersonalIDIsExits(bean.KNA1_KUNNR.Trim(), tCustList);
 
-                        beanCust.PERSONALID = bean.KNA1_KUNNR.Trim();
-                        beanCust.PERSONALNAME = bean.KNA1_NAME1.Trim();
+                        if (!tIsExits)
+                        {
+                            PERSONALINFO_LIST beanCust = new PERSONALINFO_LIST();
 
-                        tCustList.Add(beanCust);
+                            beanCust.PERSONALID = bean.KNA1_KUNNR.Trim();
+                            beanCust.PERSONALNAME = bean.KNA1_NAME1.Trim();
+                            beanCust.PERSONALCITY = bean.ContactCity.Trim();
+                            beanCust.PERSONALADDRESS = bean.ContactAddress.Trim();
+                            beanCust.PERSONALTEL = bean.ContactPhone.Trim();
+                            beanCust.PERSONALMOBILE = bean.ContactMobile.Trim();
+
+                            tCustList.Add(beanCust);
+                        }
                     }
 
                     OUTBean.PERSONALINFO_LIST = tCustList;
@@ -1471,6 +1518,30 @@ namespace TSTI_API.Controllers
             }
 
             return OUTBean;
+        }
+        #endregion
+
+        #region 檢查個人客戶ID是否重覆
+        /// <summary>
+        /// 檢查個人客戶ID是否重覆
+        /// </summary>
+        /// <param name="PERSONALID">個人客戶ID</param>
+        /// <param name="tCustList">個人客戶資料OUTPUT資訊清單</param>
+        /// <returns></returns>
+        private bool checkPersonalIDIsExits(string PERSONALID, List<PERSONALINFO_LIST> tCustList)
+        {
+            bool reValue = false;
+
+            foreach (var tList in tCustList)
+            {
+                if (tList.PERSONALID == PERSONALID)
+                {
+                    reValue = true;
+                    break;
+                }
+            }
+
+            return reValue;
         }
         #endregion
 
@@ -1502,6 +1573,14 @@ namespace TSTI_API.Controllers
             public string PERSONALID { get; set; }
             /// <summary>個人客戶名稱</summary>
             public string PERSONALNAME { get; set; }
+            /// <summary>個人客戶城市</summary>
+            public string PERSONALCITY { get; set; }
+            /// <summary>個人客戶地址</summary>
+            public string PERSONALADDRESS { get; set; }
+            /// <summary>個人客戶電話</summary>
+            public string PERSONALTEL { get; set; }
+            /// <summary>個人客戶手機</summary>
+            public string PERSONALMOBILE { get; set; }
         }
         #endregion
 

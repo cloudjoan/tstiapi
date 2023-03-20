@@ -19,6 +19,7 @@
     <EntitySet Name="TB_MAIL_CONTENT" EntityType="ERP_PROXY_DBModel.TB_MAIL_CONTENT" />
     <EntitySet Name="PERSONAL_Contact" EntityType="ERP_PROXY_DBModel.PERSONAL_Contact" />
     <EntitySet Name="STOCKALL" EntityType="ERP_PROXY_DBModel.STOCKALL" />
+    <EntitySet Name="VIEW_CUSTOMER_WithAddress" EntityType="ERP_PROXY_DBModel.VIEW_CUSTOMER_WithAddress" />
   </EntityContainer>
   <EntityType Name="VIEW_MATERIAL_ByComp">
     <Key>
@@ -235,5 +236,18 @@
     <Property Name="ContractEDate" Type="DateTime" Precision="3" />
     <Property Name="RenewStatus" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
     <Property Name="CR_DATE" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="VIEW_CUSTOMER_WithAddress">
+    <Key>
+      <PropertyRef Name="KNA1_KUNNR" />
+      <PropertyRef Name="KNVV_VKORG" />
+    </Key>
+    <Property Name="KNA1_KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="KNA1_NAME1" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+    <Property Name="KNVV_VKORG" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="KNVV_KDGRP" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="CITY" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="STREET" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+    <Property Name="TEL" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

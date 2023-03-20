@@ -215,6 +215,21 @@
     <Property Name="KNVV_KDGRP" Type="nvarchar" MaxLength="2" />
   </EntityType>
   <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'ERP_PROXY_DB.dbo.VIEW_CUSTOMER_WithAddress' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+  <EntityType Name="VIEW_CUSTOMER_WithAddress">
+    <Key>
+      <PropertyRef Name="KNA1_KUNNR" />
+      <PropertyRef Name="KNVV_VKORG" />
+    </Key>
+    <Property Name="KNA1_KUNNR" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="KNA1_NAME1" Type="nvarchar" MaxLength="35" />
+    <Property Name="KNVV_VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="KNVV_KDGRP" Type="nvarchar" MaxLength="2" />
+    <Property Name="CITY" Type="nvarchar" MaxLength="40" />
+    <Property Name="STREET" Type="nvarchar" MaxLength="60" />
+    <Property Name="TEL" Type="nvarchar" MaxLength="30" />
+  </EntityType>
+  <!--產生期間發現錯誤:
 警告 6002: 資料表/檢視 'ERP_PROXY_DB.dbo.VIEW_MATERIAL_ByComp' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
   <EntityType Name="VIEW_MATERIAL_ByComp">
     <Key>
@@ -244,6 +259,17 @@
     [VIEW_CUSTOMER_2].[KNVV_VKORG] AS [KNVV_VKORG], 
     [VIEW_CUSTOMER_2].[KNVV_KDGRP] AS [KNVV_KDGRP]
     FROM [dbo].[VIEW_CUSTOMER_2] AS [VIEW_CUSTOMER_2]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="VIEW_CUSTOMER_WithAddress" EntityType="Self.VIEW_CUSTOMER_WithAddress" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VIEW_CUSTOMER_WithAddress].[KNA1_KUNNR] AS [KNA1_KUNNR], 
+    [VIEW_CUSTOMER_WithAddress].[KNA1_NAME1] AS [KNA1_NAME1], 
+    [VIEW_CUSTOMER_WithAddress].[KNVV_VKORG] AS [KNVV_VKORG], 
+    [VIEW_CUSTOMER_WithAddress].[KNVV_KDGRP] AS [KNVV_KDGRP], 
+    [VIEW_CUSTOMER_WithAddress].[CITY] AS [CITY], 
+    [VIEW_CUSTOMER_WithAddress].[STREET] AS [STREET], 
+    [VIEW_CUSTOMER_WithAddress].[TEL] AS [TEL]
+    FROM [dbo].[VIEW_CUSTOMER_WithAddress] AS [VIEW_CUSTOMER_WithAddress]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="VIEW_MATERIAL_ByComp" EntityType="Self.VIEW_MATERIAL_ByComp" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
