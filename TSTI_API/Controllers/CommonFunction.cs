@@ -1480,13 +1480,24 @@ namespace TSTI_API.Controllers
         /// </summary>
         /// <param name="keyword">料號/料號說明</param>
         /// <returns></returns>
-        public List<VIEW_MATERIAL_ByComp> findMATERIALINFO(string keyword)
+        public List<VIEW_MATERIAL_ByComp> findMATERIALINFO(string keyword, string tCompCde)
         {
             List<VIEW_MATERIAL_ByComp> tList = new List<VIEW_MATERIAL_ByComp>();
 
+            string tPLANT = string.Empty;
+
+            if (tCompCde == "Comp-1")
+            {
+                tPLANT = "12G9";
+            }
+            else if (tCompCde == "Comp-2")
+            {
+                tPLANT = "16G9";
+            }
+
             if (keyword != "")
             {
-                tList = dbProxy.VIEW_MATERIAL_ByComp.Where(x => x.MARA_MATNR.Contains(keyword) || x.MAKT_TXZA1_ZF.Contains(keyword)).Take(8).ToList();
+                tList = dbProxy.VIEW_MATERIAL_ByComp.Where(x => (x.MARA_MATNR.Contains(keyword) || x.MAKT_TXZA1_ZF.Contains(keyword)) && x.MARD_WERKS == tPLANT).Take(8).ToList();
             }
 
             return tList;

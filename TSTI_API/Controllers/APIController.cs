@@ -5910,6 +5910,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
+            //    "IV_LOGINEMPNO": "99120894",
             //    "IV_MATERIAL": "507284"
             //}
             #endregion
@@ -5929,7 +5930,10 @@ namespace TSTI_API.Controllers
 
             try
             {
-                var tList = CMF.findMATERIALINFO(beanIN.IV_MATERIAL.Trim());
+                EmployeeBean EmpBean = new EmployeeBean();
+                EmpBean = CMF.findEmployeeInfoByERPID(beanIN.IV_LOGINEMPNO);
+               
+                var tList = CMF.findMATERIALINFO(beanIN.IV_MATERIAL.Trim(), EmpBean.CompanyCode);
 
                 if (tList.Count == 0)
                 {
@@ -5977,6 +5981,8 @@ namespace TSTI_API.Controllers
         /// <summary>查詢料號資料INPUT資訊</summary>
         public struct MATERIALINFO_INPUT
         {
+            /// <summary>登入者員工編號</summary>
+            public string IV_LOGINEMPNO { get; set; }
             /// <summary>料號/料號說明</summary>
             public string IV_MATERIAL { get; set; }
         }
