@@ -2191,6 +2191,10 @@ namespace TSTI_API.Controllers
                 string cREPAIRMOB = string.IsNullOrEmpty(MainBean.cRepairMobile) ? "" : MainBean.cRepairMobile;
                 string cREPAIREMAIL = string.IsNullOrEmpty(MainBean.cRepairEmail) ? "" : MainBean.cRepairEmail;
                 string cSQEMP = string.IsNullOrEmpty(MainBean.cSQPersonID) ? "" : MainBean.cSQPersonID;
+                
+                string[] cArySLA = CMF.findSRSLACondition(MainBean.cSRID);
+                string cSLARESP = cArySLA[0];
+                string cSLASRV = cArySLA[1];
 
                 SROUT.SRID = MainBean.cSRID;
                 SROUT.STATUS = MainBean.cStatus + "_" + cStatusDesc;
@@ -2218,6 +2222,8 @@ namespace TSTI_API.Controllers
                 SROUT.SQEMP = string.IsNullOrEmpty(cSQEMP) ? "" : cSQEMP + "_" + MainBean.cSQPersonName;
                 SROUT.SALES = cSALES;
                 SROUT.ATTACHURL = cAttchURL;
+                SROUT.SLARESP = cSLARESP;
+                SROUT.SLASRV = cSLASRV;
 
                 SROUT.EV_MSGT = "Y";
                 SROUT.EV_MSG = "";
@@ -2326,6 +2332,10 @@ namespace TSTI_API.Controllers
             public string SALES { get; set; }
             /// <summary>檢附文件URL</summary>
             public string ATTACHURL { get; set; }
+            /// <summary>回應條件</summary>
+            public string SLARESP { get; set; }
+            /// <summary>服務條件</summary>
+            public string SLASRV { get; set; }
             /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
             public string EV_MSGT { get; set; }
             /// <summary>消息內容</summary>
