@@ -2928,9 +2928,11 @@ namespace TSTI_API.Controllers
             //    "IV_StartTime": "2023-01-18 18:25",
             //    "IV_ArriveTime": "2023-01-18 18:50",
             //    "IV_FinishTime": "2023-01-18 19:50",
-            //    "IV_Desc": "TEST處理紀錄",
+            //    "IV_Desc": "一、問題說明：test
+            //                二、問題判斷及處理：test
+            //                三、結論：test",
             //    "IV_CusOpinion": "沒有意見",
-            //    "IV_SRReportFiles": "FILES" //用form-data傳檔案            
+            //    "IV_SRReportFile": "FILES" //用form-data傳檔案            
             //}
             #endregion
 
@@ -4224,7 +4226,8 @@ namespace TSTI_API.Controllers
 
                                     #endregion
 
-                                    iTextSharp.text.Chunk proChunkStart = new iTextSharp.text.Chunk("\n\n服務說明：\n\n", ChFont10);
+                                    //iTextSharp.text.Chunk proChunkStart = new iTextSharp.text.Chunk("\n\n服務說明：\n\n", ChFont10);
+                                    iTextSharp.text.Chunk proChunkStart = new iTextSharp.text.Chunk("\n\n", ChFont10);
                                     proPhraseQus.Add(proChunkStart);
                                     iTextSharp.text.Chunk proChunkDown = new iTextSharp.text.Chunk(IV_Desc, ChFont10);
                                     proPhraseQus.Add(proChunkDown);
@@ -4272,7 +4275,8 @@ namespace TSTI_API.Controllers
                                         ///--20220804-改採用問卷類別來判斷，不用int_totalquestions
                                         #region --服務說明
 
-                                        iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n服務說明：\n\n", ChFont10);
+                                        //iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n服務說明：\n\n", ChFont10);
+                                        iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n", ChFont10);
                                         proPhraseQus2.Add(proChunkStart);
                                         iTextSharp.text.Chunk proChunkDown3 = new iTextSharp.text.Chunk(IV_Desc, ChFont10);
                                         proPhraseQus2.Add(proChunkDown);
@@ -4690,7 +4694,8 @@ namespace TSTI_API.Controllers
                                         var pagenumber = surveyCount + 1;
                                         var row = string.Empty;
 
-                                        iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n服務說明：\n\n", ChFont10);
+                                        //iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n服務說明：\n\n", ChFont10);
+                                        iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n", ChFont10);
                                         proPhraseQus.Add(proChunkStart3);
                                         iTextSharp.text.Chunk proChunkDown3 = new iTextSharp.text.Chunk(IV_Desc, ChFont10);
                                         proPhraseQus.Add(proChunkDown3);
@@ -4758,7 +4763,8 @@ namespace TSTI_API.Controllers
                     //其他照舊，單純顯示處理過程
                     else
                     {
-                        PdfPCell scell1 = new PdfPCell(new iTextSharp.text.Phrase("服務說明：\n\n" + IV_Desc, ChFont10));
+                        //PdfPCell scell1 = new PdfPCell(new iTextSharp.text.Phrase("服務說明：\n\n" + IV_Desc, ChFont10));
+                        PdfPCell scell1 = new PdfPCell(new iTextSharp.text.Phrase("\n\n" + IV_Desc, ChFont10));
                         scell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
                         scell1.BorderWidthLeft = 1;
                         scell1.BorderWidthRight = 1;
@@ -6703,15 +6709,17 @@ namespace TSTI_API.Controllers
         /// <summary>服務案件ID</summary>
         public string SRID { get; set; }
         /// <summary>序號</summary>
-        public string SerialID { get; set; }
+        public string SERIALID { get; set; }
+        /// <summary>更換後序號</summary>
+        public string NEWSERIALID { get; set; }
         /// <summary>物料代號</summary>
-        public string MaterialID { get; set; }
+        public string PRDID { get; set; }
         /// <summary>機器型號</summary>
-        public string MaterialName { get; set; }
+        public string PRDNAME { get; set; }
         /// <summary>製造商零件號碼</summary>
-        public string ProductNumber { get; set; }
+        public string PRDNUMBER { get; set; }
         /// <summary>裝機號碼</summary>
-        public string InstallID { get; set; }
+        public string INSTALLID { get; set; }
     }
     #endregion
 

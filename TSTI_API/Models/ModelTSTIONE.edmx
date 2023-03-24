@@ -104,6 +104,7 @@
           <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="cSRID" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="cSerialID" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="cNewSerialID" Type="nvarchar" MaxLength="40" />
           <Property Name="cMaterialID" Type="nvarchar" MaxLength="20" />
           <Property Name="cMaterialName" Type="nvarchar" MaxLength="255" />
           <Property Name="cProductNumber" Type="nvarchar" MaxLength="50" />
@@ -286,7 +287,6 @@
         <EntityContainer Name="TSTIONEEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TB_ONE_SRDetail_Contact" EntityType="Model.TB_ONE_SRDetail_Contact" />
           <EntitySet Name="TB_ONE_SRDetail_PartsReplace" EntityType="Model.TB_ONE_SRDetail_PartsReplace" />
-          <EntitySet Name="TB_ONE_SRDetail_Product" EntityType="Model.TB_ONE_SRDetail_Product" />
           <EntitySet Name="TB_ONE_SRDetail_Record" EntityType="Model.TB_ONE_SRDetail_Record" />
           <EntitySet Name="TB_ONE_SRDetail_Warranty" EntityType="Model.TB_ONE_SRDetail_Warranty" />
           <EntitySet Name="TB_ONE_LOG" EntityType="Model.TB_ONE_LOG" />
@@ -298,6 +298,7 @@
           <EntitySet Name="TB_ONE_DOCUMENT" EntityType="Model.TB_ONE_DOCUMENT" />
           <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
           <EntitySet Name="TB_ONE_ReportFormat" EntityType="Model.TB_ONE_ReportFormat" />
+          <EntitySet Name="TB_ONE_SRDetail_Product" EntityType="Model.TB_ONE_SRDetail_Product" />
           </EntityContainer>
         <EntityType Name="TB_ONE_SRDetail_Contact">
           <Key>
@@ -335,23 +336,6 @@
           <Property Name="cReturnDate" Type="DateTime" Precision="3" />
           <Property Name="cPersonalDamage" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="cNote" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Disabled" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TB_ONE_SRDetail_Product">
-          <Key>
-            <PropertyRef Name="cID" />
-          </Key>
-          <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="cSRID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="cSerialID" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="cMaterialID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="cMaterialName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="cProductNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="cInstallID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Disabled" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -557,6 +541,24 @@
           <Property Name="cTitle" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
           <Property Name="cNO" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="TB_ONE_SRDetail_Product">
+          <Key>
+            <PropertyRef Name="cID" />
+          </Key>
+          <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cSRID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cSerialID" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cNewSerialID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cMaterialID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cMaterialName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cProductNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cInstallID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Disabled" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -602,24 +604,6 @@
                 <ScalarProperty Name="cMaterialName" ColumnName="cMaterialName" />
                 <ScalarProperty Name="cMaterialID" ColumnName="cMaterialID" />
                 <ScalarProperty Name="cXCHP" ColumnName="cXCHP" />
-                <ScalarProperty Name="cSRID" ColumnName="cSRID" />
-                <ScalarProperty Name="cID" ColumnName="cID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TB_ONE_SRDetail_Product">
-            <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_Product">
-              <MappingFragment StoreEntitySet="TB_ONE_SRDetail_Product">
-                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
-                <ScalarProperty Name="cInstallID" ColumnName="cInstallID" />
-                <ScalarProperty Name="cProductNumber" ColumnName="cProductNumber" />
-                <ScalarProperty Name="cMaterialName" ColumnName="cMaterialName" />
-                <ScalarProperty Name="cMaterialID" ColumnName="cMaterialID" />
-                <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
                 <ScalarProperty Name="cSRID" ColumnName="cSRID" />
                 <ScalarProperty Name="cID" ColumnName="cID" />
               </MappingFragment>
@@ -826,6 +810,25 @@
               <MappingFragment StoreEntitySet="TB_ONE_ReportFormat">
                 <ScalarProperty Name="cNO" ColumnName="cNO" />
                 <ScalarProperty Name="cTitle" ColumnName="cTitle" />
+                <ScalarProperty Name="cID" ColumnName="cID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_ONE_SRDetail_Product">
+            <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_Product">
+              <MappingFragment StoreEntitySet="TB_ONE_SRDetail_Product">
+                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="cInstallID" ColumnName="cInstallID" />
+                <ScalarProperty Name="cProductNumber" ColumnName="cProductNumber" />
+                <ScalarProperty Name="cMaterialName" ColumnName="cMaterialName" />
+                <ScalarProperty Name="cMaterialID" ColumnName="cMaterialID" />
+                <ScalarProperty Name="cNewSerialID" ColumnName="cNewSerialID" />
+                <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
+                <ScalarProperty Name="cSRID" ColumnName="cSRID" />
                 <ScalarProperty Name="cID" ColumnName="cID" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -17,6 +17,7 @@ namespace TSTI_API.Models
         public int cID { get; set; }
         public string cSRID { get; set; }
         public string cSerialID { get; set; }
+        public string cNewSerialID { get; set; }
         public string cMaterialID { get; set; }
         public string cMaterialName { get; set; }
         public string cProductNumber { get; set; }

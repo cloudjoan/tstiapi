@@ -1040,11 +1040,12 @@ namespace TSTI_API.Controllers
                 SRSERIALMATERIALINFO SRSerial = new SRSERIALMATERIALINFO();
 
                 SRSerial.SRID = bean.cSRID;
-                SRSerial.SerialID = bean.cSerialID;
-                SRSerial.MaterialID = bean.cMaterialID;
-                SRSerial.MaterialName = bean.cMaterialName;
-                SRSerial.ProductNumber = bean.cProductNumber;
-                SRSerial.InstallID = bean.cInstallID;
+                SRSerial.SERIALID = bean.cSerialID;
+                SRSerial.NEWSERIALID = bean.cNewSerialID;
+                SRSerial.PRDID = bean.cMaterialID;
+                SRSerial.PRDNAME = bean.cMaterialName;
+                SRSerial.PRDNUMBER = bean.cProductNumber;
+                SRSerial.INSTALLID = bean.cInstallID;
 
                 tList.Add(SRSerial);
             }
@@ -2856,6 +2857,7 @@ namespace TSTI_API.Controllers
                 strHTML.AppendLine("    <table style='width:720pt;font-family:微軟正黑體;' align='left' border='1'>");
                 strHTML.AppendLine("        <tr>");
                 strHTML.AppendLine("            <td>序號</td>");
+                strHTML.AppendLine("            <td>更換後序號</td>");
                 strHTML.AppendLine("            <td>機器型號</td>");
                 strHTML.AppendLine("            <td>Product Number</td>");
                 strHTML.AppendLine("            <td>料號</td>");
@@ -2865,11 +2867,12 @@ namespace TSTI_API.Controllers
                 foreach (var bean in SRSeiral_List)
                 {
                     strHTML.AppendLine("        <tr>");
-                    strHTML.AppendLine("            <td>" + bean.SerialID + "</td>");
-                    strHTML.AppendLine("            <td>" + bean.MaterialName + "</td>");
-                    strHTML.AppendLine("            <td>" + bean.ProductNumber + "</td>");
-                    strHTML.AppendLine("            <td>" + bean.MaterialID + "</td>");
-                    strHTML.AppendLine("            <td>" + bean.InstallID + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.SERIALID + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.NEWSERIALID + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.PRDNAME + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.PRDNUMBER + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.PRDID + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.INSTALLID + "</td>");
                     strHTML.AppendLine("        </tr>");
                 }
 
@@ -3523,9 +3526,9 @@ namespace TSTI_API.Controllers
 
                 foreach(var bean in SRSeiral_List)
                 {
-                    MaterialName = bean.MaterialName;
-                    SerialID = bean.SerialID;
-                    ProductNumber = bean.ProductNumber;
+                    MaterialName = bean.PRDNAME;
+                    SerialID = bean.SERIALID;
+                    ProductNumber = bean.PRDNUMBER;
                     
                     break;
                 }

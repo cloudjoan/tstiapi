@@ -99,6 +99,7 @@
     <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="cSRID" Type="nvarchar" MaxLength="20" Nullable="false" />
     <Property Name="cSerialID" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="cNewSerialID" Type="nvarchar" MaxLength="40" />
     <Property Name="cMaterialID" Type="nvarchar" MaxLength="20" />
     <Property Name="cMaterialName" Type="nvarchar" MaxLength="255" />
     <Property Name="cProductNumber" Type="nvarchar" MaxLength="50" />
