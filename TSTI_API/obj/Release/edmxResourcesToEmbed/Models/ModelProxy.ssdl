@@ -27,6 +27,35 @@
     <Property Name="MainModifiedUserName" Type="nvarchar" MaxLength="50" />
     <Property Name="MainModifiedDate" Type="datetime" />
   </EntityType>
+  <EntityType Name="F0005">
+    <Key>
+      <PropertyRef Name="MODT" />
+      <PropertyRef Name="ALIAS" />
+      <PropertyRef Name="CODET" />
+      <PropertyRef Name="CODETS" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MODT" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ALIAS" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="CODET" Type="varchar" MaxLength="40" Nullable="false" />
+    <Property Name="CODETS" Type="varchar" MaxLength="40" Nullable="false" />
+    <Property Name="DSC1" Type="nvarchar" MaxLength="80" />
+    <Property Name="DSC2" Type="nvarchar" MaxLength="80" />
+    <Property Name="RMK" Type="nvarchar" MaxLength="80" />
+    <Property Name="COSO" Type="int" />
+    <Property Name="RE1" Type="nvarchar" MaxLength="255" />
+    <Property Name="RE2" Type="nvarchar" MaxLength="255" />
+    <Property Name="RE3" Type="int" />
+    <Property Name="RE4" Type="int" />
+    <Property Name="RE5" Type="smalldatetime" />
+    <Property Name="RE6" Type="smalldatetime" />
+    <Property Name="CR_USER" Type="varchar" MaxLength="20" />
+    <Property Name="CR_DATE" Type="smalldatetime" />
+    <Property Name="AP_USER" Type="varchar" MaxLength="20" />
+    <Property Name="AP_DATE" Type="smalldatetime" />
+    <Property Name="UP_USER" Type="varchar" MaxLength="20" />
+    <Property Name="UP_DATE" Type="smalldatetime" />
+  </EntityType>
   <EntityType Name="F4501">
     <Key>
       <PropertyRef Name="ID" />
@@ -194,6 +223,77 @@
     <Property Name="RenewStatus" Type="varchar" MaxLength="2" />
     <Property Name="CR_DATE" Type="datetime" />
   </EntityType>
+  <EntityType Name="STOCKIN">
+    <Key>
+      <PropertyRef Name="IV_SERIAL" />
+    </Key>
+    <Property Name="IV_SERIAL" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="IV_PONO" Type="nvarchar" MaxLength="10" />
+    <Property Name="IV_GRDATE" Type="datetime" />
+    <Property Name="IV_VENDOR" Type="nvarchar" MaxLength="10" />
+    <Property Name="IV_VNAME" Type="nvarchar" MaxLength="40" />
+    <Property Name="IV_MATERIAL" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="IV_DESC" Type="nvarchar" MaxLength="50" />
+    <Property Name="IV_WTYID" Type="nvarchar" MaxLength="40" />
+    <Property Name="IV_WTYDESC" Type="nvarchar" MaxLength="50" />
+    <Property Name="IV_SDATE" Type="datetime" />
+    <Property Name="IV_EDATE" Type="datetime" />
+    <Property Name="CR_USER" Type="varchar" MaxLength="20" />
+    <Property Name="CR_DATE" Type="datetime" />
+    <Property Name="UP_USER" Type="varchar" MaxLength="20" />
+    <Property Name="UP_DATE" Type="datetime" />
+  </EntityType>
+  <EntityType Name="STOCKOUT">
+    <Key>
+      <PropertyRef Name="IV_SERIAL" />
+    </Key>
+    <Property Name="IV_SERIAL" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="IV_SONO" Type="nvarchar" MaxLength="10" />
+    <Property Name="IV_DNNO" Type="nvarchar" MaxLength="10" />
+    <Property Name="IV_DNDATE" Type="datetime" />
+    <Property Name="IV_CID" Type="nvarchar" MaxLength="10" />
+    <Property Name="IV_MATERIAL" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="IV_DESC" Type="nvarchar" MaxLength="50" />
+    <Property Name="IV_WTYID" Type="nvarchar" MaxLength="40" />
+    <Property Name="IV_WTYDESC" Type="nvarchar" MaxLength="50" />
+    <Property Name="IV_SDATE" Type="datetime" />
+    <Property Name="IV_EDATE" Type="datetime" />
+    <Property Name="IV_SLASRV" Type="nvarchar" MaxLength="10" />
+    <Property Name="IV_SLARESP" Type="nvarchar" MaxLength="10" />
+    <Property Name="IV_PNUMBER" Type="nvarchar" MaxLength="100" />
+    <Property Name="IV_BRAND" Type="nvarchar" MaxLength="100" />
+    <Property Name="CR_USER" Type="varchar" MaxLength="20" />
+    <Property Name="CR_DATE" Type="datetime" />
+    <Property Name="UP_USER" Type="varchar" MaxLength="20" />
+    <Property Name="UP_DATE" Type="datetime" />
+  </EntityType>
+  <EntityType Name="STOCKWTY">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IV_SERIAL" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="IV_SONO" Type="nvarchar" MaxLength="10" />
+    <Property Name="IV_DNDATE" Type="datetime" />
+    <Property Name="IV_CID" Type="nvarchar" MaxLength="10" />
+    <Property Name="IV_WTYID" Type="nvarchar" MaxLength="40" />
+    <Property Name="IV_WTYDESC" Type="nvarchar" MaxLength="50" />
+    <Property Name="IV_SDATE" Type="datetime" />
+    <Property Name="IV_EDATE" Type="datetime" />
+    <Property Name="IV_SLASRV" Type="nvarchar" MaxLength="10" />
+    <Property Name="IV_SLARESP" Type="nvarchar" MaxLength="10" />
+    <Property Name="BP_NO" Type="nvarchar" MaxLength="40" />
+    <Property Name="CARE_PACK_NO" Type="nvarchar" MaxLength="50" />
+    <Property Name="NOTE" Type="nvarchar(max)" />
+    <Property Name="BPM_NO" Type="nvarchar" MaxLength="20" />
+    <Property Name="ADVICE" Type="nvarchar(max)" />
+    <Property Name="ReceiptNo" Type="nvarchar" MaxLength="100" />
+    <Property Name="ReceiptDate" Type="nvarchar" MaxLength="22" />
+    <Property Name="CR_USER" Type="varchar" MaxLength="20" />
+    <Property Name="CR_DATE" Type="datetime" />
+    <Property Name="UP_USER" Type="varchar" MaxLength="20" />
+    <Property Name="UP_DATE" Type="datetime" />
+  </EntityType>
   <EntityType Name="TB_MAIL_CONTENT">
     <Key>
       <PropertyRef Name="ID" />
@@ -247,10 +347,14 @@
   </EntityType>
   <EntityContainer Name="ERP_PROXY_DBModelStoreContainer">
     <EntitySet Name="CUSTOMER_Contact" EntityType="Self.CUSTOMER_Contact" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="F0005" EntityType="Self.F0005" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="F4501" EntityType="Self.F4501" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MATERIAL" EntityType="Self.MATERIAL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PERSONAL_Contact" EntityType="Self.PERSONAL_Contact" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="STOCKALL" EntityType="Self.STOCKALL" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="STOCKIN" EntityType="Self.STOCKIN" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="STOCKOUT" EntityType="Self.STOCKOUT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="STOCKWTY" EntityType="Self.STOCKWTY" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_MAIL_CONTENT" EntityType="Self.TB_MAIL_CONTENT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="VIEW_CUSTOMER_2" EntityType="Self.VIEW_CUSTOMER_2" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 

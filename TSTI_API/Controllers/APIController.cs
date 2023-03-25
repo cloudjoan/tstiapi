@@ -6495,7 +6495,7 @@ namespace TSTI_API.Controllers
             //{
             //    "IV_LOGINEMPNAME": "張豐穎 Elvis Chang",
             //    "IV_SN": "SGH33223R6",
-            //    "IV_SNNEW": "SGH33223R5",
+            //    "IV_SNNEW": "",
             //    "IV_MATERIALNO": "G-654081B21-057",
             //    "IV_PID": "DL360pG8 E5-2650/8G*2/146G15K*2/D/R/IC-E",
             //    "IV_SO": "1230021104",

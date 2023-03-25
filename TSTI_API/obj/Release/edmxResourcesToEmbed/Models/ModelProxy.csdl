@@ -20,6 +20,10 @@
     <EntitySet Name="PERSONAL_Contact" EntityType="ERP_PROXY_DBModel.PERSONAL_Contact" />
     <EntitySet Name="STOCKALL" EntityType="ERP_PROXY_DBModel.STOCKALL" />
     <EntitySet Name="VIEW_CUSTOMER_WithAddress" EntityType="ERP_PROXY_DBModel.VIEW_CUSTOMER_WithAddress" />
+    <EntitySet Name="STOCKIN" EntityType="ERP_PROXY_DBModel.STOCKIN" />
+    <EntitySet Name="STOCKOUT" EntityType="ERP_PROXY_DBModel.STOCKOUT" />
+    <EntitySet Name="STOCKWTY" EntityType="ERP_PROXY_DBModel.STOCKWTY" />
+    <EntitySet Name="F0005" EntityType="ERP_PROXY_DBModel.F0005" />
   </EntityContainer>
   <EntityType Name="VIEW_MATERIAL_ByComp">
     <Key>
@@ -249,5 +253,105 @@
     <Property Name="CITY" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
     <Property Name="STREET" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
     <Property Name="TEL" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="STOCKIN">
+    <Key>
+      <PropertyRef Name="IV_SERIAL" />
+    </Key>
+    <Property Name="IV_SERIAL" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IV_PONO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_GRDATE" Type="DateTime" Precision="3" />
+    <Property Name="IV_VENDOR" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_VNAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IV_MATERIAL" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IV_DESC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IV_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IV_WTYDESC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IV_SDATE" Type="DateTime" Precision="3" />
+    <Property Name="IV_EDATE" Type="DateTime" Precision="3" />
+    <Property Name="CR_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CR_DATE" Type="DateTime" Precision="3" />
+    <Property Name="UP_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="UP_DATE" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="STOCKOUT">
+    <Key>
+      <PropertyRef Name="IV_SERIAL" />
+    </Key>
+    <Property Name="IV_SERIAL" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IV_SONO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_DNNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_DNDATE" Type="DateTime" Precision="3" />
+    <Property Name="IV_CID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_MATERIAL" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IV_DESC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IV_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IV_WTYDESC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IV_SDATE" Type="DateTime" Precision="3" />
+    <Property Name="IV_EDATE" Type="DateTime" Precision="3" />
+    <Property Name="IV_SLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_SLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_PNUMBER" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="IV_BRAND" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CR_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CR_DATE" Type="DateTime" Precision="3" />
+    <Property Name="UP_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="UP_DATE" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="STOCKWTY">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="Guid" Nullable="false" />
+    <Property Name="IV_SERIAL" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IV_SONO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_DNDATE" Type="DateTime" Precision="3" />
+    <Property Name="IV_CID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IV_WTYDESC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IV_SDATE" Type="DateTime" Precision="3" />
+    <Property Name="IV_EDATE" Type="DateTime" Precision="3" />
+    <Property Name="IV_SLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="IV_SLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="BP_NO" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="CARE_PACK_NO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NOTE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="BPM_NO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ADVICE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ReceiptNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ReceiptDate" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+    <Property Name="CR_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CR_DATE" Type="DateTime" Precision="3" />
+    <Property Name="UP_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="UP_DATE" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="F0005">
+    <Key>
+      <PropertyRef Name="MODT" />
+      <PropertyRef Name="ALIAS" />
+      <PropertyRef Name="CODET" />
+      <PropertyRef Name="CODETS" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MODT" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ALIAS" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CODET" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+    <Property Name="CODETS" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+    <Property Name="DSC1" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+    <Property Name="DSC2" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+    <Property Name="RMK" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+    <Property Name="COSO" Type="Int32" />
+    <Property Name="RE1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="RE2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="RE3" Type="Int32" />
+    <Property Name="RE4" Type="Int32" />
+    <Property Name="RE5" Type="DateTime" Precision="0" />
+    <Property Name="RE6" Type="DateTime" Precision="0" />
+    <Property Name="CR_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CR_DATE" Type="DateTime" Precision="0" />
+    <Property Name="AP_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="AP_DATE" Type="DateTime" Precision="0" />
+    <Property Name="UP_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="UP_DATE" Type="DateTime" Precision="0" />
   </EntityType>
 </Schema>
