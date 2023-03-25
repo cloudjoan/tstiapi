@@ -32,6 +32,35 @@
           <Property Name="MainModifiedUserName" Type="nvarchar" MaxLength="50" />
           <Property Name="MainModifiedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="F0005">
+          <Key>
+            <PropertyRef Name="MODT" />
+            <PropertyRef Name="ALIAS" />
+            <PropertyRef Name="CODET" />
+            <PropertyRef Name="CODETS" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MODT" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ALIAS" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CODET" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="CODETS" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="DSC1" Type="nvarchar" MaxLength="80" />
+          <Property Name="DSC2" Type="nvarchar" MaxLength="80" />
+          <Property Name="RMK" Type="nvarchar" MaxLength="80" />
+          <Property Name="COSO" Type="int" />
+          <Property Name="RE1" Type="nvarchar" MaxLength="255" />
+          <Property Name="RE2" Type="nvarchar" MaxLength="255" />
+          <Property Name="RE3" Type="int" />
+          <Property Name="RE4" Type="int" />
+          <Property Name="RE5" Type="smalldatetime" />
+          <Property Name="RE6" Type="smalldatetime" />
+          <Property Name="CR_USER" Type="varchar" MaxLength="20" />
+          <Property Name="CR_DATE" Type="smalldatetime" />
+          <Property Name="AP_USER" Type="varchar" MaxLength="20" />
+          <Property Name="AP_DATE" Type="smalldatetime" />
+          <Property Name="UP_USER" Type="varchar" MaxLength="20" />
+          <Property Name="UP_DATE" Type="smalldatetime" />
+        </EntityType>
         <EntityType Name="F4501">
           <Key>
             <PropertyRef Name="ID" />
@@ -199,6 +228,77 @@
           <Property Name="RenewStatus" Type="varchar" MaxLength="2" />
           <Property Name="CR_DATE" Type="datetime" />
         </EntityType>
+        <EntityType Name="STOCKIN">
+          <Key>
+            <PropertyRef Name="IV_SERIAL" />
+          </Key>
+          <Property Name="IV_SERIAL" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="IV_PONO" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_GRDATE" Type="datetime" />
+          <Property Name="IV_VENDOR" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_VNAME" Type="nvarchar" MaxLength="40" />
+          <Property Name="IV_MATERIAL" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="IV_DESC" Type="nvarchar" MaxLength="50" />
+          <Property Name="IV_WTYID" Type="nvarchar" MaxLength="40" />
+          <Property Name="IV_WTYDESC" Type="nvarchar" MaxLength="50" />
+          <Property Name="IV_SDATE" Type="datetime" />
+          <Property Name="IV_EDATE" Type="datetime" />
+          <Property Name="CR_USER" Type="varchar" MaxLength="20" />
+          <Property Name="CR_DATE" Type="datetime" />
+          <Property Name="UP_USER" Type="varchar" MaxLength="20" />
+          <Property Name="UP_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="STOCKOUT">
+          <Key>
+            <PropertyRef Name="IV_SERIAL" />
+          </Key>
+          <Property Name="IV_SERIAL" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="IV_SONO" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_DNNO" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_DNDATE" Type="datetime" />
+          <Property Name="IV_CID" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_MATERIAL" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="IV_DESC" Type="nvarchar" MaxLength="50" />
+          <Property Name="IV_WTYID" Type="nvarchar" MaxLength="40" />
+          <Property Name="IV_WTYDESC" Type="nvarchar" MaxLength="50" />
+          <Property Name="IV_SDATE" Type="datetime" />
+          <Property Name="IV_EDATE" Type="datetime" />
+          <Property Name="IV_SLASRV" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_SLARESP" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_PNUMBER" Type="nvarchar" MaxLength="100" />
+          <Property Name="IV_BRAND" Type="nvarchar" MaxLength="100" />
+          <Property Name="CR_USER" Type="varchar" MaxLength="20" />
+          <Property Name="CR_DATE" Type="datetime" />
+          <Property Name="UP_USER" Type="varchar" MaxLength="20" />
+          <Property Name="UP_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="STOCKWTY">
+          <Key>
+            <PropertyRef Name="cID" />
+          </Key>
+          <Property Name="cID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IV_SERIAL" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="IV_SONO" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_DNDATE" Type="datetime" />
+          <Property Name="IV_CID" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_WTYID" Type="nvarchar" MaxLength="40" />
+          <Property Name="IV_WTYDESC" Type="nvarchar" MaxLength="50" />
+          <Property Name="IV_SDATE" Type="datetime" />
+          <Property Name="IV_EDATE" Type="datetime" />
+          <Property Name="IV_SLASRV" Type="nvarchar" MaxLength="10" />
+          <Property Name="IV_SLARESP" Type="nvarchar" MaxLength="10" />
+          <Property Name="BP_NO" Type="nvarchar" MaxLength="40" />
+          <Property Name="CARE_PACK_NO" Type="nvarchar" MaxLength="50" />
+          <Property Name="NOTE" Type="nvarchar(max)" />
+          <Property Name="BPM_NO" Type="nvarchar" MaxLength="20" />
+          <Property Name="ADVICE" Type="nvarchar(max)" />
+          <Property Name="ReceiptNo" Type="nvarchar" MaxLength="100" />
+          <Property Name="ReceiptDate" Type="nvarchar" MaxLength="22" />
+          <Property Name="CR_USER" Type="varchar" MaxLength="20" />
+          <Property Name="CR_DATE" Type="datetime" />
+          <Property Name="UP_USER" Type="varchar" MaxLength="20" />
+          <Property Name="UP_DATE" Type="datetime" />
+        </EntityType>
         <EntityType Name="TB_MAIL_CONTENT">
           <Key>
             <PropertyRef Name="ID" />
@@ -252,10 +352,14 @@
         </EntityType>
         <EntityContainer Name="ERP_PROXY_DBModelStoreContainer">
           <EntitySet Name="CUSTOMER_Contact" EntityType="Self.CUSTOMER_Contact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="F0005" EntityType="Self.F0005" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="F4501" EntityType="Self.F4501" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MATERIAL" EntityType="Self.MATERIAL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERSONAL_Contact" EntityType="Self.PERSONAL_Contact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="STOCKALL" EntityType="Self.STOCKALL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STOCKIN" EntityType="Self.STOCKIN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STOCKOUT" EntityType="Self.STOCKOUT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STOCKWTY" EntityType="Self.STOCKWTY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_MAIL_CONTENT" EntityType="Self.TB_MAIL_CONTENT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VIEW_CUSTOMER_2" EntityType="Self.VIEW_CUSTOMER_2" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -312,6 +416,10 @@
           <EntitySet Name="PERSONAL_Contact" EntityType="ERP_PROXY_DBModel.PERSONAL_Contact" />
           <EntitySet Name="STOCKALL" EntityType="ERP_PROXY_DBModel.STOCKALL" />
           <EntitySet Name="VIEW_CUSTOMER_WithAddress" EntityType="ERP_PROXY_DBModel.VIEW_CUSTOMER_WithAddress" />
+          <EntitySet Name="STOCKIN" EntityType="ERP_PROXY_DBModel.STOCKIN" />
+          <EntitySet Name="STOCKOUT" EntityType="ERP_PROXY_DBModel.STOCKOUT" />
+          <EntitySet Name="STOCKWTY" EntityType="ERP_PROXY_DBModel.STOCKWTY" />
+          <EntitySet Name="F0005" EntityType="ERP_PROXY_DBModel.F0005" />
         </EntityContainer>
         <EntityType Name="VIEW_MATERIAL_ByComp">
           <Key>
@@ -541,6 +649,106 @@
           <Property Name="CITY" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="STREET" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
           <Property Name="TEL" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="STOCKIN">
+          <Key>
+            <PropertyRef Name="IV_SERIAL" />
+          </Key>
+          <Property Name="IV_SERIAL" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="IV_PONO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_GRDATE" Type="DateTime" Precision="3" />
+          <Property Name="IV_VENDOR" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_VNAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="IV_MATERIAL" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="IV_DESC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IV_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="IV_WTYDESC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IV_SDATE" Type="DateTime" Precision="3" />
+          <Property Name="IV_EDATE" Type="DateTime" Precision="3" />
+          <Property Name="CR_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CR_DATE" Type="DateTime" Precision="3" />
+          <Property Name="UP_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UP_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="STOCKOUT">
+          <Key>
+            <PropertyRef Name="IV_SERIAL" />
+          </Key>
+          <Property Name="IV_SERIAL" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="IV_SONO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_DNNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_DNDATE" Type="DateTime" Precision="3" />
+          <Property Name="IV_CID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_MATERIAL" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="IV_DESC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IV_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="IV_WTYDESC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IV_SDATE" Type="DateTime" Precision="3" />
+          <Property Name="IV_EDATE" Type="DateTime" Precision="3" />
+          <Property Name="IV_SLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_SLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_PNUMBER" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IV_BRAND" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CR_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CR_DATE" Type="DateTime" Precision="3" />
+          <Property Name="UP_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UP_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="STOCKWTY">
+          <Key>
+            <PropertyRef Name="cID" />
+          </Key>
+          <Property Name="cID" Type="Guid" Nullable="false" />
+          <Property Name="IV_SERIAL" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="IV_SONO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_DNDATE" Type="DateTime" Precision="3" />
+          <Property Name="IV_CID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_WTYID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="IV_WTYDESC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IV_SDATE" Type="DateTime" Precision="3" />
+          <Property Name="IV_EDATE" Type="DateTime" Precision="3" />
+          <Property Name="IV_SLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IV_SLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="BP_NO" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="CARE_PACK_NO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NOTE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BPM_NO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ADVICE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReceiptNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ReceiptDate" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="CR_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CR_DATE" Type="DateTime" Precision="3" />
+          <Property Name="UP_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UP_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="F0005">
+          <Key>
+            <PropertyRef Name="MODT" />
+            <PropertyRef Name="ALIAS" />
+            <PropertyRef Name="CODET" />
+            <PropertyRef Name="CODETS" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MODT" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALIAS" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CODET" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="CODETS" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="DSC1" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="DSC2" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="RMK" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="COSO" Type="Int32" />
+          <Property Name="RE1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RE2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RE3" Type="Int32" />
+          <Property Name="RE4" Type="Int32" />
+          <Property Name="RE5" Type="DateTime" Precision="0" />
+          <Property Name="RE6" Type="DateTime" Precision="0" />
+          <Property Name="CR_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CR_DATE" Type="DateTime" Precision="0" />
+          <Property Name="AP_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="AP_DATE" Type="DateTime" Precision="0" />
+          <Property Name="UP_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UP_DATE" Type="DateTime" Precision="0" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -785,6 +993,107 @@
                 <ScalarProperty Name="KNVV_VKORG" ColumnName="KNVV_VKORG" />
                 <ScalarProperty Name="KNA1_NAME1" ColumnName="KNA1_NAME1" />
                 <ScalarProperty Name="KNA1_KUNNR" ColumnName="KNA1_KUNNR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STOCKIN">
+            <EntityTypeMapping TypeName="ERP_PROXY_DBModel.STOCKIN">
+              <MappingFragment StoreEntitySet="STOCKIN">
+                <ScalarProperty Name="UP_DATE" ColumnName="UP_DATE" />
+                <ScalarProperty Name="UP_USER" ColumnName="UP_USER" />
+                <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+                <ScalarProperty Name="CR_USER" ColumnName="CR_USER" />
+                <ScalarProperty Name="IV_EDATE" ColumnName="IV_EDATE" />
+                <ScalarProperty Name="IV_SDATE" ColumnName="IV_SDATE" />
+                <ScalarProperty Name="IV_WTYDESC" ColumnName="IV_WTYDESC" />
+                <ScalarProperty Name="IV_WTYID" ColumnName="IV_WTYID" />
+                <ScalarProperty Name="IV_DESC" ColumnName="IV_DESC" />
+                <ScalarProperty Name="IV_MATERIAL" ColumnName="IV_MATERIAL" />
+                <ScalarProperty Name="IV_VNAME" ColumnName="IV_VNAME" />
+                <ScalarProperty Name="IV_VENDOR" ColumnName="IV_VENDOR" />
+                <ScalarProperty Name="IV_GRDATE" ColumnName="IV_GRDATE" />
+                <ScalarProperty Name="IV_PONO" ColumnName="IV_PONO" />
+                <ScalarProperty Name="IV_SERIAL" ColumnName="IV_SERIAL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STOCKOUT">
+            <EntityTypeMapping TypeName="ERP_PROXY_DBModel.STOCKOUT">
+              <MappingFragment StoreEntitySet="STOCKOUT">
+                <ScalarProperty Name="UP_DATE" ColumnName="UP_DATE" />
+                <ScalarProperty Name="UP_USER" ColumnName="UP_USER" />
+                <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+                <ScalarProperty Name="CR_USER" ColumnName="CR_USER" />
+                <ScalarProperty Name="IV_BRAND" ColumnName="IV_BRAND" />
+                <ScalarProperty Name="IV_PNUMBER" ColumnName="IV_PNUMBER" />
+                <ScalarProperty Name="IV_SLARESP" ColumnName="IV_SLARESP" />
+                <ScalarProperty Name="IV_SLASRV" ColumnName="IV_SLASRV" />
+                <ScalarProperty Name="IV_EDATE" ColumnName="IV_EDATE" />
+                <ScalarProperty Name="IV_SDATE" ColumnName="IV_SDATE" />
+                <ScalarProperty Name="IV_WTYDESC" ColumnName="IV_WTYDESC" />
+                <ScalarProperty Name="IV_WTYID" ColumnName="IV_WTYID" />
+                <ScalarProperty Name="IV_DESC" ColumnName="IV_DESC" />
+                <ScalarProperty Name="IV_MATERIAL" ColumnName="IV_MATERIAL" />
+                <ScalarProperty Name="IV_CID" ColumnName="IV_CID" />
+                <ScalarProperty Name="IV_DNDATE" ColumnName="IV_DNDATE" />
+                <ScalarProperty Name="IV_DNNO" ColumnName="IV_DNNO" />
+                <ScalarProperty Name="IV_SONO" ColumnName="IV_SONO" />
+                <ScalarProperty Name="IV_SERIAL" ColumnName="IV_SERIAL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STOCKWTY">
+            <EntityTypeMapping TypeName="ERP_PROXY_DBModel.STOCKWTY">
+              <MappingFragment StoreEntitySet="STOCKWTY">
+                <ScalarProperty Name="UP_DATE" ColumnName="UP_DATE" />
+                <ScalarProperty Name="UP_USER" ColumnName="UP_USER" />
+                <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+                <ScalarProperty Name="CR_USER" ColumnName="CR_USER" />
+                <ScalarProperty Name="ReceiptDate" ColumnName="ReceiptDate" />
+                <ScalarProperty Name="ReceiptNo" ColumnName="ReceiptNo" />
+                <ScalarProperty Name="ADVICE" ColumnName="ADVICE" />
+                <ScalarProperty Name="BPM_NO" ColumnName="BPM_NO" />
+                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+                <ScalarProperty Name="CARE_PACK_NO" ColumnName="CARE_PACK_NO" />
+                <ScalarProperty Name="BP_NO" ColumnName="BP_NO" />
+                <ScalarProperty Name="IV_SLARESP" ColumnName="IV_SLARESP" />
+                <ScalarProperty Name="IV_SLASRV" ColumnName="IV_SLASRV" />
+                <ScalarProperty Name="IV_EDATE" ColumnName="IV_EDATE" />
+                <ScalarProperty Name="IV_SDATE" ColumnName="IV_SDATE" />
+                <ScalarProperty Name="IV_WTYDESC" ColumnName="IV_WTYDESC" />
+                <ScalarProperty Name="IV_WTYID" ColumnName="IV_WTYID" />
+                <ScalarProperty Name="IV_CID" ColumnName="IV_CID" />
+                <ScalarProperty Name="IV_DNDATE" ColumnName="IV_DNDATE" />
+                <ScalarProperty Name="IV_SONO" ColumnName="IV_SONO" />
+                <ScalarProperty Name="IV_SERIAL" ColumnName="IV_SERIAL" />
+                <ScalarProperty Name="cID" ColumnName="cID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="F0005">
+            <EntityTypeMapping TypeName="ERP_PROXY_DBModel.F0005">
+              <MappingFragment StoreEntitySet="F0005">
+                <ScalarProperty Name="UP_DATE" ColumnName="UP_DATE" />
+                <ScalarProperty Name="UP_USER" ColumnName="UP_USER" />
+                <ScalarProperty Name="AP_DATE" ColumnName="AP_DATE" />
+                <ScalarProperty Name="AP_USER" ColumnName="AP_USER" />
+                <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+                <ScalarProperty Name="CR_USER" ColumnName="CR_USER" />
+                <ScalarProperty Name="RE6" ColumnName="RE6" />
+                <ScalarProperty Name="RE5" ColumnName="RE5" />
+                <ScalarProperty Name="RE4" ColumnName="RE4" />
+                <ScalarProperty Name="RE3" ColumnName="RE3" />
+                <ScalarProperty Name="RE2" ColumnName="RE2" />
+                <ScalarProperty Name="RE1" ColumnName="RE1" />
+                <ScalarProperty Name="COSO" ColumnName="COSO" />
+                <ScalarProperty Name="RMK" ColumnName="RMK" />
+                <ScalarProperty Name="DSC2" ColumnName="DSC2" />
+                <ScalarProperty Name="DSC1" ColumnName="DSC1" />
+                <ScalarProperty Name="CODETS" ColumnName="CODETS" />
+                <ScalarProperty Name="CODET" ColumnName="CODET" />
+                <ScalarProperty Name="ALIAS" ColumnName="ALIAS" />
+                <ScalarProperty Name="MODT" ColumnName="MODT" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

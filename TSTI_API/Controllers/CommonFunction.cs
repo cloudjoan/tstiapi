@@ -1621,6 +1621,52 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得製造商零件號碼和廠牌
+        /// <summary>
+        /// 取得製造商零件號碼和廠牌
+        /// </summary>
+        /// <param name="IV_MATERIAL">物料代號</param>
+        /// <returns>[0]製造商零件號碼 [1]廠牌</returns>
+        public string[] findMATERIALPNUMBERandBRAND(string IV_MATERIAL)
+        {
+            string[] reValue = new string[2];
+            string MVKE_PRODH = string.Empty;   //物料階層
+
+            #region 取得製造商零件號碼
+            var beanM = dbProxy.MATERIAL.FirstOrDefault(x => x.MARA_MATNR == IV_MATERIAL.Trim() && x.MARA_MFRPN != "");
+
+            if (beanM != null)
+            {
+                reValue[0] = beanM.MARA_MFRPN;
+                MVKE_PRODH = beanM.MVKE_PRODH;
+            }
+            #endregion
+
+            #region 取得廠牌
+            if (MVKE_PRODH != "")
+            {
+                var beanF = dbProxy.F0005.FirstOrDefault(x => x.MODT == "MM" && x.ALIAS == "ProHierarchy" &&
+                                                           x.CODET == "3" && x.CODETS == MVKE_PRODH.Substring(3, 3));
+
+                if (beanF != null)
+                {
+                    reValue[1] = beanF.DSC1;
+                }
+                else
+                {
+                    reValue[1] = "Other";
+                }
+            }
+            else
+            {
+                reValue[1] = "Other";
+            }
+            #endregion
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得製造商零件號碼
         /// <summary>
         /// 取得製造商零件號碼
@@ -1654,7 +1700,7 @@ namespace TSTI_API.Controllers
         {
             string reValue = string.Empty;
 
-            #region 取得製造商零件號碼
+            #region 取得裝機號碼
             var beanM = dbPSIP.TB_PIS_INSTALLMaterial.FirstOrDefault(x => x.SRSerial == IV_SERIAL.Trim());
 
             if (beanM != null)
@@ -1821,7 +1867,7 @@ namespace TSTI_API.Controllers
 
             return QueryToList;
         }
-        #endregion
+        #endregion        
 
         #region 傳入ERPID並回傳「中文姓名+英文姓名」，若有多筆以分號隔開
         /// <summary>

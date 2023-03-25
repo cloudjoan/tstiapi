@@ -6310,6 +6310,8 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region -----↓↓↓↓↓查詢合約標的 ↓↓↓↓↓-----
+
         #region 測試取得合約標的資料
         //[HttpPost]
         //public ActionResult callAPI_CONTRACTOBJINFO_GET(CONTRACTOBJINFO_INPUT beanIN)
@@ -6479,7 +6481,342 @@ namespace TSTI_API.Controllers
             /// <summary>合約編號</summary>
             public string IV_CONTRACTID { get; set; }
         }
-        #endregion        
+        #endregion
+
+        #endregion -----↑↑↑↑↑查詢合約標的 ↑↑↑↑↑-----
+
+        #region -----↓↓↓↓↓更新進出貨的資料 ↓↓↓↓↓-----
+
+        #region API更新出貨的資料        
+        [HttpPost]
+        public ActionResult API_STOCKOUTINFO_UPDATE(STOCKITEMINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNAME": "張豐穎 Elvis Chang",
+            //    "IV_SN": "SGH33223R6",
+            //    "IV_SNNEW": "SGH33223R5",
+            //    "IV_MATERIALNO": "G-654081B21-057",
+            //    "IV_PID": "DL360pG8 E5-2650/8G*2/146G15K*2/D/R/IC-E",
+            //    "IV_SO": "1230021104",
+            //    "IV_CUSTOMERID": "D16151427",           
+            //    "IV_IO": "O"
+            //}
+            #endregion
+
+            STOCKITEMINFO_OUTPUT ListOUT = new STOCKITEMINFO_OUTPUT();
+
+            ListOUT = STOCKOUTINFO_UPDATE(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 更新出貨資料
+        /// <summary>
+        /// 更新出貨資料
+        /// </summary>
+        /// <param name="beanIN"></param>
+        /// <returns></returns>
+        public STOCKITEMINFO_OUTPUT STOCKOUTINFO_UPDATE(STOCKITEMINFO_INPUT beanIN)
+        {
+            STOCKITEMINFO_OUTPUT OUTBean = new STOCKITEMINFO_OUTPUT();
+
+            OUTBean = callSaveStockOUT(beanIN);
+           
+            return OUTBean;
+        }
+        #endregion     
+
+        #region 更新CRM出貨檔和儲存出貨資料檔
+        /// <summary>
+        /// 更新CRM出貨檔和儲存出貨資料檔
+        /// </summary>
+        /// <param name="beanIN"></param>
+        /// <returns></returns>
+        public STOCKITEMINFO_OUTPUT callSaveStockOUT(STOCKITEMINFO_INPUT beanIN)
+        {
+            STOCKITEMINFO_OUTPUT OUTBean = new STOCKITEMINFO_OUTPUT();
+            STOCKITEMINFO_OUTPUT OUTBean_rfc = new STOCKITEMINFO_OUTPUT();
+
+            string returnMsg = "";          
+
+            bool tIsUpdateSERIAL = false;   //是否要執行更新序號
+
+            string IV_LOGINEMPNAME = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNAME) ? "" : beanIN.IV_LOGINEMPNAME;    //登入者姓名
+            string IV_SN = string.IsNullOrEmpty(beanIN.IV_SN) ? "" : beanIN.IV_SN;                                //原序號
+            string IV_SNNEW = string.IsNullOrEmpty(beanIN.IV_SNNEW) ? "" : beanIN.IV_SNNEW;                        //新序號
+            string IV_MATERIALNO = string.IsNullOrEmpty(beanIN.IV_MATERIALNO) ? "" : beanIN.IV_MATERIALNO;          //物料編號
+            string IV_PID = string.IsNullOrEmpty(beanIN.IV_PID) ? "" : beanIN.IV_PID;                             //規格/說明
+            string IV_SO = string.IsNullOrEmpty(beanIN.IV_SO) ? "" : beanIN.IV_SO;                                //銷售訂單號
+            string IV_CUSTOMERID = string.IsNullOrEmpty(beanIN.IV_CUSTOMERID) ? "" : beanIN.IV_CUSTOMERID;          //客戶ID
+            string IV_PO = string.IsNullOrEmpty(beanIN.IV_PO) ? "" : beanIN.IV_PO;                                //進貨號碼
+            string IV_VENDERNO = string.IsNullOrEmpty(beanIN.IV_VENDERNO) ? "" : beanIN.IV_VENDERNO;               //供應商ID
+            string IV_VENDERNAME = string.IsNullOrEmpty(beanIN.IV_VENDERNAME) ? "" : beanIN.IV_VENDERNAME;          //供應商名稱
+            string IV_IO = string.IsNullOrEmpty(beanIN.IV_IO) ? "" : beanIN.IV_IO;                                //O.出貨 I.進貨
+            string tPNUMBER = string.Empty;                                                                    //製造商零件號碼
+            string tBRAND = string.Empty;                                                                      //廠牌
+
+            try
+            {
+                tIsUpdateSERIAL = false;    //預設False
+
+                #region 更新CRM出貨檔
+                OUTBean_rfc = callRFCSTOCKITEMINFO_UPDATE(beanIN);
+                #endregion
+
+                if (OUTBean_rfc.EV_MSGT == "Y")
+                {
+                    string[] tMAList = CMF.findMATERIALPNUMBERandBRAND(IV_MATERIALNO);
+                    tPNUMBER = tMAList[0];
+                    tBRAND = tMAList[1];
+
+                    #region 更新Proxy出貨檔   
+                    if (IV_SNNEW != "") //要更新序號
+                    {
+                        #region 判斷出貨資料是否序號有重覆，沒有才可以更新
+                        var bean = dbProxy.STOCKOUT.FirstOrDefault(x => x.IV_SERIAL == IV_SNNEW);
+
+                        if (bean == null)
+                        {
+                            tIsUpdateSERIAL = true;
+                        }
+                        else
+                        {
+                            OUTBean.EV_MSGT = "E";
+                            OUTBean.EV_MSG = "新序號【" + IV_SNNEW + "】已存在，請重新輸入！";
+                        }
+                        #endregion
+
+                        #region 可更新時，先新增再刪除
+                        if (tIsUpdateSERIAL)
+                        {
+                            #region 先新增
+                            var beanOri = dbProxy.STOCKOUT.FirstOrDefault(x => x.IV_SERIAL == IV_SN);
+
+                            STOCKOUT stockOUT = new STOCKOUT();
+
+                            stockOUT.IV_SERIAL = IV_SNNEW;
+                            stockOUT.IV_SONO = IV_SO;
+                            stockOUT.IV_DNDATE = beanOri.IV_DNDATE;
+                            stockOUT.IV_CID = IV_CUSTOMERID;
+                            stockOUT.IV_MATERIAL = IV_MATERIALNO;
+                            stockOUT.IV_DESC = IV_PID;
+                            stockOUT.IV_WTYID = beanOri.IV_WTYID;
+                            stockOUT.IV_WTYDESC = beanOri.IV_WTYDESC;
+                            stockOUT.IV_SDATE = beanOri.IV_SDATE;
+                            stockOUT.IV_EDATE = beanOri.IV_EDATE;
+                            stockOUT.IV_SLASRV = beanOri.IV_SLASRV;
+                            stockOUT.IV_SLARESP = beanOri.IV_SLARESP;
+                            stockOUT.IV_PNUMBER = tPNUMBER;
+                            stockOUT.IV_BRAND = tBRAND;
+                            stockOUT.CR_USER = IV_LOGINEMPNAME;
+                            stockOUT.CR_DATE = DateTime.Now;
+
+                            dbProxy.STOCKOUT.Add(stockOUT);
+                            dbProxy.SaveChanges();
+                            #endregion
+
+                            #region 再刪除
+                            dbProxy.STOCKOUT.Remove(beanOri);
+                            dbProxy.SaveChanges();
+                            #endregion
+
+                            #region 再更新保固檔
+                            var beansWTY = dbProxy.STOCKWTY.Where(x => x.IV_SERIAL == IV_SN);
+
+                            foreach (var beanWTY in beansWTY)
+                            {
+                                beanWTY.IV_SERIAL = IV_SNNEW;
+                                beanWTY.IV_CID = IV_CUSTOMERID;
+                                beanWTY.IV_SONO = IV_SO;
+                                beanWTY.UP_USER = IV_LOGINEMPNAME;
+                                beanWTY.UP_DATE = DateTime.Now;
+                            }
+
+                            dbProxy.SaveChanges();
+                            #endregion
+
+                            OUTBean.EV_MSGT = "Y";
+                            OUTBean.EV_MSG = "";
+                        }
+                        #endregion
+                    }
+                    else //不更新序號
+                    {
+                        #region 先更新出貨
+                        var beanOUT = dbProxy.STOCKOUT.FirstOrDefault(x => x.IV_SERIAL == IV_SN);
+
+                        if (beanOUT != null)
+                        {
+                            if (tIsUpdateSERIAL)
+                            {
+                                beanOUT.IV_SERIAL = IV_SNNEW;
+                            }
+
+                            beanOUT.IV_CID = IV_CUSTOMERID;
+                            beanOUT.IV_SONO = IV_SO;
+                            beanOUT.IV_MATERIAL = IV_MATERIALNO;
+                            beanOUT.IV_DESC = IV_PID;
+                            beanOUT.IV_PNUMBER = tPNUMBER;
+                            beanOUT.IV_BRAND = tBRAND;
+                            beanOUT.UP_USER = IV_LOGINEMPNAME;
+                            beanOUT.UP_DATE = DateTime.Now;
+                        }
+
+                        dbProxy.SaveChanges();
+                        #endregion
+
+                        #region 再更新保固檔
+                        var beansWTY = dbProxy.STOCKWTY.Where(x => x.IV_SERIAL == IV_SN);
+
+                        foreach (var beanWTY in beansWTY)
+                        {
+                            beanWTY.IV_CID = IV_CUSTOMERID;
+                            beanWTY.IV_SONO = IV_SO;
+                            beanWTY.UP_USER = IV_LOGINEMPNAME;
+                            beanWTY.UP_DATE = DateTime.Now;
+                        }
+
+                        dbProxy.SaveChanges();
+                        #endregion
+
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+                    }
+                    #endregion                  
+                }
+                else
+                {
+                    OUTBean = OUTBean_rfc;
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "原序號【" + IV_SN + "】失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "callSaveStockOUT_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }           
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 呼叫RFC更新進出貨資料
+        /// <summary>
+        /// 呼叫RFC更新進出貨資料
+        /// </summary>
+        /// <param name="beanIN">傳入的資料</param>
+        /// <returns></returns>
+        public STOCKITEMINFO_OUTPUT callRFCSTOCKITEMINFO_UPDATE(STOCKITEMINFO_INPUT beanIN)
+        {
+            STOCKITEMINFO_OUTPUT OUTBean = new STOCKITEMINFO_OUTPUT();
+
+            string pMsg = string.Empty;
+
+            string IV_SN = string.IsNullOrEmpty(beanIN.IV_SN) ? "" : beanIN.IV_SN;                        //原序號
+            string IV_SNNEW = string.IsNullOrEmpty(beanIN.IV_SNNEW) ? "" : beanIN.IV_SNNEW;                //新序號
+            string IV_MATERIALNO = string.IsNullOrEmpty(beanIN.IV_MATERIALNO) ? "" : beanIN.IV_MATERIALNO;  //物料編號
+            string IV_PID = string.IsNullOrEmpty(beanIN.IV_PID) ? "" : beanIN.IV_PID;                     //規格/說明
+            string IV_SO = string.IsNullOrEmpty(beanIN.IV_SO) ? "" : beanIN.IV_SO;                        //銷售訂單號
+            string IV_CUSTOMERID = string.IsNullOrEmpty(beanIN.IV_CUSTOMERID) ? "" : beanIN.IV_CUSTOMERID;  //客戶ID
+            string IV_PO = string.IsNullOrEmpty(beanIN.IV_PO) ? "" : beanIN.IV_PO;                        //進貨號碼
+            string IV_VENDERNO = string.IsNullOrEmpty(beanIN.IV_VENDERNO) ? "" : beanIN.IV_VENDERNO;        //供應商ID
+            string IV_VENDERNAME = string.IsNullOrEmpty(beanIN.IV_VENDERNAME) ? "" : beanIN.IV_VENDERNAME;  //供應商名稱
+            string IV_IO = string.IsNullOrEmpty(beanIN.IV_IO) ? "" : beanIN.IV_IO;                        //O.出貨 I.進貨
+
+            try
+            {
+                initSapConnector();
+
+                RfcFunctionMetadata ZFM_UPDATE_PROD_IN_OUT_INFO = sapConnector.Repository.GetFunctionMetadata("ZFM_UPDATE_PROD_IN_OUT_INFO");
+                IRfcFunction function = ZFM_UPDATE_PROD_IN_OUT_INFO.CreateFunction();
+
+                function.SetValue("SN", IV_SN);
+                function.SetValue("SN_NEW", IV_SNNEW);
+                function.SetValue("MATERIAL_NO", IV_MATERIALNO);
+                function.SetValue("PID", IV_PID);
+                function.SetValue("SO", IV_SO);
+                function.SetValue("CUSTOMER_ID", IV_CUSTOMERID);
+                function.SetValue("PO", IV_PO);
+                function.SetValue("VENDER_NO", IV_VENDERNO);
+                function.SetValue("VENDER_NAME", IV_VENDERNAME);
+                function.Invoke(sapConnector);
+
+                if (function.GetString("EV_MSG").ToString().Trim() == "E")
+                {
+                    pMsg += "序號：" + IV_SN + "類型：" + IV_IO + Environment.NewLine;
+                    pMsg += "E,更新進出貨資料接口失敗：" + Environment.NewLine;
+
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = pMsg;
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "callRFCSTOCKITEMINFO_UPDATE_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 更新進出貨資料INPUT資訊
+        /// <summary>更新進出貨資料INPUT資訊</summary>
+        public struct STOCKITEMINFO_INPUT
+        {
+            /// <summary>登入者姓名</summary>
+            public string IV_LOGINEMPNAME { get; set; }
+            /// <summary>原序號</summary>
+            public string IV_SN { get; set; }
+            /// <summary>新序號</summary>
+            public string IV_SNNEW { get; set; }
+            /// <summary>物料編號</summary>
+            public string IV_MATERIALNO { get; set; }
+            /// <summary>規格/說明</summary>
+            public string IV_PID { get; set; }
+            /// <summary>銷售訂單號</summary>
+            public string IV_SO { get; set; }
+            /// <summary>客戶ID</summary>
+            public string IV_CUSTOMERID { get; set; }
+            /// <summary>進貨號碼</summary>
+            public string IV_PO { get; set; }
+            /// <summary>供應商ID</summary>
+            public string IV_VENDERNO { get; set; }
+            /// <summary>供應商名稱</summary>
+            public string IV_VENDERNAME { get; set; }
+            /// <summary>O.出貨 I.進貨</summary>
+            public string IV_IO { get; set; }            
+        }
+        #endregion
+
+        #region 更新進出貨資料OUTPUT資訊
+        /// <summary>更新進出貨資料OUTPUT資訊</summary>
+        public struct STOCKITEMINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }           
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑更新進出貨的資料 ↑↑↑↑↑-----
 
         #endregion -----↑↑↑↑↑CALL RFC接口 ↑↑↑↑↑-----        
     }

@@ -241,5 +241,106 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="STOCKIN">
+      <EntityTypeMapping TypeName="ERP_PROXY_DBModel.STOCKIN">
+        <MappingFragment StoreEntitySet="STOCKIN">
+          <ScalarProperty Name="UP_DATE" ColumnName="UP_DATE" />
+          <ScalarProperty Name="UP_USER" ColumnName="UP_USER" />
+          <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+          <ScalarProperty Name="CR_USER" ColumnName="CR_USER" />
+          <ScalarProperty Name="IV_EDATE" ColumnName="IV_EDATE" />
+          <ScalarProperty Name="IV_SDATE" ColumnName="IV_SDATE" />
+          <ScalarProperty Name="IV_WTYDESC" ColumnName="IV_WTYDESC" />
+          <ScalarProperty Name="IV_WTYID" ColumnName="IV_WTYID" />
+          <ScalarProperty Name="IV_DESC" ColumnName="IV_DESC" />
+          <ScalarProperty Name="IV_MATERIAL" ColumnName="IV_MATERIAL" />
+          <ScalarProperty Name="IV_VNAME" ColumnName="IV_VNAME" />
+          <ScalarProperty Name="IV_VENDOR" ColumnName="IV_VENDOR" />
+          <ScalarProperty Name="IV_GRDATE" ColumnName="IV_GRDATE" />
+          <ScalarProperty Name="IV_PONO" ColumnName="IV_PONO" />
+          <ScalarProperty Name="IV_SERIAL" ColumnName="IV_SERIAL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="STOCKOUT">
+      <EntityTypeMapping TypeName="ERP_PROXY_DBModel.STOCKOUT">
+        <MappingFragment StoreEntitySet="STOCKOUT">
+          <ScalarProperty Name="UP_DATE" ColumnName="UP_DATE" />
+          <ScalarProperty Name="UP_USER" ColumnName="UP_USER" />
+          <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+          <ScalarProperty Name="CR_USER" ColumnName="CR_USER" />
+          <ScalarProperty Name="IV_BRAND" ColumnName="IV_BRAND" />
+          <ScalarProperty Name="IV_PNUMBER" ColumnName="IV_PNUMBER" />
+          <ScalarProperty Name="IV_SLARESP" ColumnName="IV_SLARESP" />
+          <ScalarProperty Name="IV_SLASRV" ColumnName="IV_SLASRV" />
+          <ScalarProperty Name="IV_EDATE" ColumnName="IV_EDATE" />
+          <ScalarProperty Name="IV_SDATE" ColumnName="IV_SDATE" />
+          <ScalarProperty Name="IV_WTYDESC" ColumnName="IV_WTYDESC" />
+          <ScalarProperty Name="IV_WTYID" ColumnName="IV_WTYID" />
+          <ScalarProperty Name="IV_DESC" ColumnName="IV_DESC" />
+          <ScalarProperty Name="IV_MATERIAL" ColumnName="IV_MATERIAL" />
+          <ScalarProperty Name="IV_CID" ColumnName="IV_CID" />
+          <ScalarProperty Name="IV_DNDATE" ColumnName="IV_DNDATE" />
+          <ScalarProperty Name="IV_DNNO" ColumnName="IV_DNNO" />
+          <ScalarProperty Name="IV_SONO" ColumnName="IV_SONO" />
+          <ScalarProperty Name="IV_SERIAL" ColumnName="IV_SERIAL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="STOCKWTY">
+      <EntityTypeMapping TypeName="ERP_PROXY_DBModel.STOCKWTY">
+        <MappingFragment StoreEntitySet="STOCKWTY">
+          <ScalarProperty Name="UP_DATE" ColumnName="UP_DATE" />
+          <ScalarProperty Name="UP_USER" ColumnName="UP_USER" />
+          <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+          <ScalarProperty Name="CR_USER" ColumnName="CR_USER" />
+          <ScalarProperty Name="ReceiptDate" ColumnName="ReceiptDate" />
+          <ScalarProperty Name="ReceiptNo" ColumnName="ReceiptNo" />
+          <ScalarProperty Name="ADVICE" ColumnName="ADVICE" />
+          <ScalarProperty Name="BPM_NO" ColumnName="BPM_NO" />
+          <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+          <ScalarProperty Name="CARE_PACK_NO" ColumnName="CARE_PACK_NO" />
+          <ScalarProperty Name="BP_NO" ColumnName="BP_NO" />
+          <ScalarProperty Name="IV_SLARESP" ColumnName="IV_SLARESP" />
+          <ScalarProperty Name="IV_SLASRV" ColumnName="IV_SLASRV" />
+          <ScalarProperty Name="IV_EDATE" ColumnName="IV_EDATE" />
+          <ScalarProperty Name="IV_SDATE" ColumnName="IV_SDATE" />
+          <ScalarProperty Name="IV_WTYDESC" ColumnName="IV_WTYDESC" />
+          <ScalarProperty Name="IV_WTYID" ColumnName="IV_WTYID" />
+          <ScalarProperty Name="IV_CID" ColumnName="IV_CID" />
+          <ScalarProperty Name="IV_DNDATE" ColumnName="IV_DNDATE" />
+          <ScalarProperty Name="IV_SONO" ColumnName="IV_SONO" />
+          <ScalarProperty Name="IV_SERIAL" ColumnName="IV_SERIAL" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="F0005">
+      <EntityTypeMapping TypeName="ERP_PROXY_DBModel.F0005">
+        <MappingFragment StoreEntitySet="F0005">
+          <ScalarProperty Name="UP_DATE" ColumnName="UP_DATE" />
+          <ScalarProperty Name="UP_USER" ColumnName="UP_USER" />
+          <ScalarProperty Name="AP_DATE" ColumnName="AP_DATE" />
+          <ScalarProperty Name="AP_USER" ColumnName="AP_USER" />
+          <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+          <ScalarProperty Name="CR_USER" ColumnName="CR_USER" />
+          <ScalarProperty Name="RE6" ColumnName="RE6" />
+          <ScalarProperty Name="RE5" ColumnName="RE5" />
+          <ScalarProperty Name="RE4" ColumnName="RE4" />
+          <ScalarProperty Name="RE3" ColumnName="RE3" />
+          <ScalarProperty Name="RE2" ColumnName="RE2" />
+          <ScalarProperty Name="RE1" ColumnName="RE1" />
+          <ScalarProperty Name="COSO" ColumnName="COSO" />
+          <ScalarProperty Name="RMK" ColumnName="RMK" />
+          <ScalarProperty Name="DSC2" ColumnName="DSC2" />
+          <ScalarProperty Name="DSC1" ColumnName="DSC1" />
+          <ScalarProperty Name="CODETS" ColumnName="CODETS" />
+          <ScalarProperty Name="CODET" ColumnName="CODET" />
+          <ScalarProperty Name="ALIAS" ColumnName="ALIAS" />
+          <ScalarProperty Name="MODT" ColumnName="MODT" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

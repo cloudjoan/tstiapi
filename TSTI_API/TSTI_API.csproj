@@ -220,6 +220,9 @@
     <Compile Include="Models\Department.cs">
       <DependentUpon>ModelEIPDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\F0005.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\F4501.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
@@ -341,6 +344,15 @@
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\STOCKALL.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STOCKIN.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STOCKOUT.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STOCKWTY.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TB_MAIL_CONTENT.cs">

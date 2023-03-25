@@ -34,5 +34,9 @@ namespace TSTI_API.Models
         public virtual DbSet<PERSONAL_Contact> PERSONAL_Contact { get; set; }
         public virtual DbSet<STOCKALL> STOCKALL { get; set; }
         public virtual DbSet<VIEW_CUSTOMER_WithAddress> VIEW_CUSTOMER_WithAddress { get; set; }
+        public virtual DbSet<STOCKIN> STOCKIN { get; set; }
+        public virtual DbSet<STOCKOUT> STOCKOUT { get; set; }
+        public virtual DbSet<STOCKWTY> STOCKWTY { get; set; }
+        public virtual DbSet<F0005> F0005 { get; set; }
     }
 }
