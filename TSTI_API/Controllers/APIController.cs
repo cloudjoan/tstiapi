@@ -137,6 +137,7 @@ namespace TSTI_API.Controllers
             //     "IV_MKIND3": "ZC010101",
             //     "IV_REPAIRNAME": "王炯凱",
             //     "IV_REPAIRTEL": "02-2506-2121#1239",
+            //     "IV_REPAIRMOB": "0909000000",
             //     "IV_REPAIRADDR": "台北市中山區松江路121號13樓",
             //     "IV_REPAIREMAIL": "elvis.chang@etatung.com",            
             //     "IV_EMPNO": "10001567",
