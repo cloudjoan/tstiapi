@@ -186,6 +186,7 @@ namespace TSTI_API.Controllers
             SRMain_GENERALSR_OUTPUT SROUT = new SRMain_GENERALSR_OUTPUT();            
             
             string pLoginName = string.Empty;
+            string pBUKRS = string.Empty;
             string pSRID = string.Empty;
             string OldCStatus = string.Empty;
             string tONEURLName = string.Empty;
@@ -194,7 +195,7 @@ namespace TSTI_API.Controllers
             string tAttachURLName = string.Empty;
             string tInvoiceNo = string.Empty;
             string tInvoiceItem = string.Empty;
-
+            
             string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
             string IV_CUSTOMER = string.IsNullOrEmpty(bean.IV_CUSTOMER) ? "" : bean.IV_CUSTOMER.Trim();            
             string IV_SRTEAM = string.IsNullOrEmpty(bean.IV_SRTEAM) ? "" : bean.IV_SRTEAM.Trim();
@@ -227,10 +228,12 @@ namespace TSTI_API.Controllers
             if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
             {
                 pLoginName = IV_LOGINEMPNO;
+                pBUKRS = "T012";
             }
             else
             {
                 pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+                pBUKRS = EmpBean.BUKRS;
             }
 
             bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)          
@@ -539,7 +542,7 @@ namespace TSTI_API.Controllers
                         SROUT.EV_MSG = "";
 
                         #region 寄送Mail通知
-                        CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, EmpBean.BUKRS, pSRID, tONEURLName, pLoginName, tIsFormal);
+                        CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, pBUKRS, pSRID, tONEURLName, pLoginName, tIsFormal);
                         #endregion
                     }
                 }                
@@ -2115,6 +2118,105 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務案件資訊(List)、服務案件客戶聯絡人資訊(List)) ↑↑↑↑↑-----  
 
+        #region -----↓↓↓↓↓序號查詢【料號和料號說明】接口 ↓↓↓↓↓-----        
+
+        #region 查詢料號資料接口
+        [HttpPost]
+        public ActionResult API_MATERIALINFOBySERIAL_GET(MATERIALINFOBySERIAL_INPUT beanIV)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_SERIAL": "SGH33223R6",            
+            //}
+            #endregion
+
+            MATERIALINFOBySERIAL_OUTPUT ListOUT = new MATERIALINFOBySERIAL_OUTPUT();
+
+            ListOUT = MATERIALINFOBySERIAL_GET(beanIV);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得料號資料
+        private MATERIALINFOBySERIAL_OUTPUT MATERIALINFOBySERIAL_GET(MATERIALINFOBySERIAL_INPUT beanIN)
+        {
+            MATERIALINFOBySERIAL_OUTPUT OUTBean = new MATERIALINFOBySERIAL_OUTPUT();
+
+            try
+            {
+                string IV_SERIAL = string.IsNullOrEmpty(beanIN.IV_SERIAL) ? "" : beanIN.IV_SERIAL.Trim();
+             
+                var tList = CMF.findMaterialBySerialList(IV_SERIAL);
+
+                if (tList.Count == 0)
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無料號資料，請重新查詢！";
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    #region 取得料號資料List
+                    List<MATERIAL_LIST> tMATList = new List<MATERIAL_LIST>();
+
+                    foreach (var bean in tList)
+                    {
+                        MATERIAL_LIST beanTEAM = new MATERIAL_LIST();
+
+                        beanTEAM.EV_SERIAL = bean.IV_SERIAL;    //序號
+                        beanTEAM.EV_PRDID = bean.ProdID;        //料號ID
+                        beanTEAM.EV_PRDNAME = bean.Product;     //料號說明
+
+                        tMATList.Add(beanTEAM);
+                    }
+
+                    OUTBean.MATERIAL_LIST = tMATList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "MATERIALINFOBySERIAL_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢料號資料INPUT資訊
+        /// <summary>查詢料號資料INPUT資訊</summary>
+        public struct MATERIALINFOBySERIAL_INPUT
+        {
+            /// <summary>序號ID</summary>
+            public string IV_SERIAL { get; set; }
+        }
+        #endregion
+
+        #region 查詢下拉選項清單OUTPUT資訊
+        /// <summary>查詢下拉選項清單OUTPUT資訊</summary>
+        public struct MATERIALINFOBySERIAL_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>物料清單</summary>
+            public List<MATERIAL_LIST> MATERIAL_LIST { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑序號查詢【料號和料號說明】接口 ↑↑↑↑↑-----  
+
         #region -----↓↓↓↓↓SRID相關資訊查詢(服務主檔資訊、客戶聯絡窗口資訊清單、產品序號資訊清單、保固SLA檔資訊清單、處理與工時紀錄清單、零件更換資訊清單) ↓↓↓↓↓-----
 
         #region 查詢SRID相關資訊接口
@@ -2857,15 +2959,15 @@ namespace TSTI_API.Controllers
                 reValue = true;
                 #endregion
 
-                #region 刪除原圖檔
-                foreach (var picPath in picPathList)
-                {
-                    bool result = System.IO.File.Exists(picPath);
-                    if (result)
-                    {
-                        System.IO.File.Delete(picPath);
-                    }
-                }
+                #region 刪除原圖檔(先不刪，以後可以手動上傳)
+                //foreach (var picPath in picPathList)
+                //{
+                //    bool result = System.IO.File.Exists(picPath);
+                //    if (result)
+                //    {
+                //        System.IO.File.Delete(picPath);
+                //    }
+                //}
                 #endregion               
             }
             catch (Exception ex)
@@ -6004,7 +6106,7 @@ namespace TSTI_API.Controllers
         }
         #endregion      
 
-        #endregion -----↑↑↑↑↑服務團隊資料接口 ↑↑↑↑↑-----  
+        #endregion -----↑↑↑↑↑料號資料接口 ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓報修類別資料接口 ↓↓↓↓↓-----        
 
@@ -7346,6 +7448,18 @@ namespace TSTI_API.Controllers
         public string NOTES;
         /// <summary>下包文件編號</summary>
         public string SUB_CONTRACTID;
+    }
+    #endregion
+
+    #region 料號和料號說明
+    public struct MATERIAL_LIST
+    {
+        /// <summary>序號</summary>
+        public string EV_SERIAL { get; set; }
+        /// <summary>料號</summary>
+        public string EV_PRDID { get; set; }
+        /// <summary>料號說明</summary>
+        public string EV_PRDNAME { get; set; }
     }
     #endregion
 

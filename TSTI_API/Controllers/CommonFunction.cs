@@ -1545,9 +1545,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得產品序號相關資訊
+        #region 取得產品序號相關資訊(單筆)
         /// <summary>
-        /// 取得產品序號相關資訊
+        /// 取得產品序號相關資訊(單筆)
         /// </summary>
         /// <param name="IV_SERIAL">序號ID</param>
         /// <returns></returns>
@@ -1570,6 +1570,38 @@ namespace TSTI_API.Controllers
             }
 
             return ProBean;
+        }
+        #endregion
+
+        #region 取得產品序號相關資訊(清單)
+        /// <summary>
+        /// 取得產品序號相關資訊(清單)
+        /// </summary>
+        /// <param name="IV_SERIAL">序號ID</param>
+        /// <returns></returns>
+        public List<SerialMaterialInfo> findMaterialBySerialList(string IV_SERIAL)
+        {
+            List<SerialMaterialInfo> ProBeans = new List<SerialMaterialInfo>();
+
+            if (IV_SERIAL != "")
+            {
+                var beans = dbProxy.STOCKALL.Where(x => x.IV_SERIAL.Contains(IV_SERIAL));
+
+                foreach(var bean in beans)
+                {
+                    SerialMaterialInfo ProBean = new SerialMaterialInfo();
+
+                    ProBean.IV_SERIAL = bean.IV_SERIAL;
+                    ProBean.ProdID = bean.ProdID;
+                    ProBean.Product = bean.Product;
+                    ProBean.MFRPN = findMFRPNumber(bean.ProdID);
+                    ProBean.InstallNo = findInstallNumber(IV_SERIAL);
+
+                    ProBeans.Add(ProBean);
+                }
+            }
+
+            return ProBeans;
         }
         #endregion
 
