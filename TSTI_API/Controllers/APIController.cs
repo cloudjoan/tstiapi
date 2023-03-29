@@ -2232,7 +2232,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_SERIAL": "SGH33223R6",            
+            //    "IV_SERIAL": "SGH33223R6"          
             //}
             #endregion
 
