@@ -3668,6 +3668,11 @@ namespace TSTI_API.Controllers
                 tMailBody = tMailBody.Replace("【<SRID>】", cSRID).Replace("【<MaterialName>】", MaterialName).Replace("【<SerialID>】", SerialID).Replace("【<ProductNumber>】", ProductNumber);
                 tMailBody = tMailBody.Replace("【<Notes>】", SRMain.Notes);
                 tMailBody = tMailBody.Replace("<SRRepair_List>", tSRRepair_Table).Replace("<SRContact_List>", tSRContact_Table);
+
+                if (MaterialName == "" && SerialID == "" && ProductNumber == "") //若沒有機器明細，則不顯示
+                {
+                    tMailBody = tMailBody.Replace("</br>機器明細：__", "");
+                }
                 #endregion              
 
                 //呼叫寄送Mail

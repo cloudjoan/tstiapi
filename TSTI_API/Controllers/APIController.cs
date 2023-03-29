@@ -124,102 +124,98 @@ namespace TSTI_API.Controllers
 
         #region 測試call API範例程式
 
-        //#region 建立ONE SERVICE報修SR（一般服務請求）接口
-        ///// <summary>
-        ///// 建立ONE SERVICE報修SR（一般服務請求）接口
-        ///// </summary>
-        ///// <param name="tSubject">主旨</param>
-        ///// <param name="tBody">內容</param>
-        ///// <param name="tCustomerID">客戶代號</param>        
-        ///// <param name="cTeamID">服務團隊ID</param>
-        //public bool callTestToGENERALSR_CREATE()
-        //{
-        //    bool reValue = false;
+        #region 【測試用】建立ONE SERVICE報修SR（一般服務請求）接口
+        /// <summary>
+        /// 【測試用】建立ONE SERVICE報修SR（一般服務請求）接口
+        /// </summary>        
+        public bool callTestToGENERALSR_CREATE()
+        {
+            bool reValue = false;
 
-        //    SRMain_GENERALSR_OUTPUT SROUT = new SRMain_GENERALSR_OUTPUT();
+            SRMain_GENERALSR_OUTPUT SROUT = new SRMain_GENERALSR_OUTPUT();
 
-        //    //string tAPIURLName = @"https://api.etatung.com";    //正式區
-        //    string tAPIURLName = @"http://localhost:32603";    //測試區
-        //    string tURL = tAPIURLName + "/API/API_GENERALSR_CREATE";
+            //string tAPIURLName = @"https://api.etatung.com";    //正式區
+            string tAPIURLName = @"http://localhost:32603";    //測試區
+            string tURL = tAPIURLName + "/API/API_GENERALSR_CREATE";
 
-        //    string tSubject = "test12345";
-        //    string tBody = "測試Body";
-        //    string tCustomerID = "D03251108";
-        //    string cTeamID = "SRV.12211000";
+            string tSubject = "test12345";
+            string tBody = "測試Body";
+            string tCustomerID = "D03251108";
+            string cTeamID = "SRV.12211000";
 
-        //    string CONTNAME = string.Empty;
-        //    string CONTADDR = string.Empty;
-        //    string CONTTEL = string.Empty;
-        //    string CONTMOBILE = string.Empty;
-        //    string CONTEMAIL = string.Empty;
+            string CONTNAME = string.Empty;
+            string CONTADDR = string.Empty;
+            string CONTTEL = string.Empty;
+            string CONTMOBILE = string.Empty;
+            string CONTEMAIL = string.Empty;
 
-        //    try
-        //    {
-        //        var client = new RestClient(tURL);  //測試用            
+            try
+            {
+                var client = new RestClient(tURL);  //測試用            
 
-        //        var request = new RestRequest();
-        //        request.Method = RestSharp.Method.Post;
+                var request = new RestRequest();
+                request.Method = RestSharp.Method.Post;
 
-        //        #region 取得報修人清單(只取一筆即可)
-        //        List<CREATECONTACTINFO> CREATECONTACT_LIST = new List<CREATECONTACTINFO>();
+                #region 取得報修人清單(只取一筆即可)
+                List<CREATECONTACTINFO> CREATECONTACT_LIST = new List<CREATECONTACTINFO>();
 
-        //        CREATECONTACTINFO Con = new CREATECONTACTINFO();
+                CREATECONTACTINFO Con = new CREATECONTACTINFO();
 
-        //        CONTNAME = "王炯凱";
-        //        CONTADDR = "台北市中山區松江路121號13樓";
-        //        CONTTEL = "02-2506-2121#1239";
-        //        CONTMOBILE = "0909000000";
-        //        CONTEMAIL = "elvis.chang@etatung.com";
+                CONTNAME = "王炯凱";
+                CONTADDR = "台北市中山區松江路121號13樓";
+                CONTTEL = "02-2506-2121#1239";
+                CONTMOBILE = "0909000000";
+                CONTEMAIL = "elvis.chang@etatung.com";
 
-        //        Con.CONTNAME = CONTNAME;
-        //        Con.CONTADDR = CONTADDR;
-        //        Con.CONTTEL = CONTTEL;
-        //        Con.CONTMOBILE = CONTMOBILE;
-        //        Con.CONTEMAIL = CONTEMAIL;
+                Con.CONTNAME = CONTNAME;
+                Con.CONTADDR = CONTADDR;
+                Con.CONTTEL = CONTTEL;
+                Con.CONTMOBILE = CONTMOBILE;
+                Con.CONTEMAIL = CONTEMAIL;
 
-        //        CREATECONTACT_LIST.Add(Con);
-        //        #endregion
+                CREATECONTACT_LIST.Add(Con);
+                #endregion
 
-        //        Dictionary<Object, Object> parameters = new Dictionary<Object, Object>();
-        //        parameters.Add("IV_LOGINEMPNO", "Tsti_alert");
-        //        parameters.Add("IV_CUSTOMER", tCustomerID);
-        //        parameters.Add("IV_SRTEAM", cTeamID);
-        //        parameters.Add("IV_RKIND", "Z03");      //預設為合約
-        //        parameters.Add("IV_PATHWAY", "Z04");    //預設為主動式告警
-        //        parameters.Add("IV_DESC", tSubject);
-        //        parameters.Add("IV_LTXT", tBody);
-        //        parameters.Add("IV_REFIX", "N");
-        //        parameters.Add("IV_REPAIRNAME", CONTNAME);
-        //        parameters.Add("IV_REPAIRADDR", CONTADDR);
-        //        parameters.Add("IV_REPAIRTEL", CONTTEL);
-        //        parameters.Add("IV_REPAIRMOB", CONTMOBILE);
-        //        parameters.Add("IV_REPAIREMAIL", CONTEMAIL);
-        //        parameters.Add("CREATECONTACT_LIST", CREATECONTACT_LIST);
+                Dictionary<Object, Object> parameters = new Dictionary<Object, Object>();
+                parameters.Add("IV_LOGINEMPNO", "Tsti_alert");
+                parameters.Add("IV_CUSTOMER", tCustomerID);
+                parameters.Add("IV_SRTEAM", cTeamID);
+                parameters.Add("IV_RKIND", "Z03");      //預設為合約
+                parameters.Add("IV_PATHWAY", "Z04");    //預設為主動式告警
+                parameters.Add("IV_DESC", tSubject);
+                parameters.Add("IV_LTXT", tBody);
+                parameters.Add("IV_REFIX", "N");
+                parameters.Add("IV_REPAIRNAME", CONTNAME);
+                parameters.Add("IV_REPAIRADDR", CONTADDR);
+                parameters.Add("IV_REPAIRTEL", CONTTEL);
+                parameters.Add("IV_REPAIRMOB", CONTMOBILE);
+                parameters.Add("IV_REPAIREMAIL", CONTEMAIL);
+                parameters.Add("CREATECONTACT_LIST", CREATECONTACT_LIST);
 
-        //        request.AddHeader("Content-Type", "application/json");
-        //        request.AddParameter("application/json", parameters, ParameterType.RequestBody);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("application/json", parameters, ParameterType.RequestBody);
 
-        //        RestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
 
-        //        var data = (JObject)JsonConvert.DeserializeObject(response.Content);
+                var data = (JObject)JsonConvert.DeserializeObject(response.Content);
 
-        //        SROUT.EV_SRID = data["EV_SRID"].ToString().Trim();
-        //        SROUT.EV_MSGT = data["EV_MSGT"].ToString().Trim();
-        //        SROUT.EV_MSG = data["EV_MSG"].ToString().Trim();
+                SROUT.EV_SRID = data["EV_SRID"].ToString().Trim();
+                SROUT.EV_MSGT = data["EV_MSGT"].ToString().Trim();
+                SROUT.EV_MSG = data["EV_MSG"].ToString().Trim();
 
-        //        if (SROUT.EV_MSGT == "Y")
-        //        {
-        //            reValue = true;
-        //        }                
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"CreateSR Error: {ex}");
-        //    }
+                if (SROUT.EV_MSGT == "Y")
+                {
+                    reValue = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"CreateSR Error: {ex}");
+            }
 
-        //    return reValue;
-        //}
-        //#endregion        
+            return reValue;
+        }
+        #endregion        
 
         #endregion
 
