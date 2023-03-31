@@ -300,6 +300,7 @@ namespace TSTI_API.Controllers
                     beanM.cAssEngineerID = "";
                     beanM.cTechManagerID = "";
                     beanM.cSystemGUID = Guid.NewGuid();
+                    beanM.cIsAPPClose = "";
 
                     beanM.CreatedDate = DateTime.Now;
                     beanM.CreatedUserName = pLoginName;
@@ -796,7 +797,9 @@ namespace TSTI_API.Controllers
             //{
             //     "IV_LOGINEMPNO": "99120894",
             //     "IV_SRID": "612211250004",
-            //     "IV_STATUS": "E0005"            
+            //     "IV_STATUS": "E0005",
+            //     "IV_PROCESSWAY" : "Z04",
+            //     "IV_ISAPPCLOSE" : "Y"
             //}
             #endregion
 
@@ -819,6 +822,8 @@ namespace TSTI_API.Controllers
             string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
             string IV_SRID = string.IsNullOrEmpty(bean.IV_SRID) ? "" : bean.IV_SRID.Trim();
             string IV_STATUS = string.IsNullOrEmpty(bean.IV_STATUS) ? "" : bean.IV_STATUS.Trim();
+            string IV_PROCESSWAY = string.IsNullOrEmpty(bean.IV_PROCESSWAY) ? "" : bean.IV_PROCESSWAY.Trim();
+            string IV_ISAPPCLOSE = string.IsNullOrEmpty(bean.IV_ISAPPCLOSE) ? "" : bean.IV_ISAPPCLOSE.Trim();
 
             if (IV_STATUS.IndexOf("TRANS") >= 0 || IV_STATUS.IndexOf("ADD") >= 0) //轉單或新建
             {
@@ -917,6 +922,17 @@ namespace TSTI_API.Controllers
                     #endregion
 
                     beanM.cStatus = IV_STATUS;
+
+                    if (IV_PROCESSWAY != "")
+                    {
+                        beanM.cSRProcessWay = IV_PROCESSWAY;
+                    }
+
+                    if (IV_ISAPPCLOSE != "")
+                    {
+                        beanM.cIsAPPClose = IV_ISAPPCLOSE;
+                    }
+
                     beanM.ModifiedDate = DateTime.Now;
                     beanM.ModifiedUserName = pLoginName;
 
@@ -965,7 +981,11 @@ namespace TSTI_API.Controllers
             /// <summary>服務案件ID</summary>
             public string IV_SRID { get; set; }
             /// <summary>服務狀態ID</summary>
-            public string IV_STATUS { get; set; }            
+            public string IV_STATUS { get; set; }
+            /// <summary>處理方式</summary>
+            public string IV_PROCESSWAY { get; set; }
+            /// <summary>是否為APP結案</summary>
+            public string IV_ISAPPCLOSE { get; set; }
         }
         #endregion
 
@@ -5830,6 +5850,231 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑異動零件更換資訊相關查詢接口 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓異動派工工時紀錄相關接口 ↓↓↓↓↓-----        
+
+        #region 異動派工工時紀錄相關接口
+        [HttpPost]
+        public ActionResult API_SRFIXRECORD_CHANGE(SRFIXRECORD_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_SRID": "612212070001",
+            //    "IV_EMPNO": "10010298",
+            //    "IV_ReceiveTime": "2023-01-18 18:20",
+            //    "IV_StartTime": "2023-01-18 18:25",
+            //    "IV_ArriveTime": "2023-01-18 18:50",
+            //    "IV_FinishTime": "2023-01-18 19:50",
+            //    "IV_ISRENEW": "N"
+            //}
+            #endregion
+
+            SRFIXRECORD_OUTPUT ListOUT = new SRFIXRECORD_OUTPUT();
+
+            ListOUT = SaveSRFIXRECORD(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion       
+
+        #region 儲存派工工時紀錄相關
+        private SRFIXRECORD_OUTPUT SaveSRFIXRECORD(SRFIXRECORD_INPUT beanIN)
+        {
+            SRFIXRECORD_OUTPUT OUTBean = new SRFIXRECORD_OUTPUT();            
+
+            string cSRID = string.Empty;
+            string cENGID = string.Empty;
+            string cENGNAME = string.Empty;
+            string cReceiveTime = string.Empty;
+            string cStartTime = string.Empty;
+            string cArriveTime = string.Empty;
+            string cFinishTime = string.Empty;
+            string cISRENEW = string.Empty;
+
+            try
+            {                
+                cSRID = string.IsNullOrEmpty(beanIN.IV_SRID) ? "" : beanIN.IV_SRID;
+                cENGID = string.IsNullOrEmpty(beanIN.IV_EMPNO) ? "" : beanIN.IV_EMPNO;
+                cReceiveTime = string.IsNullOrEmpty(beanIN.IV_ReceiveTime) ? "" : beanIN.IV_ReceiveTime;
+                cStartTime = string.IsNullOrEmpty(beanIN.IV_StartTime) ? "" : beanIN.IV_StartTime;
+                cArriveTime = string.IsNullOrEmpty(beanIN.IV_ArriveTime) ? "" : beanIN.IV_ArriveTime;
+                cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime;
+                cISRENEW = string.IsNullOrEmpty(beanIN.IV_ISRENEW) ? "" : beanIN.IV_ISRENEW;
+
+                #region 取得工程師/技術主管姓名
+                EmployeeBean EmpBean = new EmployeeBean();
+                EmpBean = CMF.findEmployeeInfoByERPID(cENGID);
+
+                cENGNAME = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+                #endregion
+
+                var bean = dbOne.TB_ONE_SRFixRecord.FirstOrDefault(x => x.cSRID == cSRID && x.cEngineerID == cENGID);
+
+                if (bean != null)
+                {
+                    if (cISRENEW == "Y")
+                    {
+                        #region 先刪除
+                        dbOne.TB_ONE_SRFixRecord.Remove(bean);
+                        #endregion
+
+                        #region 再新增
+                        TB_ONE_SRFixRecord SRRecord = SRFixRecord_Create(beanIN, cENGNAME);
+                        dbOne.TB_ONE_SRFixRecord.Add(SRRecord);
+                        #endregion
+                    }
+                    else
+                    {
+                        #region 修改
+                        if (cReceiveTime != "")
+                        {
+                            bean.cReceiveTime = Convert.ToDateTime(cReceiveTime);
+                        }
+
+                        if (cStartTime != "")
+                        {
+                            bean.cStartTime = Convert.ToDateTime(cStartTime);
+                        }
+
+                        if (cArriveTime != "")
+                        {
+                            bean.cArriveTime = Convert.ToDateTime(cArriveTime);
+                        }
+
+                        if (cFinishTime != "")
+                        {
+                            bean.cFinishTime = Convert.ToDateTime(cFinishTime);
+                        }
+
+                        bean.ModifiedDate = DateTime.Now;
+                        bean.ModifiedUserName = cENGNAME;
+                        #endregion
+                    }
+                }
+                else
+                {
+                    #region 新增
+                    TB_ONE_SRFixRecord SRRecord = SRFixRecord_Create(beanIN, cENGNAME);
+                    dbOne.TB_ONE_SRFixRecord.Add(SRRecord);
+                    #endregion
+                }
+
+                var result = dbOne.SaveChanges();
+
+                if (result <= 0)
+                {
+                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "異動失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
+
+                    CMF.writeToLog(cSRID, "SaveSRFIXRECORD_API", pMsg, cENGNAME);
+
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = pMsg;
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";                  
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog(beanIN.IV_SRID, "SaveSRFIXRECORD_API", pMsg, cENGNAME);
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;                
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 新增派工工時紀錄檔
+        /// <summary>
+        /// 新增派工工時紀錄檔
+        /// </summary>
+        /// <param name="beanIN">異動派工工時紀錄相關INPUT資訊</param>
+        /// <param name="cENGNAME">新增人員姓名</param>
+        /// <returns></returns>
+        public TB_ONE_SRFixRecord SRFixRecord_Create(SRFIXRECORD_INPUT beanIN, string cENGNAME)
+        {            
+            string cSRID = string.IsNullOrEmpty(beanIN.IV_SRID) ? "" : beanIN.IV_SRID;
+            string cENGID = string.IsNullOrEmpty(beanIN.IV_EMPNO) ? "" : beanIN.IV_EMPNO;
+            string cReceiveTime = string.IsNullOrEmpty(beanIN.IV_ReceiveTime) ? "" : beanIN.IV_ReceiveTime;
+            string cStartTime = string.IsNullOrEmpty(beanIN.IV_StartTime) ? "" : beanIN.IV_StartTime;
+            string cArriveTime = string.IsNullOrEmpty(beanIN.IV_ArriveTime) ? "" : beanIN.IV_ArriveTime;
+            string cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime;            
+
+            #region 新增
+            TB_ONE_SRFixRecord SRRecord = new TB_ONE_SRFixRecord();
+
+            SRRecord.cSRID = cSRID;
+            SRRecord.cEngineerID = cENGID;
+            SRRecord.cEngineerName = cENGNAME;
+
+            if (cReceiveTime != "")
+            {
+                SRRecord.cReceiveTime = Convert.ToDateTime(cReceiveTime);
+            }
+
+            if (cStartTime != "")
+            {
+                SRRecord.cStartTime = Convert.ToDateTime(cStartTime);
+            }
+
+            if (cArriveTime != "")
+            {
+                SRRecord.cArriveTime = Convert.ToDateTime(cArriveTime);
+            }
+
+            if (cFinishTime != "")
+            {
+                SRRecord.cFinishTime = Convert.ToDateTime(cFinishTime);
+            }
+
+            SRRecord.CreatedDate = DateTime.Now;
+            SRRecord.CreatedUserName = cENGNAME;
+            #endregion
+
+            return SRRecord;
+        }
+        #endregion
+
+        #region 異動派工工時紀錄相關INPUT資訊
+        /// <summary>異動派工工時紀錄相關INPUT資訊</summary>
+        public struct SRFIXRECORD_INPUT
+        {            
+            /// <summary>服務案件ID</summary>
+            public string IV_SRID { get; set; }
+            /// <summary>服務工程師ERPID/技術主管ERPID</summary>
+            public string IV_EMPNO { get; set; }
+            /// <summary>接單時間</summary>
+            public string IV_ReceiveTime { get; set; }
+            /// <summary>出發時間</summary>
+            public string IV_StartTime { get; set; }
+            /// <summary>到場時間</summary>
+            public string IV_ArriveTime { get; set; }
+            /// <summary>完成時間</summary>
+            public string IV_FinishTime { get; set; }
+            /// <summary>是否要重新新增</summary>
+            public string IV_ISRENEW { get; set; }
+        }
+        #endregion
+
+        #region 異動派工工時紀錄相關OUTPUT資訊
+        /// <summary>異動派工工時紀錄相關OUTPUT資訊</summary>
+        public struct SRFIXRECORD_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }            
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑異動派工工時紀錄相關查詢接口 ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓員工資料接口 ↓↓↓↓↓-----        
 

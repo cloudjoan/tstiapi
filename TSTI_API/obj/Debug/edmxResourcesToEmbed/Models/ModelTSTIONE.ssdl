@@ -154,6 +154,23 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="TB_ONE_SRFixRecord">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cSRID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="cEngineerID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="cEngineerName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cReceiveTime" Type="datetime" />
+    <Property Name="cStartTime" Type="datetime" />
+    <Property Name="cArriveTime" Type="datetime" />
+    <Property Name="cFinishTime" Type="datetime" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="TB_ONE_SRIDFormat">
     <Key>
       <PropertyRef Name="cID" />
@@ -188,6 +205,7 @@
     <Property Name="cSRPathWay" Type="nvarchar" MaxLength="3" />
     <Property Name="cSRProcessWay" Type="nvarchar" MaxLength="3" />
     <Property Name="cIsSecondFix" Type="varchar" MaxLength="1" />
+    <Property Name="cIsAPPClose" Type="varchar" MaxLength="1" />
     <Property Name="cRepairName" Type="nvarchar" MaxLength="40" />
     <Property Name="cRepairAddress" Type="nvarchar" MaxLength="110" />
     <Property Name="cRepairPhone" Type="nvarchar" MaxLength="50" />
@@ -269,6 +287,7 @@
     <EntitySet Name="TB_ONE_SRDetail_Product" EntityType="Self.TB_ONE_SRDetail_Product" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRDetail_Record" EntityType="Self.TB_ONE_SRDetail_Record" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRDetail_Warranty" EntityType="Self.TB_ONE_SRDetail_Warranty" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRFixRecord" EntityType="Self.TB_ONE_SRFixRecord" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRIDFormat" EntityType="Self.TB_ONE_SRIDFormat" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRMain" EntityType="Self.TB_ONE_SRMain" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRRepairType" EntityType="Self.TB_ONE_SRRepairType" Schema="dbo" store:Type="Tables" />

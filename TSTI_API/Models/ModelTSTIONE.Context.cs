@@ -36,8 +36,9 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_ONE_SRSQPerson> TB_ONE_SRSQPerson { get; set; }
         public virtual DbSet<TB_ONE_SRTeamMapping> TB_ONE_SRTeamMapping { get; set; }
         public virtual DbSet<TB_ONE_DOCUMENT> TB_ONE_DOCUMENT { get; set; }
-        public virtual DbSet<TB_ONE_SRMain> TB_ONE_SRMain { get; set; }
         public virtual DbSet<TB_ONE_ReportFormat> TB_ONE_ReportFormat { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_Product> TB_ONE_SRDetail_Product { get; set; }
+        public virtual DbSet<TB_ONE_SRMain> TB_ONE_SRMain { get; set; }
+        public virtual DbSet<TB_ONE_SRFixRecord> TB_ONE_SRFixRecord { get; set; }
     }
 }
