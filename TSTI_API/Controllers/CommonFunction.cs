@@ -141,6 +141,43 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得系統位址參數相關資訊
+        /// <summary>
+        /// 取得系統位址參數相關資訊
+        /// </summary>
+        /// <param name="cOperationID">程式作業編號檔系統ID</param>        
+        /// <returns></returns>
+        public SRSYSPARAINFO findSRSYSPARAINFO(string cOperationID)
+        {
+            SRSYSPARAINFO OUTBean = new SRSYSPARAINFO();
+
+            bool tIsFormal = getCallSAPERPPara(cOperationID); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)          
+
+            OUTBean.IsFormal = tIsFormal;
+
+            if (tIsFormal)
+            {
+                #region 正式區                
+                OUTBean.ONEURLName = "172.31.7.56:32200";
+                OUTBean.BPMURLName = "tsti-bpm01.etatung.com.tw";
+                OUTBean.PSIPURLName = "psip-prd-ap";
+                OUTBean.AttachURLName = "tsticrmmbgw.etatung.com:8082";
+                #endregion
+            }
+            else
+            {
+                #region 測試區                
+                OUTBean.ONEURLName = "172.31.7.56:32200";
+                OUTBean.BPMURLName = "tsti-bpm01.etatung.com.tw";
+                OUTBean.PSIPURLName = "psip-prd-ap";
+                OUTBean.AttachURLName = "tsticrmmbgw.etatung.com:8082";
+                #endregion
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
         #region 取得所有客服人員帳號和Email
         /// <summary>
         /// 取得所有客服人員帳號和Email
@@ -1291,6 +1328,56 @@ namespace TSTI_API.Controllers
                     beanSR.INSERT_TIME = bean.INSERT_TIME;
 
                     tList.Add(beanSR);
+                }
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 服務報告書相關資訊
+        /// <summary>
+        /// 服務報告書相關資訊
+        /// </summary>
+        /// <param name="cSRID">SRID</param>
+        /// <param name="tAttachURLName">附件URL站台名稱</param>
+        /// <param name="tAttachPath">附件路徑名稱</param>
+        /// <returns></returns>        
+        public List<SRREPORTINFO> findSRREPORTINFO(string cSRID, string tAttachURLName, string tAttachPath)
+        {
+            List<SRREPORTINFO> tList = new List<SRREPORTINFO>();
+
+            string cReceiveTime = string.Empty;
+            string cStartTime = string.Empty;
+            string cArriveTime = string.Empty;
+            string cFinishTime = string.Empty;
+            string cURLName = string.Empty;
+            string cSRReportURL = string.Empty;
+
+            var beans = dbOne.TB_ONE_SRDetail_Record.Where(x => x.Disabled == 0 && x.cSRID == cSRID);
+
+            foreach (var bean in beans)
+            {
+                if (tList.Count == 0)
+                {
+                    List<SRATTACHINFO> SRAttach = findSRATTACHINFO(bean.cSRReport, tAttachURLName);
+
+                    foreach (var SRbean in SRAttach)
+                    {
+                        SRREPORTINFO SRReport = new SRREPORTINFO();
+
+                        if (SRbean.FILE_ORG_NAME.IndexOf(cSRID) != -1) //原始檔名有含SRID才是服務報告書
+                        {
+                            SRReport.SRID = cSRID;
+                            SRReport.SRReportORG_NAME = SRbean.FILE_ORG_NAME;
+                            SRReport.SRReportNAME = SRbean.FILE_NAME;
+                            SRReport.SRReportPath = Path.Combine(tAttachPath, SRbean.FILE_NAME);
+                            SRReport.SRReportURL = SRbean.FILE_URL;
+
+                            tList.Add(SRReport);
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -3046,9 +3133,11 @@ namespace TSTI_API.Controllers
         /// <param name="cBUKRS">公司別(T012、T016、C069、T022)</param>
         /// <param name="cSRID">SRID(服務案件ID)</param>           
         /// <param name="tONEURLName">One Service站台名稱</param>        
+        /// <param name="tAttachURLName">附件站台名稱</param>
+        /// <param name="tAttachPath">附件路徑名稱</param>
         /// <param name="cLoginName">登入人員姓名</param>
         /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
-        public void SetSRMailContent(SRCondition cCondition, string cOperationID_GenerallySR, string cBUKRS, string cSRID, string tONEURLName, string cLoginName, bool tIsFormal)
+        public void SetSRMailContent(SRCondition cCondition, string cOperationID_GenerallySR, string cBUKRS, string cSRID, string tONEURLName, string tAttachURLName, string tAttachPath, string cLoginName, bool tIsFormal)
         {          
             string tMailToTemp = string.Empty;
             string tMailCcTemp = string.Empty; 
@@ -3096,7 +3185,8 @@ namespace TSTI_API.Controllers
                 List<SRCONTACTINFO> SRRepair_List = new List<SRCONTACTINFO>();
                 List<SRCONTACTINFO> SRContact_List = new List<SRCONTACTINFO>();
                 List<SRSERIALMATERIALINFO> SRSeiral_List = new List<SRSERIALMATERIALINFO>();
-                List<SRPARTSREPALCEINFO> SRParts_List = new List<SRPARTSREPALCEINFO>();                
+                List<SRPARTSREPALCEINFO> SRParts_List = new List<SRPARTSREPALCEINFO>();
+                List<SRREPORTINFO> SRReport_List = new List<SRREPORTINFO>();
 
                 var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == cSRID);
 
@@ -3192,15 +3282,19 @@ namespace TSTI_API.Controllers
                     SRParts_List = findSRPARTSREPALCEINFO(cSRID);
                     #endregion -----↑↑↑↑↑零件更換資訊 ↑↑↑↑↑-----                     
 
+                    #region -----↓↓↓↓↓服務報告書資訊 ↓↓↓↓↓-----
+                    SRReport_List = findSRREPORTINFO(cSRID, tAttachURLName, tAttachPath);
+                    #endregion -----↑↑↑↑↑服務報告書資訊 ↑↑↑↑↑-----                     
+
                     #region 發送服務案件Mail相關資訊(for客戶)，新建或完修才要發給客戶
                     if (cCondition == SRCondition.ADD || cCondition == SRCondition.DONE)
                     {
-                        SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List);
+                        SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
                     }
                     #endregion
 
                     #region 發送服務案件Mail相關資訊  
-                    SendSRMail(cCondition, cSRID, tONEURLName, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRParts_List);
+                    SendSRMail(cCondition, cSRID, tONEURLName, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRParts_List, SRReport_List);
                     #endregion
                 }
             }
@@ -3229,7 +3323,8 @@ namespace TSTI_API.Controllers
         /// <param name="SRSeiral_List">服務案件產品序號資訊清單</param>
         /// <param name="SRParts_List">服務案件零件更換資訊清單</param>
         public void SendSRMail(SRCondition cCondition, string cSRID, string tONEURLName, string cLoginName, bool tIsFormal, SRIDMAININFO SRMain, 
-                              List<SRCONTACTINFO> SRRepair_List, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List, List<SRPARTSREPALCEINFO> SRParts_List)
+                              List<SRCONTACTINFO> SRRepair_List, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List, 
+                              List<SRPARTSREPALCEINFO> SRParts_List, List<SRREPORTINFO> SRReport_List)
         {
             List<string> tMailToList = new List<string>();
             List<string> tMailCcList = new List<string>();
@@ -3480,8 +3575,10 @@ namespace TSTI_API.Controllers
         /// <param name="SRRepair_List">服務案件客戶報修人資訊清單</param>   
         /// <param name="SRContact_List">服務案件客戶聯絡人資訊清單</param>
         /// <param name="SRSeiral_List">服務案件產品序號資訊清單</param>
+        /// <param name="SRReport_List">服務報告書清單</param>
         public void SendSRMail_ToCustomer(SRCondition cCondition, string cSRID, string cLoginName, bool tIsFormal, SRIDMAININFO SRMain, 
-                                         List<SRCONTACTINFO> SRRepair_List, List<SRCONTACTINFO> SRContact_List, List<SRSERIALMATERIALINFO> SRSeiral_List)
+                                         List<SRCONTACTINFO> SRRepair_List, List<SRCONTACTINFO> SRContact_List, 
+                                         List<SRSERIALMATERIALINFO> SRSeiral_List, List<SRREPORTINFO> SRReport_List)
         {
             List<string> tMailToList = new List<string>();
             List<string> tMailCcList = new List<string>();
@@ -3531,7 +3628,12 @@ namespace TSTI_API.Controllers
                 #region 取得副本
                 if (SRMain.TeamMGREmail != "") //服務團隊主管Email
                 {
-                    tMailCcTemp = SRMain.TeamMGREmail;
+                    tMailCcTemp += SRMain.TeamMGREmail + ";";
+                }
+
+                if (SRMain.MainENGEmail != "") //L2工程師Email
+                {
+                    tMailCcTemp += SRMain.MainENGEmail + ";";
                 }
 
                 if (tMailCcTemp != "")

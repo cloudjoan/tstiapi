@@ -192,16 +192,19 @@ namespace TSTI_API.Controllers
         /// <returns></returns>
         private SRMain_GENERALSR_OUTPUT SaveGenerallySR(SRMain_GENERALSR_INPUT bean, string tType)
         {
-            SRMain_GENERALSR_OUTPUT SROUT = new SRMain_GENERALSR_OUTPUT();            
-            
+            SRMain_GENERALSR_OUTPUT SROUT = new SRMain_GENERALSR_OUTPUT();
+
+            bool tIsFormal = false;
             string pLoginName = string.Empty;
             string pBUKRS = string.Empty;
             string pSRID = string.Empty;
             string OldCStatus = string.Empty;
+            string tAPIURLName = string.Empty;
             string tONEURLName = string.Empty;
             string tBPMURLName = string.Empty;
             string tPSIPURLName = string.Empty;
             string tAttachURLName = string.Empty;
+            string tAttachPath = string.Empty;
             string tInvoiceNo = string.Empty;
             string tInvoiceItem = string.Empty;
             
@@ -243,27 +246,23 @@ namespace TSTI_API.Controllers
             {
                 pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
                 pBUKRS = EmpBean.BUKRS;
-            }
-
-            bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)          
-
-            if (tIsFormal)
-            {
-                tONEURLName = "172.31.7.56:32200";
-                tBPMURLName = "tsti-bpm01.etatung.com.tw";
-                tPSIPURLName = "psip-prd-ap";
-                tAttachURLName = "tsticrmmbgw.etatung.com:8082";
-            }
-            else
-            {
-                tONEURLName = "172.31.7.56:32200";
-                tBPMURLName = "tsti-bpm01.etatung.com.tw";
-                tPSIPURLName = "psip-prd-ap";
-                tAttachURLName = "tsticrmmbgw.etatung.com:8082";
-            }
+            }          
 
             try
             {
+                #region 取得系統位址參數相關資訊
+                SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+
+                tIsFormal = ParaBean.IsFormal;
+
+                tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+                tONEURLName = ParaBean.ONEURLName;
+                tBPMURLName = ParaBean.BPMURLName;
+                tPSIPURLName = ParaBean.PSIPURLName;
+                tAttachURLName = ParaBean.AttachURLName;
+                tAttachPath = Server.MapPath("~/REPORT");
+                #endregion
+
                 if (tType == "ADD") 
                 {
                     #region 新增主檔
@@ -380,8 +379,6 @@ namespace TSTI_API.Controllers
                     {
                         if (IV_SERIAL != "")
                         {
-                            string tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
-
                             QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(PRcSerialID, tBPMURLName, tPSIPURLName, tAPIURLName);
 
                             #region 保固，因RFC已經有回傳所有清單，這邊暫時先不用
@@ -411,11 +408,11 @@ namespace TSTI_API.Controllers
                             //            {
                             //                if (bean.BpmNo.IndexOf("WTY") != -1)
                             //                {
-                            //                    tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/Warranty/WarrantyForm.aspx?FormNo=" + bean.BpmNo + " target=_blank";
+                            //                    tURL = "http://" + tBPMURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Rwd/Warranty/WarrantyForm.aspx?FormNo=" + bean.BpmNo + " target=_blank";
                             //                }
                             //                else
                             //                {
-                            //                    tURL = "http://" + tURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Form/Guarantee/GuaranteeForm.aspx?FormNo=" + bean.BpmNo + " target=_blank";
+                            //                    tURL = "http://" + tBPMURLName + "/sites/bpm/_layouts/Taif/BPM/Page/Form/Guarantee/GuaranteeForm.aspx?FormNo=" + bean.BpmNo + " target=_blank";
                             //                }
                             //            }
                             //            #endregion
@@ -552,7 +549,7 @@ namespace TSTI_API.Controllers
                         SROUT.EV_MSG = "";
 
                         #region 寄送Mail通知
-                        CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, pBUKRS, pSRID, tONEURLName, pLoginName, tIsFormal);
+                        CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, pBUKRS, pSRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
                         #endregion
                     }
                 }                
@@ -816,9 +813,15 @@ namespace TSTI_API.Controllers
         {
             SRMain_GENERALSRSTATUS_OUTPUT SROUT = new SRMain_GENERALSRSTATUS_OUTPUT();
 
+            bool tIsFormal = false;
             string tExcType = string.Empty;
-            string pLoginName = string.Empty;            
+            string pLoginName = string.Empty;
+            string tAPIURLName = string.Empty;
             string tONEURLName = string.Empty;
+            string tBPMURLName = string.Empty;
+            string tPSIPURLName = string.Empty;
+            string tAttachURLName = string.Empty;
+            string tAttachPath = string.Empty;
             string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
             string IV_SRID = string.IsNullOrEmpty(bean.IV_SRID) ? "" : bean.IV_SRID.Trim();
             string IV_STATUS = string.IsNullOrEmpty(bean.IV_STATUS) ? "" : bean.IV_STATUS.Trim();
@@ -843,21 +846,23 @@ namespace TSTI_API.Controllers
             else
             {
                 pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
-            }
-
-            bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)          
-
-            if (tIsFormal)
-            {
-                tONEURLName = "172.31.7.56:32200";                     
-            }
-            else
-            {
-                tONEURLName = "172.31.7.56:32200";             
-            }          
+            }               
 
             try
-            {               
+            {
+                #region 取得系統位址參數相關資訊
+                SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+
+                tIsFormal = ParaBean.IsFormal;
+
+                tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+                tONEURLName = ParaBean.ONEURLName;
+                tBPMURLName = ParaBean.BPMURLName;
+                tPSIPURLName = ParaBean.PSIPURLName;
+                tAttachURLName = ParaBean.AttachURLName;
+                tAttachPath = Server.MapPath("~/REPORT");
+                #endregion
+
                 SRCondition tCondition = new SRCondition();
 
                 var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
@@ -952,7 +957,7 @@ namespace TSTI_API.Controllers
                         SROUT.EV_MSG = "";
 
                         #region 寄送Mail通知
-                        CMF.SetSRMailContent(tCondition, pOperationID_GenerallySR, EmpBean.BUKRS, IV_SRID, tONEURLName, pLoginName, tIsFormal);
+                        CMF.SetSRMailContent(tCondition, pOperationID_GenerallySR, EmpBean.BUKRS, IV_SRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
                         #endregion
                     }
                 }                
@@ -2108,22 +2113,25 @@ namespace TSTI_API.Controllers
         {
             SERIALSEARCH_OUTPUT SROUT = new SERIALSEARCH_OUTPUT();
 
-            bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
-            string tURLName = string.Empty;
-            string tSeverName = string.Empty;
+            bool tIsFormal = false;
             string tAPIURLName = string.Empty;
+            string tONEURLName = string.Empty;
+            string tBPMURLName = string.Empty;
+            string tPSIPURLName = string.Empty;
+            string tAttachURLName = string.Empty;
             string[] ArySERIAL = new string[1];
 
-            if (tIsFormal)
-            {
-                tURLName = "tsti-bpm01.etatung.com.tw";
-                tSeverName = "psip-prd-ap";
-            }
-            else
-            {
-                tURLName = "bpm-qas";
-                tSeverName = "psip-qas";
-            }
+            #region 取得系統位址參數相關資訊
+            SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+
+            tIsFormal = ParaBean.IsFormal;
+
+            tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+            tONEURLName = ParaBean.ONEURLName;
+            tBPMURLName = ParaBean.BPMURLName;
+            tPSIPURLName = ParaBean.PSIPURLName;
+            tAttachURLName = ParaBean.AttachURLName;
+            #endregion
 
             #region 取得產品序號資訊
             var ProBean = CMF.findMaterialBySerial(beanIN.IV_SERIAL.Trim());
@@ -2159,7 +2167,7 @@ namespace TSTI_API.Controllers
 
                 ArySERIAL[0] = beanIN.IV_SERIAL.Trim();
 
-                QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(ArySERIAL, tURLName, tSeverName, tAPIURLName);
+                QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(ArySERIAL, tBPMURLName, tPSIPURLName, tAPIURLName);
                 QueryToList = QueryToList.OrderBy(x => x.SERIALID).ThenByDescending(x => x.WTYEDATE).ToList();
 
                 SROUT.WTSLA_LIST = QueryToList;
@@ -2368,23 +2376,24 @@ namespace TSTI_API.Controllers
         {
             SRIDSEARCH_OUTPUT SROUT = new SRIDSEARCH_OUTPUT();
 
-            bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
+            bool tIsFormal = false;
+            string tAPIURLName = string.Empty;
+            string tONEURLName = string.Empty;
             string tBPMURLName = string.Empty;
             string tPSIPURLName = string.Empty;
             string tAttachURLName = string.Empty;
 
-            if (tIsFormal)
-            {
-                tBPMURLName = "tsti-bpm01.etatung.com.tw";
-                tPSIPURLName = "psip-prd-ap";
-                tAttachURLName = "tsticrmmbgw.etatung.com:8082";
-            }
-            else
-            {
-                tBPMURLName = "tsti-bpm01.etatung.com.tw";
-                tPSIPURLName = "psip-prd-ap";
-                tAttachURLName = "tsticrmmbgw.etatung.com:8082";
-            }
+            #region 取得系統位址參數相關資訊
+            SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+
+            tIsFormal = ParaBean.IsFormal;
+
+            tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+            tONEURLName = ParaBean.ONEURLName;
+            tBPMURLName = ParaBean.BPMURLName;
+            tPSIPURLName = ParaBean.PSIPURLName;
+            tAttachURLName = ParaBean.AttachURLName;
+            #endregion           
 
             #region 取得主檔資訊
             var MainBean = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == beanIN.IV_SRID.Trim());
@@ -2730,7 +2739,8 @@ namespace TSTI_API.Controllers
             //    "IV_Desc": "TEST處理紀錄",
             //    "IV_SRReportType": "NOSIGN",
             //    "IV_SRReportFiles": "FILES" //用form-data傳檔案
-            //    "IV_SRReportFileName" : "";
+            //    "IV_SRReportFileName" : "",
+            //    "IV_SENDREPORT" : "Y"
             //}
             #endregion
 
@@ -2769,6 +2779,7 @@ namespace TSTI_API.Controllers
 
             int cID = 0;
 
+            bool tIsFormal = false;
             string cSRID = string.Empty;
             string cENGID = string.Empty;
             string cENGNAME = string.Empty;
@@ -2782,10 +2793,26 @@ namespace TSTI_API.Controllers
             string cSRReportFileName = string.Empty;
             string cPDFPath = string.Empty;         //服務報告書路徑
             string cPDFFileName = string.Empty;     //服務報告書檔名
+            string cSENDREPORT = string.Empty;
+            string tAPIURLName = string.Empty;
+            string tONEURLName = string.Empty;
+            string tBPMURLName = string.Empty;
+            string tPSIPURLName = string.Empty;
+            string tAttachURLName = string.Empty;          
 
             try
             {
-                bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)          
+                #region 取得系統位址參數相關資訊
+                SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+
+                tIsFormal = ParaBean.IsFormal;
+
+                tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+                tONEURLName = ParaBean.ONEURLName;
+                tBPMURLName = ParaBean.BPMURLName;
+                tPSIPURLName = ParaBean.PSIPURLName;
+                tAttachURLName = ParaBean.AttachURLName;
+                #endregion
 
                 cID = string.IsNullOrEmpty(beanIN.IV_CID) ? 0 : int.Parse(beanIN.IV_CID);
                 cSRID = string.IsNullOrEmpty(beanIN.IV_SRID) ? "" : beanIN.IV_SRID;
@@ -2796,6 +2823,7 @@ namespace TSTI_API.Controllers
                 cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime;
                 cDesc = string.IsNullOrEmpty(beanIN.IV_Desc) ? "" : beanIN.IV_Desc;
                 cSRReportFileName = string.IsNullOrEmpty(beanIN.IV_SRReportFileName) ? "" : beanIN.IV_SRReportFileName;
+                cSENDREPORT = string.IsNullOrEmpty(beanIN.IV_SENDREPORT) ? "" : beanIN.IV_SENDREPORT;
 
                 #region 取得工程師/技術主管姓名
                 EmployeeBean EmpBean = new EmployeeBean();
@@ -3016,7 +3044,10 @@ namespace TSTI_API.Controllers
                         OUTBean.EV_CID = cID.ToString();
                     }
 
-                    CMF.callSendReport(pOperationID_GenerallySR, cSRID, cPDFPath, cPDFFileName, cENGNAME, tIsFormal); //呼叫發送服務報告書report給客戶
+                    if (cSENDREPORT == "Y")
+                    {
+                        CMF.callSendReport(pOperationID_GenerallySR, cSRID, cPDFPath, cPDFFileName, cENGNAME, tIsFormal); //呼叫發送服務報告書report給客戶
+                    }
                 }
             }
             catch (Exception ex)
@@ -3137,6 +3168,8 @@ namespace TSTI_API.Controllers
             public HttpPostedFileBase[] IV_SRReportFiles { get; set; }
             /// <summary>服務報告書檔名(當產生服務報告書圖檔的方式為【SIGN.有簽名檔】時，才需要傳GUID檔名)</summary>
             public string IV_SRReportFileName { get; set; }
+            /// <summary>是否需要寄送服務報告書</summary>
+            public string IV_SENDREPORT { get; set; }
         }
         #endregion
 
@@ -7274,6 +7307,22 @@ namespace TSTI_API.Controllers
         #endregion -----↑↑↑↑↑CALL RFC接口 ↑↑↑↑↑-----        
     }
 
+    #region 取得系統位址參數相關資訊
+    public class SRSYSPARAINFO
+    {
+        /// <summary>呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)</summary>
+        public bool IsFormal { get; set; }        
+        /// <summary>One Service URL</summary>
+        public string ONEURLName { get; set; }
+        /// <summary>BPM URL</summary>
+        public string BPMURLName { get; set; }
+        /// <summary>PSIP URL</summary>
+        public string PSIPURLName { get; set; }        
+        /// <summary>附件URL</summary>
+        public string AttachURLName { get; set; }        
+    }
+    #endregion
+
     #region 取得附件相關資訊
     public class SRATTACHINFO
     {
@@ -7584,6 +7633,23 @@ namespace TSTI_API.Controllers
         public string WorkHours { get; set; }
         /// <summary>處理紀錄</summary>
         public string Desc { get; set; }
+        /// <summary>服務報告書URL</summary>
+        public string SRReportURL { get; set; }
+    }
+    #endregion
+
+    #region 服務報告書資訊
+    /// <summary>服務報告書資訊</summary>
+    public class SRREPORTINFO
+    {       
+        /// <summary>服務案件ID</summary>
+        public string SRID { get; set; }
+        /// <summary>服務報告書原始檔名</summary>
+        public string SRReportORG_NAME { get; set; }
+        /// <summary>服務報告書檔名(GUID)</summary>
+        public string SRReportNAME { get; set; }        
+        /// <summary>服務報告書路徑</summary>
+        public string SRReportPath { get; set; }
         /// <summary>服務報告書URL</summary>
         public string SRReportURL { get; set; }
     }
