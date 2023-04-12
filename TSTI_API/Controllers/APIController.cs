@@ -5898,7 +5898,8 @@ namespace TSTI_API.Controllers
             //    "IV_StartTime": "2023-01-18 18:25",
             //    "IV_ArriveTime": "2023-01-18 18:50",
             //    "IV_FinishTime": "2023-01-18 19:50",
-            //    "IV_ISRENEW": "N"
+            //    "IV_ISRENEW": "N",
+            //    "IV_Location": ""
             //}
             #endregion
 
@@ -5923,16 +5924,18 @@ namespace TSTI_API.Controllers
             string cArriveTime = string.Empty;
             string cFinishTime = string.Empty;
             string cISRENEW = string.Empty;
+            string cLocation = string.Empty;
 
             try
             {                
-                cSRID = string.IsNullOrEmpty(beanIN.IV_SRID) ? "" : beanIN.IV_SRID;
-                cENGID = string.IsNullOrEmpty(beanIN.IV_EMPNO) ? "" : beanIN.IV_EMPNO;
-                cReceiveTime = string.IsNullOrEmpty(beanIN.IV_ReceiveTime) ? "" : beanIN.IV_ReceiveTime;
-                cStartTime = string.IsNullOrEmpty(beanIN.IV_StartTime) ? "" : beanIN.IV_StartTime;
-                cArriveTime = string.IsNullOrEmpty(beanIN.IV_ArriveTime) ? "" : beanIN.IV_ArriveTime;
-                cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime;
-                cISRENEW = string.IsNullOrEmpty(beanIN.IV_ISRENEW) ? "" : beanIN.IV_ISRENEW;
+                cSRID = string.IsNullOrEmpty(beanIN.IV_SRID) ? "" : beanIN.IV_SRID.Trim();
+                cENGID = string.IsNullOrEmpty(beanIN.IV_EMPNO) ? "" : beanIN.IV_EMPNO.Trim();
+                cReceiveTime = string.IsNullOrEmpty(beanIN.IV_ReceiveTime) ? "" : beanIN.IV_ReceiveTime.Trim();
+                cStartTime = string.IsNullOrEmpty(beanIN.IV_StartTime) ? "" : beanIN.IV_StartTime.Trim();
+                cArriveTime = string.IsNullOrEmpty(beanIN.IV_ArriveTime) ? "" : beanIN.IV_ArriveTime.Trim();
+                cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime.Trim();
+                cISRENEW = string.IsNullOrEmpty(beanIN.IV_ISRENEW) ? "" : beanIN.IV_ISRENEW.Trim();
+                cLocation = string.IsNullOrEmpty(beanIN.IV_Location) ? "" : beanIN.IV_Location.Trim();
 
                 #region 取得工程師/技術主管姓名
                 EmployeeBean EmpBean = new EmployeeBean();
@@ -5979,6 +5982,7 @@ namespace TSTI_API.Controllers
                             bean.cFinishTime = Convert.ToDateTime(cFinishTime);
                         }
 
+                        bean.cLocation = cLocation;
                         bean.ModifiedDate = DateTime.Now;
                         bean.ModifiedUserName = cENGNAME;
                         #endregion
@@ -6033,12 +6037,13 @@ namespace TSTI_API.Controllers
         /// <returns></returns>
         public TB_ONE_SRFixRecord SRFixRecord_Create(SRFIXRECORD_INPUT beanIN, string cENGNAME)
         {            
-            string cSRID = string.IsNullOrEmpty(beanIN.IV_SRID) ? "" : beanIN.IV_SRID;
-            string cENGID = string.IsNullOrEmpty(beanIN.IV_EMPNO) ? "" : beanIN.IV_EMPNO;
-            string cReceiveTime = string.IsNullOrEmpty(beanIN.IV_ReceiveTime) ? "" : beanIN.IV_ReceiveTime;
-            string cStartTime = string.IsNullOrEmpty(beanIN.IV_StartTime) ? "" : beanIN.IV_StartTime;
-            string cArriveTime = string.IsNullOrEmpty(beanIN.IV_ArriveTime) ? "" : beanIN.IV_ArriveTime;
-            string cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime;            
+            string cSRID = string.IsNullOrEmpty(beanIN.IV_SRID) ? "" : beanIN.IV_SRID.Trim();
+            string cENGID = string.IsNullOrEmpty(beanIN.IV_EMPNO) ? "" : beanIN.IV_EMPNO.Trim();
+            string cReceiveTime = string.IsNullOrEmpty(beanIN.IV_ReceiveTime) ? "" : beanIN.IV_ReceiveTime.Trim();
+            string cStartTime = string.IsNullOrEmpty(beanIN.IV_StartTime) ? "" : beanIN.IV_StartTime.Trim();
+            string cArriveTime = string.IsNullOrEmpty(beanIN.IV_ArriveTime) ? "" : beanIN.IV_ArriveTime.Trim();
+            string cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime.Trim();
+            string cLocation = string.IsNullOrEmpty(beanIN.IV_Location) ? "" : beanIN.IV_Location.Trim();
 
             #region 新增
             TB_ONE_SRFixRecord SRRecord = new TB_ONE_SRFixRecord();
@@ -6067,6 +6072,7 @@ namespace TSTI_API.Controllers
                 SRRecord.cFinishTime = Convert.ToDateTime(cFinishTime);
             }
 
+            SRRecord.cLocation = cLocation;
             SRRecord.CreatedDate = DateTime.Now;
             SRRecord.CreatedUserName = cENGNAME;
             #endregion
@@ -6093,6 +6099,8 @@ namespace TSTI_API.Controllers
             public string IV_FinishTime { get; set; }
             /// <summary>是否要重新新增</summary>
             public string IV_ISRENEW { get; set; }
+            /// <summary>座標位置</summary>
+            public string IV_Location { get; set; }
         }
         #endregion
 

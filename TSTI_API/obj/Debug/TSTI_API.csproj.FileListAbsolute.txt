@@ -151,8 +151,10 @@ D:\GIT\tstiapi\TSTI_API\bin\roslyn\vbc.rsp
 D:\GIT\tstiapi\TSTI_API\bin\roslyn\VBCSCompiler.exe
 D:\GIT\tstiapi\TSTI_API\bin\roslyn\VBCSCompiler.exe.config
 D:\GIT\tstiapi\TSTI_API\bin\Antlr3.Runtime.dll
+D:\GIT\tstiapi\TSTI_API\bin\BouncyCastle.Crypto.dll
 D:\GIT\tstiapi\TSTI_API\bin\EntityFramework.dll
 D:\GIT\tstiapi\TSTI_API\bin\EntityFramework.SqlServer.dll
+D:\GIT\tstiapi\TSTI_API\bin\itextsharp.dll
 D:\GIT\tstiapi\TSTI_API\bin\Microsoft.Bcl.AsyncInterfaces.dll
 D:\GIT\tstiapi\TSTI_API\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 D:\GIT\tstiapi\TSTI_API\bin\Microsoft.Web.Infrastructure.dll
@@ -181,6 +183,7 @@ D:\GIT\tstiapi\TSTI_API\bin\System.Web.WebPages.Razor.dll
 D:\GIT\tstiapi\TSTI_API\bin\WebGrease.dll
 D:\GIT\tstiapi\TSTI_API\bin\EntityFramework.xml
 D:\GIT\tstiapi\TSTI_API\bin\EntityFramework.SqlServer.xml
+D:\GIT\tstiapi\TSTI_API\bin\itextsharp.xml
 D:\GIT\tstiapi\TSTI_API\bin\Microsoft.Bcl.AsyncInterfaces.xml
 D:\GIT\tstiapi\TSTI_API\bin\RestSharp.xml
 D:\GIT\tstiapi\TSTI_API\bin\System.Buffers.xml
@@ -216,11 +219,8 @@ D:\GIT\tstiapi\TSTI_API\bin\zh-Hant\System.Web.Razor.resources.dll
 D:\GIT\tstiapi\TSTI_API\bin\zh-Hant\System.Web.WebPages.resources.dll
 D:\GIT\tstiapi\TSTI_API\bin\zh-Hant\System.Web.WebPages.Deployment.resources.dll
 D:\GIT\tstiapi\TSTI_API\bin\zh-Hant\System.Web.WebPages.Razor.resources.dll
+D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.csprojAssemblyReference.cache
 D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.csproj.CoreCompileInputs.cache
 D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.csproj.CopyComplete
 D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.dll
 D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.pdb
-D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.csprojAssemblyReference.cache
-D:\GIT\tstiapi\TSTI_API\bin\BouncyCastle.Crypto.dll
-D:\GIT\tstiapi\TSTI_API\bin\itextsharp.dll
-D:\GIT\tstiapi\TSTI_API\bin\itextsharp.xml
