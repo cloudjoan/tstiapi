@@ -171,7 +171,8 @@
           <Property Name="cStartTime" Type="datetime" />
           <Property Name="cArriveTime" Type="datetime" />
           <Property Name="cFinishTime" Type="datetime" />
-          <Property Name="cLocation" Type="nvarchar" MaxLength="100" />
+          <Property Name="cLocationR" Type="nvarchar" MaxLength="100" />
+          <Property Name="cLocationA" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifiedDate" Type="datetime" />
@@ -593,7 +594,8 @@
           <Property Name="cStartTime" Type="DateTime" Precision="3" />
           <Property Name="cArriveTime" Type="DateTime" Precision="3" />
           <Property Name="cFinishTime" Type="DateTime" Precision="3" />
-          <Property Name="cLocation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cLocationR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cLocationA" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
@@ -881,7 +883,8 @@
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="cLocation" ColumnName="cLocation" />
+                <ScalarProperty Name="cLocationA" ColumnName="cLocationA" />
+                <ScalarProperty Name="cLocationR" ColumnName="cLocationR" />
                 <ScalarProperty Name="cFinishTime" ColumnName="cFinishTime" />
                 <ScalarProperty Name="cArriveTime" ColumnName="cArriveTime" />
                 <ScalarProperty Name="cStartTime" ColumnName="cStartTime" />

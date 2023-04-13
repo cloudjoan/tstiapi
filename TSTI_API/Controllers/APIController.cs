@@ -5899,7 +5899,8 @@ namespace TSTI_API.Controllers
             //    "IV_ArriveTime": "2023-01-18 18:50",
             //    "IV_FinishTime": "2023-01-18 19:50",
             //    "IV_ISRENEW": "N",
-            //    "IV_Location": ""
+            //    "IV_LocationR": "",
+            //    "IV_LocationA": ""
             //}
             #endregion
 
@@ -5924,7 +5925,8 @@ namespace TSTI_API.Controllers
             string cArriveTime = string.Empty;
             string cFinishTime = string.Empty;
             string cISRENEW = string.Empty;
-            string cLocation = string.Empty;
+            string cLocationR = string.Empty;
+            string cLocationA = string.Empty;
 
             try
             {                
@@ -5935,7 +5937,8 @@ namespace TSTI_API.Controllers
                 cArriveTime = string.IsNullOrEmpty(beanIN.IV_ArriveTime) ? "" : beanIN.IV_ArriveTime.Trim();
                 cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime.Trim();
                 cISRENEW = string.IsNullOrEmpty(beanIN.IV_ISRENEW) ? "" : beanIN.IV_ISRENEW.Trim();
-                cLocation = string.IsNullOrEmpty(beanIN.IV_Location) ? "" : beanIN.IV_Location.Trim();
+                cLocationR = string.IsNullOrEmpty(beanIN.IV_LocationR) ? "" : beanIN.IV_LocationR.Trim();
+                cLocationA = string.IsNullOrEmpty(beanIN.IV_LocationA) ? "" : beanIN.IV_LocationA.Trim();
 
                 #region 取得工程師/技術主管姓名
                 EmployeeBean EmpBean = new EmployeeBean();
@@ -5982,7 +5985,16 @@ namespace TSTI_API.Controllers
                             bean.cFinishTime = Convert.ToDateTime(cFinishTime);
                         }
 
-                        bean.cLocation = cLocation;
+                        if (cLocationR != "")
+                        {
+                            bean.cLocationR = cLocationR;
+                        }
+
+                        if (cLocationA != "")
+                        {
+                            bean.cLocationA = cLocationA;
+                        }
+
                         bean.ModifiedDate = DateTime.Now;
                         bean.ModifiedUserName = cENGNAME;
                         #endregion
@@ -6043,7 +6055,8 @@ namespace TSTI_API.Controllers
             string cStartTime = string.IsNullOrEmpty(beanIN.IV_StartTime) ? "" : beanIN.IV_StartTime.Trim();
             string cArriveTime = string.IsNullOrEmpty(beanIN.IV_ArriveTime) ? "" : beanIN.IV_ArriveTime.Trim();
             string cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime.Trim();
-            string cLocation = string.IsNullOrEmpty(beanIN.IV_Location) ? "" : beanIN.IV_Location.Trim();
+            string cLocationR = string.IsNullOrEmpty(beanIN.IV_LocationR) ? "" : beanIN.IV_LocationR.Trim();
+            string cLocationA = string.IsNullOrEmpty(beanIN.IV_LocationA) ? "" : beanIN.IV_LocationA.Trim();
 
             #region 新增
             TB_ONE_SRFixRecord SRRecord = new TB_ONE_SRFixRecord();
@@ -6072,7 +6085,16 @@ namespace TSTI_API.Controllers
                 SRRecord.cFinishTime = Convert.ToDateTime(cFinishTime);
             }
 
-            SRRecord.cLocation = cLocation;
+            if (cLocationR != "")
+            {
+                SRRecord.cLocationR = cLocationR;
+            }
+
+            if (cLocationA != "")
+            {
+                SRRecord.cLocationA = cLocationA;
+            }
+            
             SRRecord.CreatedDate = DateTime.Now;
             SRRecord.CreatedUserName = cENGNAME;
             #endregion
@@ -6099,8 +6121,10 @@ namespace TSTI_API.Controllers
             public string IV_FinishTime { get; set; }
             /// <summary>是否要重新新增</summary>
             public string IV_ISRENEW { get; set; }
-            /// <summary>座標位置</summary>
-            public string IV_Location { get; set; }
+            /// <summary>座標位置(接單)</summary>
+            public string IV_LocationR { get; set; }
+            /// <summary>座標位置(到場)</summary>
+            public string IV_LocationA { get; set; }
         }
         #endregion
 

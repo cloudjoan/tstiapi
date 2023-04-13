@@ -289,7 +289,8 @@
     <Property Name="cStartTime" Type="DateTime" Precision="3" />
     <Property Name="cArriveTime" Type="DateTime" Precision="3" />
     <Property Name="cFinishTime" Type="DateTime" Precision="3" />
-    <Property Name="cLocation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cLocationR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cLocationA" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
