@@ -278,7 +278,7 @@
           <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="cLocationA" ColumnName="cLocationA" />
-          <ScalarProperty Name="cLocationR" ColumnName="cLocationR" />
+          <ScalarProperty Name="cLocationS" ColumnName="cLocationS" />
           <ScalarProperty Name="cFinishTime" ColumnName="cFinishTime" />
           <ScalarProperty Name="cArriveTime" ColumnName="cArriveTime" />
           <ScalarProperty Name="cStartTime" ColumnName="cStartTime" />

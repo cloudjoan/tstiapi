@@ -22,7 +22,7 @@ namespace TSTI_API.Models
         public Nullable<System.DateTime> cStartTime { get; set; }
         public Nullable<System.DateTime> cArriveTime { get; set; }
         public Nullable<System.DateTime> cFinishTime { get; set; }
-        public string cLocationR { get; set; }
+        public string cLocationS { get; set; }
         public string cLocationA { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUserName { get; set; }

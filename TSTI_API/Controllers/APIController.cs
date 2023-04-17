@@ -5899,7 +5899,7 @@ namespace TSTI_API.Controllers
             //    "IV_ArriveTime": "2023-01-18 18:50",
             //    "IV_FinishTime": "2023-01-18 19:50",
             //    "IV_ISRENEW": "N",
-            //    "IV_LocationR": "",
+            //    "IV_LocationS": "",
             //    "IV_LocationA": ""
             //}
             #endregion
@@ -5925,7 +5925,7 @@ namespace TSTI_API.Controllers
             string cArriveTime = string.Empty;
             string cFinishTime = string.Empty;
             string cISRENEW = string.Empty;
-            string cLocationR = string.Empty;
+            string cLocationS = string.Empty;
             string cLocationA = string.Empty;
 
             try
@@ -5937,7 +5937,7 @@ namespace TSTI_API.Controllers
                 cArriveTime = string.IsNullOrEmpty(beanIN.IV_ArriveTime) ? "" : beanIN.IV_ArriveTime.Trim();
                 cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime.Trim();
                 cISRENEW = string.IsNullOrEmpty(beanIN.IV_ISRENEW) ? "" : beanIN.IV_ISRENEW.Trim();
-                cLocationR = string.IsNullOrEmpty(beanIN.IV_LocationR) ? "" : beanIN.IV_LocationR.Trim();
+                cLocationS = string.IsNullOrEmpty(beanIN.IV_LocationS) ? "" : beanIN.IV_LocationS.Trim();
                 cLocationA = string.IsNullOrEmpty(beanIN.IV_LocationA) ? "" : beanIN.IV_LocationA.Trim();
 
                 #region 取得工程師/技術主管姓名
@@ -5985,9 +5985,9 @@ namespace TSTI_API.Controllers
                             bean.cFinishTime = Convert.ToDateTime(cFinishTime);
                         }
 
-                        if (cLocationR != "")
+                        if (cLocationS != "")
                         {
-                            bean.cLocationR = cLocationR;
+                            bean.cLocationS = cLocationS;
                         }
 
                         if (cLocationA != "")
@@ -6055,7 +6055,7 @@ namespace TSTI_API.Controllers
             string cStartTime = string.IsNullOrEmpty(beanIN.IV_StartTime) ? "" : beanIN.IV_StartTime.Trim();
             string cArriveTime = string.IsNullOrEmpty(beanIN.IV_ArriveTime) ? "" : beanIN.IV_ArriveTime.Trim();
             string cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime.Trim();
-            string cLocationR = string.IsNullOrEmpty(beanIN.IV_LocationR) ? "" : beanIN.IV_LocationR.Trim();
+            string cLocationS = string.IsNullOrEmpty(beanIN.IV_LocationS) ? "" : beanIN.IV_LocationS.Trim();
             string cLocationA = string.IsNullOrEmpty(beanIN.IV_LocationA) ? "" : beanIN.IV_LocationA.Trim();
 
             #region 新增
@@ -6085,9 +6085,9 @@ namespace TSTI_API.Controllers
                 SRRecord.cFinishTime = Convert.ToDateTime(cFinishTime);
             }
 
-            if (cLocationR != "")
+            if (cLocationS != "")
             {
-                SRRecord.cLocationR = cLocationR;
+                SRRecord.cLocationS = cLocationS;
             }
 
             if (cLocationA != "")
@@ -6122,7 +6122,7 @@ namespace TSTI_API.Controllers
             /// <summary>是否要重新新增</summary>
             public string IV_ISRENEW { get; set; }
             /// <summary>座標位置(接單)</summary>
-            public string IV_LocationR { get; set; }
+            public string IV_LocationS { get; set; }
             /// <summary>座標位置(到場)</summary>
             public string IV_LocationA { get; set; }
         }
