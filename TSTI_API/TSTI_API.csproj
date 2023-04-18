@@ -376,6 +376,9 @@
     <Compile Include="Models\TB_ONE_SRDetail_Contact.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_ONE_SRDetail_MaterialInfo.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_ONE_SRDetail_PartsReplace.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>
@@ -383,6 +386,9 @@
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TB_ONE_SRDetail_Record.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SRDetail_SerialFeedback.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TB_ONE_SRDetail_Warranty.cs">

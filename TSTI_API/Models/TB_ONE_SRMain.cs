@@ -20,6 +20,7 @@ namespace TSTI_API.Models
         public string cDesc { get; set; }
         public string cNotes { get; set; }
         public string cAttachement { get; set; }
+        public string cAttachementStockNo { get; set; }
         public string cStatus { get; set; }
         public string cMAServiceType { get; set; }
         public string cDelayReason { get; set; }
@@ -44,6 +45,10 @@ namespace TSTI_API.Models
         public string cSQPersonName { get; set; }
         public string cSalesID { get; set; }
         public string cSalesName { get; set; }
+        public string cSecretaryID { get; set; }
+        public string cSecretaryName { get; set; }
+        public string cSalesNo { get; set; }
+        public string cShipmentNo { get; set; }
         public Nullable<System.Guid> cSystemGUID { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUserName { get; set; }
