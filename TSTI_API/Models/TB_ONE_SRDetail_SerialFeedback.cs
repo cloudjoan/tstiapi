@@ -19,6 +19,7 @@ namespace TSTI_API.Models
         public string cSerialID { get; set; }
         public string cMaterialID { get; set; }
         public string cMaterialName { get; set; }
+        public string cConfigReport { get; set; }
         public Nullable<int> Disabled { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUserName { get; set; }

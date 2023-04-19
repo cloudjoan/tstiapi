@@ -159,6 +159,7 @@
     <Property Name="cSerialID" Type="nvarchar" MaxLength="40" Nullable="false" />
     <Property Name="cMaterialID" Type="nvarchar" MaxLength="20" />
     <Property Name="cMaterialName" Type="nvarchar" MaxLength="255" />
+    <Property Name="cConfigReport" Type="nvarchar(max)" />
     <Property Name="Disabled" Type="int" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
