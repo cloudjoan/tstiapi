@@ -789,16 +789,16 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑一般服務案件建立 ↑↑↑↑↑-----    
 
-        #region -----↓↓↓↓↓一般服務案件狀態更新 ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓服務案件(一般/裝機/定維)狀態更新 ↓↓↓↓↓-----
 
-        #region ONE SERVICE（一般服務案件）狀態更新接口
+        #region ONE SERVICE 服務案件(一般/裝機/定維)狀態更新接口
         /// <summary>
-        /// ONE SERVICE（一般服務案件）狀態更新接口
+        /// ONE SERVICE 服務案件(一般/裝機/定維)狀態更新接口
         /// </summary>
-        /// <param name="bean"></param>
+        /// <param name="beanIN"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult API_SRSTATUS_UPDATE(SRMain_GENERALSRSTATUS_INPUT beanIN)
+        public ActionResult API_SRSTATUS_UPDATE(SRMain_SRSTATUS_INPUT beanIN)
         {
             #region Json範列格式
             //{
@@ -810,18 +810,18 @@ namespace TSTI_API.Controllers
             //}
             #endregion
 
-            SRMain_GENERALSRSTATUS_OUTPUT SROUT = new SRMain_GENERALSRSTATUS_OUTPUT();
+            SRMain_SRSTATUS_OUTPUT SROUT = new SRMain_SRSTATUS_OUTPUT();
 
-            SROUT = GenerallySRSTATUS_Update(beanIN);
+            SROUT = SRSTATUS_Update(beanIN);
 
             return Json(SROUT);
         }
         #endregion
 
-        #region 更新（一般服務案件）狀態
-        private SRMain_GENERALSRSTATUS_OUTPUT GenerallySRSTATUS_Update(SRMain_GENERALSRSTATUS_INPUT bean)
+        #region 更新服務案件(一般/裝機/定維)狀態
+        private SRMain_SRSTATUS_OUTPUT SRSTATUS_Update(SRMain_SRSTATUS_INPUT bean)
         {
-            SRMain_GENERALSRSTATUS_OUTPUT SROUT = new SRMain_GENERALSRSTATUS_OUTPUT();
+            SRMain_SRSTATUS_OUTPUT SROUT = new SRMain_SRSTATUS_OUTPUT();
 
             bool tIsFormal = false;
             string tExcType = string.Empty;
@@ -986,7 +986,7 @@ namespace TSTI_API.Controllers
                 pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
                 pMsg += " 失敗行數：" + ex.ToString();
 
-                CMF.writeToLog(IV_SRID, "GenerallySRSTATUS_Update_API", pMsg, pLoginName);
+                CMF.writeToLog(IV_SRID, "SRSTATUS_Update_API", pMsg, pLoginName);
                 
                 SROUT.EV_MSGT = "E";
                 SROUT.EV_MSG = ex.Message;
@@ -996,9 +996,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 一般服務案件狀態更新INPUT資訊
-        /// <summary>一般服務案件狀態更新INPUT資訊</summary>
-        public struct SRMain_GENERALSRSTATUS_INPUT
+        #region 服務案件(一般/裝機/定維)狀態更新INPUT資訊
+        /// <summary>服務案件(一般/裝機/定維)狀態更新INPUT資訊</summary>
+        public struct SRMain_SRSTATUS_INPUT
         {
             /// <summary>修改者員工編號ERPID</summary>
             public string IV_LOGINEMPNO { get; set; }
@@ -1013,9 +1013,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 一般服務案件狀態更新OUTPUT資訊
-        /// <summary>一般服務案件狀態更新OUTPUT資訊</summary>
-        public struct SRMain_GENERALSRSTATUS_OUTPUT
+        #region 服務案件(一般/裝機/定維)狀態更新OUTPUT資訊
+        /// <summary>服務案件(一般/裝機/定維)狀態更新OUTPUT資訊</summary>
+        public struct SRMain_SRSTATUS_OUTPUT
         {            
             /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
             public string EV_MSGT { get; set; }
@@ -1024,7 +1024,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑一般服務案件狀態更新 ↑↑↑↑↑-----    
+        #endregion -----↑↑↑↑↑服務案件(一般/裝機/定維)狀態更新 ↑↑↑↑↑-----    
 
         #region -----↓↓↓↓↓法人客戶資料 ↓↓↓↓↓-----
 
