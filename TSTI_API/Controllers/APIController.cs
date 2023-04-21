@@ -37,6 +37,16 @@ namespace TSTI_API.Controllers
         /// </summary>
         string pOperationID_GenerallySR = "869FC989-1049-4266-ABDE-69A9B07BCD0A";
 
+        /// <summary>
+        /// 程式作業編號檔系統ID(裝機服務)
+        /// </summary>
+        string pOperationID_InstallSR = "3B6FF77B-DAF4-4C2D-957A-6C28CE054D75";
+
+        /// <summary>
+        /// 程式作業編號檔系統ID(定維服務)
+        /// </summary>
+        string pOperationID_MaintainSR = "5B80D6AB-9143-4916-9273-ADFAEA9A61ED";
+
         static string API_KEY = "6xdTlREsMbFd0dBT28jhb5W3BNukgLOos";
 
 
@@ -549,7 +559,7 @@ namespace TSTI_API.Controllers
                         SROUT.EV_MSG = "";
 
                         #region 寄送Mail通知
-                        CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, pBUKRS, pSRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
+                        CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, pBUKRS, pSRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
                         #endregion
                     }
                 }                
@@ -884,37 +894,46 @@ namespace TSTI_API.Controllers
                         {
                             switch (IV_STATUS)
                             {
-                                case "E0002": //L2處理中
-                                case "E0003": //報價中
-                                case "E0005": //L3處理中                            
+                                case "E0002": //L2處理中(一般)
+                                case "E0003": //報價中(一般)
+                                case "E0005": //L3處理中(一般)
+                                case "E0008": //裝機中(裝機)
                                     tCondition = SRCondition.SAVE;
                                     break;
 
-                                case "E0004": //3rd Party處理中                            
+                                case "E0004": //3rd Party處理中(一般)                            
                                     tCondition = SRCondition.THRPARTY;
                                     break;
 
-                                case "E0006": //完修                   
+                                case "E0006": //完修(一般)                   
                                     tCondition = SRCondition.DONE;
                                     break;
 
-                                case "E0007": //技術支援升級           
+                                case "E0007": //技術支援升級(一般)           
                                     tCondition = SRCondition.SUPPORT;
+                                    break;                                
+
+                                case "E0009": //維修/DOA(裝機)           
+                                    tCondition = SRCondition.DOA;
                                     break;
 
-                                case "E0012": //HPGCSN 申請           
+                                case "E0010": //裝機完成(裝機)           
+                                    tCondition = SRCondition.INSTALLDONE;
+                                    break;
+
+                                case "E0012": //HPGCSN 申請(一般)           
                                     tCondition = SRCondition.HPGCSN;
                                     break;
 
-                                case "E0013": //HPGCSN 完成
+                                case "E0013": //HPGCSN 完成(一般)
                                     tCondition = SRCondition.HPGCSNDONE;
                                     break;
 
-                                case "E0014": //駁回       
+                                case "E0014": //駁回(共用)       
                                     tCondition = SRCondition.REJECT;
                                     break;
 
-                                case "E0015": //取消
+                                case "E0015": //取消(共用)
                                     tCondition = SRCondition.CANCEL;
                                     break;
                             }
@@ -957,7 +976,7 @@ namespace TSTI_API.Controllers
                         SROUT.EV_MSG = "";
 
                         #region 寄送Mail通知
-                        CMF.SetSRMailContent(tCondition, pOperationID_GenerallySR, EmpBean.BUKRS, IV_SRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
+                        CMF.SetSRMailContent(tCondition, pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, EmpBean.BUKRS, IV_SRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
                         #endregion
                     }
                 }                
@@ -6700,19 +6719,35 @@ namespace TSTI_API.Controllers
         }
         #endregion       
 
-        #region 查詢一般服務案件狀態接口
+        #region 查詢服務(一般/裝機/定維)案件狀態接口
         [HttpPost]
-        public ActionResult API_GENERALSRSTATUS_GET(OPTION_INPUT beanIV)
+        public ActionResult API_SRSTATUS_GET(OPTION_INPUT beanIV)
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_COMPID": "T012"
+            //    "IV_COMPID": "T012",
+            //    "IV_CASETYPE": "ZSR1"
             //}
             #endregion
 
             OPTION_OUTPUT ListOUT = new OPTION_OUTPUT();
 
-            ListOUT = OPTION_GET(beanIV, "GENERALSRSTATUS");
+            string tFunction = "GENERALSRSTATUS";
+
+            if (beanIV.IV_CASETYPE == "ZSR1")
+            {
+                tFunction = "GENERALSRSTATUS";
+            }
+            else if (beanIV.IV_CASETYPE == "ZSR3")
+            {
+                tFunction = "INSTALLSRSTATUS";
+            }
+            else if (beanIV.IV_CASETYPE == "ZSR5")
+            {
+                tFunction = "MAINTAINSRSTATUS";
+            }
+
+            ListOUT = OPTION_GET(beanIV, tFunction);
 
             return Json(ListOUT);
         }
@@ -6722,6 +6757,8 @@ namespace TSTI_API.Controllers
         private OPTION_OUTPUT OPTION_GET(OPTION_INPUT beanIV, string tFunction)
         {
             OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();
+
+            string SRType = pOperationID_GenerallySR;
 
             try
             {
@@ -6733,20 +6770,34 @@ namespace TSTI_API.Controllers
                     case "MASERVICETYPE":
                         tFunName = "維護服務種類";
                         tFunNo = "SRMATYPE";
+                        SRType = pOperationID_GenerallySR;
                         break;
 
                     case "SRPATHWAY":
                         tFunName = "報修管道";
                         tFunNo = "SRPATH";
+                        SRType = pOperationID_GenerallySR;
                         break;
 
-                    case "GENERALSRSTATUS":
+                    case "GENERALSRSTATUS": //一般
                         tFunName = "狀態";
                         tFunNo = "SRSTATUS";
                         break;
+
+                    case "INSTALLSRSTATUS": //裝機 
+                        tFunName = "狀態";
+                        tFunNo = "SRSTATUS";
+                        SRType = pOperationID_InstallSR;
+                        break;
+
+                    case "MAINTAINSRSTATUS": //定維
+                        tFunName = "狀態";
+                        tFunNo = "SRSTATUS";
+                        SRType = pOperationID_MaintainSR;
+                        break;
                 }
 
-                var tList = CMF.findOPTION(pOperationID_GenerallySR, beanIV.IV_COMPID.Trim(), tFunNo);
+                var tList = CMF.findOPTION(SRType, beanIV.IV_COMPID.Trim(), tFunNo);
 
                 if (tList.Count == 0)
                 {
@@ -7526,7 +7577,11 @@ namespace TSTI_API.Controllers
         /// <summary>指派工程師</summary>
         public string AssENG { get; set; }
         /// <summary>技術主管</summary>
-        public string TechMGR { get; set; }        
+        public string TechMGR { get; set; }
+        /// <summary>業務人員</summary>
+        public string SalesEMP { get; set; }
+        /// <summary>業務祕書</summary>
+        public string SecretaryEMP { get; set; }
         /// <summary>派單時間</summary>
         public string CreatedDate { get; set; }
         /// <summary>合約文件編號</summary>
@@ -7535,6 +7590,10 @@ namespace TSTI_API.Controllers
         public string MAServiceType { get; set; }
         /// <summary>是否為二修</summary>
         public string SecFix { get; set; }
+        /// <summary>銷售訂單號</summary>
+        public string SalesNo { get; set; }
+        /// <summary>出貨單號</summary>
+        public string ShipmentNo { get; set; }        
         /// <summary>需求說明</summary>
         public string Desc { get; set; }
         /// <summary>詳細描述</summary>
@@ -7560,6 +7619,10 @@ namespace TSTI_API.Controllers
         public string AssENGEmail { get; set; }
         /// <summary>技術主管Email</summary>
         public string TechMGREmail { get; set; }
+        /// <summary>業務人員Email</summary>
+        public string SalesEmail { get; set; }
+        /// <summary>業務祕書Email</summary>
+        public string SecretaryEmail { get; set; }
     }
     #endregion
 
@@ -7724,6 +7787,48 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
+    #region 服務案件物料訊息資訊
+    /// <summary>服務案件物料訊息資訊</summary>
+    public class SRMATERIALlNFO
+    {
+        /// <summary>系統ID</summary>
+        public string CID { get; set; }
+        /// <summary>服務案件ID</summary>
+        public string SRID { get; set; }        
+        /// <summary>物料代號</summary>
+        public string MaterialID { get; set; }
+        /// <summary>料號說明</summary>
+        public string MaterialName { get; set; }
+        /// <summary>數量</summary>
+        public string Quantity { get; set; }
+        /// <summary>基本內文</summary>
+        public string BasicContent { get; set; }
+        /// <summary>製造商零件號碼</summary>
+        public string cMFPNumber { get; set; }
+        /// <summary>廠牌</summary>
+        public string Brand { get; set; }
+        /// <summary>產品階層</summary>
+        public string ProductHierarchy { get; set; }        
+    }
+    #endregion
+
+    #region 服務案件序號回報資訊
+    /// <summary>服務案件序號回報資訊</summary>
+    public class SRSERIALFEEDBACKlNFO
+    {
+        /// <summary>系統ID</summary>
+        public string CID { get; set; }
+        /// <summary>服務案件ID</summary>
+        public string SRID { get; set; }
+        /// <summary>序號</summary>
+        public string SERIALID { get; set; }
+        /// <summary>物料代號</summary>
+        public string MaterialID { get; set; }
+        /// <summary>料號說明</summary>
+        public string MaterialName { get; set; }        
+    }
+    #endregion
+
     #region 服務團隊對照組織相關資訊
     /// <summary>服務團隊對照組織相關資訊</summary>
     public class SRTEAMORGINFO
@@ -7833,6 +7938,8 @@ namespace TSTI_API.Controllers
     {
         /// <summary>公司別ID(T012、T016、C069、T022)</summary>
         public string IV_COMPID { get; set; }
+        /// <summary>服務案件種類(ZSR1.一般 ZSR3.裝機 ZSR5.定維)</summary>
+        public string IV_CASETYPE { get; set; }
     }
     #endregion
 
@@ -7999,7 +8106,17 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 完修
         /// </summary>
-        DONE
+        DONE,
+
+        /// <summary>
+        /// 維修/DOA
+        /// </summary>
+        DOA,       
+
+        /// <summary>
+        /// 裝機完成
+        /// </summary>
+        INSTALLDONE
     }
     #endregion
 
