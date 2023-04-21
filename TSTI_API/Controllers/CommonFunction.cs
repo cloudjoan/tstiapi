@@ -2467,7 +2467,7 @@ namespace TSTI_API.Controllers
 
             List<string[]> SRIDUserToList = new List<string[]>();   //組SRID清單
 
-            SRIDUserToList = getSRIDToDoLis(cOperationID_GenerallySR, cOperationID_InstallSR, cOperationID_MaintainSR, cCompanyID, IsManager, tERPID, tTeamList);
+            SRIDUserToList = getSRIDToDoList(cOperationID_GenerallySR, cOperationID_InstallSR, cOperationID_MaintainSR, cCompanyID, IsManager, tERPID, tTeamList);
 
             return SRIDUserToList;
         }
@@ -2485,7 +2485,7 @@ namespace TSTI_API.Controllers
         /// <param name="tERPID">登入人員ERPID</param>
         /// <param name="tTeamList">可觀看服務團隊清單</param>        
         /// <returns></returns>
-        private List<string[]> getSRIDToDoLis(string cOperationID_GenerallySR, string cOperationID_InstallSR, string cOperationID_MaintainSR, 
+        private List<string[]> getSRIDToDoList(string cOperationID_GenerallySR, string cOperationID_InstallSR, string cOperationID_MaintainSR, 
                                             string cCompanyID, bool IsManager, string tERPID, List<string> tTeamList)
         {
             List<string[]> SRIDUserToList = new List<string[]>();   //組SRID清單
