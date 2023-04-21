@@ -1553,6 +1553,41 @@ namespace TSTI_API.Controllers
         }
         #endregion    
 
+        #region 取得序號回報資訊(傳AttachURL)
+        /// <summary>
+        /// 取得序號回報資訊(傳AttachURL)
+        /// </summary>
+        /// <param name="cSRID">SRID</param>
+        /// <param name="tAttachURLName"></param>
+        /// <returns></returns>        
+        public List<SRSERIALFEEDBACKlNFO> findSRSERIALFEEDBACKlNFO(string cSRID, string tAttachURLName)
+        {
+            List<SRSERIALFEEDBACKlNFO> tList = new List<SRSERIALFEEDBACKlNFO>();
+
+            string cConfigReportURL = string.Empty;
+
+            var beans = dbOne.TB_ONE_SRDetail_SerialFeedback.Where(x => x.Disabled == 0 && x.cSRID == cSRID);
+
+            foreach (var bean in beans)
+            {
+                SRSERIALFEEDBACKlNFO SRPart = new SRSERIALFEEDBACKlNFO();
+
+                cConfigReportURL = findAttachUrl(bean.cConfigReport, tAttachURLName);
+
+                SRPart.CID = bean.cID.ToString();
+                SRPart.SRID = bean.cSRID;
+                SRPart.SERIALID = bean.cSerialID;
+                SRPart.MaterialID = bean.cMaterialID;
+                SRPart.MaterialName = bean.cMaterialName;
+                SRPart.ConfigReportURL = cConfigReportURL;
+
+                tList.Add(SRPart);
+            }
+
+            return tList;
+        }
+        #endregion    
+
         #region 取得Mail Body
         /// <summary>
         /// 取得Mail Body
@@ -2803,10 +2838,17 @@ namespace TSTI_API.Controllers
         {
             Dictionary<string, object> results = new Dictionary<string, object>();
 
-            string EV_TYPE = "ZSR1";            
+            string EV_TYPE = "ZSR1";
+            string EV_CONTACT = string.Empty;
+            string EV_ADDR = string.Empty;
+            string EV_TEL = string.Empty;
+            string EV_MOBILE = string.Empty;
+            string EV_EMAIL = string.Empty;
+            string EV_SQ = string.Empty;
             string EV_SLASRV = string.Empty;
             string EV_SLARESP = string.Empty;
             string EV_WTYKIND = string.Empty;
+            string MAServiceType = string.Empty;
 
             var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
 
@@ -2816,9 +2858,16 @@ namespace TSTI_API.Controllers
                 {
                     case "61": //一般服務
                         EV_TYPE = "ZSR1";
+                        EV_CONTACT = string.IsNullOrEmpty(beanM.cRepairName) ? "": beanM.cRepairName;
+                        EV_ADDR = string.IsNullOrEmpty(beanM.cRepairAddress) ? "" : beanM.cRepairAddress;
+                        EV_TEL = string.IsNullOrEmpty(beanM.cRepairPhone) ? "" : beanM.cRepairPhone;
+                        EV_MOBILE = string.IsNullOrEmpty(beanM.cRepairMobile) ? "" : beanM.cRepairMobile;
+                        EV_EMAIL = string.IsNullOrEmpty(beanM.cRepairEmail) ? "" : beanM.cRepairEmail;
+                        MAServiceType = string.IsNullOrEmpty(beanM.cMAServiceType) ? "" : beanM.cMAServiceType;
+                        EV_SQ = string.IsNullOrEmpty(beanM.cSQPersonName) ? "" : beanM.cSQPersonName;
                         break;
                     case "63": //裝機服務
-                        EV_TYPE = "ZSR3";
+                        EV_TYPE = "ZSR3";                        
                         break;
                     case "65": //定維服務
                         EV_TYPE = "ZSR5";
@@ -2832,22 +2881,22 @@ namespace TSTI_API.Controllers
                 EV_SLARESP = tArySLA[0];
                 EV_SLASRV = tArySLA[1];
 
-                EV_WTYKIND = findSysParameterDescription(pOperationID_GenerallySR, "OTHER", EmpBean.BUKRS, "SRMATYPE", beanM.cMAServiceType);
+                EV_WTYKIND = findSysParameterDescription(pOperationID_GenerallySR, "OTHER", EmpBean.BUKRS, "SRMATYPE", MAServiceType);
 
                 results.Add("EV_CUSTOMER", beanM.cCustomerName);       //客戶名稱
                 results.Add("EV_DESC", beanM.cDesc);                  //說明                
                 results.Add("EV_PROBLEM", beanM.cNotes);              //詳細描述
                 results.Add("EV_MAINENG", beanM.cMainEngineerName);    //L2工程師姓名
                 results.Add("EV_MAINENGID", beanM.cMainEngineerID);    //L2工程師ERPID                
-                results.Add("EV_CONTACT", beanM.cRepairName);         //報修人姓名
-                results.Add("EV_ADDR", beanM.cRepairAddress);         //報修人地址
-                results.Add("EV_TEL", beanM.cRepairPhone);           //報修人電話
-                results.Add("EV_MOBILE", beanM.cRepairMobile);       //報修人手機
-                results.Add("EV_EMAIL", beanM.cRepairEmail);         //報修人Email
+                results.Add("EV_CONTACT", EV_CONTACT);               //報修人姓名
+                results.Add("EV_ADDR", EV_ADDR);                    //報修人地址
+                results.Add("EV_TEL", EV_TEL);                      //報修人電話
+                results.Add("EV_MOBILE", EV_MOBILE);                //報修人手機
+                results.Add("EV_EMAIL", EV_EMAIL);                  //報修人Email
                 results.Add("EV_TYPE", EV_TYPE);                   //服務種類
                 results.Add("EV_COUNTIN", "");                      //計數器進(群輝用，先保持空白)
                 results.Add("EV_COUNTOUT", "");                     //計數器出(群輝用，先保持空白)
-                results.Add("EV_SQ", beanM.cSQPersonName);          //SQ人員名稱
+                results.Add("EV_SQ", EV_SQ);                       //SQ人員名稱
                 results.Add("EV_DEPARTMENT", EmpBean.BUKRS);        //公司別(T012、T016、C069、t022)
                 results.Add("EV_SLASRV", EV_SLASRV);               //SLA服務條件
                 results.Add("EV_WTYKIND", EV_WTYKIND);             //維護服務種類(Z01.保固內、Z02.保固外、Z03.合約、Z04.3rd Party)

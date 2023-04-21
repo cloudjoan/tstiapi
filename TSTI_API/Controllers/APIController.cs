@@ -2370,7 +2370,7 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑序號查詢【料號和料號說明】接口 ↑↑↑↑↑-----  
 
-        #region -----↓↓↓↓↓SRID相關資訊查詢(服務主檔資訊、客戶聯絡窗口資訊清單、產品序號資訊清單、保固SLA檔資訊清單、處理與工時紀錄清單、零件更換資訊清單) ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓SRID相關資訊查詢(服務主檔資訊、客戶聯絡窗口資訊清單、產品序號資訊清單、保固SLA檔資訊清單、處理與工時紀錄清單、零件更換資訊清單、物料訊息資訊清單、序號回報資訊清單) ↓↓↓↓↓-----
 
         #region 查詢SRID相關資訊接口
         [HttpPost]
@@ -2401,6 +2401,7 @@ namespace TSTI_API.Controllers
             string tBPMURLName = string.Empty;
             string tPSIPURLName = string.Empty;
             string tAttachURLName = string.Empty;
+            string cStatusDesc = string.Empty;
 
             #region 取得系統位址參數相關資訊
             SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
@@ -2420,7 +2421,20 @@ namespace TSTI_API.Controllers
             if (MainBean.cSRID != null)
             {
                 string cBUKRS = CMF.findBUKRSByTeamID(MainBean.cTeamID);
-                string cStatusDesc = CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRSTATUS", MainBean.cStatus);             
+
+                if (beanIN.IV_SRID.Trim().Substring(0, 2) == "61")
+                {
+                    cStatusDesc = CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRSTATUS", MainBean.cStatus);
+                }
+                else if (beanIN.IV_SRID.Trim().Substring(0, 2) == "63")
+                {
+                    cStatusDesc = CMF.findSysParameterDescription(pOperationID_InstallSR, "OTHER", cBUKRS, "SRSTATUS", MainBean.cStatus);
+                }
+                else if (beanIN.IV_SRID.Trim().Substring(0, 2) == "65")
+                {
+                    cStatusDesc = CMF.findSysParameterDescription(pOperationID_MaintainSR, "OTHER", cBUKRS, "SRSTATUS", MainBean.cStatus);
+                }
+
                 string cMASERVICETYPE = string.IsNullOrEmpty(MainBean.cMAServiceType) ? "" : MainBean.cMAServiceType;
                 string cMAServiceTypeDesc = CMF.findSysParameterDescription(pOperationID_GenerallySR, "OTHER", cBUKRS, "SRMATYPE", MainBean.cMAServiceType);                
                 string cSRTYPEONE = string.IsNullOrEmpty(MainBean.cSRTypeOne) ? "" : MainBean.cSRTypeOne;
@@ -2517,6 +2531,16 @@ namespace TSTI_API.Controllers
                 List<SRPARTSREPALCEINFO> SRPARTS_LIST = CMF.findSRPARTSREPALCEINFO(MainBean.cSRID);
                 SROUT.SRPARTS_LIST = SRPARTS_LIST;
                 #endregion
+
+                #region 【物料訊息資訊】清單
+                List<SRMATERIALlNFO> SRMATERIAL_LIST = CMF.findSRMATERIALlNFO(MainBean.cSRID);
+                SROUT.SRMATERIAL_LIST = SRMATERIAL_LIST;
+                #endregion
+
+                #region 【序號回報資訊】清單
+                List<SRSERIALFEEDBACKlNFO> SRFEEDBACK_LIST = CMF.findSRSERIALFEEDBACKlNFO(MainBean.cSRID, tAttachURLName);
+                SROUT.SRFEEDBACK_LIST = SRFEEDBACK_LIST;
+                #endregion
             }
 
             return SROUT;
@@ -2607,10 +2631,14 @@ namespace TSTI_API.Controllers
             public List<SRRECORDINFO> SRRECORD_LIST { get; set; }
             /// <summary>服務案件【零件更換資訊】清單</summary>
             public List<SRPARTSREPALCEINFO> SRPARTS_LIST { get; set; }
+            /// <summary>服務案件【物料訊息資訊】清單</summary>
+            public List<SRMATERIALlNFO> SRMATERIAL_LIST { get; set; }
+            /// <summary>服務案件【序號回報資訊】清單</summary>
+            public List<SRSERIALFEEDBACKlNFO> SRFEEDBACK_LIST { get; set; }
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑SRID相關資訊查詢(服務主檔資訊、客戶聯絡窗口資訊清單、產品序號資訊清單、保固SLA檔資訊清單、處理與工時紀錄清單、零件更換資訊清單) ↑↑↑↑↑-----  
+        #endregion -----↑↑↑↑↑SRID相關資訊查詢(服務主檔資訊、客戶聯絡窗口資訊清單、產品序號資訊清單、保固SLA檔資訊清單、處理與工時紀錄清單、零件更換資訊清單、物料訊息資訊清單、序號回報資訊清單) ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓服務待辦清單查詢接口 ↓↓↓↓↓-----        
 
@@ -3767,7 +3795,7 @@ namespace TSTI_API.Controllers
 
                     List<SNLIST> products = srdetail.ContainsKey("table_ET_SNLIST") ? (List<SNLIST>)srdetail["table_ET_SNLIST"] : null;
 
-                    if (products != null)
+                    if (products.Count > 0)
                     {
                         //取第一筆機器序號
                         PRDID = products[0].PRDID;
@@ -4077,7 +4105,7 @@ namespace TSTI_API.Controllers
                     string svid = "";
                     string hash = "";
                     int surveyCount = 0; //20221005更新
-                    if (IV_SRID.Substring(0, 2) == "85")
+                    if (IV_SRID.Substring(0, 2) == "65")
                     {
                         var qSurveyInfo = appDB.TB_SURVEY_ANS_MAINTAIN.Where(x => x.srid == IV_SRID).OrderByDescending(x => x.UpdateTime);
                         if (qSurveyInfo != null && qSurveyInfo.Count() > 0)
@@ -5047,7 +5075,7 @@ namespace TSTI_API.Controllers
                     }
 
                     //定維case且有問券ID及問券答案ID
-                    if (IV_SRID.Substring(0, 2) == "85" && !string.IsNullOrEmpty(svid) && !string.IsNullOrEmpty(hash))
+                    if (IV_SRID.Substring(0, 2) == "65" && !string.IsNullOrEmpty(svid) && !string.IsNullOrEmpty(hash))
                     {
 
                     }
@@ -5208,7 +5236,7 @@ namespace TSTI_API.Controllers
                     #region 20221005-通訊類問卷，第一頁加入頁碼
                     var endof85 = string.Empty;
                     var totalpage = surveyCount + 1;
-                    if (IV_SRID.Substring(0, 2) == "85")
+                    if (IV_SRID.Substring(0, 2) == "65")
                     {
                         if (maintain_type == "communication")
                         {
@@ -7828,7 +7856,9 @@ namespace TSTI_API.Controllers
         /// <summary>物料代號</summary>
         public string MaterialID { get; set; }
         /// <summary>料號說明</summary>
-        public string MaterialName { get; set; }        
+        public string MaterialName { get; set; }
+        /// <summary>裝機Config檔URL</summary>
+        public string ConfigReportURL { get; set; }
     }
     #endregion
 
