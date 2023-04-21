@@ -2637,7 +2637,7 @@ namespace TSTI_API.Controllers
         {
             SRTODOLIST_OUTPUT OUTBean = new SRTODOLIST_OUTPUT();
 
-            string tERPID = string.Empty;
+            string tERPID = string.Empty;            
 
             try
             {
@@ -2653,8 +2653,8 @@ namespace TSTI_API.Controllers
                 List<string> tSRTeamList = CMF.findSRTeamMappingList(EmpBean.CostCenterID, EmpBean.DepartmentNO);
 
                 //取得登入人員所有要負責的SRID                
-                List<string[]> tList = CMF.findSRIDList(pOperationID_GenerallySR, EmpBean.BUKRS, EmpBean.IsManager, EmpBean.EmployeeERPID, tSRTeamList, "61");                
-                #endregion               
+                List<string[]> tList = CMF.findSRIDList(pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, EmpBean.BUKRS, EmpBean.IsManager, EmpBean.EmployeeERPID, tSRTeamList);
+                #endregion
 
                 if (tList.Count == 0)
                 {
@@ -2693,6 +2693,7 @@ namespace TSTI_API.Controllers
                         beanTODO.SLASRV = tAry[10];
                         beanTODO.MODIFDATE = tAry[11];
                         beanTODO.STATUSDESC = tAry[13];
+                        beanTODO.CONTACTNAME = tAry[14];
 
                         tTODOList.Add(beanTODO);
                     }
@@ -7471,6 +7472,8 @@ namespace TSTI_API.Controllers
         public string CUSTOMERNAME { get; set; }
         /// <summary>客戶報修人</summary>
         public string REPAIRNAME { get; set; }
+        /// <summary>客戶聯絡人</summary>
+        public string CONTACTNAME { get; set; }
         /// <summary>報修管道</summary>
         public string PATHWAY { get; set; }
         /// <summary>報修類別</summary>
