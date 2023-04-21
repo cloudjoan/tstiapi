@@ -798,7 +798,7 @@ namespace TSTI_API.Controllers
         /// <param name="bean"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult API_GENERALSRSTATUS_UPDATE(SRMain_GENERALSRSTATUS_INPUT beanIN)
+        public ActionResult API_SRSTATUS_UPDATE(SRMain_GENERALSRSTATUS_INPUT beanIN)
         {
             #region Json範列格式
             //{
