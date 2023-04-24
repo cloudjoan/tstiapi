@@ -214,9 +214,7 @@ namespace TSTI_API.Controllers
             string tBPMURLName = string.Empty;
             string tPSIPURLName = string.Empty;
             string tAttachURLName = string.Empty;
-            string tAttachPath = string.Empty;
-            string tInvoiceNo = string.Empty;
-            string tInvoiceItem = string.Empty;
+            string tAttachPath = string.Empty;            
             
             string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
             string IV_CUSTOMER = string.IsNullOrEmpty(bean.IV_CUSTOMER) ? "" : bean.IV_CUSTOMER.Trim();            
@@ -807,41 +805,34 @@ namespace TSTI_API.Controllers
             //{
             //    "IV_LOGINEMPNO": "99120894",
             //     "IV_CUSTOMER": "D03251108",
-            //     "IV_SRTEAM": "SRV.12211000",
-            //     "IV_RKIND": "Z01",
-            //     "IV_PATHWAY": "Z01",
-            //     "IV_DESC": "Test20230106",
-            //     "IV_LTXT": "Test20230106詳細說明",
-            //     "IV_MKIND1": "ZA01",
-            //     "IV_MKIND2": "ZB0101",
-            //     "IV_MKIND3": "ZC010101",
-            //     "IV_REPAIRNAME": "王炯凱",
-            //     "IV_REPAIRTEL": "02-2506-2121#1239",
-            //     "IV_REPAIRMOB": "0909000000",
-            //     "IV_REPAIRADDR": "台北市中山區松江路121號13樓",
-            //     "IV_REPAIREMAIL": "elvis.chang@etatung.com",            
-            //     "IV_EMPNO": "10001567",
-            //     "IV_SQEMPID": "ZC103",
-            //     "IV_SERIAL": "SGH33223R6",
-            //     "IV_SNPID": "G-654081B21-057",
-            //     "IV_WTY": "OM363636",
-            //     "IV_REFIX": "N",
+            //     "IV_SRTEAM": "",
+            //     "IV_SALESNO": "201234567",
+            //     "IV_SHIPMENTNO": "251234567",
+            //     "IV_DESC": "",
+            //     "IV_LTXT": "",
+            //     "IV_MKIND1": "",
+            //     "IV_MKIND2": "",
+            //     "IV_MKIND3": "",                 
+            //     "IV_SALESEMPNO": "10012088",
+            //     "IV_SECRETARYEMPNO": "10005805",
+            //     "IV_EMPNO": "",
             //     "CREATECONTACT_LIST": [
             //        {
-            //        "SRID": "612211250004",
-            //            "CONTNAME": "賴淑瑛",
+            //        "CONTNAME": "賴淑瑛",
             //            "CONTADDR": "台北市信義區菸廠路88號12樓",
             //            "CONTTEL": "(02)6638-6888#13158",
             //            "CONTMOBILE": "",
             //            "CONTEMAIL": "elvis.chang@etatung.com"
+            //        }               
+            //    ],
+            //    "CREATEMATERIAL_LIST": [
+            //        {
+            //        "MATERIALID": "G-FIE15MPCAPUSB",
+            //            "QTY": "1"
             //        },
             //        {
-            //        "SRID": "612211250004",
-            //            "CONTNAME": "廖勇翔",
-            //            "CONTADDR": "台北市信義區菸廠路88號12樓",
-            //            "CONTTEL": "02-6638-6888#13124",
-            //            "CONTMOBILE": "",
-            //            "CONTEMAIL": "elvis.chang@etatung.com"
+            //        "MATERIALID": "G-507283-001---",
+            //            "QTY": "1"
             //        }                 
             //    ]
             //}
@@ -876,9 +867,7 @@ namespace TSTI_API.Controllers
             string tBPMURLName = string.Empty;
             string tPSIPURLName = string.Empty;
             string tAttachURLName = string.Empty;
-            string tAttachPath = string.Empty;
-            string tInvoiceNo = string.Empty;
-            string tInvoiceItem = string.Empty;
+            string tAttachPath = string.Empty;            
 
             string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
             string IV_CUSTOMER = string.IsNullOrEmpty(bean.IV_CUSTOMER) ? "" : bean.IV_CUSTOMER.Trim();
@@ -1046,7 +1035,7 @@ namespace TSTI_API.Controllers
                     if (result <= 0)
                     {
                         pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新建失敗！" + Environment.NewLine;
-                        CMF.writeToLog(pSRID, "SaveGenerallySR_API", pMsg, pLoginName);
+                        CMF.writeToLog(pSRID, "SaveInstallSR_API", pMsg, pLoginName);
 
                         SROUT.EV_SRID = pSRID;
                         SROUT.EV_MSGT = "E";

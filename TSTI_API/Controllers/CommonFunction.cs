@@ -3922,10 +3922,13 @@ namespace TSTI_API.Controllers
                     SRConfig_List = findSRCONFIGINFO(cSRID, tAttachURLName, tAttachPath);
                     #endregion -----↑↑↑↑↑裝機Config資訊 ↑↑↑↑↑-----
 
-                    #region 發送服務案件Mail相關資訊(for客戶)，新建或完修才要發給客戶
-                    if (cCondition == SRCondition.ADD || cCondition == SRCondition.DONE)
+                    #region 發送服務案件Mail相關資訊(for客戶)，一般服務(新建或完修)才要發給客戶
+                    if (cSRID.Substring(0, 2) == "61")
                     {
-                        SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                        if (cCondition == SRCondition.ADD || cCondition == SRCondition.DONE)
+                        {
+                            SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                        }
                     }
                     #endregion
 
