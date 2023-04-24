@@ -1967,6 +1967,32 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得物料相關資訊
+        /// <summary>
+        /// 取得物料相關資訊
+        /// </summary>
+        /// <param name="ProdID">料號</param>        
+        /// <returns></returns>
+        public MaterialInfo findMaterialInfo(string ProdID)
+        {
+            MaterialInfo ProBean = new MaterialInfo();
+
+            var bean = dbProxy.MATERIAL.FirstOrDefault(x => x.MARA_MATNR.Contains(ProdID.Trim()));
+
+            if (bean != null)
+            {
+                ProBean.MaterialID = bean.MARA_MATNR;
+                ProBean.MaterialName = bean.MAKT_TXZA1_ZF;
+                ProBean.MFPNumber = bean.MARA_MFRPN;
+                ProBean.BasicContent = string.IsNullOrEmpty(bean.BasicContent) ? "" : bean.BasicContent;
+                ProBean.ProductHierarchy = bean.MVKE_PRODH;
+                ProBean.Brand = findMATERIALPNUMBERandBRAND(bean.MARA_MATNR)[1];
+            }
+
+            return ProBean;
+        }
+        #endregion
+
         #region 取得裝機號碼(83 or 63)
         /// <summary>
         /// 取得裝機號碼(83 or 63)
