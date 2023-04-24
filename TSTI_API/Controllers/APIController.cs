@@ -2699,12 +2699,19 @@ namespace TSTI_API.Controllers
 
                     foreach (string[] tAry in tList)
                     {
-                        if (EmpBean.IsManager && tAry[12] != "E0001")
+                        if (EmpBean.IsManager && tAry[15] != "E0001")
                         {
-                            //判斷是主管且【不為L2工程師】且【也不為技術主管】才跳過
-                            if (tERPID != tAry[6] && tAry[8].IndexOf(tERPID) == -1)
+                            //判斷是主管且【不為L2工程師】
+                            if (tERPID != tAry[7])
                             {
-                                continue;
+                                if (tAry[10].IndexOf(tERPID) == -1) //【不為技術主管】才跳過
+                                {
+                                    continue;
+                                }
+                                else if (tAry[10].IndexOf(tERPID) >= 0 && tAry[15] != "E0007") //【為技術主管但非E0007(技術支援升級)】才跳過
+                                {
+                                    continue;
+                                }
                             }
                         }
 
@@ -2713,15 +2720,17 @@ namespace TSTI_API.Controllers
                         beanTODO.SRID = tAry[0];
                         beanTODO.CUSTOMERNAME = tAry[1];
                         beanTODO.REPAIRNAME = tAry[2];
-                        beanTODO.SRDESC = tAry[3];                        
-                        beanTODO.PATHWAY = tAry[4];
-                        beanTODO.SRTYPE = tAry[5];
-                        beanTODO.MAINENGNAME = tAry[7];
-                        beanTODO.SLARESP = tAry[9];
-                        beanTODO.SLASRV = tAry[10];
-                        beanTODO.MODIFDATE = tAry[11];
-                        beanTODO.STATUSDESC = tAry[13];
-                        beanTODO.CONTACTNAME = tAry[14];
+                        beanTODO.CONTACTNAME = tAry[3];
+                        beanTODO.SRDESC = tAry[4];                        
+                        beanTODO.PATHWAY = tAry[5];
+                        beanTODO.SRTYPE = tAry[6];
+                        beanTODO.MAINENGNAME = tAry[8];
+                        beanTODO.ASSENGNAME = tAry[9];
+                        beanTODO.TECHMANAGER = tAry[11];
+                        beanTODO.SLARESP = tAry[12];
+                        beanTODO.SLASRV = tAry[13];
+                        beanTODO.MODIFDATE = tAry[14];
+                        beanTODO.STATUSDESC = tAry[16];                        
 
                         tTODOList.Add(beanTODO);
                     }
@@ -7508,6 +7517,10 @@ namespace TSTI_API.Controllers
         public string SRTYPE { get; set; }
         /// <summary>L2工程師</summary>
         public string MAINENGNAME { get; set; }
+        /// <summary>指派工程師</summary>
+        public string ASSENGNAME { get; set; }
+        /// <summary>技術主管</summary>
+        public string TECHMANAGER { get; set; }
         /// <summary>回應條件</summary>
         public string SLARESP { get; set; }
         /// <summary>服務條件</summary>
