@@ -2526,6 +2526,8 @@ namespace TSTI_API.Controllers
             string tAssEngineerName = string.Empty;     //指派工程師姓名
             string tTechManagerID = string.Empty;       //技術主管ERPID            
             string tTechManagerName = string.Empty;     //技術主管姓名
+            string tSalesID = string.Empty;             //業務人員ERPID
+            string tSecretaryID = string.Empty;         //業務祕書ERPID
             string tModifiedDate = string.Empty;        //最後編輯日期
             string tSTATUSDESC = string.Empty;          //狀態說明
             string tSLARESP = string.Empty;             //回應條件
@@ -2549,7 +2551,7 @@ namespace TSTI_API.Controllers
                                    (cStatus <> 'E0015' and cStatus <> 'E0006' and cStatus <> 'E0010') and 
                                    (
                                         (
-                                            (CMainEngineerId = '{0}') or (cTechManagerID like '%{0}%')
+                                            (cMainEngineerID = '{0}') or (cSalesID = '{0}') or (cSecretaryID = '{0}') or (cTechManagerID like '%{0}%')
                                         )
                                         {1}
                                    )";
@@ -2585,6 +2587,8 @@ namespace TSTI_API.Controllers
                     tAssEngineerName = TransEmployeeName(tDicAssAndTech, dr["cAssEngineerID"].ToString());
                     tTechManagerName = TransEmployeeName(tDicAssAndTech, dr["cTechManagerID"].ToString());
                     tTechManagerID = dr["cTechManagerID"].ToString();
+                    tSalesID = dr["cSalesID"].ToString();
+                    tSecretaryID = dr["cSecretaryID"].ToString();
                     tModifiedDate = dr["ModifiedDate"].ToString() != "" ? Convert.ToDateTime(dr["ModifiedDate"].ToString()).ToString("yyyy-MM-dd HH:mm:ss") : "";
                     tSTATUSDESC = TransSRSTATUS(ListStatus, dr["cStatus"].ToString());
                     tArySLA = findSRSLACondition(dr["cSRID"].ToString());
@@ -2592,7 +2596,7 @@ namespace TSTI_API.Controllers
                     tSLASRV = tArySLA[1];
 
                     #region 組待處理服務
-                    string[] ProcessInfo = new string[17];
+                    string[] ProcessInfo = new string[19];
 
                     ProcessInfo[0] = dr["cSRID"].ToString();             //SRID
                     ProcessInfo[1] = dr["cCustomerName"].ToString();      //客戶
@@ -2604,13 +2608,15 @@ namespace TSTI_API.Controllers
                     ProcessInfo[7] = tMainEngineerID;                   //L2工程師ERPID
                     ProcessInfo[8] = tMainEngineerName;                 //L2工程師姓名
                     ProcessInfo[9] = tAssEngineerName;                  //指派工程師姓名
-                    ProcessInfo[10] = tTechManagerID;                    //技術主管ERPID
+                    ProcessInfo[10] = tTechManagerID;                   //技術主管ERPID
                     ProcessInfo[11] = tTechManagerName;                 //技術主管姓名
-                    ProcessInfo[12] = tSLARESP;                          //回應條件
-                    ProcessInfo[13] = tSLASRV;                          //服務條件
-                    ProcessInfo[14] = tModifiedDate;                    //最後編輯日期                    
-                    ProcessInfo[15] = dr["cStatus"].ToString();           //狀態
-                    ProcessInfo[16] = tSTATUSDESC;                      //狀態+狀態說明                    
+                    ProcessInfo[12] = tSalesID;                         //業務人員ERPID
+                    ProcessInfo[13] = tSecretaryID;                     //業務祕書ERPID
+                    ProcessInfo[14] = tSLARESP;                         //回應條件
+                    ProcessInfo[15] = tSLASRV;                          //服務條件
+                    ProcessInfo[16] = tModifiedDate;                    //最後編輯日期                    
+                    ProcessInfo[17] = dr["cStatus"].ToString();           //狀態
+                    ProcessInfo[18] = tSTATUSDESC;                      //狀態+狀態說明                    
 
                     SRIDUserToList.Add(ProcessInfo);
                     #endregion
@@ -2619,7 +2625,7 @@ namespace TSTI_API.Controllers
             else
             {
                 beans = dbOne.TB_ONE_SRMain.Where(x => (x.cStatus != "E0015" && x.cStatus != "E0006" && x.cStatus != "E0010") && 
-                                                    (x.cMainEngineerID == tERPID || x.cTechManagerID.Contains(tERPID) || x.cAssEngineerID.Contains(tERPID))
+                                                    (x.cMainEngineerID == tERPID || x.cSalesID == tERPID || x.cSecretaryID == tERPID || x.cTechManagerID.Contains(tERPID) || x.cAssEngineerID.Contains(tERPID))
                                                 ).ToList();
 
                 #region 先取得所有指派工程師和技術主管的ERPID
@@ -2649,6 +2655,8 @@ namespace TSTI_API.Controllers
                     tAssEngineerName = TransEmployeeName(tDicAssAndTech, bean.cAssEngineerID);
                     tTechManagerName = TransEmployeeName(tDicAssAndTech, bean.cTechManagerID);
                     tTechManagerID = string.IsNullOrEmpty(bean.cTechManagerID) ? "" : bean.cTechManagerID;
+                    tSalesID = string.IsNullOrEmpty(bean.cSalesID) ? "" : bean.cSalesID;
+                    tSecretaryID = string.IsNullOrEmpty(bean.cSecretaryID) ? "" : bean.cSecretaryID;
                     tModifiedDate = bean.ModifiedDate == DateTime.MinValue ? "" : Convert.ToDateTime(bean.ModifiedDate).ToString("yyyy-MM-dd HH:mm:ss");
                     tSTATUSDESC = TransSRSTATUS(ListStatus, bean.cStatus);
                     tArySLA = findSRSLACondition(bean.cSRID);
@@ -2656,7 +2664,7 @@ namespace TSTI_API.Controllers
                     tSLASRV = tArySLA[1];
 
                     #region 組待處理服務
-                    string[] ProcessInfo = new string[17];
+                    string[] ProcessInfo = new string[19];
 
                     ProcessInfo[0] = bean.cSRID;            //SRID
                     ProcessInfo[1] = bean.cCustomerName;     //客戶
@@ -2670,11 +2678,13 @@ namespace TSTI_API.Controllers
                     ProcessInfo[9] = tAssEngineerName;     //指派工程師姓名
                     ProcessInfo[10] = tTechManagerID;      //技術主管ERPID
                     ProcessInfo[11] = tTechManagerName;    //技術主管姓名
-                    ProcessInfo[12] = tSLARESP;            //回應條件
-                    ProcessInfo[13] = tSLASRV;             //服務條件
-                    ProcessInfo[14] = tModifiedDate;       //最後編輯日期
-                    ProcessInfo[15] = bean.cStatus;         //狀態
-                    ProcessInfo[16] = tSTATUSDESC;         //狀態+狀態說明                    
+                    ProcessInfo[12] = tSalesID;            //業務人員ERPID
+                    ProcessInfo[13] = tSecretaryID;        //業務祕書ERPID
+                    ProcessInfo[14] = tSLARESP;            //回應條件
+                    ProcessInfo[15] = tSLASRV;             //服務條件
+                    ProcessInfo[16] = tModifiedDate;       //最後編輯日期
+                    ProcessInfo[17] = bean.cStatus;         //狀態
+                    ProcessInfo[18] = tSTATUSDESC;         //狀態+狀態說明                    
 
                     SRIDUserToList.Add(ProcessInfo);
                     #endregion

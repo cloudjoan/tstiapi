@@ -3032,7 +3032,7 @@ namespace TSTI_API.Controllers
 
                     foreach (string[] tAry in tList)
                     {
-                        if (EmpBean.IsManager && tAry[15] != "E0001")
+                        if (EmpBean.IsManager && tAry[17] != "E0001")
                         {
                             //判斷是主管且【不為L2工程師】
                             if (tERPID != tAry[7])
@@ -3041,10 +3041,23 @@ namespace TSTI_API.Controllers
                                 {
                                     continue;
                                 }
-                                else if (tAry[10].IndexOf(tERPID) >= 0 && tAry[15] != "E0007") //【為技術主管但非E0007(技術支援升級)】才跳過
+                                else if (tAry[10].IndexOf(tERPID) >= 0 && tAry[17] != "E0007") //【為技術主管但非E0007(技術支援升級)】才跳過
                                 {
                                     continue;
                                 }
+                            }
+                        }
+
+                        //判斷是業務人員/業務祕書且狀態非【新建】
+                        if (tAry[17] != "E0001")
+                        {
+                            if (tERPID == tAry[12]) //業務人員
+                            {
+                                continue;
+                            }
+                            else if (tERPID == tAry[13]) //業務祕書
+                            {
+                                continue;
                             }
                         }
 
@@ -3060,10 +3073,10 @@ namespace TSTI_API.Controllers
                         beanTODO.MAINENGNAME = tAry[8];
                         beanTODO.ASSENGNAME = tAry[9];
                         beanTODO.TECHMANAGER = tAry[11];
-                        beanTODO.SLARESP = tAry[12];
-                        beanTODO.SLASRV = tAry[13];
-                        beanTODO.MODIFDATE = tAry[14];
-                        beanTODO.STATUSDESC = tAry[16];                        
+                        beanTODO.SLARESP = tAry[14];
+                        beanTODO.SLASRV = tAry[15];
+                        beanTODO.MODIFDATE = tAry[16];
+                        beanTODO.STATUSDESC = tAry[18];                        
 
                         tTODOList.Add(beanTODO);
                     }
