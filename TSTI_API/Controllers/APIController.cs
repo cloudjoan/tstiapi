@@ -1298,7 +1298,7 @@ namespace TSTI_API.Controllers
                     if (result <= 0)
                     {
                         pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！" + Environment.NewLine;
-                        CMF.writeToLog(IV_SRID, "SaveGenerallySR_API", pMsg, pLoginName);
+                        CMF.writeToLog(IV_SRID, "SRSTATUS_Update_API", pMsg, pLoginName);
 
                         SROUT.EV_MSGT = "E";
                         SROUT.EV_MSG = pMsg;
@@ -1358,6 +1358,211 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑服務案件(一般/裝機/定維)狀態更新 ↑↑↑↑↑-----    
+
+        #region -----↓↓↓↓↓技術主管異動 ↓↓↓↓↓-----
+
+        #region ONE SERVICE 技術主管異動接口
+        /// <summary>
+        /// ONE SERVICE 技術主管異動接口
+        /// </summary>
+        /// <param name="beanIN"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult API_SRTECHMANAGER_CHANGE(SRMain_SREMPCHANGE_INPUT beanIN)
+        {
+            #region Json範列格式
+            //{
+            //     "IV_LOGINEMPNO": "99120894",
+            //     "IV_TRANSEMPNO": "99120894;99120023",
+            //     "IV_SRID": "612211250004"            
+            //}
+            #endregion
+
+            SRMain_SREMPCHANGE_OUTPUT SROUT = new SRMain_SREMPCHANGE_OUTPUT();
+
+            beanIN.IV_STATUS = "E0007"; //技術支援升級
+
+            SROUT = SREMPCHANGE_CHANGE(beanIN);
+
+            return Json(SROUT);
+        }
+        #endregion
+
+        #region 人員異動(一般/裝機/定維)狀態
+        private SRMain_SREMPCHANGE_OUTPUT SREMPCHANGE_CHANGE(SRMain_SREMPCHANGE_INPUT bean)
+        {
+            SRMain_SREMPCHANGE_OUTPUT SROUT = new SRMain_SREMPCHANGE_OUTPUT();
+
+            bool tIsFormal = false;
+            string tExcType = string.Empty;
+            string pLoginName = string.Empty;
+            string tAPIURLName = string.Empty;
+            string tONEURLName = string.Empty;
+            string tBPMURLName = string.Empty;
+            string tPSIPURLName = string.Empty;
+            string tAttachURLName = string.Empty;
+            string tAttachPath = string.Empty;
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
+            string IV_TRANSEMPNO = string.IsNullOrEmpty(bean.IV_TRANSEMPNO) ? "" : bean.IV_TRANSEMPNO.TrimEnd(';');
+            string IV_SRID = string.IsNullOrEmpty(bean.IV_SRID) ? "" : bean.IV_SRID.Trim();
+            string IV_STATUS = string.IsNullOrEmpty(bean.IV_STATUS) ? "" : bean.IV_STATUS.Trim();
+
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+            if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
+            {
+                pLoginName = IV_LOGINEMPNO;
+            }
+            else
+            {
+                pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+            }
+
+            try
+            {
+                #region 取得系統位址參數相關資訊
+                SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+
+                tIsFormal = ParaBean.IsFormal;
+
+                tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+                tONEURLName = ParaBean.ONEURLName;
+                tBPMURLName = ParaBean.BPMURLName;
+                tPSIPURLName = ParaBean.PSIPURLName;
+                tAttachURLName = ParaBean.AttachURLName;
+                tAttachPath = Server.MapPath("~/REPORT");
+                #endregion
+
+                SRCondition tCondition = new SRCondition();
+
+                var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
+
+                if (beanM != null)
+                {
+                    #region 判斷寄送Mail的狀態
+                    switch (IV_STATUS)
+                    {
+                        case "E0002": //L2處理中(一般)
+                        case "E0003": //報價中(一般)
+                        case "E0005": //L3處理中(一般)
+                        case "E0008": //裝機中(裝機)
+                            tCondition = SRCondition.SAVE;
+                            break;
+
+                        case "E0004": //3rd Party處理中(一般)                            
+                            tCondition = SRCondition.THRPARTY;
+                            break;
+
+                        case "E0006": //完修(一般)                   
+                            tCondition = SRCondition.DONE;
+                            break;
+
+                        case "E0007": //技術支援升級(一般)           
+                            tCondition = SRCondition.SUPPORT;
+                            break;
+
+                        case "E0009": //維修/DOA(裝機)           
+                            tCondition = SRCondition.DOA;
+                            break;
+
+                        case "E0010": //裝機完成(裝機)           
+                            tCondition = SRCondition.INSTALLDONE;
+                            break;
+
+                        case "E0012": //HPGCSN 申請(一般)           
+                            tCondition = SRCondition.HPGCSN;
+                            break;
+
+                        case "E0013": //HPGCSN 完成(一般)
+                            tCondition = SRCondition.HPGCSNDONE;
+                            break;
+
+                        case "E0014": //駁回(共用)       
+                            tCondition = SRCondition.REJECT;
+                            break;
+
+                        case "E0015": //取消(共用)
+                            tCondition = SRCondition.CANCEL;
+                            break;
+                    }
+                    #endregion
+
+                    if (tCondition == SRCondition.SUPPORT )
+                    {
+                        if (IV_TRANSEMPNO != "")
+                        {
+                            beanM.cTechManagerID = IV_TRANSEMPNO;
+                        }
+                    }
+
+                    beanM.cStatus = IV_STATUS;
+                    beanM.ModifiedDate = DateTime.Now;
+                    beanM.ModifiedUserName = pLoginName;
+
+                    int result = dbOne.SaveChanges();
+
+                    if (result <= 0)
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！" + Environment.NewLine;
+                        CMF.writeToLog(IV_SRID, "SREMPCHANGE_CHANGE_API", pMsg, pLoginName);
+
+                        SROUT.EV_MSGT = "E";
+                        SROUT.EV_MSG = pMsg;
+                    }
+                    else
+                    {
+                        SROUT.EV_MSGT = "Y";
+                        SROUT.EV_MSG = "";
+
+                        #region 寄送Mail通知
+                        CMF.SetSRMailContent(tCondition, pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, EmpBean.BUKRS, IV_SRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
+                        #endregion
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog(IV_SRID, "SREMPCHANGE_CHANGE_API", pMsg, pLoginName);
+
+                SROUT.EV_MSGT = "E";
+                SROUT.EV_MSG = ex.Message;
+            }
+
+            return SROUT;
+        }
+        #endregion
+
+        #region 人員異動INPUT資訊
+        /// <summary>人員異動INPUT資訊</summary>
+        public struct SRMain_SREMPCHANGE_INPUT
+        {
+            /// <summary>修改者員工編號ERPID</summary>
+            public string IV_LOGINEMPNO { get; set; }
+            /// <summary>技術主管員工編號ERPID(若有多人以分號隔開)</summary>
+            public string IV_TRANSEMPNO { get; set; }            
+            /// <summary>服務案件ID</summary>
+            public string IV_SRID { get; set; }
+            /// <summary>服務狀態ID</summary>
+            public string IV_STATUS { get; set; }            
+        }
+        #endregion
+
+        #region 人員異動OUTPUT資訊
+        /// <summary>人員異動OUTPUT資訊</summary>
+        public struct SRMain_SREMPCHANGE_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑技術主管異動 ↑↑↑↑↑-----    
 
         #region -----↓↓↓↓↓法人客戶資料 ↓↓↓↓↓-----
 
@@ -3032,23 +3237,7 @@ namespace TSTI_API.Controllers
 
                     foreach (string[] tAry in tList)
                     {
-                        if (EmpBean.IsManager && tAry[17] != "E0001")
-                        {
-                            //判斷是主管且【不為L2工程師】
-                            if (tERPID != tAry[7])
-                            {
-                                if (tAry[10].IndexOf(tERPID) == -1) //【不為技術主管】才跳過
-                                {
-                                    continue;
-                                }
-                                else if (tAry[10].IndexOf(tERPID) >= 0 && tAry[17] != "E0007") //【為技術主管但非E0007(技術支援升級)】才跳過
-                                {
-                                    continue;
-                                }
-                            }
-                        }
-
-                        //判斷是業務人員/業務祕書且狀態非【新建】
+                        //狀態非【新建】時的判斷
                         if (tAry[17] != "E0001")
                         {
                             if (tERPID == tAry[12]) //業務人員
@@ -3058,6 +3247,35 @@ namespace TSTI_API.Controllers
                             else if (tERPID == tAry[13]) //業務祕書
                             {
                                 continue;
+                            }
+
+                            if (tAry[10] != "")
+                            {
+                                if (tAry[17] == "E0007") //若狀態【E0007.技術支援升級】
+                                {
+                                    if (tAry[10].IndexOf(tERPID) == -1) //【不為技術主管】才跳過
+                                    {
+                                        continue;
+                                    }
+                                }
+                                else
+                                {
+                                    if (tAry[10].IndexOf(tERPID) >= 0) //【為技術主管但非E0007(技術支援升級)】才跳過
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+
+                            if (EmpBean.IsManager) //若是主管時
+                            {
+                                if (tAry[17] != "E0007") //若狀態非【E0007.技術支援升級】
+                                {
+                                    if (tERPID != tAry[7]) //非【L2工程師】才跳過
+                                    {
+                                        continue;
+                                    }
+                                }
                             }
                         }
 

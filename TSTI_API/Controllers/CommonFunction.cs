@@ -653,14 +653,9 @@ namespace TSTI_API.Controllers
         {
             List<TB_ONE_SRTeamMapping> tList = new List<TB_ONE_SRTeamMapping>();
 
-            if (tCompanyID == "T012")
-            {
-                tList = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && !(x.cTeamOldID.Contains("SRV.1217") || x.cTeamOldID.Contains("SRV.1227") || x.cTeamOldID.Contains("SRV.1237"))).ToList();
-            }
-            else if (tCompanyID == "T016")
-            {
-                tList = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && (x.cTeamOldID.Contains("SRV.1217") || x.cTeamOldID.Contains("SRV.1227") || x.cTeamOldID.Contains("SRV.1237"))).ToList();
-            }
+            string tSRVID = "SRV." + tCompanyID.Substring(2, 2);
+
+            tList = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && (x.cTeamOldID.Contains(tSRVID))).ToList();
 
             return tList;
         }
@@ -4053,7 +4048,7 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 取得副本
-                if (SRMain.MainENGEmail != "") //有指派L2工程師
+                if (SRMain.TeamMGREmail != "") //有服務團隊主管
                 {
                     tMailCcTemp += SRMain.TeamMGREmail;
                 }
@@ -4115,8 +4110,8 @@ namespace TSTI_API.Controllers
                 if (!tIsFormal)
                 {
                     strTest = "【*測試*】";
-                    tMailTo = "Elvis.Chang@etatung.com";
-                    tMailCc = "Elvis.Chang@etatung.com";
+                    //tMailTo = "Elvis.Chang@etatung.com";
+                    tMailCc += ";Elvis.Chang@etatung.com;Jordan.Chang@etatung.com;Cara.Tien@etatung.com";
                 }
                 #endregion
 
@@ -4316,12 +4311,12 @@ namespace TSTI_API.Controllers
                 #region 取得副本
                 if (SRMain.TeamMGREmail != "") //服務團隊主管Email
                 {
-                    tMailCcTemp += SRMain.TeamMGREmail + ";";
+                    tMailCcTemp += SRMain.TeamMGREmail;
                 }
 
                 if (SRMain.MainENGEmail != "") //L2工程師Email
                 {
-                    tMailCcTemp += SRMain.MainENGEmail + ";";
+                    tMailCcTemp += SRMain.MainENGEmail;
                 }
 
                 if (tMailCcTemp != "")
@@ -4365,8 +4360,8 @@ namespace TSTI_API.Controllers
                 if (!tIsFormal)
                 {
                     strTest = "【*測試*】";
-                    tMailTo = "Elvis.Chang@etatung.com";
-                    tMailCc = "Elvis.Chang@etatung.com";
+                    tMailTo = "Elvis.Chang@etatung.com;Jordan.Chang@etatung.com;Cara.Tien@etatung.com";
+                    //tMailCc = "Elvis.Chang@etatung.com";
                 }
                 #endregion
 
@@ -4588,8 +4583,8 @@ namespace TSTI_API.Controllers
                 if (!tIsFormal)
                 {
                     strTest = "【*測試*】";
-                    receiver = "elvis.chang@etatung.com";
-                    ccs = "elvis.chang@etatung.com";
+                    receiver = "elvis.chang@etatung.com;Jordan.Chang@etatung.com;Cara.Tien@etatung.com";
+                    //ccs = "elvis.chang@etatung.com;Jordan.Chang@etatung.com;Cara.Tien@etatung.com";
                 }
                 #endregion
 
