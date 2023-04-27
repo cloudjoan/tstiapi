@@ -647,15 +647,24 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得服務團隊資料
         /// </summary>        
-        /// <param name="tCompanyID">公司別(T012、T016、C069、T022)</param>
+        /// <param name="tCompanyID">公司別(ALL、T012、T016、C069、T022)</param>
         /// <returns></returns>        
         public List<TB_ONE_SRTeamMapping> findSRTEAMINFO(string tCompanyID)
         {
             List<TB_ONE_SRTeamMapping> tList = new List<TB_ONE_SRTeamMapping>();
 
-            string tSRVID = "SRV." + tCompanyID.Substring(2, 2);
+            string tSRVID = string.Empty;
 
-            tList = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && (x.cTeamOldID.Contains(tSRVID))).ToList();
+            if (tCompanyID.ToUpper() != "ALL")
+            {
+                tSRVID = "SRV." + tCompanyID.Substring(2, 2);
+
+                tList = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && (x.cTeamOldID.Contains(tSRVID))).ToList();
+            }
+            else
+            {
+                tList = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0).ToList();
+            }
 
             return tList;
         }
@@ -1300,29 +1309,32 @@ namespace TSTI_API.Controllers
 
             tAttach = string.IsNullOrEmpty(tAttach) ? "" : tAttach;
 
-            List<SRATTACHINFO> tList = new List<SRATTACHINFO>();              
+            List<SRATTACHINFO> tList = new List<SRATTACHINFO>();
 
-            string tURL = string.Empty;
-            string[] tAryAttach = tAttach.TrimEnd(',').Split(',');            
-
-            foreach (string tKey in tAryAttach)
+            if (tAttach != "")
             {
-                var bean = dbOne.TB_ONE_DOCUMENT.FirstOrDefault(x => x.ID.ToString() == tKey);
+                string tURL = string.Empty;
+                string[] tAryAttach = tAttach.TrimEnd(',').Split(',');
 
-                if (bean != null)
+                foreach (string tKey in tAryAttach)
                 {
-                    SRATTACHINFO beanSR = new SRATTACHINFO();
+                    var bean = dbOne.TB_ONE_DOCUMENT.FirstOrDefault(x => x.ID.ToString() == tKey);
 
-                    tURL = "http://" + tAttachURLName + "/CSreport/" + bean.FILE_NAME;
+                    if (bean != null)
+                    {
+                        SRATTACHINFO beanSR = new SRATTACHINFO();
 
-                    beanSR.ID = tKey;
-                    beanSR.FILE_ORG_NAME = bean.FILE_ORG_NAME;
-                    beanSR.FILE_NAME = bean.FILE_NAME;
-                    beanSR.FILE_EXT = bean.FILE_EXT;
-                    beanSR.FILE_URL = tURL;
-                    beanSR.INSERT_TIME = bean.INSERT_TIME;
+                        tURL = "http://" + tAttachURLName + "/CSreport/" + bean.FILE_NAME;
 
-                    tList.Add(beanSR);
+                        beanSR.ID = tKey;
+                        beanSR.FILE_ORG_NAME = bean.FILE_ORG_NAME;
+                        beanSR.FILE_NAME = bean.FILE_NAME;
+                        beanSR.FILE_EXT = bean.FILE_EXT;
+                        beanSR.FILE_URL = tURL;
+                        beanSR.INSERT_TIME = bean.INSERT_TIME;
+
+                        tList.Add(beanSR);
+                    }
                 }
             }
 
@@ -1508,7 +1520,7 @@ namespace TSTI_API.Controllers
                 SRPart.MaterialName = bean.cMaterialName;
                 SRPart.Quantity = bean.cQuantity.ToString();
                 SRPart.BasicContent = bean.cBasicContent;
-                SRPart.cMFPNumber = bean.cMFPNumber;
+                SRPart.MFPNumber = bean.cMFPNumber;
                 SRPart.Brand = bean.cBrand;
                 SRPart.ProductHierarchy = bean.cProductHierarchy;                
 
@@ -3611,7 +3623,7 @@ namespace TSTI_API.Controllers
                     strHTML.AppendLine("            <td>" + bean.MaterialName + "</td>");
                     strHTML.AppendLine("            <td>" + bean.Quantity + "</td>");
                     strHTML.AppendLine("            <td>" + bean.BasicContent.Replace("\r\n", "<br/>") + "</td>");
-                    strHTML.AppendLine("            <td>" + bean.cMFPNumber + "</td>");
+                    strHTML.AppendLine("            <td>" + bean.MFPNumber + "</td>");
                     strHTML.AppendLine("            <td>" + bean.Brand + "</td>");
                     strHTML.AppendLine("            <td>" + bean.ProductHierarchy + "</td>");                    
                     strHTML.AppendLine("        </tr>");

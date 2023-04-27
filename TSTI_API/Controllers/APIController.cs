@@ -2991,15 +2991,19 @@ namespace TSTI_API.Controllers
                 string cMAINENG = CMF.findSREMPERPIDandNameByERPID(MainBean.cMainEngineerID);
                 string cASSENGN = CMF.findSREMPERPIDandNameByERPID(MainBean.cAssEngineerID);
                 string cTECHMAG = CMF.findSREMPERPIDandNameByERPID(MainBean.cTechManagerID);                
-                string cSALES = CMF.findSREMPERPIDandNameByERPID(MainBean.cSalesID);  
-                string cAttchURL = CMF.findAttachUrl(MainBean.cAttachement, tAttachURLName);
+                string cSALES = CMF.findSREMPERPIDandNameByERPID(MainBean.cSalesID);
+                string cSECRETARY = CMF.findSREMPERPIDandNameByERPID(MainBean.cSecretaryID);
+                string cAttachURL = CMF.findAttachUrl(MainBean.cAttachement, tAttachURLName);
+                string cAttachStockNo = CMF.findAttachUrl(MainBean.cAttachementStockNo, tAttachURLName);
                 string cREPAIRNAME = string.IsNullOrEmpty(MainBean.cRepairName) ? "" : MainBean.cRepairName;
                 string cREPAIRADDR = string.IsNullOrEmpty(MainBean.cRepairAddress) ? "" : MainBean.cRepairAddress;
                 string cREPAIRTEL = string.IsNullOrEmpty(MainBean.cRepairPhone) ? "" : MainBean.cRepairPhone;
                 string cREPAIRMOB = string.IsNullOrEmpty(MainBean.cRepairMobile) ? "" : MainBean.cRepairMobile;
                 string cREPAIREMAIL = string.IsNullOrEmpty(MainBean.cRepairEmail) ? "" : MainBean.cRepairEmail;
                 string cSQEMP = string.IsNullOrEmpty(MainBean.cSQPersonID) ? "" : MainBean.cSQPersonID;
-                
+                string cSALESNO = string.IsNullOrEmpty(MainBean.cSalesNo) ? "" : MainBean.cSalesNo;
+                string cSHIPMENTNO = string.IsNullOrEmpty(MainBean.cShipmentNo) ? "" : MainBean.cShipmentNo;
+
                 string[] cArySLA = CMF.findSRSLACondition(MainBean.cSRID);
                 string cSLARESP = cArySLA[0];
                 string cSLASRV = cArySLA[1];
@@ -3029,9 +3033,16 @@ namespace TSTI_API.Controllers
                 SROUT.TECHMAG = cTECHMAG;
                 SROUT.SQEMP = string.IsNullOrEmpty(cSQEMP) ? "" : cSQEMP + "_" + MainBean.cSQPersonName;
                 SROUT.SALES = cSALES;
-                SROUT.ATTACHURL = cAttchURL;
+                SROUT.ATTACHURL = cAttachURL;
                 SROUT.SLARESP = cSLARESP;
                 SROUT.SLASRV = cSLASRV;
+
+                #region (63.裝機用)
+                SROUT.SECRETARY = cSECRETARY;
+                SROUT.SALESNO = cSALESNO;
+                SROUT.SHIPMENTNO = cSHIPMENTNO;
+                SROUT.ATTACHSTOCKNOURL = cAttachStockNo;
+                #endregion
 
                 SROUT.EV_MSGT = "Y";
                 SROUT.EV_MSG = "";
@@ -3045,40 +3056,45 @@ namespace TSTI_API.Controllers
 
             if (MainBean.cSRID != "")
             {
-                #region 【客戶聯絡人資訊】清單
+                #region 【客戶聯絡人資訊】清單，(61.一般、63.裝機) 都顯示
                 List<SRCONTACTINFO> SRCONTACT_LIST = CMF.findSRCONTACTINFO(MainBean.cSRID);
                 SROUT.SRCONTACT_LIST = SRCONTACT_LIST;
                 #endregion
 
-                #region 【產品序號資訊】清單
-                List<SRSERIALMATERIALINFO> SRSERIAL_LIST = CMF.findSRSERIALMATERIALINFO(MainBean.cSRID);
-                SROUT.SRSERIAL_LIST = SRSERIAL_LIST;
-                #endregion
-
-                #region 【保固SLA資訊】清單
-                List<SRWTSLAINFO> SRWTSLA_LIST = CMF.findSRWTSLAINFO(MainBean.cSRID, tBPMURLName, tPSIPURLName);
-                SROUT.SRWTSLA_LIST = SRWTSLA_LIST;
-                #endregion
-
-                #region 【處理與工時紀錄資訊】清單
+                #region 【處理與工時紀錄資訊】清單，(61.一般、63.裝機) 都顯示
                 List<SRRECORDINFO> SRRECORD_LIST = CMF.findSRRECORDINFO(MainBean.cSRID, tAttachURLName);
                 SROUT.SRRECORD_LIST = SRRECORD_LIST;
                 #endregion
 
-                #region 【零件更換資訊】清單
-                List<SRPARTSREPALCEINFO> SRPARTS_LIST = CMF.findSRPARTSREPALCEINFO(MainBean.cSRID);
-                SROUT.SRPARTS_LIST = SRPARTS_LIST;
-                #endregion
+                if (MainBean.cSRID.Substring(0, 2) == "61") //一般
+                {
+                    #region 【產品序號資訊】清單，(61.一般)才顯示
+                    List<SRSERIALMATERIALINFO> SRSERIAL_LIST = CMF.findSRSERIALMATERIALINFO(MainBean.cSRID);
+                    SROUT.SRSERIAL_LIST = SRSERIAL_LIST;
+                    #endregion
 
-                #region 【物料訊息資訊】清單
-                List<SRMATERIALlNFO> SRMATERIAL_LIST = CMF.findSRMATERIALlNFO(MainBean.cSRID);
-                SROUT.SRMATERIAL_LIST = SRMATERIAL_LIST;
-                #endregion
+                    #region 【保固SLA資訊】清單，(61.一般)才顯示
+                    List<SRWTSLAINFO> SRWTSLA_LIST = CMF.findSRWTSLAINFO(MainBean.cSRID, tBPMURLName, tPSIPURLName);
+                    SROUT.SRWTSLA_LIST = SRWTSLA_LIST;
+                    #endregion
 
-                #region 【序號回報資訊】清單
-                List<SRSERIALFEEDBACKlNFO> SRFEEDBACK_LIST = CMF.findSRSERIALFEEDBACKlNFO(MainBean.cSRID, tAttachURLName);
-                SROUT.SRFEEDBACK_LIST = SRFEEDBACK_LIST;
-                #endregion
+                    #region 【零件更換資訊】清單，(61.一般)才顯示
+                    List<SRPARTSREPALCEINFO> SRPARTS_LIST = CMF.findSRPARTSREPALCEINFO(MainBean.cSRID);
+                    SROUT.SRPARTS_LIST = SRPARTS_LIST;
+                    #endregion
+                }
+                else if (MainBean.cSRID.Substring(0, 2) == "63") //裝機
+                {
+                    #region 【物料訊息資訊】清單，(63.裝機)才顯示
+                    List<SRMATERIALlNFO> SRMATERIAL_LIST = CMF.findSRMATERIALlNFO(MainBean.cSRID);
+                    SROUT.SRMATERIAL_LIST = SRMATERIAL_LIST;
+                    #endregion
+
+                    #region 【序號回報資訊】清單，(63.裝機)才顯示
+                    List<SRSERIALFEEDBACKlNFO> SRFEEDBACK_LIST = CMF.findSRSERIALFEEDBACKlNFO(MainBean.cSRID, tAttachURLName);
+                    SROUT.SRFEEDBACK_LIST = SRFEEDBACK_LIST;
+                    #endregion
+                }
             }
 
             return SROUT;
@@ -3146,14 +3162,22 @@ namespace TSTI_API.Controllers
             public string TECHMAG { get; set; }
             /// <summary>SQL人員</summary>
             public string SQEMP { get; set; }
-            /// <summary>計費業務</summary>
+            /// <summary>業務人員</summary>
             public string SALES { get; set; }
+            /// <summary>業務祕書</summary>
+            public string SECRETARY { get; set; }
             /// <summary>檢附文件URL</summary>
             public string ATTACHURL { get; set; }
+            /// <summary>備料服務通知單文件URL</summary>
+            public string ATTACHSTOCKNOURL { get; set; }
             /// <summary>回應條件</summary>
             public string SLARESP { get; set; }
             /// <summary>服務條件</summary>
             public string SLASRV { get; set; }
+            /// <summary>銷售訂單號(63.裝機用)</summary>
+            public string SALESNO { get; set; }
+            /// <summary>出貨單號(63.裝機用)</summary>
+            public string SHIPMENTNO { get; set; }
             /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
             public string EV_MSGT { get; set; }
             /// <summary>消息內容</summary>
@@ -8412,7 +8436,7 @@ namespace TSTI_API.Controllers
         /// <summary>基本內文</summary>
         public string BasicContent { get; set; }
         /// <summary>製造商零件號碼</summary>
-        public string cMFPNumber { get; set; }
+        public string MFPNumber { get; set; }
         /// <summary>廠牌</summary>
         public string Brand { get; set; }
         /// <summary>產品階層</summary>
