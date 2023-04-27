@@ -3367,6 +3367,141 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑服務待辦清單查詢接口 ↑↑↑↑↑-----  
 
+        #region -----↓↓↓↓↓服務明細-客戶聯絡窗口資訊更新 ↓↓↓↓↓-----
+
+        #region ONE SERVICE 服務明細-客戶聯絡窗口資訊更新接口
+        /// <summary>
+        /// ONE SERVICE 技術主管異動接口
+        /// </summary>
+        /// <param name="beanIN"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult API_SRDETAILCONTACT_UPDATE(SRMain_SRDETAILCONTACT_INPUT beanIN)
+        {
+            #region Json範列格式
+            //{
+            //    "IV_LOGINEMPNO": "99120894",
+            //    "IV_CID": "1080",
+            //    "IV_CONTADDR": "臺北市文山區一壽街50號",
+            //    "IV_CONTTE": "(04)23300560",
+            //    "IV_CONTMOBILE": "0900123456",
+            //    "IV_CONTEMAIL": "elvis.chang@etatung.com"
+            //}
+            #endregion
+
+            SRMain_SRDETAILCONTACT_OUTPUT SROUT = new SRMain_SRDETAILCONTACT_OUTPUT();            
+
+            SROUT = SRDETAILCONTACT_UPDATE(beanIN);
+
+            return Json(SROUT);
+        }
+        #endregion
+
+        #region 客戶聯絡窗口資訊更新
+        private SRMain_SRDETAILCONTACT_OUTPUT SRDETAILCONTACT_UPDATE(SRMain_SRDETAILCONTACT_INPUT bean)
+        {
+            SRMain_SRDETAILCONTACT_OUTPUT SROUT = new SRMain_SRDETAILCONTACT_OUTPUT();
+                        
+            string pLoginName = string.Empty;
+            string cSRID = string.Empty;
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
+            string IV_CID = string.IsNullOrEmpty(bean.IV_CID) ? "" : bean.IV_CID.Trim();
+            string IV_CONTADDR = string.IsNullOrEmpty(bean.IV_CONTADDR) ? "" : bean.IV_CONTADDR.Trim();
+            string IV_CONTTE = string.IsNullOrEmpty(bean.IV_CONTTE) ? "" : bean.IV_CONTTE.Trim();
+            string IV_CONTMOBILE = string.IsNullOrEmpty(bean.IV_CONTMOBILE) ? "" : bean.IV_CONTMOBILE.Trim();
+            string IV_CONTEMAIL = string.IsNullOrEmpty(bean.IV_CONTEMAIL) ? "" : bean.IV_CONTEMAIL.Trim();
+
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+            if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
+            {
+                pLoginName = IV_LOGINEMPNO;
+            }
+            else
+            {
+                pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+            }
+
+            try
+            {
+                var beanD = dbOne.TB_ONE_SRDetail_Contact.FirstOrDefault(x => x.cID.ToString() == IV_CID);
+
+                if (beanD != null)
+                {
+                    cSRID = beanD.cSRID;
+                    beanD.cContactAddress = IV_CONTADDR;
+                    beanD.cContactPhone = IV_CONTTE;
+                    beanD.cContactMobile = IV_CONTMOBILE;
+                    beanD.cContactEmail = IV_CONTEMAIL;
+
+                    beanD.ModifiedDate = DateTime.Now;
+                    beanD.ModifiedUserName = pLoginName;
+
+                    int result = dbOne.SaveChanges();
+
+                    if (result <= 0)
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！" + Environment.NewLine;
+                        CMF.writeToLog(cSRID, "SRDETAILCONTACT_UPDATE_API", pMsg, pLoginName);
+
+                        SROUT.EV_MSGT = "E";
+                        SROUT.EV_MSG = pMsg;
+                    }
+                    else
+                    {
+                        SROUT.EV_MSGT = "Y";
+                        SROUT.EV_MSG = "";                      
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog(cSRID, "SRDETAILCONTACT_UPDATE_API", pMsg, pLoginName);
+
+                SROUT.EV_MSGT = "E";
+                SROUT.EV_MSG = ex.Message;
+            }
+
+            return SROUT;
+        }
+        #endregion
+
+        #region 服務明細-客戶聯絡窗口資訊INPUT資訊
+        /// <summary>服務明細-客戶聯絡窗口資訊INPUT資訊</summary>
+        public struct SRMain_SRDETAILCONTACT_INPUT
+        {
+            /// <summary>修改者員工編號ERPID</summary>
+            public string IV_LOGINEMPNO { get; set; }
+            /// <summary>系統ID</summary>
+            public string IV_CID { get; set; }
+            /// <summary>聯絡人地址</summary>
+            public string IV_CONTADDR { get; set; }
+            /// <summary>聯絡人電話</summary>
+            public string IV_CONTTE { get; set; }
+            /// <summary>聯絡人手機</summary>
+            public string IV_CONTMOBILE { get; set; }
+            /// <summary>聯絡人信箱</summary>
+            public string IV_CONTEMAIL { get; set; }
+        }
+        #endregion
+
+        #region 服務明細-客戶聯絡窗口資訊OUTPUT資訊
+        /// <summary>服務明細-客戶聯絡窗口資訊OUTPUT資訊</summary>
+        public struct SRMain_SRDETAILCONTACT_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑服務明細-客戶聯絡窗口資訊更新 ↑↑↑↑↑-----    
+
         #region -----↓↓↓↓↓異動處理與工時紀錄相關接口 ↓↓↓↓↓-----        
 
         #region 新增處理與工時紀錄相關接口
