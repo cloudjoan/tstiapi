@@ -792,9 +792,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得服務案件L2工程師/指派工程師/技術主管，員工ERPID_中文+英文姓名
+        #region 取得服務案件主要工程師/協助工程師/技術主管，員工ERPID_中文+英文姓名
         /// <summary>
-        /// 服務案件L2工程師/指派工程師/技術主管相關資訊，員工ERPID_中文+英文姓名
+        /// 服務案件主要工程師/協助工程師/技術主管相關資訊，員工ERPID_中文+英文姓名
         /// </summary>
         /// <param name="cERPID">員工編號(多筆以;號隔開)</param>
         /// <returns></returns>        
@@ -819,9 +819,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得服務案件L2工程師/指派工程師/技術主管相關資訊
+        #region 取得服務案件主要工程師/協助工程師/技術主管相關資訊
         /// <summary>
-        /// 服務案件L2工程師/指派工程師/技術主管相關資訊
+        /// 服務案件主要工程師/協助工程師/技術主管相關資訊
         /// </summary>
         /// <param name="cERPID">員工編號(多筆以;號隔開)</param>
         /// <returns></returns>        
@@ -854,11 +854,11 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得服務案件L2工程師/指派工程師/技術主管姓名
+        #region 取得服務案件主要工程師/協助工程師/技術主管姓名
         /// <summary>
-        /// 取得服務案件L2工程師/指派工程師/技術主管姓名
+        /// 取得服務案件主要工程師/協助工程師/技術主管姓名
         /// </summary>
-        /// <param name="SREmp">服務案件L2工程師/指派工程師/技術主管相關資訊清單</param>
+        /// <param name="SREmp">服務案件主要工程師/協助工程師/技術主管相關資訊清單</param>
         /// <returns></returns>
         public string findSREMPName(List<SREMPINFO> SREmp)
         {
@@ -875,11 +875,11 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得服務案件L2工程師/指派工程師/技術主管Email
+        #region 取得服務案件主要工程師/協助工程師/技術主管Email
         /// <summary>
-        /// 取得服務案件L2工程師/指派工程師/技術主管Email
+        /// 取得服務案件主要工程師/協助工程師/技術主管Email
         /// </summary>
-        /// <param name="SREmp">服務案件L2工程師/指派工程師/技術主管相關資訊清單</param>
+        /// <param name="SREmp">服務案件主要工程師/協助工程師/技術主管相關資訊清單</param>
         /// <returns></returns>
         public string findSREMPEmail(List<SREMPINFO> SREmp)
         {
@@ -2528,9 +2528,9 @@ namespace TSTI_API.Controllers
             string tSRContactName = string.Empty;       //客戶聯絡人
             string tSRPathWay = string.Empty;           //報修管理
             string tSRType = string.Empty;              //報修類別
-            string tMainEngineerID = string.Empty;      //L2工程師ERPID
-            string tMainEngineerName = string.Empty;    //L2工程師姓名            
-            string tAssEngineerName = string.Empty;     //指派工程師姓名
+            string tMainEngineerID = string.Empty;      //主要工程師ERPID
+            string tMainEngineerName = string.Empty;    //主要工程師姓名            
+            string tAssEngineerName = string.Empty;     //協助工程師姓名
             string tTechManagerID = string.Empty;       //技術主管ERPID            
             string tTechManagerName = string.Empty;     //技術主管姓名
             string tSalesID = string.Empty;             //業務人員ERPID
@@ -2540,8 +2540,8 @@ namespace TSTI_API.Controllers
             string tSLARESP = string.Empty;             //回應條件
             string tSLASRV = string.Empty;              //服務條件           
 
-            List<string> tListAssAndTech = new List<string>();                          //記錄所有指派工程師和所有技術主管的ERPID
-            Dictionary<string, string> tDicAssAndTech = new Dictionary<string, string>();  //記錄所有指派工程師和所有技術主管的<ERPID,中、英文姓名>
+            List<string> tListAssAndTech = new List<string>();                          //記錄所有協助工程師和所有技術主管的ERPID
+            Dictionary<string, string> tDicAssAndTech = new Dictionary<string, string>();  //記錄所有協助工程師和所有技術主管的<ERPID,中、英文姓名>
 
             var tSRContact_List = findSRDetailContactList();
 
@@ -2567,10 +2567,10 @@ namespace TSTI_API.Controllers
 
                 DataTable dt = getDataTableByDb(tSQL, "dbOne");
 
-                #region 先取得所有指派工程師和技術主管的ERPID
+                #region 先取得所有協助工程師和技術主管的ERPID
                 foreach (DataRow dr in dt.Rows)
                 {
-                    #region 指派工程師
+                    #region 協助工程師
                     findListAssAndTech(ref tListAssAndTech, dr["cAssEngineerID"].ToString());
                     #endregion
 
@@ -2580,7 +2580,7 @@ namespace TSTI_API.Controllers
                 }
                 #endregion
 
-                #region 再取得所有指派工程師和技術主管的中文姓名
+                #region 再取得所有協助工程師和技術主管的中文姓名
                 tDicAssAndTech = findListEmployeeInfo(tListAssAndTech);
                 #endregion
 
@@ -2612,9 +2612,9 @@ namespace TSTI_API.Controllers
                     ProcessInfo[4] = dr["cDesc"].ToString();             //說明
                     ProcessInfo[5] = tSRPathWay;                        //報修管道
                     ProcessInfo[6] = tSRType;                           //報修類別
-                    ProcessInfo[7] = tMainEngineerID;                   //L2工程師ERPID
-                    ProcessInfo[8] = tMainEngineerName;                 //L2工程師姓名
-                    ProcessInfo[9] = tAssEngineerName;                  //指派工程師姓名
+                    ProcessInfo[7] = tMainEngineerID;                   //主要工程師ERPID
+                    ProcessInfo[8] = tMainEngineerName;                 //主要工程師姓名
+                    ProcessInfo[9] = tAssEngineerName;                  //協助工程師姓名
                     ProcessInfo[10] = tTechManagerID;                   //技術主管ERPID
                     ProcessInfo[11] = tTechManagerName;                 //技術主管姓名
                     ProcessInfo[12] = tSalesID;                         //業務人員ERPID
@@ -2635,10 +2635,10 @@ namespace TSTI_API.Controllers
                                                     (x.cMainEngineerID == tERPID || x.cSalesID == tERPID || x.cSecretaryID == tERPID || x.cTechManagerID.Contains(tERPID) || x.cAssEngineerID.Contains(tERPID))
                                                 ).ToList();
 
-                #region 先取得所有指派工程師和技術主管的ERPID
+                #region 先取得所有協助工程師和技術主管的ERPID
                 foreach (var bean in beans)
                 {
-                    #region 指派工程師
+                    #region 協助工程師
                     findListAssAndTech(ref tListAssAndTech, bean.cAssEngineerID);
                     #endregion
 
@@ -2648,7 +2648,7 @@ namespace TSTI_API.Controllers
                 }
                 #endregion
 
-                #region 再取得所有指派工程師和技術主管的中文姓名
+                #region 再取得所有協助工程師和技術主管的中文姓名
                 tDicAssAndTech = findListEmployeeInfo(tListAssAndTech);
                 #endregion
 
@@ -2680,9 +2680,9 @@ namespace TSTI_API.Controllers
                     ProcessInfo[4] = bean.cDesc;            //說明
                     ProcessInfo[5] = tSRPathWay;           //報修管道
                     ProcessInfo[6] = tSRType;              //報修類別
-                    ProcessInfo[7] = tMainEngineerID;      //L2工程師ERPID
-                    ProcessInfo[8] = tMainEngineerName;    //L2工程師姓名
-                    ProcessInfo[9] = tAssEngineerName;     //指派工程師姓名
+                    ProcessInfo[7] = tMainEngineerID;      //主要工程師ERPID
+                    ProcessInfo[8] = tMainEngineerName;    //主要工程師姓名
+                    ProcessInfo[9] = tAssEngineerName;     //協助工程師姓名
                     ProcessInfo[10] = tTechManagerID;      //技術主管ERPID
                     ProcessInfo[11] = tTechManagerName;    //技術主管姓名
                     ProcessInfo[12] = tSalesID;            //業務人員ERPID
@@ -2771,9 +2771,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得所有指派工程師和技術主管的ERPID清單
+        #region 取得所有協助工程師和技術主管的ERPID清單
         /// <summary>
-        /// 取得所有指派工程師和技術主管的ERPID清單
+        /// 取得所有協助工程師和技術主管的ERPID清單
         /// </summary>
         /// <param name="tList">ERPID清單</param>
         /// <param name="tOriERPID">傳入的ERPID</param>
@@ -3054,8 +3054,8 @@ namespace TSTI_API.Controllers
                 results.Add("EV_CUSTOMER", beanM.cCustomerName);       //客戶名稱
                 results.Add("EV_DESC", beanM.cDesc);                  //說明                
                 results.Add("EV_PROBLEM", beanM.cNotes);              //詳細描述
-                results.Add("EV_MAINENG", beanM.cMainEngineerName);    //L2工程師姓名
-                results.Add("EV_MAINENGID", beanM.cMainEngineerID);    //L2工程師ERPID                
+                results.Add("EV_MAINENG", beanM.cMainEngineerName);    //主要工程師姓名
+                results.Add("EV_MAINENGID", beanM.cMainEngineerID);    //主要工程師ERPID                
                 results.Add("EV_CONTACT", EV_CONTACT);               //報修人姓名
                 results.Add("EV_ADDR", EV_ADDR);                    //報修人地址
                 results.Add("EV_TEL", EV_TEL);                      //報修人電話
@@ -3232,12 +3232,12 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【一般服務】案件種類的郵件主旨
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
         /// <param name="SRID">服務ID</param>
         /// <param name="CusName">客戶名稱</param>
         /// <param name="TeamNAME">服務團隊</param>
         /// <param name="SRCase">服務案件種類</param>
-        /// <param name="MainENG">L2工程師</param>
+        /// <param name="MainENG">主要工程師</param>
         /// <returns></returns>
         public string findGenerallySRMailSubject(SRCondition cCondition, string SRID, string CusName, string TeamNAME, string SRCase, string MainENG)
         {
@@ -3251,7 +3251,7 @@ namespace TSTI_API.Controllers
                     break;
 
                 case SRCondition.TRANS:
-                    //[<客戶名稱>] <服務團隊>_<服務案件種類>[<服務ID>]已轉到[<L2工程師>]名下，請留意！
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類>[<服務ID>]已轉到[<主要工程師>]名下，請留意！
                     reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + "[" + SRID + "]已轉到[" + MainENG + "]名下，請留意！";
                     break;
 
@@ -3319,7 +3319,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【一般服務】案件種類的郵件主旨(for客戶)
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
         /// <param name="SRID">服務ID</param>
         /// <param name="CusName">客戶名稱</param>        
         /// <returns></returns>
@@ -3722,7 +3722,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 組服務案件Mail相關資訊
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
         /// <param name="cOperationID_GenerallySR">程式作業編號檔系統ID(一般服務)</param>
         /// <param name="cOperationID_InstallSR">程式作業編號檔系統ID(裝機服務)</param>
         /// <param name="cOperationID_MaintainSR">程式作業編號檔系統ID(定維服務)</param>
@@ -3750,10 +3750,10 @@ namespace TSTI_API.Controllers
             string cTeamName = string.Empty;            //服務團隊
             string cTeamMGR = string.Empty;             //服務團隊主管
             string cTeamMGREmail = string.Empty;        //服務團隊主管Email
-            string cMainENG = string.Empty;             //L2工程師
-            string cMainENGEmail = string.Empty;        //L2工程師Email
-            string cAssENG = string.Empty;              //指派工程師
-            string cAssENGEmail = string.Empty;         //指派工程師Email
+            string cMainENG = string.Empty;             //主要工程師
+            string cMainENGEmail = string.Empty;        //主要工程師Email
+            string cAssENG = string.Empty;              //協助工程師
+            string cAssENGEmail = string.Empty;         //協助工程師Email
             string cTechMGR = string.Empty;             //技術主管
             string cTechMGREmail = string.Empty;        //技術主管Email
             string cSalesEMP = string.Empty;            //業務人員
@@ -3813,7 +3813,7 @@ namespace TSTI_API.Controllers
                     cTeamMGREmail = findSRTeamMGREmail(SRTeam_List);
                     #endregion
 
-                    #region L2工程師/指派工程師/技術主管相關
+                    #region 主要工程師/協助工程師/技術主管相關
                     SRMainENG_List = findSREMPINFO(beanM.cMainEngineerID);
                     cMainENG = findSREMPName(SRMainENG_List);
                     cMainENGEmail = findSREMPEmail(SRMainENG_List);
@@ -3968,7 +3968,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 發送服務案件Mail相關資訊
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
         /// <param name="cSRID">SRID</param>
         /// <param name="tONEURLName">One Service站台名稱</param>
         /// <param name="cLoginName">登入人員姓名</param>
@@ -4015,7 +4015,7 @@ namespace TSTI_API.Controllers
                 #region 取得收件者
                 if (cCondition == SRCondition.HPGCSN || cCondition == SRCondition.HPGCSNDONE) //HPGCSN申請、HPGCSN完成
                 {
-                    #region L2工程師
+                    #region 主要工程師
                     if (SRMain.MainENGEmail != "")
                     {
                         tMailToTemp = SRMain.MainENGEmail;
@@ -4033,11 +4033,11 @@ namespace TSTI_API.Controllers
                 }
                 else
                 {
-                    if (SRMain.MainENGEmail != "") //有指派L2工程師
+                    if (SRMain.MainENGEmail != "") //有指派主要工程師
                     {
                         tMailToTemp = SRMain.MainENGEmail + SRMain.AssENGEmail + SRMain.TechMGREmail;
                     }
-                    else //未指派L2工程師
+                    else //未指派主要工程師
                     {
                         tMailToTemp = SRMain.TeamMGREmail + SRMain.MainENGEmail + SRMain.AssENGEmail + SRMain.TechMGREmail;
                     }
@@ -4142,8 +4142,8 @@ namespace TSTI_API.Controllers
                 //服務案件種類:	一般服務
                 //服務團隊:	L2電腦系統(含PS)-北區
                 //服務團隊主管:	L2MGR
-                //L2工程師:	L3MGR
-                //指派工程師:	ASSEngineer
+                //主要工程師:	L3MGR
+                //協助工程師:	ASSEngineer
                 //技術主管:	TechMGR
                 //狀態:	處理中
                 //派單時間:	2016/1/5 13:36
@@ -4262,7 +4262,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 發送服務案件Mail相關資訊(for客戶)
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派L2工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
         /// <param name="cSRID">SRID</param>        
         /// <param name="cLoginName">登入人員姓名</param>
         /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
@@ -4326,7 +4326,7 @@ namespace TSTI_API.Controllers
                     tMailCcTemp += SRMain.TeamMGREmail;
                 }
 
-                if (SRMain.MainENGEmail != "") //L2工程師Email
+                if (SRMain.MainENGEmail != "") //主要工程師Email
                 {
                     tMailCcTemp += SRMain.MainENGEmail;
                 }
@@ -4529,8 +4529,22 @@ namespace TSTI_API.Controllers
 
             NOTES = srdetail["EV_PROBLEM"].ToString();
 
-            //一併發送給L2工程師及支援工程師
+            //一併發送給主要工程師及支援工程師
             List<string> ccs = new List<string>();
+
+            #region 主要工程師
+            if (srdetail["EV_MAINENGID"].ToString() != "")
+            {
+                string tEmail = findEMPEmail(srdetail["EV_MAINENGID"].ToString());
+
+                if (tEmail != "" && !ccs.Contains(tEmail))
+                {
+                    ccs.Add(tEmail);
+                }
+            }
+            #endregion
+
+            #region 工時紀錄檔裡的人員
             List<ENGProcessLIST> lbList = srdetail.ContainsKey("table_ET_LABORLIST") ? (List<ENGProcessLIST>)srdetail["table_ET_LABORLIST"] : new List<ENGProcessLIST>();
 
             foreach (var lbBean in lbList)
@@ -4548,7 +4562,8 @@ namespace TSTI_API.Controllers
                     else continue;
                 }
                 else continue;
-            }         
+            }
+            #endregion
 
             SendReport(email, string.Join(";", ccs), srId, CUSTOMER, ENGINEER, NOTES, pdfPath, pdfFileName, mainEgnrName, tIsFormal); //發送服務報告書report給客戶
             #endregion

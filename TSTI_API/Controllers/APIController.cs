@@ -280,7 +280,7 @@ namespace TSTI_API.Controllers
 
                     //主表資料
                     beanM.cSRID = pSRID;
-                    beanM.cStatus = IV_EMPNO != "" ? "E0005" : "E0001";    //新增時若有L2工程師，則預設為L3.處理中，反之則預設為新建
+                    beanM.cStatus = IV_EMPNO != "" ? "E0005" : "E0001";    //新增時若有主要工程師，則預設為L3.處理中，反之則預設為新建
                     beanM.cCustomerName = CCustomerName;
                     beanM.cCustomerID = IV_CUSTOMER;                    
                     beanM.cDesc = IV_DESC;
@@ -660,7 +660,7 @@ namespace TSTI_API.Controllers
             public string IV_REPAIRADDR { get; set; }
             /// <summary>報修人Email</summary>
             public string IV_REPAIREMAIL { get; set; }            
-            /// <summary>L2工程師員工編號</summary>
+            /// <summary>主要工程師員工編號</summary>
             public string IV_EMPNO { get; set; }
             /// <summary>SQ人員ID</summary>
             public string IV_SQEMPID { get; set; }
@@ -1093,7 +1093,7 @@ namespace TSTI_API.Controllers
             public string IV_MKIND2 { get; set; }
             /// <summary>報修代碼(小類)</summary>
             public string IV_MKIND3 { get; set; }           
-            /// <summary>L2工程師員工編號</summary>
+            /// <summary>主要工程師員工編號</summary>
             public string IV_EMPNO { get; set; }
             /// <summary>業務人員員工編號</summary>
             public string IV_SALESEMPNO { get; set; }
@@ -3154,9 +3154,9 @@ namespace TSTI_API.Controllers
             public string REPAIREMAIL { get; set; }
             /// <summary>服務團隊</summary>
             public string SRTEAM { get; set; }
-            /// <summary>L2工程師</summary>
+            /// <summary>主要工程師</summary>
             public string MAINENG { get; set; }
-            /// <summary>指派工程師</summary>
+            /// <summary>協助工程師</summary>
             public string ASSENGN { get; set; }
             /// <summary>技術主管</summary>
             public string TECHMAG { get; set; }
@@ -3295,7 +3295,7 @@ namespace TSTI_API.Controllers
                             {
                                 if (tAry[17] != "E0007") //若狀態非【E0007.技術支援升級】
                                 {
-                                    if (tERPID != tAry[7]) //非【L2工程師】才跳過
+                                    if (tERPID != tAry[7]) //非【主要工程師】才跳過
                                     {
                                         continue;
                                     }
@@ -3517,10 +3517,8 @@ namespace TSTI_API.Controllers
             //    "IV_ArriveTime": "2023-01-18 18:50",
             //    "IV_FinishTime": "2023-01-18 19:50",
             //    "IV_Desc": "TEST處理紀錄",
-            //    "IV_SRReportType": "NOSIGN",
-            //    "IV_SRReportFiles": "FILES" //用form-data傳檔案
-            //    "IV_SRReportFileName" : "",
             //    "IV_SENDREPORT" : "Y"
+            //    "IV_SRReportFileName" : "e0049b93-f077-4ad1-ba93-0968ad992d5b.pdf"
             //}
             #endregion
 
@@ -3605,6 +3603,7 @@ namespace TSTI_API.Controllers
                 cSRReportFileName = string.IsNullOrEmpty(beanIN.IV_SRReportFileName) ? "" : beanIN.IV_SRReportFileName;
                 cSENDREPORT = string.IsNullOrEmpty(beanIN.IV_SENDREPORT) ? "" : beanIN.IV_SENDREPORT;
 
+                
                 #region 取得工程師/技術主管姓名
                 EmployeeBean EmpBean = new EmployeeBean();
                 EmpBean = CMF.findEmployeeInfoByERPID(cENGID);
@@ -3614,142 +3613,34 @@ namespace TSTI_API.Controllers
 
                 if (cID == 0)
                 {
-                    #region 檔案上傳
-                    HttpPostedFileBase[] uploadFiles = beanIN.IV_SRReportFiles;
-
-                    if (beanIN.IV_SRReportType == SRReportType.NOSIGN)
+                    #region 是否需要寄送服務報告書
+                    if (cSENDREPORT == "Y")
                     {
-                        #region 無簽名檔
-                        if (uploadFiles != null && uploadFiles.Length > 0)
-                        {
-                            try
-                            {
-                                TB_ONE_DOCUMENT bean = new TB_ONE_DOCUMENT();
+                        #region 有簽名檔、無簽名檔、線上、遠端
+                        cSRReport = cSRReportFileName.Replace(".pdf", "") + ",";
 
-                                List<string> picPathList = new List<string>();
-
-                                Guid fileGuid = Guid.NewGuid();
-
-                                string fileId = string.Empty;
-                                string fileOrgName = string.Empty;
-                                string fileName = string.Empty;
-                                string path = string.Empty;                                
-
-                                foreach (var upload in uploadFiles)
-                                {
-                                    fileGuid = Guid.NewGuid();                                   
-
-                                    fileId = fileGuid.ToString();
-                                    fileOrgName = upload.FileName;
-                                    fileName = fileId + Path.GetExtension(upload.FileName);
-                                    path = Path.Combine(Server.MapPath("~/REPORT"), fileName);
-                                    upload.SaveAs(path);
-
-                                    picPathList.Add(path);                                    
-                                }
-
-                                #region 將圖片轉成一份pdf
-                                fileGuid = Guid.NewGuid();
-                                cSRReport = fileGuid.ToString() + ",";
-                                
-                                bool tIsOK = UploadMultPics(picPathList, fileGuid.ToString(), cSRID, cENGNAME);                               
-                                #endregion
-
-                                if (tIsOK)
-                                {
-                                    #region 設定pdf檔案相關路徑
-                                    cReportID = CMF.GetReportSerialID(cSRID);
-
-                                    fileOrgName = cReportID + ".pdf";
-                                    fileName = fileGuid.ToString() + ".pdf";
-
-                                    cPDFPath = Path.Combine(Server.MapPath("~/REPORT"), fileName);
-                                    cPDFFileName = fileName;
-                                    #endregion
-
-                                    #region table部份                                        
-                                    bean.ID = fileGuid;
-                                    bean.FILE_ORG_NAME = fileOrgName;
-                                    bean.FILE_NAME = fileName;
-                                    bean.FILE_EXT = ".pdf";
-                                    bean.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-
-                                    dbOne.TB_ONE_DOCUMENT.Add(bean);
-                                    #endregion
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "服務報告書/附件上傳失敗原因:" + ex.Message + Environment.NewLine;
-                                pMsg += " 失敗行數：" + ex.ToString() + Environment.NewLine;
-                            }
-                        }
+                        cPDFPath = Path.Combine(Server.MapPath("~/REPORT"), cSRReportFileName);
+                        cPDFFileName = cSRReportFileName;
                         #endregion
                     }
                     else
                     {
-                        if (beanIN.IV_SRReportType == SRReportType.ATTACH)
+                        #region 純附件
+                        if (cSRReportFileName != "")
                         {
-                            #region 純附件
-                            if (uploadFiles != null && uploadFiles.Length > 0)
+                            string[] tAryFileName = cSRReportFileName.Split(',');
+
+                            foreach (string tFileName in tAryFileName)
                             {
-                                try
-                                {
-                                    Guid fileGuid = Guid.NewGuid();
-
-                                    string fileId = string.Empty;
-                                    string fileOrgName = string.Empty;
-                                    string fileName = string.Empty;
-                                    string path = string.Empty;
-
-                                    foreach (var upload in uploadFiles)
-                                    {
-                                        #region 檔案部份
-                                        fileGuid = Guid.NewGuid();
-
-                                        cSRReport += fileGuid.ToString() + ",";
-
-                                        fileId = fileGuid.ToString();
-                                        fileOrgName = upload.FileName;
-                                        fileName = fileId + Path.GetExtension(upload.FileName);
-                                        path = Path.Combine(Server.MapPath("~/REPORT"), fileName);
-                                        upload.SaveAs(path);
-                                        #endregion
-
-                                        #region table部份                                        
-                                        TB_ONE_DOCUMENT bean = new TB_ONE_DOCUMENT();
-
-                                        bean.ID = fileGuid;
-                                        bean.FILE_ORG_NAME = fileOrgName;
-                                        bean.FILE_NAME = fileName;
-                                        bean.FILE_EXT = Path.GetExtension(upload.FileName);
-                                        bean.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-
-                                        dbOne.TB_ONE_DOCUMENT.Add(bean);
-                                        #endregion
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "【ATTACH】服務報告書/附件上傳失敗原因:" + ex.Message + Environment.NewLine;
-                                    pMsg += " 失敗行數：" + ex.ToString() + Environment.NewLine;
-                                }
+                                string[] tAryGUID = tFileName.Split('.');
+                                cSRReport += tAryGUID[0] + ",";
                             }
-                            #endregion
                         }
-                        else if (beanIN.IV_SRReportType == SRReportType.SIGN)
-                        {
-                            #region 有簽名檔
-                            cSRReport = cSRReportFileName.Replace(".pdf", "") + ",";
-
-                            cPDFPath = Path.Combine(Server.MapPath("~/REPORT"), cSRReportFileName);
-                            cPDFFileName = cSRReportFileName;
-                            #endregion
-                        }
+                        #endregion
                     }
                     #endregion
 
-                    #region 新增
+                    #region 新增紀錄
                     TB_ONE_SRDetail_Record SRRecord = new TB_ONE_SRDetail_Record();                    
 
                     TimeSpan Ts = Convert.ToDateTime(cFinishTime) - Convert.ToDateTime(cArriveTime);
@@ -3941,14 +3832,10 @@ namespace TSTI_API.Controllers
             public string IV_WorkHours { get; set; }
             /// <summary>處理紀錄</summary>
             public string IV_Desc { get; set; }
-            /// <summary>產生服務報告書圖檔方式(SIGN.有簽名檔 NOSIGN.無簽名檔 ATTACH.純附件)</summary>
-            public SRReportType IV_SRReportType { get; set; }
-            /// <summary>服務報告書圖檔</summary>
-            public HttpPostedFileBase[] IV_SRReportFiles { get; set; }
-            /// <summary>服務報告書檔名(當產生服務報告書圖檔的方式為【SIGN.有簽名檔】時，才需要傳GUID檔名)</summary>
-            public string IV_SRReportFileName { get; set; }
             /// <summary>是否需要寄送服務報告書</summary>
             public string IV_SENDREPORT { get; set; }
+            /// <summary>服務報告書檔名(多檔以逗號隔開)</summary>
+            public string IV_SRReportFileName { get; set; }            
         }
         #endregion
 
@@ -4080,6 +3967,8 @@ namespace TSTI_API.Controllers
             {
                 if (IV_SRReportType == SRReportType.SIGN || IV_SRReportType == SRReportType.ONLINE || IV_SRReportType == SRReportType.REMOTE) //有簽名檔、線上、遠端
                 {
+                    #region 有簽名檔、線上、遠端
+
                     #region -- 服務案件工時更新(前面已更新，此處僅設定呈現資料) --
                     //測試用
                     //IV_StartTime = "2023/01/15 08:00:00";
@@ -6125,6 +6014,7 @@ namespace TSTI_API.Controllers
                         CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
                         CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
                     }
+                    #endregion
                 }
                 else if (IV_SRReportType == SRReportType.NOSIGN) //無簽名檔
                 {
@@ -8442,9 +8332,9 @@ namespace TSTI_API.Controllers
         public string PATHWAY { get; set; }
         /// <summary>報修類別</summary>
         public string SRTYPE { get; set; }
-        /// <summary>L2工程師</summary>
+        /// <summary>主要工程師</summary>
         public string MAINENGNAME { get; set; }
-        /// <summary>指派工程師</summary>
+        /// <summary>協助工程師</summary>
         public string ASSENGNAME { get; set; }
         /// <summary>技術主管</summary>
         public string TECHMANAGER { get; set; }
@@ -8516,11 +8406,11 @@ namespace TSTI_API.Controllers
         public string STATUSDESC { get; set; }
         /// <summary>服務報告書URL</summary>
         public string SRREPORTUrl { get; set; }
-        /// <summary>L2工程師ERPID</summary>
+        /// <summary>主要工程師ERPID</summary>
         public string MAINENGID { get; set; }
-        /// <summary>L2工程師姓名</summary>
+        /// <summary>主要工程師姓名</summary>
         public string MAINENGNAME { get; set; }
-        /// <summary>指派工程師姓名</summary>
+        /// <summary>協助工程師姓名</summary>
         public string ASSENGNAME { get; set; }
         /// <summary>技術主管姓名</summary>
         public string TECHMAGNAME { get; set; }
@@ -8543,9 +8433,9 @@ namespace TSTI_API.Controllers
         public string TeamNAME { get; set; }
         /// <summary>服務團隊主管</summary>
         public string TeamMGR { get; set; }
-        /// <summary>L2工程師</summary>
+        /// <summary>主要工程師</summary>
         public string MainENG { get; set; }
-        /// <summary>指派工程師</summary>
+        /// <summary>協助工程師</summary>
         public string AssENG { get; set; }
         /// <summary>技術主管</summary>
         public string TechMGR { get; set; }
@@ -8584,9 +8474,9 @@ namespace TSTI_API.Controllers
 
         /// <summary>服務團隊主管Email</summary>
         public string TeamMGREmail { get; set; }
-        /// <summary>L2工程師Email</summary>
+        /// <summary>主要工程師Email</summary>
         public string MainENGEmail { get; set; }
-        /// <summary>指派工程師Email</summary>
+        /// <summary>協助工程師Email</summary>
         public string AssENGEmail { get; set; }
         /// <summary>技術主管Email</summary>
         public string TechMGREmail { get; set; }
@@ -8826,8 +8716,8 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
-    #region 服務案件L2工程師/指派工程師/技術主管相關資訊
-    /// <summary>服務案件L2工程師/指派工程師/技術主管相關資訊</summary>
+    #region 服務案件主要工程師/協助工程師/技術主管相關資訊
+    /// <summary>服務案件主要工程師/協助工程師/技術主管相關資訊</summary>
     public class SREMPINFO
     {       
         /// <summary>ERPID</summary>
@@ -9062,7 +8952,7 @@ namespace TSTI_API.Controllers
         ADD,
 
         /// <summary>
-        /// 轉派L2工程師
+        /// 轉派主要工程師
         /// </summary>
         TRANS,
 
