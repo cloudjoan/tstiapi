@@ -1136,10 +1136,10 @@ namespace TSTI_API.Controllers
             #region Json範列格式
             //{
             //     "IV_LOGINEMPNO": "99120894",
-            //     "IV_SRID": "612211250004",
+            //     "IV_SRID": "612212070001",
             //     "IV_STATUS": "E0005",
             //     "IV_PROCESSWAY" : "Z04",
-            //     "IV_ISAPPCLOSE" : "Y"
+            //     "IV_ISAPPCLOSE" : "N"
             //}
             #endregion
 
@@ -8597,9 +8597,11 @@ namespace TSTI_API.Controllers
     #region 服務報告書資訊
     /// <summary>服務報告書資訊</summary>
     public class SRREPORTINFO
-    {       
+    {
+        /// <summary>系統ID</summary>
+        public string CID { get; set; }
         /// <summary>服務案件ID</summary>
-        public string SRID { get; set; }
+        public string SRID { get; set; }        
         /// <summary>服務報告書原始檔名</summary>
         public string SRReportORG_NAME { get; set; }
         /// <summary>服務報告書檔名(GUID)</summary>
