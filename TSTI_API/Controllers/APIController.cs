@@ -1357,9 +1357,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑服務案件(一般/裝機/定維)狀態更新 ↑↑↑↑↑-----    
+        #endregion -----↑↑↑↑↑服務案件(一般/裝機/定維)狀態更新 ↑↑↑↑↑-----       
 
-        #region -----↓↓↓↓↓技術主管異動 ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓技術主管/協助工程師異動 ↓↓↓↓↓-----
 
         #region ONE SERVICE 技術主管異動接口
         /// <summary>
@@ -1381,12 +1381,40 @@ namespace TSTI_API.Controllers
             SRMain_SREMPCHANGE_OUTPUT SROUT = new SRMain_SREMPCHANGE_OUTPUT();
 
             beanIN.IV_STATUS = "E0007"; //技術支援升級
+            beanIN.IV_TRANSTYPE = "TECH";
 
             SROUT = SREMPCHANGE_CHANGE(beanIN);
 
             return Json(SROUT);
         }
         #endregion
+
+        #region ONE SERVICE 協助工程師異動接口
+        /// <summary>
+        /// ONE SERVICE 協助工程師異動接口
+        /// </summary>
+        /// <param name="beanIN"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult API_SRASSENGINEER_CHANGE(SRMain_SREMPCHANGE_INPUT beanIN)
+        {
+            #region Json範列格式
+            //{
+            //     "IV_LOGINEMPNO": "99120894",
+            //     "IV_TRANSEMPNO": "99120894;99120023",
+            //     "IV_SRID": "612304130001"            
+            //}
+            #endregion
+
+            SRMain_SREMPCHANGE_OUTPUT SROUT = new SRMain_SREMPCHANGE_OUTPUT();
+
+            beanIN.IV_TRANSTYPE = "ASS";
+
+            SROUT = SREMPCHANGE_CHANGE(beanIN);
+
+            return Json(SROUT);
+        }
+        #endregion      
 
         #region 人員異動(一般/裝機/定維)狀態
         private SRMain_SREMPCHANGE_OUTPUT SREMPCHANGE_CHANGE(SRMain_SREMPCHANGE_INPUT bean)
@@ -1403,6 +1431,7 @@ namespace TSTI_API.Controllers
             string tAttachURLName = string.Empty;
             string tAttachPath = string.Empty;
             string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
+            string IV_TRANSTYPE = string.IsNullOrEmpty(bean.IV_TRANSTYPE) ? "" : bean.IV_TRANSTYPE.Trim();
             string IV_TRANSEMPNO = string.IsNullOrEmpty(bean.IV_TRANSEMPNO) ? "" : bean.IV_TRANSEMPNO.TrimEnd(';');
             string IV_SRID = string.IsNullOrEmpty(bean.IV_SRID) ? "" : bean.IV_SRID.Trim();
             string IV_STATUS = string.IsNullOrEmpty(bean.IV_STATUS) ? "" : bean.IV_STATUS.Trim();
@@ -1485,18 +1514,30 @@ namespace TSTI_API.Controllers
                         case "E0015": //取消(共用)
                             tCondition = SRCondition.CANCEL;
                             break;
+
+                        default:
+                            tCondition = SRCondition.SAVE;
+                            break;
                     }
                     #endregion
 
-                    if (tCondition == SRCondition.SUPPORT )
+                    if (IV_TRANSEMPNO != "")
                     {
-                        if (IV_TRANSEMPNO != "")
+                        if (IV_TRANSTYPE == "TECH")
                         {
                             beanM.cTechManagerID = IV_TRANSEMPNO;
                         }
+                        else if (IV_TRANSTYPE == "ASS")
+                        {
+                            beanM.cAssEngineerID = IV_TRANSEMPNO;
+                        }
+                    }                   
+
+                    if (IV_STATUS != "")
+                    {
+                        beanM.cStatus = IV_STATUS;
                     }
 
-                    beanM.cStatus = IV_STATUS;
                     beanM.ModifiedDate = DateTime.Now;
                     beanM.ModifiedUserName = pLoginName;
 
@@ -1542,7 +1583,9 @@ namespace TSTI_API.Controllers
         {
             /// <summary>修改者員工編號ERPID</summary>
             public string IV_LOGINEMPNO { get; set; }
-            /// <summary>技術主管員工編號ERPID(若有多人以分號隔開)</summary>
+            /// <summary>類型(TECH.技術主管 ASS.協助工程師)</summary>
+            public string IV_TRANSTYPE { get; set; }
+            /// <summary>(技術主管/協助工程師)員工編號ERPID(若有多人以分號隔開)</summary>
             public string IV_TRANSEMPNO { get; set; }            
             /// <summary>服務案件ID</summary>
             public string IV_SRID { get; set; }
@@ -1562,7 +1605,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑技術主管異動 ↑↑↑↑↑-----    
+        #endregion -----↑↑↑↑↑技術主管/協助工程師 ↑↑↑↑↑-----    
 
         #region -----↓↓↓↓↓法人客戶資料 ↓↓↓↓↓-----
 

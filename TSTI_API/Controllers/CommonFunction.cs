@@ -3335,26 +3335,7 @@ namespace TSTI_API.Controllers
 
             return reValue;
         }
-        #endregion
-
-        #region 自動判斷明細有幾列，前後就有幾個<p>
-        /// <summary>
-        /// 自動判斷明細有幾列，前後就有幾個<p>
-        /// </summary>
-        /// <param name="tCount">有幾列</param>
-        /// <returns></returns>
-        private string ShowHtml_PByCount(int tCount)
-        {
-            string reValue = string.Empty;
-
-            for (int i = 0; i < tCount; i++)
-            {
-                reValue += "<p>&nbsp;</p>";
-            }
-
-            return reValue;
-        }
-        #endregion
+        #endregion       
 
         #region 取得【共用】案件客戶報修窗口資訊Html Table
         /// <summary>
@@ -3373,18 +3354,15 @@ namespace TSTI_API.Controllers
             #endregion
 
             StringBuilder strHTML = new StringBuilder();
-            string reValue = string.Empty;
-            string Html_P = string.Empty;
+            string reValue = string.Empty;            
 
             if (SRRepair_List.Count > 0)
             {
-                Html_P = ShowHtml_PByCount(SRRepair_List.Count);
-
-                strHTML.AppendLine("<div>");
-                strHTML.AppendLine("    " + Html_P);
+                strHTML.AppendLine("<div style='width:800;'>");
+                //strHTML.AppendLine("    <p>&nbsp;</p>");
                 strHTML.AppendLine("    <p>客戶名稱："+ CusName +"</p>");
                 strHTML.AppendLine("    <p>[客戶報修窗口資訊]</p>");
-                strHTML.AppendLine("    <table style='width:720pt;font-family:微軟正黑體;' align='left' border='1'>");
+                strHTML.AppendLine("    <table style='width:100%;font-family:微軟正黑體;' align='left' border='1'>");
                 strHTML.AppendLine("        <tr>");
                 strHTML.AppendLine("            <td>報修人</td>");
                 strHTML.AppendLine("            <td>報修人電話</td>");
@@ -3406,7 +3384,7 @@ namespace TSTI_API.Controllers
 
                 strHTML.AppendLine("    </table>");
                 strHTML.AppendLine("</div>");
-                strHTML.AppendLine(Html_P);                
+                strHTML.AppendLine("<p>&nbsp;</p>");                
             }
 
             reValue = strHTML.ToString();
@@ -3431,17 +3409,14 @@ namespace TSTI_API.Controllers
             #endregion
 
             StringBuilder strHTML = new StringBuilder();
-            string reValue = string.Empty;
-            string Html_P = string.Empty;
+            string reValue = string.Empty;            
 
             if (SRContact_List.Count > 0)
             {
-                Html_P = ShowHtml_PByCount(SRContact_List.Count);
-
-                strHTML.AppendLine("<div>");
-                strHTML.AppendLine("    " + Html_P);
+                strHTML.AppendLine("<div style='width:800;'>");
+                //strHTML.AppendLine("    <p>&nbsp;</p>");
                 strHTML.AppendLine("    <p>[客戶聯絡窗口資訊]</p>");
-                strHTML.AppendLine("    <table style='width:720pt;font-family:微軟正黑體;' align='left' border='1'>");
+                strHTML.AppendLine("    <table style='width:100%;font-family:微軟正黑體;' align='left' border='1'>");
                 strHTML.AppendLine("        <tr>");
                 strHTML.AppendLine("            <td>聯絡人</td>");
                 strHTML.AppendLine("            <td>聯絡人電話</td>");
@@ -3463,7 +3438,7 @@ namespace TSTI_API.Controllers
 
                 strHTML.AppendLine("    </table>");
                 strHTML.AppendLine("</div>");
-                strHTML.AppendLine(Html_P);                
+                strHTML.AppendLine("<p>&nbsp;</p>");                
             }
 
             reValue = strHTML.ToString();
@@ -3488,18 +3463,15 @@ namespace TSTI_API.Controllers
             #endregion
 
             StringBuilder strHTML = new StringBuilder();
-            string reValue = string.Empty;
-            string Html_P = string.Empty;
+            string reValue = string.Empty;            
             string tHypeLink = string.Empty;
 
             if (SRRecord_List.Count > 0)
             {
-                Html_P = ShowHtml_PByCount(SRRecord_List.Count);
-
-                strHTML.AppendLine("<div>");
-                strHTML.AppendLine("    " + Html_P);
+                strHTML.AppendLine("<div style='width:800;'>");
+                //strHTML.AppendLine("    <p>&nbsp;</p>");
                 strHTML.AppendLine("    <p>[處理與工時紀錄資訊]</p>");
-                strHTML.AppendLine("    <table style='width:720pt;font-family:微軟正黑體;' align='left' border='1'>");
+                strHTML.AppendLine("    <table style='width:100%;font-family:微軟正黑體;' align='left' border='1'>");
                 strHTML.AppendLine("        <tr>");
                 strHTML.AppendLine("            <td>服務工程師姓名</td>");
                 strHTML.AppendLine("            <td>接單時間</td>");
@@ -3529,7 +3501,7 @@ namespace TSTI_API.Controllers
 
                 strHTML.AppendLine("    </table>");
                 strHTML.AppendLine("</div>");
-                strHTML.AppendLine(Html_P);                
+                strHTML.AppendLine("<p>&nbsp;</p>");                
             }
 
             reValue = strHTML.ToString();
@@ -3581,17 +3553,14 @@ namespace TSTI_API.Controllers
             #endregion
 
             StringBuilder strHTML = new StringBuilder();
-            string reValue = string.Empty;
-            string Html_P = string.Empty;
+            string reValue = string.Empty;            
 
             if (SRSeiral_List.Count > 0)
             {
-                Html_P = ShowHtml_PByCount(SRSeiral_List.Count);
-
-                strHTML.AppendLine("<div>");
-                strHTML.AppendLine("    " + Html_P);
+                strHTML.AppendLine("<div style='width:800;'>");
+                //strHTML.AppendLine("    <p>&nbsp;</p>");
                 strHTML.AppendLine("    <p>[產品序號資訊]</p>");
-                strHTML.AppendLine("    <table style='width:720pt;font-family:微軟正黑體;' align='left' border='1'>");
+                strHTML.AppendLine("    <table style='width:100%;font-family:微軟正黑體;' align='left' border='1'>");
                 strHTML.AppendLine("        <tr>");
                 strHTML.AppendLine("            <td>序號</td>");
                 strHTML.AppendLine("            <td>更換後序號</td>");
@@ -3615,7 +3584,7 @@ namespace TSTI_API.Controllers
 
                 strHTML.AppendLine("    </table>");
                 strHTML.AppendLine("</div>");
-                strHTML.AppendLine(Html_P);                
+                strHTML.AppendLine("<p>&nbsp;</p>");                
             }
 
             reValue = strHTML.ToString();
@@ -3640,17 +3609,14 @@ namespace TSTI_API.Controllers
             #endregion
 
             StringBuilder strHTML = new StringBuilder();
-            string reValue = string.Empty;
-            string Html_P = string.Empty;
+            string reValue = string.Empty;            
 
             if (SRParts_List.Count > 0)
             {
-                Html_P = ShowHtml_PByCount(SRParts_List.Count);
-
-                strHTML.AppendLine("<div>");
-                strHTML.AppendLine("    " + Html_P);
+                strHTML.AppendLine("<div style='width:800;'>");
+                //strHTML.AppendLine("    <p>&nbsp;</p>");
                 strHTML.AppendLine("    <p>[零件更換資訊]</p>");
-                strHTML.AppendLine("    <table style='width:720pt;font-family:微軟正黑體;' align='left' border='1'>");
+                strHTML.AppendLine("    <table style='width:100%;font-family:微軟正黑體;' align='left' border='1'>");
                 strHTML.AppendLine("        <tr>");
                 strHTML.AppendLine("            <td>XC HP申請零件</td>");
                 strHTML.AppendLine("            <td>更換零件料號ID</td>");
@@ -3688,7 +3654,7 @@ namespace TSTI_API.Controllers
 
                 strHTML.AppendLine("    </table>");
                 strHTML.AppendLine("</div>");
-                strHTML.AppendLine(Html_P);                
+                strHTML.AppendLine("<p>&nbsp;</p>");                
             }
 
             reValue = strHTML.ToString();
@@ -3712,17 +3678,14 @@ namespace TSTI_API.Controllers
             #endregion
 
             StringBuilder strHTML = new StringBuilder();
-            string reValue = string.Empty;
-            string Html_P = string.Empty;
+            string reValue = string.Empty;            
 
             if (SRMaterial_List.Count > 0)
             {
-                Html_P = ShowHtml_PByCount(SRMaterial_List.Count);
-
-                strHTML.AppendLine("<div>");
-                strHTML.AppendLine("    " + Html_P);
+                strHTML.AppendLine("<div style='width:800;'>");
+                //strHTML.AppendLine("    <p>&nbsp;</p>");
                 strHTML.AppendLine("    <p>[物料訊息資訊]</p>");
-                strHTML.AppendLine("    <table style='width:720pt;font-family:微軟正黑體;' align='left' border='1'>");
+                strHTML.AppendLine("    <table style='width:100%;font-family:微軟正黑體;' align='left' border='1'>");
                 strHTML.AppendLine("        <tr>");                
                 strHTML.AppendLine("            <td>物料代號</td>");
                 strHTML.AppendLine("            <td>料號說明</td>");
@@ -3748,7 +3711,7 @@ namespace TSTI_API.Controllers
 
                 strHTML.AppendLine("    </table>");
                 strHTML.AppendLine("</div>");
-                strHTML.AppendLine(Html_P);                
+                strHTML.AppendLine("<p>&nbsp;</p>");                
             }
 
             reValue = strHTML.ToString();
@@ -3774,17 +3737,14 @@ namespace TSTI_API.Controllers
 
             StringBuilder strHTML = new StringBuilder();
             string reValue = string.Empty;
-            string tHypeLink = string.Empty;
-            string Html_P = string.Empty;
+            string tHypeLink = string.Empty;            
 
             if (SRFeedBack_List.Count > 0)
             {
-                Html_P = ShowHtml_PByCount(SRFeedBack_List.Count);                
-
-                strHTML.AppendLine("<div>");
-                strHTML.AppendLine("    " + Html_P);
+                strHTML.AppendLine("<div style='width:800;'>");
+                //strHTML.AppendLine("    <p>&nbsp;</p>");
                 strHTML.AppendLine("    <p>[序號回報資訊]</p>");
-                strHTML.AppendLine("    <table style='width:720pt;font-family:微軟正黑體;' align='left' border='1'>");
+                strHTML.AppendLine("    <table style='width:100%;font-family:微軟正黑體;' align='left' border='1'>");
                 strHTML.AppendLine("        <tr>");
                 strHTML.AppendLine("            <td>序號</td>");
                 strHTML.AppendLine("            <td>物料代號</td>");
@@ -3806,7 +3766,7 @@ namespace TSTI_API.Controllers
 
                 strHTML.AppendLine("    </table>");
                 strHTML.AppendLine("</div>");
-                strHTML.AppendLine(Html_P);                
+                strHTML.AppendLine("<p>&nbsp;</p>");                
             }
 
             reValue = strHTML.ToString();
@@ -4133,8 +4093,7 @@ namespace TSTI_API.Controllers
 
             string tStatus = string.Empty;          //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
             string tContractID = string.Empty;      //合約文件編號
-            string tSecFix = string.Empty;          //是否為二修
-            string tHtml_FinalP = string.Empty;     //最後一列要空多少<p>
+            string tSecFix = string.Empty;          //是否為二修            
             string tSRRepair_Table = string.Empty;
             string tSRContact_Table = string.Empty;
             string tSRSeiral_Table = string.Empty;
@@ -4356,10 +4315,6 @@ namespace TSTI_API.Controllers
                 tSRFeedBack_Table = findInstallSRFeedBack_Table(SRFeedBack_List, SRConfig_List);
                 #endregion
 
-                #region 取得最後要空多少<p>
-                tHtml_FinalP = ShowHtml_PByCount(SRRecord_List.Count * 2);
-                #endregion
-
                 if (cSRID.Substring(0, 2) == "61") //一般
                 {
                     tMailBody = GetMailBody("ONEGenerally_MAIL");
@@ -4384,7 +4339,7 @@ namespace TSTI_API.Controllers
                 tMailBody = tMailBody.Replace("<SRSeiral_List>", tSRSeiral_Table).Replace("<SRParts_List>", tSRParts_Table);
                 tMailBody = tMailBody.Replace("<SRMaterial_List>", tSRMaterial_Table).Replace("<SRFeedBack_List>", tSRFeedBack_Table);
                 tMailBody = tMailBody.Replace("<SRRecord_List>", tSRRecord_Talbe);
-                tMailBody = tMailBody.Replace("<Html_FinalP>", tHtml_FinalP).Replace("【<tHypeLink>】", tHypeLink);
+                tMailBody = tMailBody.Replace("【<tHypeLink>】", tHypeLink);
                 #endregion               
 
                 //呼叫寄送Mail
