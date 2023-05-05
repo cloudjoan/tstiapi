@@ -4152,20 +4152,21 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 取得副本
-                if (SRMain.TeamMGREmail != "") //有服務團隊主管
+                //有服務團隊主管
+                if (SRMain.TeamMGREmail != "")
                 {
                     tMailCcTemp += SRMain.TeamMGREmail;
                 }
 
-                //若為63.裝機才要取業務人員和業務祕書
+                //業務人員
+                if (SRMain.SalesEmail != "")
+                {
+                    tMailCcTemp += SRMain.SalesEmail;
+                }
+
+                //若為63.裝機才要取業務祕書
                 if (cSRID.Substring(0,2) == "63")
                 {
-                    //業務人員
-                    if (SRMain.SalesEmail != "")
-                    {
-                        tMailCcTemp += SRMain.SalesEmail;
-                    }
-
                     //業務祕書
                     if (SRMain.SecretaryEmail != "")
                     {
