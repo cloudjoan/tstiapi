@@ -164,6 +164,7 @@ namespace TSTI_API.Controllers
             //     "IV_SNPID": "G-654081B21-057",
             //     "IV_WTY": "OM363636",
             //     "IV_REFIX": "N",
+            //     "IV_ATTACHFiles" : "檔案",
             //     "CREATECONTACT_LIST": [
             //        {
             //        "SRID": "612211250004",
@@ -237,6 +238,7 @@ namespace TSTI_API.Controllers
             string IV_SNPID = string.IsNullOrEmpty(bean.IV_SNPID) ? "" : bean.IV_SNPID.Trim();
             string IV_WTY = string.IsNullOrEmpty(bean.IV_WTY) ? "" : bean.IV_WTY.Trim();
             string IV_REFIX = string.IsNullOrEmpty(bean.IV_REFIX) ? "" : bean.IV_REFIX.Trim();
+            HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
             string CSqpersonName = CMF.findSQPersonName(IV_SQEMPID);
@@ -311,6 +313,58 @@ namespace TSTI_API.Controllers
                     beanM.cTechManagerID = "";
                     beanM.cSystemGUID = Guid.NewGuid();
                     beanM.cIsAPPClose = "";
+
+                    if (AttachFiles != null)
+                    {
+                        #region 檢附文件
+                        if (AttachFiles.Length > 0)
+                        {
+                            Guid fileGuid = Guid.NewGuid();
+
+                            string cAttachementID = string.Empty;
+                            string path = string.Empty;
+                            string fileId = string.Empty;
+                            string fileOrgName = string.Empty;
+                            string fileName = string.Empty;
+                            string fileALLName = string.Empty;
+
+                            foreach (var Attach in AttachFiles)
+                            {
+                                if (Attach != null)
+                                {
+                                    #region 檔案部份
+                                    fileGuid = Guid.NewGuid();
+
+                                    cAttachementID += fileGuid.ToString() + ",";
+
+                                    fileId = fileGuid.ToString();
+                                    fileOrgName = Attach.FileName;
+                                    fileName = fileId + Path.GetExtension(Attach.FileName);
+                                    path = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+                                    Attach.SaveAs(path);
+                                    #endregion
+
+                                    #region table部份                                        
+                                    TB_ONE_DOCUMENT beanDoc = new TB_ONE_DOCUMENT();
+
+                                    beanDoc.ID = fileGuid;
+                                    beanDoc.FILE_ORG_NAME = fileOrgName;
+                                    beanDoc.FILE_NAME = fileName;
+                                    beanDoc.FILE_EXT = Path.GetExtension(Attach.FileName);
+                                    beanDoc.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                                    dbOne.TB_ONE_DOCUMENT.Add(beanDoc);
+                                    dbOne.SaveChanges();
+
+                                    fileALLName += fileName + ",";
+                                    #endregion
+                                }
+                            }
+
+                            beanM.cAttachement = cAttachementID;
+                        }                        
+                        #endregion
+                    }
 
                     beanM.CreatedDate = DateTime.Now;
                     beanM.CreatedUserName = pLoginName;
@@ -672,6 +726,8 @@ namespace TSTI_API.Controllers
             public string IV_WTY { get; set; }
             /// <summary>是否為二修(Y.是 N.否)</summary>
             public string IV_REFIX { get; set; }
+            /// <summary>檢附文件</summary>
+            public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 
             /// <summary>服務案件客戶聯絡人資訊</summary>
             public List<CREATECONTACTINFO> CREATECONTACT_LIST { get; set; }
@@ -816,6 +872,7 @@ namespace TSTI_API.Controllers
             //     "IV_SALESEMPNO": "10012088",
             //     "IV_SECRETARYEMPNO": "10005805",
             //     "IV_EMPNO": "",
+            //     "IV_ATTACHFiles" :"檔案",
             //     "CREATECONTACT_LIST": [
             //        {
             //        "CONTNAME": "賴淑瑛",
@@ -881,7 +938,8 @@ namespace TSTI_API.Controllers
             string IV_MKIND3 = string.IsNullOrEmpty(bean.IV_MKIND3) ? "" : bean.IV_MKIND3.Trim();
             string IV_SALESEMPNO = string.IsNullOrEmpty(bean.IV_SALESEMPNO) ? "" : bean.IV_SALESEMPNO.Trim();
             string IV_SECRETARYEMPNO = string.IsNullOrEmpty(bean.IV_SECRETARYEMPNO) ? "" : bean.IV_SECRETARYEMPNO.Trim();
-            string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();            
+            string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
+            HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);            
             string CMainEngineerName = CMF.findEmployeeName(IV_EMPNO);
@@ -948,6 +1006,58 @@ namespace TSTI_API.Controllers
                     beanM.cSystemGUID = Guid.NewGuid();
                     beanM.CreatedDate = DateTime.Now;
                     beanM.CreatedUserName = pLoginName;
+
+                    if (AttachFiles != null)
+                    {
+                        #region 檢附文件
+                        if (AttachFiles.Length > 0)
+                        {
+                            Guid fileGuid = Guid.NewGuid();
+
+                            string cAttachementID = string.Empty;
+                            string path = string.Empty;
+                            string fileId = string.Empty;
+                            string fileOrgName = string.Empty;
+                            string fileName = string.Empty;
+                            string fileALLName = string.Empty;
+
+                            foreach (var Attach in AttachFiles)
+                            {
+                                if (Attach != null)
+                                {
+                                    #region 檔案部份
+                                    fileGuid = Guid.NewGuid();
+
+                                    cAttachementID += fileGuid.ToString() + ",";
+
+                                    fileId = fileGuid.ToString();
+                                    fileOrgName = Attach.FileName;
+                                    fileName = fileId + Path.GetExtension(Attach.FileName);
+                                    path = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+                                    Attach.SaveAs(path);
+                                    #endregion
+
+                                    #region table部份                                        
+                                    TB_ONE_DOCUMENT beanDoc = new TB_ONE_DOCUMENT();
+
+                                    beanDoc.ID = fileGuid;
+                                    beanDoc.FILE_ORG_NAME = fileOrgName;
+                                    beanDoc.FILE_NAME = fileName;
+                                    beanDoc.FILE_EXT = Path.GetExtension(Attach.FileName);
+                                    beanDoc.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                                    dbOne.TB_ONE_DOCUMENT.Add(beanDoc);
+                                    dbOne.SaveChanges();
+
+                                    fileALLName += fileName + ",";
+                                    #endregion
+                                }
+                            }
+
+                            beanM.cAttachement = cAttachementID;
+                        }
+                        #endregion
+                    }
 
                     #region 未用到的欄位
                     beanM.cAttachement = "";
@@ -1098,7 +1208,9 @@ namespace TSTI_API.Controllers
             /// <summary>業務人員員工編號</summary>
             public string IV_SALESEMPNO { get; set; }
             /// <summary>業務祕書員工編號</summary>
-            public string IV_SECRETARYEMPNO { get; set; }            
+            public string IV_SECRETARYEMPNO { get; set; }
+            /// <summary>檢附文件</summary>
+            public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 
             /// <summary>服務案件客戶聯絡人資訊</summary>
             public List<CREATECONTACTINFO> CREATECONTACT_LIST { get; set; }
