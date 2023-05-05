@@ -3672,7 +3672,7 @@ namespace TSTI_API.Controllers
             //    "IV_ArriveTime": "2023-01-18 18:50",
             //    "IV_FinishTime": "2023-01-18 19:50",
             //    "IV_Desc": "TEST處理紀錄",
-            //    "IV_SENDREPORT" : "Y"
+            //    "IV_SENDREPORT" : "Y",
             //    "IV_SRReportFileName" : "e0049b93-f077-4ad1-ba93-0968ad992d5b.pdf"
             //}
             #endregion
@@ -3799,6 +3799,7 @@ namespace TSTI_API.Controllers
                     TB_ONE_SRDetail_Record SRRecord = new TB_ONE_SRDetail_Record();                    
 
                     TimeSpan Ts = Convert.ToDateTime(cFinishTime) - Convert.ToDateTime(cArriveTime);
+                    double cWorkHours = Math.Ceiling(Ts.TotalMinutes);
 
                     SRRecord.cSRID = cSRID;
                     SRRecord.cEngineerID = cENGID;
@@ -3807,7 +3808,7 @@ namespace TSTI_API.Controllers
                     SRRecord.cStartTime = Convert.ToDateTime(cStartTime);
                     SRRecord.cArriveTime = Convert.ToDateTime(cArriveTime);
                     SRRecord.cFinishTime = Convert.ToDateTime(cFinishTime);
-                    SRRecord.cWorkHours = Convert.ToDecimal(Ts.TotalMinutes);
+                    SRRecord.cWorkHours = Convert.ToDecimal(cWorkHours);
                     SRRecord.cDesc = cDesc;
                     SRRecord.cSRReport = cSRReport;
                     SRRecord.Disabled = 0;
