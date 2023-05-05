@@ -6120,6 +6120,7 @@ namespace TSTI_API.Controllers
                                 bean.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                                 dbOne.TB_ONE_DOCUMENT.Add(bean);
+                                dbOne.SaveChanges();
                                 #endregion
 
                                 OUTBean.EV_MSGT = "Y";
@@ -6184,6 +6185,7 @@ namespace TSTI_API.Controllers
                                     bean.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                                     dbOne.TB_ONE_DOCUMENT.Add(bean);
+                                    dbOne.SaveChanges();
 
                                     fileALLName += fileName + ",";
                                     #endregion
