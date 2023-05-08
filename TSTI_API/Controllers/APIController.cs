@@ -9201,6 +9201,8 @@ namespace TSTI_API.Controllers
         public string SRID { get; set; }
         /// <summary>客戶名稱</summary>
         public string CUSTOMERNAME { get; set; }
+        /// <summary>報修人姓名</summary>
+        public string REPAIRNAME { get; set; }
         /// <summary>報修時間</summary>
         public string SRDATE { get; set; }
         /// <summary>機器明細</summary>

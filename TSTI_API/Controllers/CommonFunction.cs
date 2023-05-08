@@ -606,7 +606,7 @@ namespace TSTI_API.Controllers
             #endregion
 
             #region SQL語法
-            tSQL.AppendLine(" Select M.cSRID,M.cCustomerName,M.cDesc,M.CreatedDate,M.cStatus,");
+            tSQL.AppendLine(" Select M.cSRID,M.cCustomerName,M.cDesc,M.CreatedDate,M.cStatus,M.cRepairName,");
             tSQL.AppendLine("        (Select top 1 sp.cSerialID + '＃＃' + sp.cMaterialName + '＃＃' + sp.cProductNumber");            
             tSQL.AppendLine("         From TB_ONE_SRDetail_Product sp where M.cSRID = sp.cSRID AND sp.disabled = 0");
             tSQL.AppendLine("        ) as Products");
@@ -623,7 +623,8 @@ namespace TSTI_API.Controllers
                 PROGRESS_LIST bean = new PROGRESS_LIST();
 
                 bean.SRID = dr["cSRID"].ToString();
-                bean.CUSTOMERNAME = dr["cCustomerName"].ToString();                
+                bean.CUSTOMERNAME = dr["cCustomerName"].ToString();
+                bean.REPAIRNAME = dr["cRepairName"].ToString();
                 bean.SRDATE = Convert.ToDateTime(dr["CreatedDate"].ToString()).ToString("yyyy-MM-dd");                
                 bean.PRODUCT = dr["Products"].ToString().Replace("＃＃", "_").TrimEnd('_');
                 bean.DESC = dr["cDesc"].ToString();
