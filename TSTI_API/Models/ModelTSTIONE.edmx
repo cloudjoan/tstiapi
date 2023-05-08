@@ -289,6 +289,17 @@
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="TB_ONE_SRSatisfy_Survey">
+          <Key>
+            <PropertyRef Name="cID" />
+          </Key>
+          <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cSRID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="cQuestion1" Type="int" />
+          <Property Name="cQuestion2" Type="int" />
+          <Property Name="cOpinion" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="TB_ONE_SRSQPerson">
           <Key>
             <PropertyRef Name="cID" />
@@ -340,6 +351,7 @@
           <EntitySet Name="TB_ONE_SRIDFormat" EntityType="Self.TB_ONE_SRIDFormat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_SRMain" EntityType="Self.TB_ONE_SRMain" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_SRRepairType" EntityType="Self.TB_ONE_SRRepairType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_ONE_SRSatisfy_Survey" EntityType="Self.TB_ONE_SRSatisfy_Survey" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_SRSQPerson" EntityType="Self.TB_ONE_SRSQPerson" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_SRTeamMapping" EntityType="Self.TB_ONE_SRTeamMapping" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -365,6 +377,7 @@
           <EntitySet Name="TB_ONE_SRDetail_PartsReplace" EntityType="Model.TB_ONE_SRDetail_PartsReplace" />
           <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
           <EntitySet Name="TB_ONE_SRDetail_SerialFeedback" EntityType="Model.TB_ONE_SRDetail_SerialFeedback" />
+          <EntitySet Name="TB_ONE_SRSatisfy_Survey" EntityType="Model.TB_ONE_SRSatisfy_Survey" />
           </EntityContainer>
         <EntityType Name="TB_ONE_SRDetail_Contact">
           <Key>
@@ -684,6 +697,17 @@
           <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_ONE_SRSatisfy_Survey">
+          <Key>
+            <PropertyRef Name="cID" />
+          </Key>
+          <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cSRID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cQuestion1" Type="Int32" />
+          <Property Name="cQuestion2" Type="Int32" />
+          <Property Name="cOpinion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1017,6 +1041,18 @@
                 <ScalarProperty Name="cMaterialName" ColumnName="cMaterialName" />
                 <ScalarProperty Name="cMaterialID" ColumnName="cMaterialID" />
                 <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
+                <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+                <ScalarProperty Name="cID" ColumnName="cID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_ONE_SRSatisfy_Survey">
+            <EntityTypeMapping TypeName="Model.TB_ONE_SRSatisfy_Survey">
+              <MappingFragment StoreEntitySet="TB_ONE_SRSatisfy_Survey">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="cOpinion" ColumnName="cOpinion" />
+                <ScalarProperty Name="cQuestion2" ColumnName="cQuestion2" />
+                <ScalarProperty Name="cQuestion1" ColumnName="cQuestion1" />
                 <ScalarProperty Name="cSRID" ColumnName="cSRID" />
                 <ScalarProperty Name="cID" ColumnName="cID" />
               </MappingFragment>

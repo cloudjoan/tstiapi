@@ -1,0 +1,22 @@
+﻿################################################################################
+# 這個 .gitignore 檔案由 Microsoft(R) Visual Studio 自動建立。
+################################################################################
+
+/.vs/TSTI_API/FileContentIndex
+/.vs/TSTI_API/v17
+/TSTI_API/bin/TSTI_API.dll
+/TSTI_API/bin/TSTI_API.pdb
+/TSTI_API/obj/Debug/edmxResourcesToEmbed/Models/ModelTSTIONE.csdl
+/TSTI_API/obj/Debug/edmxResourcesToEmbed/Models/ModelTSTIONE.msl
+/TSTI_API/obj/Debug/edmxResourcesToEmbed/Models/ModelTSTIONE.ssdl
+/TSTI_API/obj/Debug/TempPE/Models.ModelTSTIONE.Designer.cs.dll
+/TSTI_API/obj/Debug/TempPE/Models.ModelTSTIONE.cs.dll
+/TSTI_API/obj/Debug/TempPE/Models.ModelEIPDB.Designer.cs.dll
+/TSTI_API/obj/Debug/TempPE/Models.ModelEIPDB.cs.dll
+/TSTI_API/obj/Debug/TSTI_API.pdb
+/TSTI_API/obj/Debug/TSTI_API.dll
+/TSTI_API/obj/Debug/TSTI_API.csproj.FileListAbsolute.txt
+/TSTI_API/obj/Debug/TSTI_API.csproj.CoreCompileInputs.cache
+/TSTI_API/obj/Debug/TSTI_API.csproj.AssemblyReference.cache
+/TSTI_API/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/TSTI_API/obj/Debug/DesignTimeResolveAssemblyReferences.cache

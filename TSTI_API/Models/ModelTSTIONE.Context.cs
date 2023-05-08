@@ -42,5 +42,6 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_ONE_SRDetail_PartsReplace> TB_ONE_SRDetail_PartsReplace { get; set; }
         public virtual DbSet<TB_ONE_SRMain> TB_ONE_SRMain { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_SerialFeedback> TB_ONE_SRDetail_SerialFeedback { get; set; }
+        public virtual DbSet<TB_ONE_SRSatisfy_Survey> TB_ONE_SRSatisfy_Survey { get; set; }
     }
 }

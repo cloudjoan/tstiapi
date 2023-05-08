@@ -332,5 +332,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_SRSatisfy_Survey">
+      <EntityTypeMapping TypeName="Model.TB_ONE_SRSatisfy_Survey">
+        <MappingFragment StoreEntitySet="TB_ONE_SRSatisfy_Survey">
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="cOpinion" ColumnName="cOpinion" />
+          <ScalarProperty Name="cQuestion2" ColumnName="cQuestion2" />
+          <ScalarProperty Name="cQuestion1" ColumnName="cQuestion1" />
+          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

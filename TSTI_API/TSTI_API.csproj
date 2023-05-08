@@ -406,6 +406,9 @@
     <Compile Include="Models\TB_ONE_SRRepairType.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_ONE_SRSatisfy_Survey.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_ONE_SRSQPerson.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>

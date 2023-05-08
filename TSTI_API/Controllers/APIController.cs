@@ -7852,14 +7852,43 @@ namespace TSTI_API.Controllers
 
             return OUTBean;
         }
-        #endregion
+		#endregion
 
-        #endregion -----↑↑↑↑↑下拉選項共用接口 ↑↑↑↑↑-----
+		#endregion -----↑↑↑↑↑下拉選項共用接口 ↑↑↑↑↑-----
 
-        #region -----↓↓↓↓↓CALL RFC接口 ↓↓↓↓↓-----    
+		#region -----↓↓↓↓↓ 滿意度調查接口 ↓↓↓↓↓-----       
 
-        #region 初始SapConnector
-        public void initSapConnector()
+		#region 儲存SR滿意度調查結果
+		[HttpPost]
+		public ActionResult ApiSrSatisfyCreate(TB_ONE_SRSatisfy_Survey bean)
+		{
+			SRTODOLIST_OUTPUT OUTBean = new SRTODOLIST_OUTPUT();
+			try
+			{
+				bean.CreatedDate = DateTime.Now;
+
+				dbOne.TB_ONE_SRSatisfy_Survey.Add(bean);
+
+				dbOne.SaveChanges();
+
+				OUTBean.EV_MSGT = "Y";
+				OUTBean.EV_MSG = "";
+			}
+			catch (Exception ex)
+			{
+				OUTBean.EV_MSGT = "N";
+				OUTBean.EV_MSG = ex.Message;
+			}
+			return Json(OUTBean);
+		}
+		#endregion
+
+		#endregion  -----↑↑↑↑↑ 滿意度調查接口 ↑↑↑↑↑-----     
+
+		#region -----↓↓↓↓↓CALL RFC接口 ↓↓↓↓↓-----    
+
+		#region 初始SapConnector
+		public void initSapConnector()
         {
             #region 呼叫SAPERP正式區或測試區(true.正式區 false.測試區)
             bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
