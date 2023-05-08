@@ -425,6 +425,7 @@ namespace TSTI_API.Controllers
                             beanD.cMaterialID = PRcMaterialID[i];
                             beanD.cMaterialName = PRcMaterialName;
                             beanD.cProductNumber = PRcProductNumber;
+                            beanD.cNewSerialID = "";
                             beanD.cInstallID = PRcInstallID;
                             beanD.Disabled = 0;
 
