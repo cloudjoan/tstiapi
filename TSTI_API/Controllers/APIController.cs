@@ -1931,7 +1931,7 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑法人客戶資料 ↑↑↑↑↑-----  
 
-        #region -----↓↓↓↓↓法人客戶聯絡人資料 ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓查詢法人客戶聯絡人資料 ↓↓↓↓↓-----
 
         #region 查詢法人客戶聯絡人資料接口
         [HttpPost]
@@ -2077,7 +2077,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑法人客戶聯絡人資料建立 ↑↑↑↑↑-----  
+        #endregion -----↑↑↑↑↑查詢法人客戶聯絡人資料 ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓法人客戶聯絡人資料建立/修改 ↓↓↓↓↓-----
 
@@ -2433,7 +2433,7 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑個人客戶資料 ↑↑↑↑↑-----  
 
-        #region -----↓↓↓↓↓個人客戶聯絡人資料 ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓查詢個人客戶聯絡人資料 ↓↓↓↓↓-----
 
         #region 查詢個人客戶聯絡人資料接口
         [HttpPost]
@@ -2579,7 +2579,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑個人客戶聯絡人資料建立 ↑↑↑↑↑-----  
+        #endregion -----↑↑↑↑↑查詢個人客戶聯絡人資料 ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓個人客戶聯絡人資料建立/修改 ↓↓↓↓↓-----
 
@@ -2800,6 +2800,110 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑個人客戶聯絡人資料/修改 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓客戶報修進度查詢 ↓↓↓↓↓-----
+
+        #region 客戶報修進度查詢接口
+        [HttpPost]
+        public ActionResult API_SRPROGRESSByCUSTOMER_GET(PROGRESS_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //   "IV_CUSTOMERID": "D97176270",
+            //   "IV_CONTACTNAME": "張豐穎",
+            //   "IV_STATUS": "ALL"            
+            //}
+            #endregion
+
+            PROGRESS_OUTPUT ListOUT = new PROGRESS_OUTPUT();
+
+            ListOUT = PROGRESS_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得客戶報修進度資料
+        private PROGRESS_OUTPUT PROGRESS_GET(PROGRESS_INPUT beanIN)
+        {
+            PROGRESS_OUTPUT OUTBean = new PROGRESS_OUTPUT();
+
+            try
+            {
+                string IV_CUSTOMERID = string.IsNullOrEmpty(beanIN.IV_CUSTOMERID) ? "" : beanIN.IV_CUSTOMERID.Trim();
+                string IV_CONTACTNAME = string.IsNullOrEmpty(beanIN.IV_CONTACTNAME) ? "" : beanIN.IV_CONTACTNAME.Trim();
+                string IV_STATUS = string.IsNullOrEmpty(beanIN.IV_STATUS) ? "" : beanIN.IV_STATUS.Trim();
+                
+                if (IV_CUSTOMERID == "")
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "客戶代號不得為空！";
+                }
+                else if (IV_STATUS == "")
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "狀態不得為空！";
+                }
+                else
+                {
+                    var tList = CMF.findPROGRESSByCustomer(IV_CUSTOMERID, IV_CONTACTNAME, IV_STATUS);
+
+                    if (tList.Count == 0)
+                    {
+                        OUTBean.EV_MSGT = "E";
+                        OUTBean.EV_MSG = "查無客戶報修進度資料，請重新查詢！";
+                    }
+                    else
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+                        OUTBean.PROGRESS_LIST = tList;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "PROGRESS_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 客戶報修進度查詢INPUT資訊
+        /// <summary>客戶報修進度查詢資料INPUT資訊</summary>
+        public struct PROGRESS_INPUT
+        {
+            /// <summary>法人客戶代號</summary>
+            public string IV_CUSTOMERID { get; set; }
+            /// <summary>報修人/聯絡人姓名</summary>
+            public string IV_CONTACTNAME { get; set; }
+            /// <summary>狀態(ALL.所有狀態、P.處理中、F.完修)</summary>
+            public string IV_STATUS { get; set; }            
+        }
+        #endregion
+
+        #region 客戶報修進度查詢OUTPUT資訊
+        /// <summary>客戶報修進度查詢OUTPUT資訊</summary>
+        public struct PROGRESS_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>報修進度清單</summary>
+            public List<PROGRESS_LIST> PROGRESS_LIST { get; set; }
+        }        
+        #endregion
+
+        #endregion -----↑↑↑↑↑客戶報修進度查詢 ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務案件資訊(List)、服務案件客戶聯絡人資訊(List)) ↓↓↓↓↓-----
 
@@ -9087,6 +9191,24 @@ namespace TSTI_API.Controllers
         public string NOTES;
         /// <summary>下包文件編號</summary>
         public string SUB_CONTRACTID;
+    }
+    #endregion
+
+    #region 客戶報修進度清單
+    public struct PROGRESS_LIST
+    {
+        /// <summary>報修單號</summary>
+        public string SRID { get; set; }
+        /// <summary>客戶名稱</summary>
+        public string CUSTOMERNAME { get; set; }
+        /// <summary>報修時間</summary>
+        public string SRDATE { get; set; }
+        /// <summary>機器明細</summary>
+        public string PRODUCT { get; set; }
+        /// <summary>問題描述</summary>
+        public string DESC { get; set; }
+        /// <summary>狀態</summary>
+        public string STATUS { get; set; }
     }
     #endregion
 

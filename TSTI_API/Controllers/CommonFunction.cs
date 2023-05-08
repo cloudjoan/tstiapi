@@ -558,6 +558,117 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得客戶報修進度相關資訊
+        /// <summary>
+        /// 取得客戶報修進度相關資訊
+        /// </summary>
+        /// <param name="IV_CUSTOMERID">法人客戶代號</param>
+        /// <param name="IV_CONTACTNAME">報修人/聯絡人姓名</param>
+        /// <param name="IV_STATUS">狀態(ALL.所有狀態、P.處理中、F.完修)</param>
+        /// <returns></returns>
+        public List<PROGRESS_LIST> findPROGRESSByCustomer(string IV_CUSTOMERID, string IV_CONTACTNAME, string IV_STATUS)
+        {
+            List<PROGRESS_LIST> tList = new List<PROGRESS_LIST>();
+
+            StringBuilder tSQL = new StringBuilder();
+            string ttWhere = string.Empty;            
+
+            #region 客戶代號
+            if (!string.IsNullOrEmpty(IV_CUSTOMERID))
+            {
+                ttWhere += "AND M.cCustomerID = '" + IV_CUSTOMERID + "' " + Environment.NewLine;
+            }
+            #endregion
+
+            #region 報修人/聯絡人姓名
+            if (!string.IsNullOrEmpty(IV_CONTACTNAME))
+            {
+                ttWhere += "AND (M.cRepairName like N'%" + IV_CONTACTNAME + "%' or  C.cContactName like N'%" + IV_CONTACTNAME + "%') " + Environment.NewLine;                
+            }
+            #endregion
+
+            #region 狀態
+            if (!string.IsNullOrEmpty(IV_STATUS))
+            {
+                if (IV_STATUS == "ALL")
+                {
+                    ttWhere += "AND M.cStatus NOT IN ('E0014','E0015') " + Environment.NewLine; //非駁回、非取消
+                }
+                else if (IV_STATUS == "P")
+                {
+                    ttWhere += "AND M.cStatus NOT IN ('E0014','E0015','E0006') " + Environment.NewLine; //非駁回、非取消、非完修
+                }
+                else
+                {
+                    ttWhere += "AND M.cStatus = 'E0006' " + Environment.NewLine; //完修
+                }
+            }
+            #endregion
+
+            #region SQL語法
+            tSQL.AppendLine(" Select M.cSRID,M.cCustomerName,M.cDesc,M.CreatedDate,M.cStatus,");
+            tSQL.AppendLine("        (Select top 1 sp.cSerialID + '＃＃' + sp.cMaterialName + '＃＃' + sp.cProductNumber");            
+            tSQL.AppendLine("         From TB_ONE_SRDetail_Product sp where M.cSRID = sp.cSRID AND sp.disabled = 0");
+            tSQL.AppendLine("        ) as Products");
+            tSQL.AppendLine(" From TB_ONE_SRMain M");
+            tSQL.AppendLine(" left join TB_ONE_SRDetail_Contact C on M.cSRID = C.cSRID and C.Disabled= 0 ");
+            tSQL.AppendLine(" Where 1=1 AND substring(M.cSRID,1,2) = '61' " + ttWhere);            
+            #endregion
+
+            DataTable dt = getDataTableByDb(tSQL.ToString(), "dbOne");
+            DataTable dtProgress = DistinctTable(dt);
+
+            foreach(DataRow dr in dtProgress.Rows)
+            {
+                PROGRESS_LIST bean = new PROGRESS_LIST();
+
+                bean.SRID = dr["cSRID"].ToString();
+                bean.CUSTOMERNAME = dr["cCustomerName"].ToString();                
+                bean.SRDATE = Convert.ToDateTime(dr["CreatedDate"].ToString()).ToString("yyyy-MM-dd");                
+                bean.PRODUCT = dr["Products"].ToString().Replace("＃＃", "_").TrimEnd('_');
+                bean.DESC = dr["cDesc"].ToString();
+                bean.STATUS = dr["cStatus"].ToString() == "E0006" ? "完修" : "處理中";
+
+                tList.Add(bean);
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 客戶報修進度查詢Distinct SRID
+        /// <summary>
+        /// 客戶報修進度查詢Distinct SRID
+        /// </summary>
+        /// <param name="dtSource">傳入的DataTable</param>
+        /// <returns></returns>
+        public DataTable DistinctTable(DataTable dtSource)
+        {
+            DataTable dt = dtSource.Clone();
+            DataTable dtDistinct = dtSource.DefaultView.ToTable(true, new string[] { "cSRID" }); //取得distinct SRID
+
+            int count = dtDistinct.Rows.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+                string tFiler = "cSRID = '" + dtDistinct.Rows[i][0].ToString() + "'";
+
+                DataRow[] drs = dtSource.Select(tFiler);
+
+                foreach (DataRow dr in drs)
+                {
+                    #region 只要塞入第一筆DataTable
+                    dt.Rows.Add(dr.ItemArray);
+                    #endregion
+
+                    break;
+                }
+            }
+
+            return dt;
+        }
+        #endregion
+
         #region 取得員工資料
         /// <summary>
         /// 取得員工資料
