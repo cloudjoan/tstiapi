@@ -158,6 +158,7 @@ namespace TSTI_API.Controllers
             //     "IV_REPAIRMOB": "0909000000",
             //     "IV_REPAIRADDR": "台北市中山區松江路121號13樓",
             //     "IV_REPAIREMAIL": "elvis.chang@etatung.com",            
+            //     "IV_ASSIGN": "L2",
             //     "IV_EMPNO": "10001567",
             //     "IV_SQEMPID": "ZC103",
             //     "IV_SERIAL": "SGH33223R6",
@@ -231,7 +232,8 @@ namespace TSTI_API.Controllers
             string IV_REPAIRTEL = string.IsNullOrEmpty(bean.IV_REPAIRTEL) ? "" : bean.IV_REPAIRTEL.Trim();
             string IV_REPAIRMOB = string.IsNullOrEmpty(bean.IV_REPAIRMOB) ? "" : bean.IV_REPAIRMOB.Trim();
             string IV_REPAIRADDR = string.IsNullOrEmpty(bean.IV_REPAIRADDR) ? "" : bean.IV_REPAIRADDR.Trim();
-            string IV_REPAIREMAIL = string.IsNullOrEmpty(bean.IV_REPAIREMAIL) ? "" : bean.IV_REPAIREMAIL.Trim();            
+            string IV_REPAIREMAIL = string.IsNullOrEmpty(bean.IV_REPAIREMAIL) ? "" : bean.IV_REPAIREMAIL.Trim();
+            string IV_ASSIGN = string.IsNullOrEmpty(bean.IV_ASSIGN) ? "" : bean.IV_ASSIGN.Trim();
             string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
             string IV_SQEMPID = string.IsNullOrEmpty(bean.IV_SQEMPID) ? "" : bean.IV_SQEMPID.Trim();
             string IV_SERIAL = string.IsNullOrEmpty(bean.IV_SERIAL) ? "" : bean.IV_SERIAL.Trim();
@@ -275,6 +277,15 @@ namespace TSTI_API.Controllers
 
                 if (tType == "ADD") 
                 {
+                    if (IV_ASSIGN == "L2")
+                    {
+                        IV_ASSIGN = "E0002";
+                    }
+                    else
+                    {
+                        IV_ASSIGN = "E0005";
+                    }
+
                     #region 新增主檔
                     TB_ONE_SRMain beanM = new TB_ONE_SRMain();
 
@@ -282,7 +293,7 @@ namespace TSTI_API.Controllers
 
                     //主表資料
                     beanM.cSRID = pSRID;
-                    beanM.cStatus = IV_EMPNO != "" ? "E0005" : "E0001";    //新增時若有主要工程師，則預設為L3.處理中，反之則預設為新建
+                    beanM.cStatus = IV_EMPNO != "" ? IV_ASSIGN : "E0001";    //新增時若有主要工程師，則預設為(L2或L3.處理中)，反之則預設為新建
                     beanM.cCustomerName = CCustomerName;
                     beanM.cCustomerID = IV_CUSTOMER;                    
                     beanM.cDesc = IV_DESC;
@@ -714,7 +725,9 @@ namespace TSTI_API.Controllers
             /// <summary>報修人地址</summary>
             public string IV_REPAIRADDR { get; set; }
             /// <summary>報修人Email</summary>
-            public string IV_REPAIREMAIL { get; set; }            
+            public string IV_REPAIREMAIL { get; set; }
+            /// <summary>指派L2/L3工程師</summary>
+            public string IV_ASSIGN { get; set; }
             /// <summary>主要工程師員工編號</summary>
             public string IV_EMPNO { get; set; }
             /// <summary>SQ人員ID</summary>
