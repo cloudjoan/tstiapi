@@ -8574,6 +8574,191 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑更新進出貨的資料 ↑↑↑↑↑-----
 
+        #region -----↓↓↓↓↓查詢現行CRM客戶聯絡人 ↓↓↓↓↓-----
+
+        #region 查詢現行CRM客戶聯絡人資料        
+        [HttpPost]
+        public ActionResult API_CRMCONTACTINFO_GET(CRMCONTACTINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_CUSTOMEID": "D16151427"
+            //}
+            #endregion
+
+            CRMCONTACTINFO_OUTPUT ListOUT = new CRMCONTACTINFO_OUTPUT();
+
+            ListOUT = CRMCONTACTINFO_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得現行CRM客戶聯絡人的資料
+        private CRMCONTACTINFO_OUTPUT CRMCONTACTINFO_GET(CRMCONTACTINFO_INPUT beanIN)
+        {
+            CRMCONTACTINFO_OUTPUT OUTBean = new CRMCONTACTINFO_OUTPUT();
+
+            List<string> tTempList = new List<string>();
+            string tOBJ_NOTES = string.Empty;
+            string tTempValue = string.Empty;
+
+            try
+            {
+                initSapConnector();
+
+                RfcFunctionMetadata ZFM_CONTRACT_GETALL_INFO = sapConnector.Repository.GetFunctionMetadata("ZFM_TICC_CONTACT_GET");
+                IRfcFunction function = ZFM_CONTRACT_GETALL_INFO.CreateFunction();
+
+                function.SetValue("IV_BPNUMBER", beanIN.IV_CUSTOMEID.Trim());
+                function.Invoke(sapConnector);
+
+                DataTable dtOBJ = CMF.SetRFCDataTable(function, "ET_CONTACT");
+
+                if (dtOBJ.Rows.Count == 0)
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無現行CRM客戶聯絡人資料，請重新查詢！";
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    #region 取得現行CRM客戶聯絡人資料List
+                    List<CRMCONTACTINFO_LIST> tObjList = new List<CRMCONTACTINFO_LIST>();
+
+                    foreach (DataRow dr in dtOBJ.Rows)
+                    {
+                        if (dr["BPNUMBER"].ToString().Trim() != "" && 
+                            (dr["LASTNAME"].ToString().Trim() != "" && !dr["LASTNAME"].ToString().Trim().Contains("停用")) &&
+                            dr["STREET"].ToString().Trim() != "" && dr["CITY"].ToString().Trim() != "" &&
+                            (dr["TEL"].ToString().Trim() != "" || dr["MOB"].ToString().Trim() != ""))
+                        {
+                            tTempValue = dr["BPNUMBER"].ToString().Trim() + "|" + dr["LASTNAME"].ToString().Trim();
+
+                            if (!tTempList.Contains(tTempValue)) //判斷客戶ID、公司別、聯絡人姓名、聯絡門市不重覆才要顯示
+                            {
+                                tTempList.Add(tTempValue);
+
+                                CRMCONTACTINFO_LIST beanCust = new CRMCONTACTINFO_LIST();
+
+                                beanCust.BPNUMBER = dr["BPNUMBER"].ToString().Trim();  //客戶代號
+                                beanCust.CUSTOMER = dr["CUSTOMER"].ToString().Trim();  //客戶名稱
+                                beanCust.LASTNAME = dr["LASTNAME"].ToString().Trim();  //姓名
+                                beanCust.TEL = dr["TEL"].ToString().Trim();           //電話
+                                beanCust.MOB = dr["MOB"].ToString().Trim();           //手機
+                                beanCust.EMAIL = dr["EMAIL"].ToString().Trim();       //Email
+                                beanCust.STREET = dr["STREET"].ToString().Trim();     //街道地址
+                                beanCust.CITY = dr["CITY"].ToString().Trim();         //城市                        
+
+                                tObjList.Add(beanCust);
+                            }
+                        }
+                    }
+
+                    OUTBean.CRMCONTACTINFO_LIST = tObjList;
+                    #endregion
+
+                    #region 寫入客戶聯絡人暫存檔
+                    //tObjList = tObjList.OrderBy(x => x.BPNUMBER).ThenBy(x => x.LASTNAME).ThenBy(x => x.EMAIL).ToList();
+
+                    //foreach (var bean in tObjList)
+                    //{
+                    //    CUSTOMER_ContactTEMP ConTemp = new CUSTOMER_ContactTEMP();
+
+                    //    ConTemp.ContactID = Guid.NewGuid();
+                    //    ConTemp.KNA1_KUNNR = bean.BPNUMBER;
+                    //    ConTemp.KNA1_NAME1 = bean.CUSTOMER;
+                    //    ConTemp.KNB1_BUKRS = "T012";
+                    //    ConTemp.ContactName = bean.LASTNAME;
+                    //    ConTemp.ContactCity = bean.CITY;
+                    //    ConTemp.ContactAddress = bean.STREET;
+                    //    ConTemp.ContactEmail = bean.EMAIL;
+                    //    ConTemp.ContactPhone = bean.TEL;
+                    //    ConTemp.ContactMobile = bean.MOB;
+
+                    //    dbProxy.CUSTOMER_ContactTEMP.Add(ConTemp);
+                    //}
+
+                    //int result = dbProxy.SaveChanges();
+
+                    //if (result <= 0 )
+                    //{
+                    //    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新增CUSTOMER_ContactTEMP失敗！" + Environment.NewLine;
+                    //    CMF.writeToLog("", "CRMCONTACTINFO_GET_API", pMsg, "SYS");
+
+                    //    OUTBean.EV_MSGT = "E";
+                    //    OUTBean.EV_MSG = pMsg;
+                    //}
+                    //else
+                    //{
+                    //    OUTBean.EV_MSGT = "Y";
+                    //    OUTBean.EV_MSG = "";
+                    //}
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "CRMCONTACTINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢現行CRM客戶聯絡人資料INPUT資訊
+        /// <summary>查詢現行CRM客戶聯絡人INPUT資訊</summary>
+        public struct CRMCONTACTINFO_INPUT
+        {
+            /// <summary>客戶代號</summary>
+            public string IV_CUSTOMEID { get; set; }
+        }
+        #endregion
+
+        #region 查詢現行CRM客戶聯絡人資料OUTPUT資訊
+        /// <summary>查詢現行CRM客戶聯絡人資料OUTPUT資訊</summary>
+        public struct CRMCONTACTINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>現行CRM客戶聯絡人資料清單</summary>
+            public List<CRMCONTACTINFO_LIST> CRMCONTACTINFO_LIST { get; set; }
+        }
+
+        public struct CRMCONTACTINFO_LIST
+        {            
+            /// <summary>法人客戶編號</summary>
+            public string BPNUMBER;
+            /// <summary>法人客戶名稱</summary>
+            public string CUSTOMER;
+            /// <summary>姓名</summary>
+            public string LASTNAME;
+            /// <summary>電話</summary>
+            public string TEL;
+            /// <summary>手機</summary>
+            public string MOB;
+            /// <summary>Email</summary>
+            public string EMAIL;
+            /// <summary>街道地址</summary>
+            public string STREET;
+            /// <summary>城市</summary>
+            public string CITY;            
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑查詢現行CRM客戶聯絡人 ↑↑↑↑↑-----
+
         #endregion -----↑↑↑↑↑CALL RFC接口 ↑↑↑↑↑-----        
     }
 
