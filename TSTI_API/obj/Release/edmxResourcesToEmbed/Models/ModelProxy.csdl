@@ -15,7 +15,6 @@
     <EntitySet Name="VIEW_MATERIAL_ByComp" EntityType="ERP_PROXY_DBModel.VIEW_MATERIAL_ByComp" />
     <EntitySet Name="MATERIAL" EntityType="ERP_PROXY_DBModel.MATERIAL" />
     <EntitySet Name="F4501" EntityType="ERP_PROXY_DBModel.F4501" />
-    <EntitySet Name="CUSTOMER_Contact" EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" />
     <EntitySet Name="TB_MAIL_CONTENT" EntityType="ERP_PROXY_DBModel.TB_MAIL_CONTENT" />
     <EntitySet Name="PERSONAL_Contact" EntityType="ERP_PROXY_DBModel.PERSONAL_Contact" />
     <EntitySet Name="STOCKALL" EntityType="ERP_PROXY_DBModel.STOCKALL" />
@@ -24,6 +23,7 @@
     <EntitySet Name="STOCKOUT" EntityType="ERP_PROXY_DBModel.STOCKOUT" />
     <EntitySet Name="STOCKWTY" EntityType="ERP_PROXY_DBModel.STOCKWTY" />
     <EntitySet Name="F0005" EntityType="ERP_PROXY_DBModel.F0005" />
+    <EntitySet Name="CUSTOMER_Contact" EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" />
   </EntityContainer>
   <EntityType Name="VIEW_MATERIAL_ByComp">
     <Key>
@@ -142,33 +142,6 @@
     <Property Name="CrmOppNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="BILLABLE_TIME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="ERP_ASSID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="CUSTOMER_Contact">
-    <Key>
-      <PropertyRef Name="ContactID" />
-    </Key>
-    <Property Name="ContactID" Type="Guid" Nullable="false" />
-    <Property Name="KNA1_KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="KNA1_NAME1" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
-    <Property Name="KNB1_BUKRS" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
-    <Property Name="ContactType" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-    <Property Name="ContactName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="ContactCity" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="ContactAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="ContactEmail" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="ContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ContactMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ContactDepartment" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="ContactPosition" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="BpmNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="ModifiedUserID" Type="Guid" />
-    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="Disabled" Type="Int32" />
-    <Property Name="IsMain" Type="Byte" />
-    <Property Name="MainModifiedUserID" Type="Guid" />
-    <Property Name="MainModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="MainModifiedDate" Type="DateTime" Precision="3" />
   </EntityType>
   <EntityType Name="TB_MAIL_CONTENT">
     <Key>
@@ -353,5 +326,33 @@
     <Property Name="AP_DATE" Type="DateTime" Precision="0" />
     <Property Name="UP_USER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="UP_DATE" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="CUSTOMER_Contact">
+    <Key>
+      <PropertyRef Name="ContactID" />
+    </Key>
+    <Property Name="ContactID" Type="Guid" Nullable="false" />
+    <Property Name="KNA1_KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="KNA1_NAME1" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+    <Property Name="KNB1_BUKRS" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="ContactType" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="ContactName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="ContactCity" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="ContactAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ContactEmail" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ContactMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ContactStore" Type="Guid" />
+    <Property Name="ContactDepartment" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ContactPosition" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="BpmNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ModifiedUserID" Type="Guid" />
+    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="Disabled" Type="Int32" />
+    <Property Name="IsMain" Type="Byte" />
+    <Property Name="MainModifiedUserID" Type="Guid" />
+    <Property Name="MainModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MainModifiedDate" Type="DateTime" Precision="3" />
   </EntityType>
 </Schema>

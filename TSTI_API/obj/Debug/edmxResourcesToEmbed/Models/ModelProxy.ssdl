@@ -15,6 +15,7 @@
     <Property Name="ContactEmail" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="ContactPhone" Type="nvarchar" MaxLength="50" />
     <Property Name="ContactMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="ContactStore" Type="uniqueidentifier" />
     <Property Name="ContactDepartment" Type="nvarchar" MaxLength="100" />
     <Property Name="ContactPosition" Type="nvarchar" MaxLength="20" />
     <Property Name="BpmNo" Type="varchar" MaxLength="50" Nullable="false" />

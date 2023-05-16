@@ -2015,6 +2015,8 @@ namespace TSTI_API.Controllers
                             beanCust.CONTACTTEL = bean.Phone;
                             beanCust.CONTACTMOBILE = bean.Mobile;
                             beanCust.CONTACTEMAIL = bean.Email;
+                            beanCust.CONTACTSTORE = bean.Store;
+                            beanCust.CONTACTSTORENAME = bean.StoreName;
 
                             tCustList.Add(beanCust);
                         }
@@ -2086,7 +2088,11 @@ namespace TSTI_API.Controllers
             /// <summary>聯絡人手機</summary>
             public string CONTACTMOBILE { get; set; }
             /// <summary>聯絡人Email</summary>
-            public string CONTACTEMAIL { get; set; }           
+            public string CONTACTEMAIL { get; set; }
+            /// <summary>聯絡人門市代號</summary>
+            public string CONTACTSTORE { get; set; }
+            /// <summary>聯絡人門市名稱</summary>
+            public string CONTACTSTORENAME { get; set; }
         }
         #endregion
 
@@ -2107,7 +2113,8 @@ namespace TSTI_API.Controllers
             //    "IV_CONTACTADDRESS": "南屯區五權西路二段236號6樓之1",
             //    "IV_CONTACTTEL": "04-24713300",
             //    "IV_CONTACTMOBILE": "0972",
-            //    "IV_CONTACTEMAIL": "elvis.chang@etatung.com"
+            //    "IV_CONTACTEMAIL": "elvis.chang@etatung.com",
+            //    "IV_CONTACTSTORE": ""            
             //}
             #endregion            
 
@@ -2131,6 +2138,7 @@ namespace TSTI_API.Controllers
             //    "IV_CONTACTTEL": "04-24713300",
             //    "IV_CONTACTMOBILE": "0972",
             //    "IV_CONTACTEMAIL": "elvis.chang@etatung.com",
+            //    "IV_CONTACTSTORE": "",            
             //    "IV_ISDELETE": "N"
             //}
             #endregion            
@@ -2164,6 +2172,7 @@ namespace TSTI_API.Controllers
             string IV_CONTACTTEL = string.IsNullOrEmpty(beanIN.IV_CONTACTTEL) ? "" : beanIN.IV_CONTACTTEL.Trim();
             string IV_CONTACTMOBILE = string.IsNullOrEmpty(beanIN.IV_CONTACTMOBILE) ? "" : beanIN.IV_CONTACTMOBILE.Trim();
             string IV_CONTACTEMAIL = string.IsNullOrEmpty(beanIN.IV_CONTACTEMAIL) ? "" : beanIN.IV_CONTACTEMAIL.Trim();
+            string IV_CONTACTSTORE = string.IsNullOrEmpty(beanIN.IV_CONTACTSTORE) ? "" : beanIN.IV_CONTACTSTORE.Trim();            
             string IV_ISDELETE = string.IsNullOrEmpty(beanIN.IV_ISDELETE) ? "" : beanIN.IV_ISDELETE.Trim();
 
             EmployeeBean EmpBean = new EmployeeBean();
@@ -2181,8 +2190,11 @@ namespace TSTI_API.Controllers
 
             try
             {
-                var bean = dbProxy.CUSTOMER_Contact.FirstOrDefault(x => (x.Disabled == null || x.Disabled != 1) && x.BpmNo == tBpmNo && 
-                                                                     x.KNB1_BUKRS == cBUKRS && x.KNA1_KUNNR == beanIN.IV_CUSTOMEID.Trim() && x.ContactName == beanIN.IV_CONTACTNAME.Trim());
+                var bean = dbProxy.CUSTOMER_Contact.FirstOrDefault(x => (x.Disabled == null || x.Disabled != 1) && 
+                                                                     x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&
+                                                                    (x.ContactPhone != "" || (x.ContactMobile != "" && x.ContactMobile != null)) &&
+                                                                    x.BpmNo == tBpmNo && x.KNB1_BUKRS == cBUKRS && 
+                                                                    x.KNA1_KUNNR == beanIN.IV_CUSTOMEID.Trim() && x.ContactName == beanIN.IV_CONTACTNAME.Trim());
 
                 if (bean != null) //修改
                 {
@@ -2191,6 +2203,11 @@ namespace TSTI_API.Controllers
                     bean.ContactPhone = IV_CONTACTTEL;
                     bean.ContactMobile = IV_CONTACTMOBILE;
                     bean.ContactEmail = IV_CONTACTEMAIL;
+
+                    if (IV_CONTACTSTORE != "")
+                    {
+                        bean.ContactStore = Guid.Parse(IV_CONTACTSTORE);
+                    }
 
                     if (IV_ISDELETE == "Y")
                     {
@@ -2215,6 +2232,12 @@ namespace TSTI_API.Controllers
                     bean1.ContactPhone = IV_CONTACTTEL;
                     bean1.ContactMobile = IV_CONTACTMOBILE;
                     bean1.ContactEmail = IV_CONTACTEMAIL;
+
+                    if (IV_CONTACTSTORE != "")
+                    {
+                        bean.ContactStore = Guid.Parse(IV_CONTACTSTORE);
+                    }
+
                     bean1.BpmNo = tBpmNo;
                     bean1.Disabled = 0;
 
@@ -2283,6 +2306,10 @@ namespace TSTI_API.Controllers
             public string IV_CONTACTMOBILE { get; set; }
             /// <summary>聯絡人Email</summary>
             public string IV_CONTACTEMAIL { get; set; }
+            /// <summary>聯絡人門市代號</summary>
+            public string IV_CONTACTSTORE { get; set; }
+            /// <summary>聯絡人門市名稱</summary>
+            public string IV_CONTACTSTORENAME { get; set; }
             /// <summary>是否要刪除</summary>
             public string IV_ISDELETE { get; set; }            
         }
@@ -9110,6 +9137,10 @@ namespace TSTI_API.Controllers
         public string Phone { get; set; }
         /// <summary>聯絡人手機</summary>
         public string Mobile { get; set; }
+        /// <summary>聯絡人門市ID</summary>
+        public string Store { get; set; }
+        /// <summary>聯絡人門市名稱</summary>
+        public string StoreName { get; set; }
         /// <summary>來源表單</summary>
         public string BPMNo { get; set; }
     }

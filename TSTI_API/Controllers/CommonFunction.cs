@@ -402,7 +402,8 @@ namespace TSTI_API.Controllers
         {
             var qPjRec = dbProxy.CUSTOMER_Contact.OrderByDescending(x => x.ModifiedDate).
                                                Where(x => (x.Disabled == null || x.Disabled != 1) &&
-                                                          x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&                                                           
+                                                          x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&
+                                                          (x.ContactPhone != "" || (x.ContactMobile != "" && x.ContactMobile != null)) &&
                                                           (string.IsNullOrEmpty(CustomerID) ? true : (x.KNA1_KUNNR.Contains(CustomerID) || x.KNA1_NAME1.Contains(CustomerID))) &&
                                                           (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
                                                           (string.IsNullOrEmpty(CONTACTTEL) ? true : x.ContactPhone.Contains(CONTACTTEL)) &&
@@ -413,19 +414,22 @@ namespace TSTI_API.Controllers
 
             string tTempValue = string.Empty;
             string ContactMobile = string.Empty;
+            string ContactStore = string.Empty;
+            string ContactStoreName = string.Empty;
 
             List<PCustomerContact> liPCContact = new List<PCustomerContact>();
             if (qPjRec != null && qPjRec.Count() > 0)
             {
                 foreach (var prBean in qPjRec)
                 {
-                    tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + prBean.KNB1_BUKRS.Trim().Replace(" ", "") + "|" + prBean.ContactEmail.Trim().Replace(" ", "");
+                    tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + prBean.KNB1_BUKRS.Trim().Replace(" ", "") + "|" + prBean.ContactName.Trim().Replace(" ", "") + "|" + prBean.ContactStore.ToString();
 
-                    if (!tTempList.Contains(tTempValue)) //判斷客戶ID、公司別、聯絡人名姓名不重覆才要顯示
+                    if (!tTempList.Contains(tTempValue)) //判斷客戶ID、公司別、聯絡人姓名、聯絡人門市不重覆才要顯示
                     {
                         tTempList.Add(tTempValue);
 
                         ContactMobile = string.IsNullOrEmpty(prBean.ContactMobile) ? "" : prBean.ContactMobile.Trim().Replace(" ", "");
+                        ContactStore = string.IsNullOrEmpty(prBean.ContactStore.ToString()) ? "" : prBean.ContactStore.ToString();
 
                         PCustomerContact prDocBean = new PCustomerContact();
 
@@ -439,6 +443,8 @@ namespace TSTI_API.Controllers
                         prDocBean.Email = prBean.ContactEmail.Trim().Replace(" ", "");
                         prDocBean.Phone = prBean.ContactPhone.Trim().Replace(" ", "");
                         prDocBean.Mobile = ContactMobile;
+                        prDocBean.Store = ContactStore;
+                        prDocBean.StoreName = ContactStoreName;
                         prDocBean.BPMNo = prBean.BpmNo.Trim().Replace(" ", "");
 
                         liPCContact.Add(prDocBean);
@@ -4682,8 +4688,11 @@ namespace TSTI_API.Controllers
                 }
                 #endregion              
 
-                //呼叫寄送Mail
-                SendMailByAPI("SendSRMail_API", null, tMailTo, tMailCc, tMailBCc, tMailSubject, tMailBody, "", "");
+                if (tMailTo != "") //有收件者才要寄
+                {
+                    //呼叫寄送Mail
+                    SendMailByAPI("SendSRMail_API", null, tMailTo, tMailCc, tMailBCc, tMailSubject, tMailBody, "", "");
+                }
             }
             catch (Exception ex)
             {
@@ -4775,7 +4784,10 @@ namespace TSTI_API.Controllers
             }
             #endregion
 
-            SendReport(email, string.Join(";", ccs), srId, CUSTOMER, ENGINEER, NOTES, pdfPath, pdfFileName, mainEgnrName, tIsFormal); //發送服務報告書report給客戶
+            if (email != "") //有收件者才要寄
+            {
+                SendReport(email, string.Join(";", ccs), srId, CUSTOMER, ENGINEER, NOTES, pdfPath, pdfFileName, mainEgnrName, tIsFormal); //發送服務報告書report給客戶
+            }
             #endregion
         }
         #endregion
