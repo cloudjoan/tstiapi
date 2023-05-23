@@ -364,6 +364,18 @@
     <Compile Include="Models\TB_MVC_CUST.cs">
       <DependentUpon>ModelTest.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_ONE_ContractDetail_ENG.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_ContractDetail_OBJ.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_ContractDetail_SUB.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_ContractMain.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_ONE_DOCUMENT.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>

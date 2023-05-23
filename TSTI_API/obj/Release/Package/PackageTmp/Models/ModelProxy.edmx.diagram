@@ -18,6 +18,7 @@
         <EntityTypeShape EntityType="ERP_PROXY_DBModel.STOCKWTY" Width="2.25" PointX="0.75" PointY="4.25" IsExpanded="false" />
         <EntityTypeShape EntityType="ERP_PROXY_DBModel.F0005" Width="2.125" PointX="3.125" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" Width="2.25" PointX="5.5" PointY="1.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_PROXY_DBModel.CUSTOMER_ContactTEMP" Width="2.25" PointX="0.75" PointY="5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

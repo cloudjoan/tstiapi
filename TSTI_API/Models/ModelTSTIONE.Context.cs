@@ -40,8 +40,12 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_ONE_SRFixRecord> TB_ONE_SRFixRecord { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_MaterialInfo> TB_ONE_SRDetail_MaterialInfo { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_PartsReplace> TB_ONE_SRDetail_PartsReplace { get; set; }
-        public virtual DbSet<TB_ONE_SRMain> TB_ONE_SRMain { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_SerialFeedback> TB_ONE_SRDetail_SerialFeedback { get; set; }
         public virtual DbSet<TB_ONE_SRSatisfy_Survey> TB_ONE_SRSatisfy_Survey { get; set; }
+        public virtual DbSet<TB_ONE_ContractDetail_ENG> TB_ONE_ContractDetail_ENG { get; set; }
+        public virtual DbSet<TB_ONE_ContractDetail_OBJ> TB_ONE_ContractDetail_OBJ { get; set; }
+        public virtual DbSet<TB_ONE_ContractDetail_SUB> TB_ONE_ContractDetail_SUB { get; set; }
+        public virtual DbSet<TB_ONE_ContractMain> TB_ONE_ContractMain { get; set; }
+        public virtual DbSet<TB_ONE_SRMain> TB_ONE_SRMain { get; set; }
     }
 }

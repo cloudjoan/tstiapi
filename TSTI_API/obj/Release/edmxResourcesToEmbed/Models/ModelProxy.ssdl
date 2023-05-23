@@ -28,6 +28,21 @@
     <Property Name="MainModifiedUserName" Type="nvarchar" MaxLength="50" />
     <Property Name="MainModifiedDate" Type="datetime" />
   </EntityType>
+  <EntityType Name="CUSTOMER_ContactTEMP">
+    <Key>
+      <PropertyRef Name="ContactID" />
+    </Key>
+    <Property Name="ContactID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="KNA1_KUNNR" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="KNA1_NAME1" Type="nvarchar" MaxLength="500" />
+    <Property Name="KNB1_BUKRS" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="ContactName" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="ContactCity" Type="nvarchar" MaxLength="500" />
+    <Property Name="ContactAddress" Type="nvarchar" MaxLength="500" />
+    <Property Name="ContactEmail" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="ContactPhone" Type="nvarchar" MaxLength="500" />
+    <Property Name="ContactMobile" Type="nvarchar" MaxLength="500" />
+  </EntityType>
   <EntityType Name="F0005">
     <Key>
       <PropertyRef Name="MODT" />
@@ -348,6 +363,7 @@
   </EntityType>
   <EntityContainer Name="ERP_PROXY_DBModelStoreContainer">
     <EntitySet Name="CUSTOMER_Contact" EntityType="Self.CUSTOMER_Contact" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CUSTOMER_ContactTEMP" EntityType="Self.CUSTOMER_ContactTEMP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="F0005" EntityType="Self.F0005" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="F4501" EntityType="Self.F4501" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MATERIAL" EntityType="Self.MATERIAL" Schema="dbo" store:Type="Tables" />

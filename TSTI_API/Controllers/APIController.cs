@@ -3302,7 +3302,30 @@ namespace TSTI_API.Controllers
                 string cREPAIREMAIL = string.IsNullOrEmpty(MainBean.cRepairEmail) ? "" : MainBean.cRepairEmail;
                 string cSQEMP = string.IsNullOrEmpty(MainBean.cSQPersonID) ? "" : MainBean.cSQPersonID;
                 string cSALESNO = string.IsNullOrEmpty(MainBean.cSalesNo) ? "" : MainBean.cSalesNo;
-                string cSHIPMENTNO = string.IsNullOrEmpty(MainBean.cShipmentNo) ? "" : MainBean.cShipmentNo;
+                string cSHIPMENTNO = string.IsNullOrEmpty(MainBean.cShipmentNo) ? "" : MainBean.cShipmentNo;                
+
+                #region 客戶故障狀況分類
+                string cFaultGroup = string.IsNullOrEmpty(MainBean.cFaultGroup) ? "" : MainBean.cFaultGroup.TrimEnd(';');
+                string cFaultGroupNote1 = string.IsNullOrEmpty(MainBean.cFaultGroupNote1) ? "" : MainBean.cFaultGroupNote1;
+                string cFaultGroupNote2 = string.IsNullOrEmpty(MainBean.cFaultGroupNote2) ? "" : MainBean.cFaultGroupNote2;
+                string cFaultGroupNote3 = string.IsNullOrEmpty(MainBean.cFaultGroupNote3) ? "" : MainBean.cFaultGroupNote3;
+                string cFaultGroupNote4 = string.IsNullOrEmpty(MainBean.cFaultGroupNote4) ? "" : MainBean.cFaultGroupNote4;
+                string cFaultGroupNoteOther = string.IsNullOrEmpty(MainBean.cFaultGroupNoteOther) ? "" : MainBean.cFaultGroupNoteOther;
+                #endregion
+
+                #region 客戶故障狀況
+                string cFaultState = string.IsNullOrEmpty(MainBean.cFaultState) ? "" : MainBean.cFaultState.TrimEnd(';');
+                string cFaultStateNote1 = string.IsNullOrEmpty(MainBean.cFaultStateNote1) ? "" : MainBean.cFaultStateNote1;
+                string cFaultStateNote2 = string.IsNullOrEmpty(MainBean.cFaultStateNote2) ? "" : MainBean.cFaultStateNote2;
+                string cFaultStateNoteOther = string.IsNullOrEmpty(MainBean.cFaultStateNoteOther) ? "" : MainBean.cFaultStateNoteOther;
+                #endregion
+
+                #region 故障零件規格料號
+                string cFaultSpec = string.IsNullOrEmpty(MainBean.cFaultSpec) ? "" : MainBean.cFaultSpec.TrimEnd(';');
+                string cFaultSpecNote1 = string.IsNullOrEmpty(MainBean.cFaultSpecNote1) ? "" : MainBean.cFaultSpecNote1;
+                string cFaultSpecNote2 = string.IsNullOrEmpty(MainBean.cFaultSpecNote2) ? "" : MainBean.cFaultSpecNote2;
+                string cFaultSpecNoteOther = string.IsNullOrEmpty(MainBean.cFaultSpecNoteOther) ? "" : MainBean.cFaultSpecNoteOther;
+                #endregion                
 
                 string[] cArySLA = CMF.findSRSLACondition(MainBean.cSRID);
                 string cSLARESP = cArySLA[0];
@@ -3336,6 +3359,29 @@ namespace TSTI_API.Controllers
                 SROUT.ATTACHURL = cAttachURL;
                 SROUT.SLARESP = cSLARESP;
                 SROUT.SLASRV = cSLASRV;
+
+                #region 客戶故障狀況分類
+                SROUT.FAULTGROUP = cFaultGroup;
+                SROUT.FAULTGROUPNOTE1 = cFaultGroupNote1;
+                SROUT.FAULTGROUPNOTE2 = cFaultGroupNote2;
+                SROUT.FAULTGROUPNOTE3 = cFaultGroupNote3;
+                SROUT.FAULTGROUPNOTE4 = cFaultGroupNote4;
+                SROUT.FAULTGROUPNOTEOTHER = cFaultGroupNoteOther;
+                #endregion
+
+                #region 客戶故障狀況
+                SROUT.FAULTSTATE = cFaultState;
+                SROUT.FAULTSTATENOTE1 = cFaultStateNote1;
+                SROUT.FAULTSTATENOTE2 = cFaultStateNote2;
+                SROUT.FAULTSTATENOTEOTHER = cFaultStateNoteOther;
+                #endregion
+
+                #region 故障零件規格料號
+                SROUT.FAULTSPEC = cFaultSpec;
+                SROUT.FAULTSPECNOTE1 = cFaultSpecNote1;
+                SROUT.FAULTSPECNOTE2 = cFaultSpecNote2;
+                SROUT.FAULTSPECNOTEOTHER = cFaultSpecNoteOther;
+                #endregion             
 
                 #region (63.裝機用)
                 SROUT.SECRETARY = cSECRETARY;
@@ -3478,6 +3524,40 @@ namespace TSTI_API.Controllers
             public string SALESNO { get; set; }
             /// <summary>出貨單號(63.裝機用)</summary>
             public string SHIPMENTNO { get; set; }
+
+            #region 客戶故障狀況分類資訊
+            /// <summary>客戶故障狀況分類(Z01.硬體、Z02.系統、Z03.服務、Z04.網路、Z99.其他)</summary>
+            public string FAULTGROUP { get; set; }
+            /// <summary>客戶故障狀況分類說明-硬體</summary>
+            public string FAULTGROUPNOTE1 { get; set; }
+            /// <summary>客戶故障狀況分類說明-系統</summary>
+            public string FAULTGROUPNOTE2 { get; set; }
+            /// <summary>客戶故障狀況分類說明-服務</summary>
+            public string FAULTGROUPNOTE3 { get; set; }
+            /// <summary>客戶故障狀況分類說明-網路</summary>
+            public string FAULTGROUPNOTE4 { get; set; }
+            /// <summary>客戶故障狀況分類說明-其他</summary>
+            public string FAULTGROUPNOTEOTHER { get; set; }
+
+            /// <summary>客戶故障狀況(Z01.面板燈號、Z02.管理介面(iLO、IMM、iDRAC)、Z99.其他)</summary>
+            public string FAULTSTATE { get; set; }
+            /// <summary>客戶故障狀況說明-面板燈號</summary>
+            public string FAULTSTATENOTE1 { get; set; }
+            /// <summary>客戶故障狀況說明-管理介面(iLO、IMM、iDRAC)</summary>
+            public string FAULTSTATENOTE2 { get; set; }            
+            /// <summary>客戶故障狀況說明-其他</summary>
+            public string FAULTSTATENOTEOTHER { get; set; }
+
+            /// <summary>故障零件規格料號(Z01.零件規格、Z02.零件料號、Z99.其他)</summary>
+            public string FAULTSPEC { get; set; }
+            /// <summary>故障零件規格料號說明-零件規格</summary>
+            public string FAULTSPECNOTE1 { get; set; }
+            /// <summary>故障零件規格料號說明-零件料號</summary>
+            public string FAULTSPECNOTE2 { get; set; }
+            /// <summary>故障零件規格料號說明-其他</summary>
+            public string FAULTSPECNOTEOTHER { get; set; }
+            #endregion
+
             /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
             public string EV_MSGT { get; set; }
             /// <summary>消息內容</summary>

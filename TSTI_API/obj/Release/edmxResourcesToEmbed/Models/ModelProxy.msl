@@ -343,5 +343,21 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="CUSTOMER_ContactTEMP">
+      <EntityTypeMapping TypeName="ERP_PROXY_DBModel.CUSTOMER_ContactTEMP">
+        <MappingFragment StoreEntitySet="CUSTOMER_ContactTEMP">
+          <ScalarProperty Name="ContactMobile" ColumnName="ContactMobile" />
+          <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+          <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
+          <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
+          <ScalarProperty Name="ContactCity" ColumnName="ContactCity" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="KNB1_BUKRS" ColumnName="KNB1_BUKRS" />
+          <ScalarProperty Name="KNA1_NAME1" ColumnName="KNA1_NAME1" />
+          <ScalarProperty Name="KNA1_KUNNR" ColumnName="KNA1_KUNNR" />
+          <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

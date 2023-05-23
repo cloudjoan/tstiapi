@@ -49,6 +49,20 @@ namespace TSTI_API.Models
         public string cSecretaryName { get; set; }
         public string cSalesNo { get; set; }
         public string cShipmentNo { get; set; }
+        public string cFaultGroup { get; set; }
+        public string cFaultGroupNote1 { get; set; }
+        public string cFaultGroupNote2 { get; set; }
+        public string cFaultGroupNote3 { get; set; }
+        public string cFaultGroupNote4 { get; set; }
+        public string cFaultGroupNoteOther { get; set; }
+        public string cFaultState { get; set; }
+        public string cFaultStateNote1 { get; set; }
+        public string cFaultStateNote2 { get; set; }
+        public string cFaultStateNoteOther { get; set; }
+        public string cFaultSpec { get; set; }
+        public string cFaultSpecNote1 { get; set; }
+        public string cFaultSpecNote2 { get; set; }
+        public string cFaultSpecNoteOther { get; set; }
         public Nullable<System.Guid> cSystemGUID { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUserName { get; set; }

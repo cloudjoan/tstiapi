@@ -1,5 +1,96 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="TB_ONE_ContractDetail_ENG">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cContractID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="cEngineerID" Type="nvarchar" MaxLength="20" />
+    <Property Name="cEngineerName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cIsMainEngineer" Type="varchar" MaxLength="1" />
+    <Property Name="cContactStoreID" Type="uniqueidentifier" />
+    <Property Name="cContactStoreName" Type="nvarchar" MaxLength="40" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_ContractDetail_OBJ">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cContractID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="cHostName" Type="nvarchar" MaxLength="120" />
+    <Property Name="cSerialID" Type="nvarchar" MaxLength="40" />
+    <Property Name="cPID" Type="nvarchar" MaxLength="40" />
+    <Property Name="cBrands" Type="nvarchar" MaxLength="30" />
+    <Property Name="cModel" Type="nvarchar" MaxLength="40" />
+    <Property Name="cLocation" Type="nvarchar" MaxLength="100" />
+    <Property Name="cAddress" Type="nvarchar" MaxLength="100" />
+    <Property Name="cArea" Type="nvarchar" MaxLength="30" />
+    <Property Name="cSLARESP" Type="nvarchar" MaxLength="10" />
+    <Property Name="cSLASRV" Type="nvarchar" MaxLength="10" />
+    <Property Name="cNotes" Type="nvarchar" MaxLength="255" />
+    <Property Name="cSubContractID" Type="nvarchar" MaxLength="10" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_ContractDetail_SUB">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cContractID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="cSubContractID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="cSubSupplierID" Type="nvarchar" MaxLength="15" />
+    <Property Name="cSubSupplierName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cSubNotes" Type="nvarchar" MaxLength="255" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TB_ONE_ContractMain">
+    <Key>
+      <PropertyRef Name="cContractID" />
+    </Key>
+    <Property Name="cContractID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="cCustomerContractNo" Type="nvarchar" MaxLength="20" />
+    <Property Name="cSoNo" Type="nvarchar" MaxLength="10" />
+    <Property Name="cSoSales" Type="nvarchar" MaxLength="20" />
+    <Property Name="cSoSalesName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cSoSalesASS" Type="nvarchar" MaxLength="20" />
+    <Property Name="cSoSalesASSName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cMASales" Type="nvarchar" MaxLength="20" />
+    <Property Name="cMASalesName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cCustomerID" Type="nvarchar" MaxLength="10" />
+    <Property Name="cCustomerName" Type="nvarchar" MaxLength="35" />
+    <Property Name="cDesc" Type="nvarchar" MaxLength="255" />
+    <Property Name="cStartDate" Type="datetime" />
+    <Property Name="cEndDate" Type="datetime" />
+    <Property Name="cMACycle" Type="nvarchar" MaxLength="512" />
+    <Property Name="cMANotes" Type="nvarchar" MaxLength="512" />
+    <Property Name="cMAAddress" Type="nvarchar" MaxLength="255" />
+    <Property Name="cSLARESP" Type="nvarchar" MaxLength="10" />
+    <Property Name="cSLASRV" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContractNotes" Type="nvarchar" MaxLength="512" />
+    <Property Name="cContractReport" Type="nvarchar(max)" />
+    <Property Name="cTeamID" Type="varchar" MaxLength="36" />
+    <Property Name="cIsSubContract" Type="varchar" MaxLength="1" />
+    <Property Name="cBillCycle" Type="nvarchar" MaxLength="512" />
+    <Property Name="cBillNotes" Type="nvarchar" MaxLength="512" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="TB_ONE_DOCUMENT">
     <Key>
       <PropertyRef Name="ID" />
@@ -262,6 +353,20 @@
     <Property Name="cSecretaryName" Type="nvarchar" MaxLength="40" />
     <Property Name="cSalesNo" Type="nvarchar" MaxLength="30" />
     <Property Name="cShipmentNo" Type="nvarchar" MaxLength="30" />
+    <Property Name="cFaultGroup" Type="nvarchar" MaxLength="30" />
+    <Property Name="cFaultGroupNote1" Type="nvarchar" MaxLength="100" />
+    <Property Name="cFaultGroupNote2" Type="nvarchar" MaxLength="100" />
+    <Property Name="cFaultGroupNote3" Type="nvarchar" MaxLength="100" />
+    <Property Name="cFaultGroupNote4" Type="nvarchar" MaxLength="100" />
+    <Property Name="cFaultGroupNoteOther" Type="nvarchar" MaxLength="100" />
+    <Property Name="cFaultState" Type="nvarchar" MaxLength="30" />
+    <Property Name="cFaultStateNote1" Type="nvarchar" MaxLength="100" />
+    <Property Name="cFaultStateNote2" Type="nvarchar" MaxLength="100" />
+    <Property Name="cFaultStateNoteOther" Type="nvarchar" MaxLength="100" />
+    <Property Name="cFaultSpec" Type="nvarchar" MaxLength="30" />
+    <Property Name="cFaultSpecNote1" Type="nvarchar" MaxLength="100" />
+    <Property Name="cFaultSpecNote2" Type="nvarchar" MaxLength="100" />
+    <Property Name="cFaultSpecNoteOther" Type="nvarchar" MaxLength="100" />
     <Property Name="cSystemGUID" Type="uniqueidentifier" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
@@ -331,6 +436,10 @@
     <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="TB_ONE_ContractDetail_ENG" EntityType="Self.TB_ONE_ContractDetail_ENG" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_ContractDetail_OBJ" EntityType="Self.TB_ONE_ContractDetail_OBJ" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_ContractDetail_SUB" EntityType="Self.TB_ONE_ContractDetail_SUB" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_ContractMain" EntityType="Self.TB_ONE_ContractMain" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_DOCUMENT" EntityType="Self.TB_ONE_DOCUMENT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_LOG" EntityType="Self.TB_ONE_LOG" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_ReportFormat" EntityType="Self.TB_ONE_ReportFormat" Schema="dbo" store:Type="Tables" />
