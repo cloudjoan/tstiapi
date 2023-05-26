@@ -3293,8 +3293,8 @@ namespace TSTI_API.Controllers
                 string cTECHMAG = CMF.findSREMPERPIDandNameByERPID(MainBean.cTechManagerID);                
                 string cSALES = CMF.findSREMPERPIDandNameByERPID(MainBean.cSalesID);
                 string cSECRETARY = CMF.findSREMPERPIDandNameByERPID(MainBean.cSecretaryID);
-                string cAttachURL = CMF.findAttachUrl(MainBean.cAttachement, tAttachURLName);
-                string cAttachStockNo = CMF.findAttachUrl(MainBean.cAttachementStockNo, tAttachURLName);
+                string cAttachURL = CMF.findAttachUrlWithName(MainBean.cAttachement, tAttachURLName);
+                string cAttachStockNo = CMF.findAttachUrlWithName(MainBean.cAttachementStockNo, tAttachURLName);
                 string cREPAIRNAME = string.IsNullOrEmpty(MainBean.cRepairName) ? "" : MainBean.cRepairName;
                 string cREPAIRADDR = string.IsNullOrEmpty(MainBean.cRepairAddress) ? "" : MainBean.cRepairAddress;
                 string cREPAIRTEL = string.IsNullOrEmpty(MainBean.cRepairPhone) ? "" : MainBean.cRepairPhone;
@@ -8654,9 +8654,292 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑更新進出貨的資料 ↑↑↑↑↑-----
 
+        #region -----↓↓↓↓↓查詢現行CRM合約主數據四個相關Table ↓↓↓↓↓-----
+
+        #region 查詢現行合約主數據四個相關Table資料
+        [HttpPost]
+        public ActionResult API_CRMCONTRACTINFO_GET(CRMCONTRACTINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_CONTRACTID": "11204075"
+            //}
+            #endregion
+
+            CRMCONTRACTINFO_OUTPUT ListOUT = new CRMCONTRACTINFO_OUTPUT();
+
+            ListOUT = CRMCONTRACTINFO_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得現行合約主數據四個相關Table的資料
+        private CRMCONTRACTINFO_OUTPUT CRMCONTRACTINFO_GET(CRMCONTRACTINFO_INPUT beanIN)
+        {
+            CRMCONTRACTINFO_OUTPUT OUTBean = new CRMCONTRACTINFO_OUTPUT();          
+
+            DataTable dtMAIN = null;
+            DataTable dtSUB = null;
+            DataTable dtOBJ = null;
+            DataTable dtENG = null;
+
+            string pContractID = string.Empty;
+
+            try
+            {
+                initSapConnector();
+
+                var beans = dbOne.TB_ONE_ContractIDTemp.ToList();
+
+                foreach (var bean in beans)
+                {
+                    pContractID = bean.cContractID;
+
+                    RfcFunctionMetadata ZFM_CONTRACT_GETALL_INFO = sapConnector.Repository.GetFunctionMetadata("ZFM_CONTRACT_GETALL_INFO");
+                    IRfcFunction function = ZFM_CONTRACT_GETALL_INFO.CreateFunction();
+
+                    function.SetValue("IV_CONTRACTID", pContractID);
+                    function.Invoke(sapConnector);
+
+                    dtMAIN = CMF.SetRFCDataTable(function, "LT_CONTRACT_MAIN");
+                    dtSUB = CMF.SetRFCDataTable(function, "LT_CONTRACT_SUB");
+                    dtOBJ = CMF.SetRFCDataTable(function, "LT_CONTRACT_OBJ");
+                    dtENG = CMF.SetRFCDataTable(function, "LT_CONTRACT_ENG");
+
+                    if (dtMAIN.Rows.Count == 0)
+                    {
+                        OUTBean.EV_MSGT = "E";
+                        OUTBean.EV_MSG = "查無現行合約主數據四個相關Table資料，請重新查詢！";
+                    }
+                    else
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+
+                        #region 寫入合約主數據4個Table
+
+                        try
+                        {
+                            #region 合約主數據
+                            if (dtMAIN.Rows.Count > 0)
+                            {
+                                string cContractID = pContractID;                                        //文件編號                        
+                                string cSoNo = dtMAIN.Rows[0]["SONUMBER"].ToString();                                     //銷售單號                        
+                                string cSoSales = dtMAIN.Rows[0]["SALES"].ToString().TrimStart('0').Trim();               //業務ERPID
+                                string cSoSalesName = CMF.findEmployeeNameInCludeLevae(cSoSales);                      //業務                        
+                                string cSoSalesASS = dtMAIN.Rows[0]["SALES_ASS"].ToString().TrimStart('0').Trim();        //業務祕書ERPID
+                                string cSoSalesASSName = CMF.findEmployeeNameInCludeLevae(cSoSalesASS);                //業務祕書
+                                string cMASales = dtMAIN.Rows[0]["MAINTAIN_SALES"].ToString().TrimStart('0').Trim();      //維護業務ERPID
+                                string cMASalesName = CMF.findEmployeeNameInCludeLevae(cMASales);                     //維護業務                            
+                                string cCustomerID = dtMAIN.Rows[0]["CUSTOMER_NUMBER"].ToString();                       //CRM客戶ID
+                                string cCustomerName = CMF.findCustName(cCustomerID);                                 //CRM客戶
+                                string cDesc = dtMAIN.Rows[0]["SO_DESC"].ToString();                                    //訂單說明                        
+                                string cStartDate = dtMAIN.Rows[0]["START_DATE"].ToString();                             //維護起始日期
+                                string cEndDate = dtMAIN.Rows[0]["FINISH_DATE"].ToString();                             //維護結束日期
+                                string cMACycle = dtMAIN.Rows[0]["PM_CYCLE"].ToString();                                //維護週期
+                                string cMANotes = dtMAIN.Rows[0]["PM_NOTES"].ToString();                                //維護備註
+                                string cMAAddress = dtMAIN.Rows[0]["PLACE"].ToString();                                //維護地址
+                                string cSLARESP = dtMAIN.Rows[0]["RESPONSE_LEVEL"].ToString();                          //回應條件
+                                string cSLASRV = dtMAIN.Rows[0]["SERVICE_LEVEL"].ToString();                            //服務條件
+                                string cContractNotes = dtMAIN.Rows[0]["CONTRACT_NOTES"].ToString();                    //合約備註
+                                string cContractReport = dtMAIN.Rows[0]["URL_LINK"].ToString();                        //合約書link
+                                string cTeamID = dtMAIN.Rows[0]["ORG_CODE"].ToString().TrimStart('0').Trim();           //服務組織
+                                string cIsSubContract = dtMAIN.Rows[0]["SUB_FLAG"].ToString() == "X" ? "Y" : "";        //是否為下包合約
+                                string cBillCycle = dtMAIN.Rows[0]["BILLABLE_TIME"].ToString();                        //請款期間
+                                string cBillNotes = dtMAIN.Rows[0]["PAY_NOTE"].ToString();                            //請款備註
+
+                                #region 寫入Table
+                                TB_ONE_ContractMain Main = new TB_ONE_ContractMain();
+
+                                Main.cContractID = cContractID;
+                                Main.cSoNo = cSoNo;
+                                Main.cSoSales = cSoSales;
+                                Main.cSoSalesName = cSoSalesName;
+                                Main.cSoSalesASS = cSoSalesASS;
+                                Main.cSoSalesASSName = cSoSalesASSName;
+                                Main.cMASales = cMASales;
+                                Main.cMASalesName = cMASalesName;
+                                Main.cCustomerID = cCustomerID;
+                                Main.cCustomerName = cCustomerName;
+                                Main.cDesc = cDesc;
+                                Main.cStartDate = Convert.ToDateTime(cStartDate);
+                                Main.cEndDate = Convert.ToDateTime(cEndDate);
+                                Main.cMACycle = cMACycle;
+                                Main.cMANotes = cMANotes;
+                                Main.cMAAddress = cMAAddress;
+                                Main.cSLARESP = cSLARESP;
+                                Main.cSLASRV = cSLASRV;
+                                Main.cContractNotes = cContractNotes;
+                                Main.cContractReport = cContractReport;
+                                Main.cTeamID = cTeamID;
+                                Main.cIsSubContract = cIsSubContract;
+                                Main.cBillCycle = cBillCycle;
+                                Main.cBillNotes = cBillNotes;
+                                Main.cInvalidReason = "";
+                                Main.Disabled = 0;
+
+                                dbOne.TB_ONE_ContractMain.Add(Main);
+                                dbOne.SaveChanges();
+                                #endregion
+                            }
+                            #endregion
+
+                            #region 下包合約
+                            if (dtSUB.Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in dtSUB.Rows)
+                                {
+                                    string cContractID = pContractID;                                                  //主約文件編號
+                                    string cSubContractID = dr["SUB_CONTRACTID"].ToString();                                           //下包文件編號
+                                    string cSubSupplierID = dr["SUBCONTRACT_BUSINESS_NUMBER"].ToString();                               //下包商ID
+                                    string cSubSupplierName = dr["SUBCONTRACT_NAME"].ToString();                                       //下包商名稱
+                                    string cSubNotes = dr["SUBCONTRACT_NOTES"].ToString();                                             //下包備註                                
+
+                                    #region 寫入Table
+                                    TB_ONE_ContractDetail_SUB DSub = new TB_ONE_ContractDetail_SUB();
+
+                                    DSub.cContractID = cContractID;
+                                    DSub.cSubContractID = cSubContractID;
+                                    DSub.cSubSupplierID = cSubSupplierID;
+                                    DSub.cSubSupplierName = cSubSupplierName;
+                                    DSub.cSubNotes = cSubNotes;
+                                    DSub.Disabled = 0;
+
+                                    dbOne.TB_ONE_ContractDetail_SUB.Add(DSub);
+                                    #endregion
+                                }
+
+                                dbOne.SaveChanges();
+                            }
+                            #endregion
+
+                            #region 標的
+                            if (dtOBJ.Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in dtOBJ.Rows)
+                                {
+                                    string cContractID = pContractID;            //主約文件編號
+                                    string cHostName = dr["HOSTNAME"].ToString();                //HostName
+                                    string cSerialID = dr["SN"].ToString();                     //序號
+                                    string cPID = dr["PID"].ToString();                         //PID
+                                    string cBrands = dr["BRANDS"].ToString();                   //廠牌
+                                    string cModel = dr["MODEL"].ToString();                     //ProductModel
+                                    string cLocation = dr["LOCATION"].ToString();               //Location
+                                    string cAddress = dr["PLACE"].ToString();                   //地點
+                                    string cArea = dr["AREA"].ToString();                       //區域
+                                    string cSLARESP = dr["RESPONSE_LEVEL"].ToString();           //回應條件
+                                    string cSLASRV = dr["SERVICE_LEVEL"].ToString();            //服務條件
+                                    string cNotes = dr["NOTE"].ToString();                     //備註
+                                    string cSubContractID = dr["SUB_CONTRACTID"].ToString();    //下包文件編號
+
+                                    #region 寫入Table
+                                    TB_ONE_ContractDetail_OBJ DObj = new TB_ONE_ContractDetail_OBJ();
+
+                                    DObj.cContractID = cContractID;
+                                    DObj.cHostName = cHostName;
+                                    DObj.cSerialID = cSerialID;
+                                    DObj.cPID = cPID;
+                                    DObj.cBrands = cBrands;
+                                    DObj.cModel = cModel;
+                                    DObj.cLocation = cLocation;
+                                    DObj.cAddress = cAddress;
+                                    DObj.cArea = cArea;
+                                    DObj.cSLARESP = cSLARESP;
+                                    DObj.cSLASRV = cSLASRV;
+                                    DObj.cNotes = cNotes;
+                                    DObj.cSubContractID = cSubContractID;
+                                    DObj.Disabled = 0;
+
+                                    dbOne.TB_ONE_ContractDetail_OBJ.Add(DObj);
+                                    #endregion
+                                }
+
+                                dbOne.SaveChanges();
+                            }
+                            #endregion
+
+                            #region 工程師
+                            if (dtENG.Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in dtENG.Rows)
+                                {
+                                    string cContractID = pContractID;                        //主約文件編號
+                                    string cEngineerID = dr["ENGINEER"].ToString().TrimStart('0').Trim();     //工程師ERPID
+                                    string cEngineerName = CMF.findEmployeeNameInCludeLevae(cEngineerID);   //工程師姓名
+                                    string cIsMainEngineer = dr["MAIN_FLAG"].ToString() == "X" ? "Y" : ""; ;   //是否為主要工程師
+
+                                    #region 寫入Table
+                                    TB_ONE_ContractDetail_ENG DEng = new TB_ONE_ContractDetail_ENG();
+
+                                    DEng.cContractID = cContractID;
+                                    DEng.cEngineerID = cEngineerID;
+                                    DEng.cEngineerName = cEngineerName;
+                                    DEng.cIsMainEngineer = cIsMainEngineer;
+                                    DEng.Disabled = 0;
+
+                                    dbOne.TB_ONE_ContractDetail_ENG.Add(DEng);
+                                    #endregion
+                                }
+
+                                dbOne.SaveChanges();
+                            }
+                            #endregion
+                        }
+                        catch (Exception ex)
+                        {
+                            pMsg += "文件編號【" + pContractID + "】，失敗原因：" + ex.Message + Environment.NewLine;
+                        }                       
+                        #endregion
+                    }                    
+                }
+
+                if (pMsg != "")
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = pMsg;
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "CRMCONTRACTINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢現行合約主數據四個相關Table資料INPUT資訊
+        /// <summary>查詢現行合約主數據四個相關TableINPUT資訊</summary>
+        public struct CRMCONTRACTINFO_INPUT
+        {
+            /// <summary>文件編號</summary>
+            public string IV_CONTRACTID { get; set; }
+        }
+        #endregion
+
+        #region 查詢現行合約主數據四個相關Table資料OUTPUT資訊
+        /// <summary>查詢現行合約主數據四個相關Table資料OUTPUT資訊</summary>
+        public struct CRMCONTRACTINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }            
+        }       
+        #endregion
+
+        #endregion -----↑↑↑↑↑查詢現行CRM合約主數據四個相關Table ↑↑↑↑↑-----
+
         #region -----↓↓↓↓↓查詢現行CRM客戶聯絡人 ↓↓↓↓↓-----
 
-        #region 查詢現行CRM客戶聯絡人資料        
+        #region 查詢現行CRM客戶聯絡人資料
         [HttpPost]
         public ActionResult API_CRMCONTACTINFO_GET(CRMCONTACTINFO_INPUT beanIN)
         {

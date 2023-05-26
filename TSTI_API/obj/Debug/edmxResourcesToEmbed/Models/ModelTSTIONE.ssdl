@@ -57,12 +57,17 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="TB_ONE_ContractIDTemp">
+    <Key>
+      <PropertyRef Name="cContractID" />
+    </Key>
+    <Property Name="cContractID" Type="nvarchar" MaxLength="10" Nullable="false" />
+  </EntityType>
   <EntityType Name="TB_ONE_ContractMain">
     <Key>
       <PropertyRef Name="cContractID" />
     </Key>
     <Property Name="cContractID" Type="nvarchar" MaxLength="10" Nullable="false" />
-    <Property Name="cCustomerContractNo" Type="nvarchar" MaxLength="20" />
     <Property Name="cSoNo" Type="nvarchar" MaxLength="10" />
     <Property Name="cSoSales" Type="nvarchar" MaxLength="20" />
     <Property Name="cSoSalesName" Type="nvarchar" MaxLength="40" />
@@ -71,8 +76,8 @@
     <Property Name="cMASales" Type="nvarchar" MaxLength="20" />
     <Property Name="cMASalesName" Type="nvarchar" MaxLength="40" />
     <Property Name="cCustomerID" Type="nvarchar" MaxLength="10" />
-    <Property Name="cCustomerName" Type="nvarchar" MaxLength="35" />
-    <Property Name="cDesc" Type="nvarchar" MaxLength="255" />
+    <Property Name="cCustomerName" Type="nvarchar" MaxLength="255" />
+    <Property Name="cDesc" Type="nvarchar" MaxLength="512" />
     <Property Name="cStartDate" Type="datetime" />
     <Property Name="cEndDate" Type="datetime" />
     <Property Name="cMACycle" Type="nvarchar" MaxLength="512" />
@@ -86,6 +91,8 @@
     <Property Name="cIsSubContract" Type="varchar" MaxLength="1" />
     <Property Name="cBillCycle" Type="nvarchar" MaxLength="512" />
     <Property Name="cBillNotes" Type="nvarchar" MaxLength="512" />
+    <Property Name="cInvalidReason" Type="nvarchar" MaxLength="255" />
+    <Property Name="Disabled" Type="int" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
     <Property Name="ModifiedDate" Type="datetime" />
@@ -439,6 +446,7 @@
     <EntitySet Name="TB_ONE_ContractDetail_ENG" EntityType="Self.TB_ONE_ContractDetail_ENG" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_ContractDetail_OBJ" EntityType="Self.TB_ONE_ContractDetail_OBJ" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_ContractDetail_SUB" EntityType="Self.TB_ONE_ContractDetail_SUB" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_ContractIDTemp" EntityType="Self.TB_ONE_ContractIDTemp" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_ContractMain" EntityType="Self.TB_ONE_ContractMain" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_DOCUMENT" EntityType="Self.TB_ONE_DOCUMENT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_LOG" EntityType="Self.TB_ONE_LOG" Schema="dbo" store:Type="Tables" />

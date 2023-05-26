@@ -1412,6 +1412,30 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得附件/服務報告書URL(多筆以;號隔開)含附件原始檔名
+        /// <summary>
+        /// 取得附件/服務報告書URL(多筆以;號隔開)含附件原始檔名
+        /// </summary>
+        /// <param name="tAttach">附件GUID(多筆以,號隔開)</param>
+        /// <param name="tAttachURLName">附件URL站台名稱</param>
+        /// <returns></returns>
+        public string findAttachUrlWithName(string tAttach, string tAttachURLName)
+        {
+            string reValue = string.Empty;
+
+            List<SRATTACHINFO> SR_List = findSRATTACHINFO(tAttach, tAttachURLName);
+
+            foreach (var bean in SR_List)
+            {
+                reValue += bean.FILE_ORG_NAME + "|" + bean.FILE_URL + ";";
+            }
+
+            reValue = reValue.TrimEnd(';');
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得附件相關資訊
         /// <summary>
         /// 取得附件相關資訊
@@ -1990,7 +2014,38 @@ namespace TSTI_API.Controllers
 
             return reValue;
         }
-        #endregion       
+        #endregion
+
+        #region 取得人員中文+英文姓名(傳入ERPIID)含離職人員
+        /// <summary>
+        /// 取得人員中文+英文姓名(傳入ERPIID)含離職人員
+        /// </summary>
+        /// <param name="keyword">ERPID</param>        
+        /// <returns></returns>
+        public string findEmployeeNameInCludeLevae(string keyword)
+        {
+            string reValue = string.Empty;
+
+            if (keyword != "")
+            {
+                var bean = dbEIP.Person.FirstOrDefault(x => x.ERP_ID == keyword.Trim());
+
+                if (bean != null)
+                {
+                    if (bean.Leave_Reason == null)
+                    {
+                        reValue = bean.Name2 + " " + bean.Name;
+                    }
+                    else
+                    {
+                        reValue = bean.Name2 + " " + bean.Name + "(離職)";                        
+                    }
+                }
+            }
+
+            return reValue;
+        }
+        #endregion
 
         #region 取得物料說明
         /// <summary>

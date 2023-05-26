@@ -15,7 +15,6 @@ namespace TSTI_API.Models
     public partial class TB_ONE_ContractMain
     {
         public string cContractID { get; set; }
-        public string cCustomerContractNo { get; set; }
         public string cSoNo { get; set; }
         public string cSoSales { get; set; }
         public string cSoSalesName { get; set; }
@@ -39,6 +38,8 @@ namespace TSTI_API.Models
         public string cIsSubContract { get; set; }
         public string cBillCycle { get; set; }
         public string cBillNotes { get; set; }
+        public string cInvalidReason { get; set; }
+        public Nullable<int> Disabled { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUserName { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
