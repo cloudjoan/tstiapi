@@ -7398,6 +7398,241 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑異動派工工時紀錄相關查詢接口 ↑↑↑↑↑-----  
 
+        #region -----↓↓↓↓↓異動序號回報資訊相關接口 ↓↓↓↓↓-----        
+
+        #region 新增序號回報資訊相關接口
+        [HttpPost]
+        public ActionResult API_SRSERIALFEEDBACKINFOINFO_CREATE(SRSERIALFEEDBACKINFOINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{                
+            //    "IV_LOGINEMPNO": "99120894",            
+            //    "IV_SRID" : "632304200001",
+            //    "IV_SERIAL" : "SGH33223R6",
+            //    "IV_MaterialID" : "G-M21161-001-3M",
+            //    "IV_MaterialName" : "HP LCD BEZEL 13 HD",            
+            //    "IV_ConfigReport" : "裝機Config檔"
+            //}
+            #endregion
+
+            SRSERIALFEEDBACKINFOINFO_OUTPUT ListOUT = new SRSERIALFEEDBACKINFOINFO_OUTPUT();
+
+            ListOUT = SaveSRSERIALFEEDBACKINFOINFO(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 刪除序號回報資訊相關接口
+        [HttpPost]
+        public ActionResult API_SRSERIALFEEDBACKINFOINFO_DELETE(SRSERIALFEEDBACKINFOINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNO": "99120894", 
+            //    "IV_SRID": "632304200001",
+            //    "IV_CID": "1043"
+            //}
+            #endregion
+
+            SRSERIALFEEDBACKINFOINFO_OUTPUT ListOUT = new SRSERIALFEEDBACKINFOINFO_OUTPUT();
+
+            ListOUT = SaveSRSERIALFEEDBACKINFOINFO(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得序號回報資訊相關
+        private SRSERIALFEEDBACKINFOINFO_OUTPUT SaveSRSERIALFEEDBACKINFOINFO(SRSERIALFEEDBACKINFOINFO_INPUT beanIN)
+        {
+            SRSERIALFEEDBACKINFOINFO_OUTPUT OUTBean = new SRSERIALFEEDBACKINFOINFO_OUTPUT();
+
+            int cID = 0;
+
+            string IV_LOGINEMPNO = string.Empty;
+            string IV_LOGINEMPName = string.Empty;
+            string IV_SRID = string.Empty;
+            string IV_SERIAL = string.Empty;            
+            string IV_MaterialID = string.Empty;
+            string IV_MaterialName = string.Empty;
+            string IV_ConfigReport = string.Empty;
+            string path = string.Empty;
+            string fileId = string.Empty;
+            string fileOrgName = string.Empty;
+            string fileName = string.Empty;
+
+            Guid fileGuid = Guid.NewGuid();
+
+            try
+            {
+                cID = string.IsNullOrEmpty(beanIN.IV_CID) ? 0 : int.Parse(beanIN.IV_CID);
+                IV_SRID = string.IsNullOrEmpty(beanIN.IV_SRID) ? "" : beanIN.IV_SRID;
+                IV_SERIAL = string.IsNullOrEmpty(beanIN.IV_SERIAL) ? "" : beanIN.IV_SERIAL;
+                IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO;
+                IV_MaterialID = string.IsNullOrEmpty(beanIN.IV_MaterialID) ? "" : beanIN.IV_MaterialID;
+                IV_MaterialName = string.IsNullOrEmpty(beanIN.IV_MaterialName) ? "" : beanIN.IV_MaterialName;
+
+                HttpPostedFileBase upload = beanIN.IV_ConfigReport;
+
+                #region 取得登入人員姓名
+                EmployeeBean EmpBean = new EmployeeBean();
+                EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+                IV_LOGINEMPName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+                #endregion
+
+                if (cID == 0)
+                {
+                    #region 裝機Config檔
+                    if (upload != null)
+                    {
+                        #region 檔案部份  
+                        fileGuid = Guid.NewGuid();
+                        fileId = fileGuid.ToString();
+                        fileOrgName = upload.FileName;
+                        fileName = fileId + Path.GetExtension(upload.FileName);
+                        path = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+                        upload.SaveAs(path);
+                        #endregion
+
+                        #region table部份  
+                        IV_ConfigReport = fileGuid + ",";
+                        TB_ONE_DOCUMENT bean = new TB_ONE_DOCUMENT();
+
+                        bean.ID = fileGuid;
+                        bean.FILE_ORG_NAME = fileOrgName;
+                        bean.FILE_NAME = fileName;
+                        bean.FILE_EXT = Path.GetExtension(upload.FileName);
+                        bean.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                        dbOne.TB_ONE_DOCUMENT.Add(bean);
+                        dbOne.SaveChanges();                        
+                        #endregion
+                    }
+                    #endregion
+
+                    #region 新增
+                    TB_ONE_SRDetail_SerialFeedback SFB = new TB_ONE_SRDetail_SerialFeedback();
+
+                    SFB.cSRID = IV_SRID;
+                    SFB.cSerialID = IV_SERIAL;
+                    SFB.cMaterialID = IV_MaterialID;
+                    SFB.cMaterialName = IV_MaterialName;
+                    SFB.cConfigReport = IV_ConfigReport;
+                    SFB.Disabled = 0;
+
+                    SFB.CreatedDate = DateTime.Now;
+                    SFB.CreatedUserName = IV_LOGINEMPName;
+
+                    dbOne.TB_ONE_SRDetail_SerialFeedback.Add(SFB);
+                    #endregion
+                }
+                else //刪除
+                {
+                    #region 刪除
+                    var bean = dbOne.TB_ONE_SRDetail_SerialFeedback.FirstOrDefault(x => x.cID == cID);
+
+                    if (bean != null)
+                    {
+                        bean.Disabled = 1;
+
+                        bean.ModifiedDate = DateTime.Now;
+                        bean.ModifiedUserName = IV_LOGINEMPName;
+                    }
+                    #endregion
+                }
+
+                var result = dbOne.SaveChanges();
+
+                if (result <= 0)
+                {
+                    if (cID == 0) //新增
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新增失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "刪除失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
+                    }
+
+                    CMF.writeToLog(IV_SRID, "SaveSRSERIALFEEDBACKINFOINFO_API", pMsg, IV_LOGINEMPName);
+
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = pMsg;
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    if (cID == 0) //新增
+                    {
+                        var bean = dbOne.TB_ONE_SRDetail_SerialFeedback.OrderByDescending(x => x.cID).FirstOrDefault(x => x.cSRID == IV_SRID);
+
+                        if (bean != null)
+                        {
+                            OUTBean.EV_CID = bean.cID.ToString();
+                        }
+                    }
+                    else
+                    {
+                        OUTBean.EV_CID = cID.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog(IV_SRID, "SaveSRSERIALFEEDBACKINFOINFO_API", pMsg, IV_LOGINEMPName);
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+                OUTBean.EV_CID = "";
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 異動序號回報資訊相關INPUT資訊
+        /// <summary>異動序號回報資訊相關INPUT資訊</summary>
+        public struct SRSERIALFEEDBACKINFOINFO_INPUT
+        {
+            /// <summary>系統ID</summary>
+            public string IV_CID { get; set; }
+            /// <summary>服務案件ID</summary>
+            public string IV_SRID { get; set; }
+            /// <summary>序號ID</summary>
+            public string IV_SERIAL { get; set; }
+            /// <summary>登入者員工編號</summary>
+            public string IV_LOGINEMPNO { get; set; }            
+            /// <summary>更換零件料號ID</summary>
+            public string IV_MaterialID { get; set; }
+            /// <summary>料號說明</summary>
+            public string IV_MaterialName { get; set; }            
+            /// <summary>裝機Config</summary>
+            public HttpPostedFileBase IV_ConfigReport { get; set; }
+        }
+        #endregion
+
+        #region 異動序號回報資訊相關OUTPUT資訊
+        /// <summary>異動序號回報資訊相關OUTPUT資訊</summary>
+        public struct SRSERIALFEEDBACKINFOINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+            /// <summary>系統ID</summary>
+            public string EV_CID { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑異動序號回報資訊相關查詢接口 ↑↑↑↑↑-----  
+
         #region -----↓↓↓↓↓員工資料接口 ↓↓↓↓↓-----        
 
         #region 查詢員工資料接口
