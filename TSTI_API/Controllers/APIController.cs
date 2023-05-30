@@ -7633,6 +7633,254 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑異動序號回報資訊相關查詢接口 ↑↑↑↑↑-----  
 
+        #region -----↓↓↓↓↓裝機現況資訊相關接口 ↓↓↓↓↓-----        
+
+        #region 查詢裝機現況資訊相關接口
+        [HttpPost]
+        public ActionResult API_CURRENTINSTALLINFO_GET(INSTALLLIST_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{                            
+            //    "IV_SRID" : "8300030821"            
+            //}
+            #endregion
+
+            INSTALLLIST_OUTPUT ListOUT = new INSTALLLIST_OUTPUT();
+
+            ListOUT = INSTALLLIST_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 查詢裝機現況資訊清單
+        private INSTALLLIST_OUTPUT INSTALLLIST_GET(INSTALLLIST_INPUT beanIN)
+        {
+            INSTALLLIST_OUTPUT OUTBean = new INSTALLLIST_OUTPUT();            
+
+            try
+            {
+                //var bean = dbEIP.TB_SERVICES_APP_INSTALL.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());
+                var bean = dbEIP.TB_SERVICES_APP_INSTALLTEMP.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());
+
+                if (bean == null)
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無裝機現況清單，請重新查詢！";
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    OUTBean.CID = bean.ID.ToString();
+                    OUTBean.SRID = bean.SRID;
+                    OUTBean.ACCOUNT = bean.ACCOUNT;
+                    OUTBean.ERP_ID = bean.ERP_ID;
+                    OUTBean.EMP_NAME = bean.EMP_NAME;
+                    OUTBean.InstallDate = bean.InstallDate;
+                    OUTBean.ExpectedDate = bean.ExpectedDate;
+                    OUTBean.TotalQuantity = bean.TotalQuantity.ToString();
+                    OUTBean.InstallQuantity = bean.InstallQuantity.ToString();
+                    OUTBean.INSERT_TIME = bean.INSERT_TIME;                    
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "INSTALLLIST_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢裝機現況資訊相關INPUT資訊
+        /// <summary>裝機現況資訊相關INPUT資訊</summary>
+        public struct INSTALLLIST_INPUT
+        {            
+            /// <summary>服務案件ID</summary>
+            public string IV_SRID { get; set; }            
+        }
+        #endregion
+
+        #region 查詢裝機現況資訊相關OUTPUT資訊
+        /// <summary>查詢裝機現況資訊相關OUTPUT資訊</summary>
+        public struct INSTALLLIST_OUTPUT
+        {
+            /// <summary>系統ID</summary>
+            public string CID { get; set; }
+            /// <summary>服務案件ID</summary>
+            public string SRID { get; set; }
+            /// <summary>安裝工程師AD帳號</summary>
+            public string ACCOUNT { get; set; }
+            /// <summary>安裝工程師ERPID</summary>
+            public string ERP_ID { get; set; }
+            /// <summary>安裝工程師姓名</summary>
+            public string EMP_NAME { get; set; }
+            /// <summary>裝機起始日期</summary>
+            public string InstallDate { get; set; }
+            /// <summary>裝機完成日期</summary>
+            public string ExpectedDate { get; set; }
+            /// <summary>總安裝數量</summary>
+            public string TotalQuantity { get; set; }
+            /// <summary>已安裝數量</summary>
+            public string InstallQuantity { get; set; }
+            /// <summary>建立日期</summary>
+            public string INSERT_TIME { get; set; }
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }            
+        }
+        #endregion
+
+        #region 更新裝機現況資訊相關接口
+        [HttpPost]
+        public ActionResult API_CURRENTINSTALLINFO_UPDATE(CURRENTINSTALLINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNO": "99120894", 
+            //    "IV_SRID": "8300030821",
+            //    "IV_CID": "1",
+            //    "IV_InstallDate": "2021-06-18",
+            //    "IV_ExpectedDate": "2021-06-18",
+            //    "IV_InstallQuantity": "5",
+            //    "IV_TotalQuantity": "5"
+            //}
+            #endregion
+
+            CURRENTINSTALLINFO_OUTPUT ListOUT = new CURRENTINSTALLINFO_OUTPUT();
+
+            ListOUT = SaveCURRENTINSTALLINFO(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 更新裝機現況資訊相關
+        private CURRENTINSTALLINFO_OUTPUT SaveCURRENTINSTALLINFO(CURRENTINSTALLINFO_INPUT beanIN)
+        {
+            CURRENTINSTALLINFO_OUTPUT OUTBean = new CURRENTINSTALLINFO_OUTPUT();
+
+            int cID = 0;
+            int IV_InstallQuantity = 0;
+            int IV_TotalQuantity = 0;
+
+            string IV_LOGINEMPNO = string.Empty;
+            string IV_LOGINEMPName = string.Empty;
+            string IV_SRID = string.Empty;
+            string IV_InstallDate = string.Empty;
+            string IV_ExpectedDate = string.Empty;            
+
+            try
+            {
+                cID = string.IsNullOrEmpty(beanIN.IV_CID) ? 0 : int.Parse(beanIN.IV_CID);
+                IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO;
+                IV_SRID = string.IsNullOrEmpty(beanIN.IV_SRID) ? "" : beanIN.IV_SRID;
+                IV_InstallDate = string.IsNullOrEmpty(beanIN.IV_InstallDate) ? "" : beanIN.IV_InstallDate;
+                IV_ExpectedDate = string.IsNullOrEmpty(beanIN.IV_ExpectedDate) ? "" : beanIN.IV_ExpectedDate;
+                IV_InstallQuantity = string.IsNullOrEmpty(beanIN.IV_InstallQuantity) ? 0 : int.Parse(beanIN.IV_InstallQuantity);
+                IV_TotalQuantity = string.IsNullOrEmpty(beanIN.IV_TotalQuantity) ? 0 : int.Parse(beanIN.IV_TotalQuantity);
+
+                #region 取得登入人員姓名
+                EmployeeBean EmpBean = new EmployeeBean();
+                EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+                IV_LOGINEMPName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+                #endregion
+
+                if (cID != 0)
+                {
+                    #region 更新
+                    //var bean = dbEIP.TB_SERVICES_APP_INSTALL.FirstOrDefault(x => x.ID == cID);
+                    var bean = dbEIP.TB_SERVICES_APP_INSTALLTEMP.FirstOrDefault(x => x.ID == cID);
+
+                    if (bean != null)
+                    {
+                        bean.InstallDate = IV_InstallDate;
+                        bean.ExpectedDate = IV_ExpectedDate;                        
+                        bean.InstallQuantity = IV_InstallQuantity;
+                        bean.TotalQuantity = IV_TotalQuantity;
+                        
+                        bean.UPDATE_ACCOUNT = EmpBean.EmployeeNO;
+                        bean.UPDATE_EMP_NAME = EmpBean.EmployeeCName;
+                        bean.UPDATE_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    }
+                    #endregion
+                }               
+
+                var result = dbEIP.SaveChanges();
+
+                if (result <= 0)
+                {
+                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
+                    CMF.writeToLog(IV_SRID, "SaveCURRENTINSTALLINFO_API", pMsg, IV_LOGINEMPName);
+
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = pMsg;
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";                    
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog(IV_SRID, "SaveCURRENTINSTALLINFO_API", pMsg, IV_LOGINEMPName);
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;                
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 更新裝機現況資訊相關INPUT資訊
+        /// <summary>更新裝機現況資訊相關INPUT資訊</summary>
+        public struct CURRENTINSTALLINFO_INPUT
+        {
+            /// <summary>登入者員工編號</summary>
+            public string IV_LOGINEMPNO { get; set; }            
+            /// <summary>服務案件ID</summary>
+            public string IV_SRID { get; set; }
+            /// <summary>系統ID</summary>
+            public string IV_CID { get; set; }            
+            /// <summary>裝機起始日期</summary>
+            public string IV_InstallDate { get; set; }
+            /// <summary>裝機完成日期</summary>
+            public string IV_ExpectedDate { get; set; }
+            /// <summary>總安裝數量</summary>
+            public string IV_TotalQuantity { get; set; }
+            /// <summary>已安裝數量</summary>
+            public string IV_InstallQuantity { get; set; }
+        }
+        #endregion
+
+        #region 更新裝機現況資訊相關OUTPUT資訊
+        /// <summary>更新裝機現況資訊相關OUTPUT資訊</summary>
+        public struct CURRENTINSTALLINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }            
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑裝機現況資訊相關查詢接口 ↑↑↑↑↑-----  
+
         #region -----↓↓↓↓↓員工資料接口 ↓↓↓↓↓-----        
 
         #region 查詢員工資料接口

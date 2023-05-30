@@ -439,6 +439,12 @@
     <Compile Include="Models\TB_PIS_INSTALLMaterial.cs">
       <DependentUpon>ModelPSIP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_SERVICES_APP_INSTALL.cs">
+      <DependentUpon>ModelEIPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_SERVICES_APP_INSTALLTEMP.cs">
+      <DependentUpon>ModelEIPDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_SERVICES_APP_STATE.cs">
       <DependentUpon>ModelEIPDB.tt</DependentUpon>
     </Compile>

@@ -105,6 +105,42 @@
           <Property Name="Center" Type="char" MaxLength="20" />
           <Property Name="Account" Type="nvarchar" MaxLength="108" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
+        <EntityType Name="TB_SERVICES_APP_INSTALL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SRID" Type="nvarchar" MaxLength="20" />
+          <Property Name="ACCOUNT" Type="nvarchar" MaxLength="50" />
+          <Property Name="ERP_ID" Type="nvarchar" MaxLength="20" />
+          <Property Name="EMP_NAME" Type="nvarchar" MaxLength="30" />
+          <Property Name="InstallDate" Type="nvarchar" MaxLength="10" />
+          <Property Name="ExpectedDate" Type="nvarchar" MaxLength="10" />
+          <Property Name="TotalQuantity" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="InstallQuantity" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+          <Property Name="UPDATE_ACCOUNT" Type="nvarchar" MaxLength="50" />
+          <Property Name="UPDATE_EMP_NAME" Type="nvarchar" MaxLength="30" />
+          <Property Name="UPDATE_TIME" Type="nvarchar" MaxLength="22" />
+        </EntityType>
+        <EntityType Name="TB_SERVICES_APP_INSTALLTEMP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SRID" Type="nvarchar" MaxLength="20" />
+          <Property Name="ACCOUNT" Type="nvarchar" MaxLength="50" />
+          <Property Name="ERP_ID" Type="nvarchar" MaxLength="20" />
+          <Property Name="EMP_NAME" Type="nvarchar" MaxLength="30" />
+          <Property Name="InstallDate" Type="nvarchar" MaxLength="10" />
+          <Property Name="ExpectedDate" Type="nvarchar" MaxLength="10" />
+          <Property Name="TotalQuantity" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="InstallQuantity" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+          <Property Name="UPDATE_ACCOUNT" Type="nvarchar" MaxLength="50" />
+          <Property Name="UPDATE_EMP_NAME" Type="nvarchar" MaxLength="30" />
+          <Property Name="UPDATE_TIME" Type="nvarchar" MaxLength="22" />
+        </EntityType>
         <EntityType Name="TB_SERVICES_APP_STATE">
           <Key>
             <PropertyRef Name="ID" />
@@ -122,6 +158,8 @@
         <EntityContainer Name="MCSWorkflowModelStoreContainer">
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_SERVICES_APP_INSTALL" EntityType="Self.TB_SERVICES_APP_INSTALL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_SERVICES_APP_INSTALLTEMP" EntityType="Self.TB_SERVICES_APP_INSTALLTEMP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_SERVICES_APP_STATE" EntityType="Self.TB_SERVICES_APP_STATE" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -232,6 +270,8 @@
           <EntitySet Name="Department" EntityType="Self.Department" />
           <EntitySet Name="Person" EntityType="Self.Person" />
           <EntitySet Name="TB_SERVICES_APP_STATE" EntityType="MCSWorkflowModel.TB_SERVICES_APP_STATE" />
+          <EntitySet Name="TB_SERVICES_APP_INSTALL" EntityType="MCSWorkflowModel.TB_SERVICES_APP_INSTALL" />
+          <EntitySet Name="TB_SERVICES_APP_INSTALLTEMP" EntityType="MCSWorkflowModel.TB_SERVICES_APP_INSTALLTEMP" />
         </EntityContainer>
         <EntityType Name="TB_SERVICES_APP_STATE">
           <Key>
@@ -246,6 +286,42 @@
           <Property Name="APP_VERSION" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="STATE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_SERVICES_APP_INSTALL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SRID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ACCOUNT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ERP_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EMP_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="InstallDate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ExpectedDate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TotalQuantity" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="InstallQuantity" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="UPDATE_ACCOUNT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UPDATE_EMP_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="UPDATE_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_SERVICES_APP_INSTALLTEMP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SRID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ACCOUNT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ERP_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EMP_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="InstallDate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ExpectedDate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TotalQuantity" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="InstallQuantity" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="UPDATE_ACCOUNT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UPDATE_EMP_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="UPDATE_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -365,6 +441,44 @@
                 <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
                 <ScalarProperty Name="ACCOUNT" ColumnName="ACCOUNT" />
                 <ScalarProperty Name="EMP_NAME" ColumnName="EMP_NAME" />
+                <ScalarProperty Name="SRID" ColumnName="SRID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_SERVICES_APP_INSTALL">
+            <EntityTypeMapping TypeName="MCSWorkflowModel.TB_SERVICES_APP_INSTALL">
+              <MappingFragment StoreEntitySet="TB_SERVICES_APP_INSTALL">
+                <ScalarProperty Name="UPDATE_TIME" ColumnName="UPDATE_TIME" />
+                <ScalarProperty Name="UPDATE_EMP_NAME" ColumnName="UPDATE_EMP_NAME" />
+                <ScalarProperty Name="UPDATE_ACCOUNT" ColumnName="UPDATE_ACCOUNT" />
+                <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+                <ScalarProperty Name="InstallQuantity" ColumnName="InstallQuantity" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="ExpectedDate" ColumnName="ExpectedDate" />
+                <ScalarProperty Name="InstallDate" ColumnName="InstallDate" />
+                <ScalarProperty Name="EMP_NAME" ColumnName="EMP_NAME" />
+                <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+                <ScalarProperty Name="ACCOUNT" ColumnName="ACCOUNT" />
+                <ScalarProperty Name="SRID" ColumnName="SRID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_SERVICES_APP_INSTALLTEMP">
+            <EntityTypeMapping TypeName="MCSWorkflowModel.TB_SERVICES_APP_INSTALLTEMP">
+              <MappingFragment StoreEntitySet="TB_SERVICES_APP_INSTALLTEMP">
+                <ScalarProperty Name="UPDATE_TIME" ColumnName="UPDATE_TIME" />
+                <ScalarProperty Name="UPDATE_EMP_NAME" ColumnName="UPDATE_EMP_NAME" />
+                <ScalarProperty Name="UPDATE_ACCOUNT" ColumnName="UPDATE_ACCOUNT" />
+                <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+                <ScalarProperty Name="InstallQuantity" ColumnName="InstallQuantity" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="ExpectedDate" ColumnName="ExpectedDate" />
+                <ScalarProperty Name="InstallDate" ColumnName="InstallDate" />
+                <ScalarProperty Name="EMP_NAME" ColumnName="EMP_NAME" />
+                <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+                <ScalarProperty Name="ACCOUNT" ColumnName="ACCOUNT" />
                 <ScalarProperty Name="SRID" ColumnName="SRID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

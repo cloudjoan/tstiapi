@@ -118,5 +118,43 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_SERVICES_APP_INSTALL">
+      <EntityTypeMapping TypeName="MCSWorkflowModel.TB_SERVICES_APP_INSTALL">
+        <MappingFragment StoreEntitySet="TB_SERVICES_APP_INSTALL">
+          <ScalarProperty Name="UPDATE_TIME" ColumnName="UPDATE_TIME" />
+          <ScalarProperty Name="UPDATE_EMP_NAME" ColumnName="UPDATE_EMP_NAME" />
+          <ScalarProperty Name="UPDATE_ACCOUNT" ColumnName="UPDATE_ACCOUNT" />
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="InstallQuantity" ColumnName="InstallQuantity" />
+          <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+          <ScalarProperty Name="ExpectedDate" ColumnName="ExpectedDate" />
+          <ScalarProperty Name="InstallDate" ColumnName="InstallDate" />
+          <ScalarProperty Name="EMP_NAME" ColumnName="EMP_NAME" />
+          <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+          <ScalarProperty Name="ACCOUNT" ColumnName="ACCOUNT" />
+          <ScalarProperty Name="SRID" ColumnName="SRID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_SERVICES_APP_INSTALLTEMP">
+      <EntityTypeMapping TypeName="MCSWorkflowModel.TB_SERVICES_APP_INSTALLTEMP">
+        <MappingFragment StoreEntitySet="TB_SERVICES_APP_INSTALLTEMP">
+          <ScalarProperty Name="UPDATE_TIME" ColumnName="UPDATE_TIME" />
+          <ScalarProperty Name="UPDATE_EMP_NAME" ColumnName="UPDATE_EMP_NAME" />
+          <ScalarProperty Name="UPDATE_ACCOUNT" ColumnName="UPDATE_ACCOUNT" />
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="InstallQuantity" ColumnName="InstallQuantity" />
+          <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+          <ScalarProperty Name="ExpectedDate" ColumnName="ExpectedDate" />
+          <ScalarProperty Name="InstallDate" ColumnName="InstallDate" />
+          <ScalarProperty Name="EMP_NAME" ColumnName="EMP_NAME" />
+          <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+          <ScalarProperty Name="ACCOUNT" ColumnName="ACCOUNT" />
+          <ScalarProperty Name="SRID" ColumnName="SRID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
