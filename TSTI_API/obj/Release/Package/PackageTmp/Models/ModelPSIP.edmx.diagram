@@ -7,6 +7,7 @@
       <Diagram DiagramId="878ae8ac6eb748078fed11bf890de65c" Name="Diagram1">
         <EntityTypeShape EntityType="PSIPModel.TB_PIS_INSTALLMaterial" Width="2.5" PointX="0.75" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="PSIPModel.TB_ONE_SysParameter" Width="2.125" PointX="3.5" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="PSIPModel.TB_ONE_RoleParameter" Width="2.125" PointX="3.5" PointY="1.25" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

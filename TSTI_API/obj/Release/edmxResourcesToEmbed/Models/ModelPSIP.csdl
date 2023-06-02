@@ -13,6 +13,7 @@
   <EntityContainer Name="PSIPEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="TB_PIS_INSTALLMaterial" EntityType="Self.TB_PIS_INSTALLMaterial" />
     <EntitySet Name="TB_ONE_SysParameter" EntityType="PSIPModel.TB_ONE_SysParameter" />
+    <EntitySet Name="TB_ONE_RoleParameter" EntityType="PSIPModel.TB_ONE_RoleParameter" />
   </EntityContainer>
   <EntityType Name="TB_ONE_SysParameter">
     <Key>
@@ -25,6 +26,27 @@
     <Property Name="cNo" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
     <Property Name="cValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="cDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Disabled" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_ONE_RoleParameter">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cOperationID" Type="Guid" Nullable="false" />
+    <Property Name="cFunctionID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="cCompanyID" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="cValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cIncludeSubDept" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cExeQuery" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cExeInsert" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cExeEdit" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cExeDel" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
     <Property Name="Disabled" Type="Int32" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />

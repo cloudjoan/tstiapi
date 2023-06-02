@@ -8809,9 +8809,9 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑查詢合約標的 ↑↑↑↑↑-----
 
-        #region -----↓↓↓↓↓查詢可看合約書權限的成員 ↓↓↓↓↓-----        
+        #region -----↓↓↓↓↓查詢是否可以讀取合約書PDF權限 ↓↓↓↓↓-----        
 
-        #region 查詢可看合約書權限的成員資料        
+        #region 查詢是否可以讀取合約書PDF權限資料        
         [HttpPost]
         public ActionResult API_VIEWCONTRACTSMEMBERSINFO_GET(VIEWCONTRACTSMEMBERSINFO_INPUT beanIN)
         {
@@ -8831,7 +8831,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得可看合約書權限的成員資料
+        #region 取得是否可以讀取合約書PDF權限資料
         private VIEWCONTRACTSMEMBERSINFO_OUTPUT VIEWCONTRACTSMEMBERSINFO_GET(VIEWCONTRACTSMEMBERSINFO_INPUT beanIN)
         {
             VIEWCONTRACTSMEMBERSINFO_OUTPUT OUTBean = new VIEWCONTRACTSMEMBERSINFO_OUTPUT();
@@ -8968,8 +8968,8 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 查詢可看合約書權限的成員資料INPUT資訊
-        /// <summary>查詢可看合約書權限的成員資料INPUT資訊</summary>
+        #region 查詢是否可以讀取合約書PDF權限資料INPUT資訊
+        /// <summary>查詢是否可以讀取合約書PDF權限資料INPUT資訊</summary>
         public struct VIEWCONTRACTSMEMBERSINFO_INPUT
         {
             /// <summary>登入者員工編號ERPID</summary>
@@ -8981,8 +8981,8 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 查詢可看合約書權限的成員資料OUTPUT資訊
-        /// <summary>查詢可看合約書權限的成員資料OUTPUT資訊</summary>
+        #region 查詢是否可以讀取合約書PDF權限資料OUTPUT資訊
+        /// <summary>查詢是否可以讀取合約書PDF權限資料OUTPUT資訊</summary>
         public struct VIEWCONTRACTSMEMBERSINFO_OUTPUT
         {
             /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
@@ -8991,10 +8991,10 @@ namespace TSTI_API.Controllers
             public string EV_MSG { get; set; }
             /// <summary>是否可以讀取合約書PDF(Y.是 N.否)</summary>
             public string EV_IsCanRead { get; set; }
-        }       
+        }
         #endregion
 
-        #endregion -----↑↑↑↑↑查詢可看合約書權限的成員 ↑↑↑↑↑-----
+        #endregion -----↑↑↑↑↑查詢是否可以讀取合約書PDF權限 ↑↑↑↑↑-----
 
         #region -----↓↓↓↓↓更新進出貨的資料 ↓↓↓↓↓-----
 
