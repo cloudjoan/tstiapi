@@ -2644,7 +2644,45 @@ namespace TSTI_API.Controllers
 
             return dt;
         }
-        #endregion               
+        #endregion
+
+        #region 傳入DataTable並過濾重覆人員
+        /// <summary>
+        /// 傳入DataTable並過濾重覆人員
+        /// </summary>
+        /// <param name="dtORG">組織人員</param>
+        /// <param name="DicORG">傳入的Dic</param>
+        public void SetDtORGPeople(DataTable dtORG, ref Dictionary<string, string> DicORG)
+        {
+            string tEMPNO = string.Empty;
+
+            foreach (DataRow dr in dtORG.Rows)
+            {
+                tEMPNO = dr["EMPNO"].ToString().TrimStart('0').Trim();
+
+                if (!DicORG.Keys.Contains(tEMPNO))
+                {
+                    DicORG.Add(tEMPNO, dr["EMPNAME"].ToString().Trim());
+                }
+            }
+        }
+        #endregion
+
+        #region 傳入ERPID並過濾重覆人員
+        /// <summary>
+        /// 傳入ERPID並過濾重覆人員
+        /// </summary>
+        /// <param name="tERPID">ERPID</param>
+        /// <param name="tNAME">姓名</param>
+        /// <param name="DicORG">傳入的Dic</param>
+        public void SetDtORGPeople(string tERPID, string tNAME, ref Dictionary<string, string> DicORG)
+        {
+            if (!DicORG.Keys.Contains(tERPID))
+            {
+                DicORG.Add(tERPID, tNAME);
+            }
+        }
+        #endregion
 
         #region -----↓↓↓↓↓待辦清單 ↓↓↓↓↓-----
 
@@ -3068,6 +3106,54 @@ namespace TSTI_API.Controllers
             }
 
             return tList;
+        }
+        #endregion
+
+        #region 判斷登入人員是否有在傳入的服務團隊裡(true.有 false.否)
+        /// <summary>
+        /// 判斷登入人員是否有在傳入的服務團隊裡(true.有 false.否)
+        /// </summary>
+        /// <param name="tCostCenterID">登入人員部門成本中心ID</param>
+        /// <param name="tDeptID">登入人員部門ID</param>
+        /// <param name="tTeamOldID">服務團隊ID</param>
+        /// <returns></returns>
+        public bool checkEmpIsExistSRTeamMapping(string tCostCenterID, string tDeptID, string tTeamOldID)
+        {
+            bool reValue = false;
+
+            var beans = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && (x.cTeamNewID == tCostCenterID || x.cTeamNewID == tDeptID));
+
+            foreach (var beansItem in beans)
+            {
+                if (beansItem.cTeamOldID == tTeamOldID)
+                {
+                    reValue = true;
+                    break;
+                }
+            }
+
+            return reValue;
+        }
+        #endregion
+
+        #region 判斷登入人員是否有在7X24工程師清單裡(true.有 false.否)
+        /// <summary>
+        /// 判斷登入人員是否有在7X24工程師清單裡(true.有 false.否)
+        /// </summary>        
+        /// <param name="tAccountNo">AD帳號</param>
+        /// <returns></returns>
+        public bool checkEmpIsExist7X24List(string tAccountNo)
+        {
+            bool reValue = false;
+
+            var bean = dbPSIP.TB_ONE_RoleParameter.FirstOrDefault(x => x.Disabled == 0 && x.cExeQuery == "Y" && x.cValue.ToLower() == tAccountNo.ToLower());
+
+            if (bean != null)
+            {
+                reValue = true;
+            }
+
+            return reValue;
         }
         #endregion
 

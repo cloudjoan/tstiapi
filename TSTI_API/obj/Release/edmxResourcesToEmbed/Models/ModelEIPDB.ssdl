@@ -100,6 +100,42 @@
     <Property Name="Center" Type="char" MaxLength="20" />
     <Property Name="Account" Type="nvarchar" MaxLength="108" StoreGeneratedPattern="Computed" Nullable="false" />
   </EntityType>
+  <EntityType Name="TB_SERVICES_APP_INSTALL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SRID" Type="nvarchar" MaxLength="20" />
+    <Property Name="ACCOUNT" Type="nvarchar" MaxLength="50" />
+    <Property Name="ERP_ID" Type="nvarchar" MaxLength="20" />
+    <Property Name="EMP_NAME" Type="nvarchar" MaxLength="30" />
+    <Property Name="InstallDate" Type="nvarchar" MaxLength="10" />
+    <Property Name="ExpectedDate" Type="nvarchar" MaxLength="10" />
+    <Property Name="TotalQuantity" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="InstallQuantity" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+    <Property Name="UPDATE_ACCOUNT" Type="nvarchar" MaxLength="50" />
+    <Property Name="UPDATE_EMP_NAME" Type="nvarchar" MaxLength="30" />
+    <Property Name="UPDATE_TIME" Type="nvarchar" MaxLength="22" />
+  </EntityType>
+  <EntityType Name="TB_SERVICES_APP_INSTALLTEMP">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SRID" Type="nvarchar" MaxLength="20" />
+    <Property Name="ACCOUNT" Type="nvarchar" MaxLength="50" />
+    <Property Name="ERP_ID" Type="nvarchar" MaxLength="20" />
+    <Property Name="EMP_NAME" Type="nvarchar" MaxLength="30" />
+    <Property Name="InstallDate" Type="nvarchar" MaxLength="10" />
+    <Property Name="ExpectedDate" Type="nvarchar" MaxLength="10" />
+    <Property Name="TotalQuantity" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="InstallQuantity" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+    <Property Name="UPDATE_ACCOUNT" Type="nvarchar" MaxLength="50" />
+    <Property Name="UPDATE_EMP_NAME" Type="nvarchar" MaxLength="30" />
+    <Property Name="UPDATE_TIME" Type="nvarchar" MaxLength="22" />
+  </EntityType>
   <EntityType Name="TB_SERVICES_APP_STATE">
     <Key>
       <PropertyRef Name="ID" />
@@ -117,6 +153,8 @@
   <EntityContainer Name="MCSWorkflowModelStoreContainer">
     <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_SERVICES_APP_INSTALL" EntityType="Self.TB_SERVICES_APP_INSTALL" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_SERVICES_APP_INSTALLTEMP" EntityType="Self.TB_SERVICES_APP_INSTALLTEMP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_SERVICES_APP_STATE" EntityType="Self.TB_SERVICES_APP_STATE" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>

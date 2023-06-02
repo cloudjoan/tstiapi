@@ -27,5 +27,6 @@ namespace TSTI_API.Models
     
         public virtual DbSet<TB_PIS_INSTALLMaterial> TB_PIS_INSTALLMaterial { get; set; }
         public virtual DbSet<TB_ONE_SysParameter> TB_ONE_SysParameter { get; set; }
+        public virtual DbSet<TB_ONE_RoleParameter> TB_ONE_RoleParameter { get; set; }
     }
 }

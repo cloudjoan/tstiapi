@@ -388,6 +388,9 @@
     <Compile Include="Models\TB_ONE_ReportFormat.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_ONE_RoleParameter.cs">
+      <DependentUpon>ModelPSIP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_ONE_SRCustomerEmailMapping.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>

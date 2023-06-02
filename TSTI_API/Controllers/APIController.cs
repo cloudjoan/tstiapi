@@ -47,6 +47,11 @@ namespace TSTI_API.Controllers
         /// </summary>
         string pOperationID_MaintainSR = "5B80D6AB-9143-4916-9273-ADFAEA9A61ED";
 
+        /// <summary>
+        /// 程式作業編號檔系統ID(合約主數據查詢/維護)
+        /// </summary>
+        string pOperationID_Contract = "A9556C2C-E5DE-4745-A76B-5F2E1F69A3A9";
+
         static string API_KEY = "6xdTlREsMbFd0dBT28jhb5W3BNukgLOos";
 
 
@@ -8803,6 +8808,193 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑查詢合約標的 ↑↑↑↑↑-----
+
+        #region -----↓↓↓↓↓查詢可看合約書權限的成員 ↓↓↓↓↓-----        
+
+        #region 查詢可看合約書權限的成員資料        
+        [HttpPost]
+        public ActionResult API_VIEWCONTRACTSMEMBERSINFO_GET(VIEWCONTRACTSMEMBERSINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNO" : "10001567", 
+            //    "IV_CONTRACTID" : "11204075", 
+            //    "IV_SRTEAM": "SRV.12211000"
+            //}
+            #endregion
+
+            VIEWCONTRACTSMEMBERSINFO_OUTPUT ListOUT = new VIEWCONTRACTSMEMBERSINFO_OUTPUT();
+
+            ListOUT = VIEWCONTRACTSMEMBERSINFO_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得可看合約書權限的成員資料
+        private VIEWCONTRACTSMEMBERSINFO_OUTPUT VIEWCONTRACTSMEMBERSINFO_GET(VIEWCONTRACTSMEMBERSINFO_INPUT beanIN)
+        {
+            VIEWCONTRACTSMEMBERSINFO_OUTPUT OUTBean = new VIEWCONTRACTSMEMBERSINFO_OUTPUT();
+
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
+            string IV_CONTRACTID = string.IsNullOrEmpty(beanIN.IV_CONTRACTID) ? "" : beanIN.IV_CONTRACTID.Trim();
+            string IV_SRTEAM = string.IsNullOrEmpty(beanIN.IV_SRTEAM) ? "" : beanIN.IV_SRTEAM.Trim().Substring(0, 8).PadRight(12, '0');
+            string ContractIDLimit = CMF.findSysParameterValue(pOperationID_Contract, "OTHER", "T012", "ContractIDLimit");
+
+            string tSALES = string.Empty;
+            string tSALESNAME = string.Empty;
+            string tSALES_ASS = string.Empty;
+            string tSALES_ASSNAME = string.Empty;
+            string tMAINTAIN_SALES = string.Empty;
+            string tMAINTAIN_SALESNAME = string.Empty;
+            string tURL_LINK = string.Empty;
+            string tORG_CODE = string.Empty;
+            string tOBJ_NOTES = string.Empty;
+            
+            DataTable dtORG = new DataTable();
+           
+            Dictionary<string, string> DicORG = new Dictionary<string, string>(); //記錄服務組織人員
+            
+            bool tIsCanRead = false;    //判斷是否可以看合約書URL
+            bool tIsExist = false;      //是否存在服務團隊
+
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+            try
+            {
+                var beanM = dbOne.TB_ONE_ContractMain.FirstOrDefault(x => x.Disabled == 0 && x.cContractID == beanIN.IV_CONTRACTID);                
+
+                if (beanM != null)
+                {
+                    tSALES = beanM.cSoSales;
+                    tSALESNAME = beanM.cSoSalesName;
+                    tSALES_ASS = beanM.cSoSalesASS;
+                    tSALES_ASSNAME = beanM.cSoSalesASSName;
+                    tMAINTAIN_SALES = beanM.cMASales;
+                    tMAINTAIN_SALESNAME = beanM.cMASalesName;
+
+                    #region 判斷是否可以讀取合約書PDF權限
+                    if (int.Parse(beanIN.IV_CONTRACTID) < int.Parse(ContractIDLimit)) 
+                    {
+                        #region 抓舊的組織
+                        //取得合約主數據服務組織相關人員
+                        dtORG = new DataTable();
+                        ZFM_0800_ENGLIST_GET(IV_SRTEAM, ref dtORG);
+                        CMF.SetDtORGPeople(dtORG, ref DicORG);
+
+                        //取得7X24相關人員
+                        dtORG = new DataTable();
+                        ZFM_0800_ENGLIST_GET("SRV.12700000", ref dtORG);
+                        CMF.SetDtORGPeople(dtORG, ref DicORG);
+                        #endregion
+                    }
+                    else
+                    {
+                        #region 抓新的組織
+                        tIsExist = CMF.checkEmpIsExistSRTeamMapping(EmpBean.CostCenterID, EmpBean.DepartmentNO, IV_SRTEAM);
+
+                        if (!tIsExist)
+                        {
+                            tIsExist = CMF.checkEmpIsExist7X24List(EmpBean.EmployeeNO);
+                        }
+                        #endregion
+                    }
+
+                    //取得合約相關人員
+                    CMF.SetDtORGPeople(tSALES, tSALESNAME, ref DicORG);
+                    CMF.SetDtORGPeople(tSALES_ASS, tSALES_ASSNAME, ref DicORG);
+                    CMF.SetDtORGPeople(tMAINTAIN_SALES, tMAINTAIN_SALESNAME, ref DicORG);
+
+                    //判斷是否可以讀取合約書PDF
+                    if (DicORG.Keys.Contains(IV_LOGINEMPNO) || tIsExist)
+                    {
+                        tIsCanRead = true;
+                    }
+                    #endregion
+
+                    if (tIsCanRead)
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+                        OUTBean.EV_IsCanRead = "Y";
+                    }
+                    else
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+                        OUTBean.EV_IsCanRead = "N";
+                    }
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無該文件編號相關資訊，請重新查詢！";
+                    OUTBean.EV_IsCanRead = "N";
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "VIEWCONTRACTSMEMBERSINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+                OUTBean.EV_IsCanRead = "N";
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 取得CRM合約服務組織裡的所有成員
+        /// <summary>
+        /// 取得CRM合約服務組織裡的所有成員
+        /// </summary>
+        /// <param name="IV_ORGCODE">服務組織</param>        
+        public void ZFM_0800_ENGLIST_GET(string IV_ORGCODE, ref DataTable dtORG)
+        {
+            initSapConnector();
+
+            RfcFunctionMetadata ZFM_0800_ENGLIST_GET = sapConnector.Repository.GetFunctionMetadata("ZFM_0800_ENGLIST_GET");
+            IRfcFunction function = ZFM_0800_ENGLIST_GET.CreateFunction();
+
+            function.SetValue("IV_ORGCODE", IV_ORGCODE);
+            function.Invoke(sapConnector);
+
+            dtORG = CMF.SetRFCDataTable(function, "ET_ENGLIST");            
+        }
+        #endregion
+
+        #region 查詢可看合約書權限的成員資料INPUT資訊
+        /// <summary>查詢可看合約書權限的成員資料INPUT資訊</summary>
+        public struct VIEWCONTRACTSMEMBERSINFO_INPUT
+        {
+            /// <summary>登入者員工編號ERPID</summary>
+            public string IV_LOGINEMPNO { get; set; }
+            /// <summary>文件編號</summary>
+            public string IV_CONTRACTID { get; set; }
+            /// <summary>服務團隊代碼</summary>
+            public string IV_SRTEAM { get; set; }            
+        }
+        #endregion
+
+        #region 查詢可看合約書權限的成員資料OUTPUT資訊
+        /// <summary>查詢可看合約書權限的成員資料OUTPUT資訊</summary>
+        public struct VIEWCONTRACTSMEMBERSINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+            /// <summary>是否可以讀取合約書PDF(Y.是 N.否)</summary>
+            public string EV_IsCanRead { get; set; }
+        }       
+        #endregion
+
+        #endregion -----↑↑↑↑↑查詢可看合約書權限的成員 ↑↑↑↑↑-----
 
         #region -----↓↓↓↓↓更新進出貨的資料 ↓↓↓↓↓-----
 

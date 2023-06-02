@@ -29,5 +29,27 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_RoleParameter">
+      <EntityTypeMapping TypeName="PSIPModel.TB_ONE_RoleParameter">
+        <MappingFragment StoreEntitySet="TB_ONE_RoleParameter">
+          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+          <ScalarProperty Name="cExeDel" ColumnName="cExeDel" />
+          <ScalarProperty Name="cExeEdit" ColumnName="cExeEdit" />
+          <ScalarProperty Name="cExeInsert" ColumnName="cExeInsert" />
+          <ScalarProperty Name="cExeQuery" ColumnName="cExeQuery" />
+          <ScalarProperty Name="cIncludeSubDept" ColumnName="cIncludeSubDept" />
+          <ScalarProperty Name="cDescription" ColumnName="cDescription" />
+          <ScalarProperty Name="cValue" ColumnName="cValue" />
+          <ScalarProperty Name="cCompanyID" ColumnName="cCompanyID" />
+          <ScalarProperty Name="cFunctionID" ColumnName="cFunctionID" />
+          <ScalarProperty Name="cOperationID" ColumnName="cOperationID" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
