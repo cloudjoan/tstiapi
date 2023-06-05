@@ -44,6 +44,7 @@
           <ScalarProperty Name="cIncludeSubDept" ColumnName="cIncludeSubDept" />
           <ScalarProperty Name="cDescription" ColumnName="cDescription" />
           <ScalarProperty Name="cValue" ColumnName="cValue" />
+          <ScalarProperty Name="cNo" ColumnName="cNo" />
           <ScalarProperty Name="cCompanyID" ColumnName="cCompanyID" />
           <ScalarProperty Name="cFunctionID" ColumnName="cFunctionID" />
           <ScalarProperty Name="cOperationID" ColumnName="cOperationID" />

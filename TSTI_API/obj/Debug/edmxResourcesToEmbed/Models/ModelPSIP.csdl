@@ -40,6 +40,7 @@
     <Property Name="cOperationID" Type="Guid" Nullable="false" />
     <Property Name="cFunctionID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="cCompanyID" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="cNo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
     <Property Name="cValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="cDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="cIncludeSubDept" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />

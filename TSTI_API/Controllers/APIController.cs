@@ -8877,16 +8877,13 @@ namespace TSTI_API.Controllers
                     #region 判斷是否可以讀取合約書PDF權限
                     if (int.Parse(beanIN.IV_CONTRACTID) < int.Parse(ContractIDLimit)) 
                     {
-                        #region 抓舊的組織
-                        //取得合約主數據服務組織相關人員
-                        dtORG = new DataTable();
-                        ZFM_0800_ENGLIST_GET(IV_SRTEAM, ref dtORG);
-                        CMF.SetDtORGPeople(dtORG, ref DicORG);
-
-                        //取得7X24相關人員
-                        dtORG = new DataTable();
-                        ZFM_0800_ENGLIST_GET("SRV.12700000", ref dtORG);
-                        CMF.SetDtORGPeople(dtORG, ref DicORG);
+                        #region 抓舊的組織                        
+                        tIsExist = CMF.checkEmpIsExistSRTeamMapping_OLD(pOperationID_Contract, EmpBean.BUKRS, EmpBean.EmployeeNO);
+                      
+                        if (!tIsExist)
+                        {
+                            tIsExist = CMF.checkEmpIsExist7X24List(pOperationID_Contract, EmpBean.BUKRS, EmpBean.EmployeeNO);  //取得7X24相關人員
+                        }
                         #endregion
                     }
                     else
@@ -8896,7 +8893,7 @@ namespace TSTI_API.Controllers
 
                         if (!tIsExist)
                         {
-                            tIsExist = CMF.checkEmpIsExist7X24List(EmpBean.EmployeeNO);
+                            tIsExist = CMF.checkEmpIsExist7X24List(pOperationID_Contract, EmpBean.BUKRS, EmpBean.EmployeeNO);  //取得7X24相關人員
                         }
                         #endregion
                     }

@@ -18,6 +18,7 @@ namespace TSTI_API.Models
         public System.Guid cOperationID { get; set; }
         public string cFunctionID { get; set; }
         public string cCompanyID { get; set; }
+        public string cNo { get; set; }
         public string cValue { get; set; }
         public string cDescription { get; set; }
         public string cIncludeSubDept { get; set; }

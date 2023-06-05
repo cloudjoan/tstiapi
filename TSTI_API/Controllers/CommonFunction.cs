@@ -3109,9 +3109,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 判斷登入人員是否有在傳入的服務團隊裡(true.有 false.否)
+        #region 判斷登入人員是否有在傳入的服務團隊裡(true.有 false.否)，抓新組織
         /// <summary>
-        /// 判斷登入人員是否有在傳入的服務團隊裡(true.有 false.否)
+        /// 判斷登入人員是否有在傳入的服務團隊裡(true.有 false.否)，抓新組織
         /// </summary>
         /// <param name="tCostCenterID">登入人員部門成本中心ID</param>
         /// <param name="tDeptID">登入人員部門ID</param>
@@ -3136,17 +3136,46 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 判斷登入人員是否有在傳入的服務團隊裡(true.有 false.否)，抓舊組織
+        /// <summary>
+        /// 判斷登入人員是否有在傳入的服務團隊裡(true.有 false.否)，抓舊組織
+        /// </summary>
+        /// <param name="pOperationID_Contract">程式作業編號檔系統ID(合約主數據查詢/維護)</param>
+        /// <param name="tBUKRS">公司別(T012、T016、C069、T022)</param>
+        /// <param name="tAccountNo">AD帳號</param>
+        /// <returns></returns>
+        public bool checkEmpIsExistSRTeamMapping_OLD(string pOperationID_Contract, string tBUKRS, string tAccountNo)
+        {
+            bool reValue = false;
+
+            var bean = dbPSIP.TB_ONE_RoleParameter.FirstOrDefault(x => x.Disabled == 0 && x.cOperationID.ToString() == pOperationID_Contract &&
+                                                                    x.cFunctionID == "PERSON" && x.cCompanyID == tBUKRS &&
+                                                                    x.cNo == "OLDORG" && x.cValue.ToLower() == tAccountNo.ToLower());
+
+            if (bean != null)
+            {
+                reValue = true;
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region 判斷登入人員是否有在7X24工程師清單裡(true.有 false.否)
         /// <summary>
         /// 判斷登入人員是否有在7X24工程師清單裡(true.有 false.否)
         /// </summary>        
+        /// <param name="pOperationID_Contract">程式作業編號檔系統ID(合約主數據查詢/維護)</param>
+        /// <param name="tBUKRS">公司別(T012、T016、C069、T022)</param>
         /// <param name="tAccountNo">AD帳號</param>
         /// <returns></returns>
-        public bool checkEmpIsExist7X24List(string tAccountNo)
+        public bool checkEmpIsExist7X24List(string pOperationID_Contract, string tBUKRS, string tAccountNo)
         {
             bool reValue = false;
 
-            var bean = dbPSIP.TB_ONE_RoleParameter.FirstOrDefault(x => x.Disabled == 0 && x.cExeQuery == "Y" && x.cValue.ToLower() == tAccountNo.ToLower());
+            var bean = dbPSIP.TB_ONE_RoleParameter.FirstOrDefault(x => x.Disabled == 0 && x.cOperationID.ToString() == pOperationID_Contract && 
+                                                                   x.cFunctionID == "PERSON" && x.cCompanyID == tBUKRS &&
+                                                                   x.cNo == "7X24" && x.cValue.ToLower() == tAccountNo.ToLower());
 
             if (bean != null)
             {
