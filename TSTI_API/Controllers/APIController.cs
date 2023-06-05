@@ -8944,26 +8944,7 @@ namespace TSTI_API.Controllers
 
             return OUTBean;
         }
-        #endregion
-
-        #region 取得CRM合約服務組織裡的所有成員
-        /// <summary>
-        /// 取得CRM合約服務組織裡的所有成員
-        /// </summary>
-        /// <param name="IV_ORGCODE">服務組織</param>        
-        public void ZFM_0800_ENGLIST_GET(string IV_ORGCODE, ref DataTable dtORG)
-        {
-            initSapConnector();
-
-            RfcFunctionMetadata ZFM_0800_ENGLIST_GET = sapConnector.Repository.GetFunctionMetadata("ZFM_0800_ENGLIST_GET");
-            IRfcFunction function = ZFM_0800_ENGLIST_GET.CreateFunction();
-
-            function.SetValue("IV_ORGCODE", IV_ORGCODE);
-            function.Invoke(sapConnector);
-
-            dtORG = CMF.SetRFCDataTable(function, "ET_ENGLIST");            
-        }
-        #endregion
+        #endregion       
 
         #region 查詢是否可以讀取合約書PDF權限資料INPUT資訊
         /// <summary>查詢是否可以讀取合約書PDF權限資料INPUT資訊</summary>
