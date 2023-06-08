@@ -681,19 +681,169 @@ namespace TSTI_API.Controllers
         /// 取得員工資料
         /// </summary>
         /// <param name="keyword">員工姓名(中文名/英文名)</param>
+        /// <param name="IV_SRTEAM">服務團隊ID(多筆用;隔開)</param>
         /// <returns></returns>
-        public List<Person> findEMPINFO(string keyword)
+        public List<Person> findEMPINFO(string keyword, string IV_SRTEAM)
         {
             List<Person> tList = new List<Person>();
 
             if (keyword != "")
             {
-                tList = dbEIP.Person.Where(x => (x.Leave_Date == null && x.Leave_Reason == null) && (x.Name.Contains(keyword) || x.Name2.Contains(keyword))).Take(10).ToList();
+                if (IV_SRTEAM == "")
+                {
+                    tList = dbEIP.Person.Where(x => (x.Leave_Date == null && x.Leave_Reason == null) && (x.Name.Contains(keyword) || x.Name2.Contains(keyword))).Take(10).ToList();
+                }
+                else
+                {
+                    List<string> tDeptList = findALLDeptIDListbyTeamID(IV_SRTEAM);
+
+                    tList = dbEIP.Person.Where(x => (x.Leave_Date == null && x.Leave_Reason == null) && (tDeptList.Contains(x.DeptID)) && (x.Name.Contains(keyword) || x.Name2.Contains(keyword))).Take(10).ToList();
+                }
             }
 
             return tList;
         }
         #endregion
+
+        #region 取得服務團隊ID下所對應的部門(含子部門)
+        /// <summary>
+        /// 取得服務團隊ID下所對應的部門(含子部門)
+        /// </summary>
+        /// <param name="cTeamOldId">服務團隊ID(多筆用;隔開)</param>
+        /// <returns></returns>
+        public List<string> findALLDeptIDListbyTeamID(string cTeamOldId)
+        {
+            List<string> tAllDeptIDList = new List<string>();
+
+            if (cTeamOldId != "")
+            {
+                List<string> tDeptIDList = findDeptIDListbyTeamID(cTeamOldId);
+
+                foreach (string tValue in tDeptIDList)
+                {
+                    List<string> tLIst = GetALLSubDeptID(tValue);
+
+                    tAllDeptIDList.AddRange(tLIst);
+                }
+            }
+
+            return tAllDeptIDList;
+        }
+        #endregion
+
+        #region 取得服務團隊ID所對應的部門代號清單
+        /// <summary>
+        /// 取得服務團隊ID所對應的部門代號清單
+        /// </summary>
+        /// <param name="cTeamOldId">服務團隊ID</param>
+        /// <returns></returns>
+        public List<string> findDeptIDListbyTeamID(string cTeamOldId)
+        {
+            List<string> tList = new List<string>();
+            List<string> tTeamList = cTeamOldId.Split(';').ToList();
+
+            string reValue = string.Empty;
+
+            var beans = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && tTeamList.Contains(x.cTeamOldID));
+
+            foreach (var bean in beans)
+            {
+                if (!tList.Contains(bean.cTeamNewID))
+                {
+                    tList.Add(bean.cTeamNewID);
+                }
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得所有組織的DataTable
+        /// <summary>
+        /// 取得所有組織的DataTable
+        /// </summary>
+        /// <returns></returns>
+        protected DataTable GetOrgDt()
+        {
+            DataTable dt = new DataTable();
+
+            string cmmStr = @"select ID,ParentID,Name,Level from Department where ((Status='0' and Level <> '0') or (Status='0' and ParentID IS NULL)) AND NOT(ID LIKE '9%' or ID like '12GH%') ";
+
+            dt = getDataTableByDb(cmmStr, "dbEIP");
+
+            return dt;
+        }
+        #endregion
+
+        #region 傳入最上層部門ID，並取得底下所有子部門ID
+        /// <summary>
+        /// 傳入最上層部門ID，並取得底下所有子部門ID
+        /// </summary>
+        /// <param name="tParentID">上層部門ID</param>
+        /// <returns></returns>
+        public List<string> GetALLSubDeptID(string tParentID)
+        {
+            List<string> tList = new List<string>();
+
+            string reValue = string.Empty;
+            string tmpNodeID = string.Empty;
+            string tAllDept = string.Empty;
+
+            DataTable dt = GetOrgDt(); //取得所有組織的DataTable
+            DataRow[] rows = dt.Select("ID = '" + tParentID + "'");
+
+            bool rc;
+
+            foreach (DataRow row in rows)
+            {
+                tmpNodeID = row["ID"].ToString();
+
+                tAllDept = tmpNodeID + ",";
+
+                rc = AddNodes_Dept(tmpNodeID, ref dt, ref tAllDept);
+            }
+
+            reValue = tAllDept.TrimEnd(',');
+
+            tList = reValue.Split(',').ToList();
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得子節點，遞廻(部門代號)
+        private bool AddNodes_Dept(string PID, ref DataTable dt, ref string tAllDept)
+        {
+            try
+            {
+                string tmpNodeID;
+
+                DataRow[] rows = dt.Select("ParentID = '" + PID + "'");
+
+                if (rows.GetUpperBound(0) >= 0)
+                {
+                    bool rc;
+
+                    foreach (DataRow row in rows)
+                    {
+                        tmpNodeID = row["ID"].ToString();
+
+                        tAllDept += tmpNodeID + ",";
+
+                        rc = AddNodes_Dept(tmpNodeID, ref dt, ref tAllDept);
+                    }
+                }
+
+                rows = null;
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        #endregion 
 
         #region 取得員工Email(傳入ERPID)
         /// <summary>

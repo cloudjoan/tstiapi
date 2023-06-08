@@ -7894,7 +7894,8 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_EMPNAME": "張豐穎"
+            //    "IV_EMPNAME": "白旭翔",
+            //    "IV_SRTEAM": "SRV.12300003"
             //}
             #endregion
 
@@ -7914,8 +7915,10 @@ namespace TSTI_API.Controllers
             try
             {
                 string EMPCOMPID = "T012";
+                string IV_EMPNAME = string.IsNullOrEmpty(beanIN.IV_EMPNAME) ? "" : beanIN.IV_EMPNAME.Trim();
+                string IV_SRTEAM = string.IsNullOrEmpty(beanIN.IV_SRTEAM) ? "" : beanIN.IV_SRTEAM.Trim();
 
-                var tList = CMF.findEMPINFO(beanIN.IV_EMPNAME.Trim());
+                var tList = CMF.findEMPINFO(IV_EMPNAME, IV_SRTEAM);
 
                 if (tList.Count == 0)
                 {
@@ -7984,6 +7987,8 @@ namespace TSTI_API.Controllers
         {
             /// <summary>員工姓名(英文名/中文名)</summary>
             public string IV_EMPNAME { get; set; }
+            /// <summary>服務團隊代碼(非必填)</summary>
+            public string IV_SRTEAM { get; set; }
         }
         #endregion
 
