@@ -3960,7 +3960,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得處理與工時紀錄相關
+        #region 儲存處理與工時紀錄相關
         private SRRECORDINFO_OUTPUT SaveSRRECORDINFO(SRRECORDINFO_INPUT beanIN)
         {
             SRRECORDINFO_OUTPUT OUTBean = new SRRECORDINFO_OUTPUT();
@@ -6963,7 +6963,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得零件更換資訊相關
+        #region 儲存零件更換資訊相關
         private SRPARTSREPALCEINFO_OUTPUT SaveSRPARTSREPALCEINFO(SRPARTSREPALCEINFO_INPUT beanIN)
         {
             SRPARTSREPALCEINFO_OUTPUT OUTBean = new SRPARTSREPALCEINFO_OUTPUT();
@@ -7473,7 +7473,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得序號回報資訊相關
+        #region 儲存序號回報資訊相關
         private SRSERIALFEEDBACKINFOINFO_OUTPUT SaveSRSERIALFEEDBACKINFOINFO(SRSERIALFEEDBACKINFOINFO_INPUT beanIN)
         {
             SRSERIALFEEDBACKINFOINFO_OUTPUT OUTBean = new SRSERIALFEEDBACKINFOINFO_OUTPUT();
@@ -7829,22 +7829,21 @@ namespace TSTI_API.Controllers
                 IV_LOGINEMPName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
                 #endregion
 
-                if (cID != 0)
-                {
-                    string returnMsg = CMF.SaveTB_SERVICES_APP_INSTALL(EmpBean.EmployeeNO, IV_LOGINEMPName, EmpBean.EmployeeERPID, cID, IV_SRID, 
+                #region 批次儲存APP_INSTALL檔
+                string returnMsg = CMF.SaveTB_SERVICES_APP_INSTALL(EmpBean.EmployeeNO, IV_LOGINEMPName, EmpBean.EmployeeERPID, cID, IV_SRID,
                                                                      IV_TotalQuantity.ToString(), IV_InstallQuantity.ToString(), IV_InstallDate, IV_ExpectedDate, IV_IsFromAPP);
 
-                    if (returnMsg != "SUCCESS")
-                    {
-                        OUTBean.EV_MSGT = "E";
-                        OUTBean.EV_MSG = pMsg;
-                    }
-                    else
-                    {
-                        OUTBean.EV_MSGT = "Y";
-                        OUTBean.EV_MSG = "";
-                    }
+                if (returnMsg != "SUCCESS")
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = pMsg;
                 }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+                }
+                #endregion
             }
             catch (Exception ex)
             {
