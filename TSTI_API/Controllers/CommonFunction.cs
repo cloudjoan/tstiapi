@@ -2834,6 +2834,102 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 批次儲存APP_INSTALL檔
+        /// <summary>
+        /// 批次儲存APP_INSTALL檔
+        /// </summary>
+        /// <param name="pLoginAccount">登入者帳號</param>
+        /// <param name="pLoginName">登入者姓名</param>
+        /// <param name="pLoginERPID">登入者ERPID</param>        
+        /// <param name="cID">系統ID</param>
+        /// <param name="SRID">SRID</param>
+        /// <param name="TotalQuantity">總安裝數量</param>
+        /// <param name="InstallQuantity">已安裝數量</param>
+        /// <param name="InstallDate">裝機起始日期</param>
+        /// <param name="ExpectedDate">裝機完成日期</param>
+        /// <param name="tIsFromAPP">是否來自APP的更新(Y.是 N.否)</param>
+        /// <returns></returns>
+        public string SaveTB_SERVICES_APP_INSTALL(string pLoginAccount, string pLoginName, string pLoginERPID, int cID,
+                                                 string SRID, string TotalQuantity, string InstallQuantity,
+                                                 string InstallDate, string ExpectedDate, string tIsFromAPP)
+        {
+            string returnMsg = "SUCCESS";
+
+            try
+            {
+                #region APP_INSTALL檔
+                if (cID != 0)
+                {
+                    var beanAPP = dbEIP.TB_SERVICES_APP_INSTALLTEMP.FirstOrDefault(x => x.ID == cID);
+
+                    if (beanAPP != null)
+                    {
+                        if (TotalQuantity != "0")
+                        {
+                            if (tIsFromAPP == "Y")
+                            {
+                                beanAPP.TotalQuantity = Convert.ToDecimal(TotalQuantity);
+                                beanAPP.InstallQuantity = Convert.ToDecimal(InstallQuantity);
+                                beanAPP.InstallDate = InstallDate;
+                                beanAPP.ExpectedDate = ExpectedDate;
+                                beanAPP.UPDATE_ACCOUNT = pLoginAccount;
+                                beanAPP.UPDATE_EMP_NAME = pLoginName;
+                                beanAPP.UPDATE_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                            }
+                            else //非來自APP更新，只要更新總安裝數量就好
+                            {
+                                beanAPP.TotalQuantity = Convert.ToDecimal(TotalQuantity);           //總安裝數量
+                                beanAPP.UPDATE_ACCOUNT = pLoginAccount;                           //變更者帳號                                
+                                beanAPP.UPDATE_EMP_NAME = pLoginName;                             //變更者姓名
+                                beanAPP.UPDATE_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");  //更新日期
+                            }
+                        }
+                    }                   
+                }
+                else
+                {
+                    TB_SERVICES_APP_INSTALLTEMP beanA = new TB_SERVICES_APP_INSTALLTEMP();
+
+                    beanA.TotalQuantity = Convert.ToDecimal(TotalQuantity);             //總安裝數量
+                    beanA.InstallQuantity = Convert.ToDecimal(InstallQuantity);         //已安裝數量
+                    beanA.InstallDate = InstallDate;                                 //裝機起始日期
+                    beanA.ExpectedDate = ExpectedDate;                               //裝機完成日期 
+                    beanA.SRID = SRID;                                              //SRID
+                    beanA.ACCOUNT = pLoginAccount;                                   //登入者帳號
+                    beanA.ERP_ID = pLoginERPID;                                      //登入者ERPID
+                    beanA.EMP_NAME = pLoginName;                                     //登入者姓名
+                    beanA.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");   //建立日期                            
+
+                    dbEIP.TB_SERVICES_APP_INSTALLTEMP.Add(beanA);
+                }
+
+                int result = dbEIP.SaveChanges();
+
+                if (result <= 0)
+                {
+                    if (cID == 0) //新增
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新增失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "刪除失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
+                    }
+
+                    writeToLog(SRID, "SaveTB_SERVICES_APP_INSTALL", pMsg, pLoginName);
+                }
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                returnMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "【SaveTB_SERVICES_APP_INSTALL】更新失敗！原因：" + ex.Message + Environment.NewLine;
+                writeToLog(SRID, "SaveTB_SERVICES_APP_INSTALL", returnMsg, pLoginName);                
+            }
+
+            return returnMsg;
+        }
+        #endregion
+
         #region -----↓↓↓↓↓待辦清單 ↓↓↓↓↓-----
 
         #region 取得登入人員所有要負責的SRID

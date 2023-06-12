@@ -880,7 +880,7 @@ namespace TSTI_API.Controllers
             //{
             //    "IV_LOGINEMPNO": "99120894",
             //     "IV_CUSTOMER": "D03251108",
-            //     "IV_SRTEAM": "",
+            //     "IV_SRTEAM": "SRV.12200006",
             //     "IV_SALESNO": "201234567",
             //     "IV_SHIPMENTNO": "251234567",
             //     "IV_DESC": "",
@@ -934,9 +934,12 @@ namespace TSTI_API.Controllers
             SRMain_INSTALLSR_OUTPUT SROUT = new SRMain_INSTALLSR_OUTPUT();
 
             bool tIsFormal = false;
+
+            int pTotalQuantity = 0; //總安裝數量
+
             string pLoginName = string.Empty;
             string pBUKRS = string.Empty;
-            string pSRID = string.Empty;
+            string pSRID = string.Empty;            
             string OldCStatus = string.Empty;
             string tAPIURLName = string.Empty;
             string tONEURLName = string.Empty;
@@ -1141,6 +1144,8 @@ namespace TSTI_API.Controllers
 
                             TB_ONE_SRDetail_MaterialInfo beanD = new TB_ONE_SRDetail_MaterialInfo();
 
+                            pTotalQuantity += int.Parse(QTY);
+
                             beanD.cSRID = pSRID;
                             beanD.cMaterialID = MaInfo.MaterialID;
                             beanD.cMaterialName = MaInfo.MaterialName;
@@ -1172,12 +1177,32 @@ namespace TSTI_API.Controllers
                     }
                     else
                     {
-                        SROUT.EV_SRID = pSRID;
-                        SROUT.EV_MSGT = "Y";
-                        SROUT.EV_MSG = "";
+                        #region 批次儲存APP_INSTALL檔                        
+                        int cID = 0;
+                        string TotalQuantity = pTotalQuantity.ToString("N0");
+                        string tIsFormAPP = "N";
+                        string InstallQuantity = "0";
+                        string InstallDate = string.Empty;
+                        string ExpectedDate = string.Empty;                        
 
-                        #region 寄送Mail通知
-                        CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, pBUKRS, pSRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
+                        string returnMsg = CMF.SaveTB_SERVICES_APP_INSTALL(EmpBean.EmployeeNO, pLoginName, EmpBean.EmployeeERPID, cID, pSRID, TotalQuantity, InstallQuantity, InstallDate, ExpectedDate, tIsFormAPP);
+
+                        if (returnMsg != "SUCCESS")
+                        {
+                            SROUT.EV_SRID = pSRID;
+                            SROUT.EV_MSGT = "E";
+                            SROUT.EV_MSG = returnMsg;
+                        }
+                        else
+                        {
+                            SROUT.EV_SRID = pSRID;
+                            SROUT.EV_MSGT = "Y";
+                            SROUT.EV_MSG = "";
+
+                            #region 寄送Mail通知
+                            CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, pBUKRS, pSRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
+                            #endregion
+                        }
                         #endregion
                     }
                 }
@@ -7752,12 +7777,13 @@ namespace TSTI_API.Controllers
             #region Json範列格式(傳入格式)
             //{
             //    "IV_LOGINEMPNO": "99120894", 
-            //    "IV_SRID": "8300030821",
-            //    "IV_CID": "1",
-            //    "IV_InstallDate": "2021-06-18",
-            //    "IV_ExpectedDate": "2021-06-18",
-            //    "IV_InstallQuantity": "5",
-            //    "IV_TotalQuantity": "5"
+            //    "IV_SRID": "632306120001",
+            //    "IV_CID": "202",
+            //    "IV_InstallDate": "2023-06-12",
+            //    "IV_ExpectedDate": "2023-06-12",
+            //    "IV_TotalQuantity": "2",
+            //    "IV_InstallQuantity": "1",
+            //    "IV_IsFromAPP": "Y"
             //}
             #endregion
 
@@ -7782,7 +7808,8 @@ namespace TSTI_API.Controllers
             string IV_LOGINEMPName = string.Empty;
             string IV_SRID = string.Empty;
             string IV_InstallDate = string.Empty;
-            string IV_ExpectedDate = string.Empty;            
+            string IV_ExpectedDate = string.Empty;
+            string IV_IsFromAPP = string.Empty;
 
             try
             {
@@ -7793,6 +7820,7 @@ namespace TSTI_API.Controllers
                 IV_ExpectedDate = string.IsNullOrEmpty(beanIN.IV_ExpectedDate) ? "" : beanIN.IV_ExpectedDate;
                 IV_InstallQuantity = string.IsNullOrEmpty(beanIN.IV_InstallQuantity) ? 0 : int.Parse(beanIN.IV_InstallQuantity);
                 IV_TotalQuantity = string.IsNullOrEmpty(beanIN.IV_TotalQuantity) ? 0 : int.Parse(beanIN.IV_TotalQuantity);
+                IV_IsFromAPP = string.IsNullOrEmpty(beanIN.IV_IsFromAPP) ? "" : beanIN.IV_IsFromAPP;
 
                 #region 取得登入人員姓名
                 EmployeeBean EmpBean = new EmployeeBean();
@@ -7803,38 +7831,19 @@ namespace TSTI_API.Controllers
 
                 if (cID != 0)
                 {
-                    #region 更新
-                    //var bean = dbEIP.TB_SERVICES_APP_INSTALL.FirstOrDefault(x => x.ID == cID);
-                    var bean = dbEIP.TB_SERVICES_APP_INSTALLTEMP.FirstOrDefault(x => x.ID == cID);
+                    string returnMsg = CMF.SaveTB_SERVICES_APP_INSTALL(EmpBean.EmployeeNO, IV_LOGINEMPName, EmpBean.EmployeeERPID, cID, IV_SRID, 
+                                                                     IV_TotalQuantity.ToString(), IV_InstallQuantity.ToString(), IV_InstallDate, IV_ExpectedDate, IV_IsFromAPP);
 
-                    if (bean != null)
+                    if (returnMsg != "SUCCESS")
                     {
-                        bean.InstallDate = IV_InstallDate;
-                        bean.ExpectedDate = IV_ExpectedDate;                        
-                        bean.InstallQuantity = IV_InstallQuantity;
-                        bean.TotalQuantity = IV_TotalQuantity;
-                        
-                        bean.UPDATE_ACCOUNT = EmpBean.EmployeeNO;
-                        bean.UPDATE_EMP_NAME = EmpBean.EmployeeCName;
-                        bean.UPDATE_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                        OUTBean.EV_MSGT = "E";
+                        OUTBean.EV_MSG = pMsg;
                     }
-                    #endregion
-                }               
-
-                var result = dbEIP.SaveChanges();
-
-                if (result <= 0)
-                {
-                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
-                    CMF.writeToLog(IV_SRID, "SaveCURRENTINSTALLINFO_API", pMsg, IV_LOGINEMPName);
-
-                    OUTBean.EV_MSGT = "E";
-                    OUTBean.EV_MSG = pMsg;
-                }
-                else
-                {
-                    OUTBean.EV_MSGT = "Y";
-                    OUTBean.EV_MSG = "";                    
+                    else
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+                    }
                 }
             }
             catch (Exception ex)
@@ -7870,6 +7879,8 @@ namespace TSTI_API.Controllers
             public string IV_TotalQuantity { get; set; }
             /// <summary>已安裝數量</summary>
             public string IV_InstallQuantity { get; set; }
+            /// <summary>是否來自APP更新(Y.是 N.否)</summary>
+            public string IV_IsFromAPP { get; set; }
         }
         #endregion
 
