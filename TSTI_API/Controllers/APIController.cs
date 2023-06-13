@@ -9414,7 +9414,7 @@ namespace TSTI_API.Controllers
                                 string cContractNotes = dtMAIN.Rows[0]["CONTRACT_NOTES"].ToString();                    //合約備註
                                 string cContractReport = dtMAIN.Rows[0]["URL_LINK"].ToString();                        //合約書link
                                 string cTeamID = dtMAIN.Rows[0]["ORG_CODE"].ToString().TrimStart('0').Trim();           //服務組織
-                                string cIsSubContract = dtMAIN.Rows[0]["SUB_FLAG"].ToString() == "X" ? "Y" : "";        //是否為下包合約
+                                string cIsSubContract = dtMAIN.Rows[0]["SUB_FLAG"].ToString() == "X" ? "Y" : "N";       //是否為下包合約
                                 string cBillCycle = dtMAIN.Rows[0]["BILLABLE_TIME"].ToString();                        //請款期間
                                 string cBillNotes = dtMAIN.Rows[0]["PAY_NOTE"].ToString();                            //請款備註
 
@@ -9536,7 +9536,7 @@ namespace TSTI_API.Controllers
                                     string cContractID = pContractID;                        //主約文件編號
                                     string cEngineerID = dr["ENGINEER"].ToString().TrimStart('0').Trim();     //工程師ERPID
                                     string cEngineerName = CMF.findEmployeeNameInCludeLevae(cEngineerID);   //工程師姓名
-                                    string cIsMainEngineer = dr["MAIN_FLAG"].ToString() == "X" ? "Y" : ""; ;   //是否為主要工程師
+                                    string cIsMainEngineer = dr["MAIN_FLAG"].ToString() == "X" ? "Y" : "N"; ;   //是否為主要工程師
 
                                     #region 寫入Table
                                     TB_ONE_ContractDetail_ENG DEng = new TB_ONE_ContractDetail_ENG();
