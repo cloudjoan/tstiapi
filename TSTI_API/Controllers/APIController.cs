@@ -61,6 +61,7 @@ namespace TSTI_API.Controllers
         #region 範例API
         // GET: API
         [HttpGet]
+        [ApiFilter]
         public ActionResult Index()
         {
             return Json("Hello World!", JsonRequestBehavior.AllowGet);          
