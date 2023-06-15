@@ -14,6 +14,9 @@ using TSTI_API.Models;
 
 namespace TSTI_API.Controllers
 {
+    #region API Key，上正式再打開
+    //[ApiFilter] 
+    #endregion
     public class APIController : Controller
     {
         TESTEntities testDB = new TESTEntities();
@@ -1836,7 +1839,7 @@ namespace TSTI_API.Controllers
         #endregion
 
         #region 查詢法人客戶資料接口
-        [HttpPost]
+        [HttpPost]        
         public ActionResult API_CUSTOMERINFO_GET(CUSTOMERINFO_INPUT beanIN)
         {
             #region Json範列格式(傳入格式)
