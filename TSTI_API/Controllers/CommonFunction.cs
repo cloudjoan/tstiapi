@@ -5704,6 +5704,8 @@ namespace TSTI_API.Controllers
                 //維護地址：台灣恩悌悌NTT for 大廣國際
                 //業務：謝旻樺 Fion.Hsieh
                 //維護業務：謝旻樺 Fion.Hsieh
+                //異動人員：張豐穎 Elvis.Chang
+                //異動時間：2023-06-14
                 //異動記錄：地點_舊值【 台北市敦化南路二段65-67號10樓】 新值【 台北市敦化南路二段65-67號10樓之1】 
 
                 //請儘速至One Sevice 合約管理系統處理，謝謝！
@@ -5722,6 +5724,7 @@ namespace TSTI_API.Controllers
                 string CustomerName = ContractMain.CustomerID + "/" + ContractMain.CustomerName;
                 string Desc = ContractMain.Desc;
                 string MANotes = ContractMain.MANotes;
+                string ModifiedUserName = cCondition == ContractCondition.ADD ? "" : "異動人員：" + cLoginName + "</br>";
                 string ModifiedDate = cCondition == ContractCondition.ADD ? "" : "異動時間：" + ContractMain.ModifiedDate + "</br>";
                 string Record = cCondition == ContractCondition.ADD ? "" : "異動記錄：" + cLog;
 
@@ -5732,7 +5735,7 @@ namespace TSTI_API.Controllers
                 tMailBody = tMailBody.Replace("【<MACycle>】", ContractMain.MACycle).Replace("【<MANotes>】", MANotes);
                 tMailBody = tMailBody.Replace("【<MAAddress>】", ContractMain.MAAddress).Replace("【<SalesEMP>】", ContractMain.SalesEMP);
                 tMailBody = tMailBody.Replace("【<MASalesEMP>】", ContractMain.MASalesEMP).Replace("【<ModifiedDate>】", ModifiedDate);
-                tMailBody = tMailBody.Replace("【<Record>】", Record).Replace("【<tHypeLink>】", tHypeLink);                
+                tMailBody = tMailBody.Replace("【<ModifiedUserName>】", ModifiedUserName).Replace("【<Record>】", Record).Replace("【<tHypeLink>】", tHypeLink);                
                 #endregion               
 
                 //呼叫寄送Mail

@@ -87,7 +87,7 @@
     <Property Name="cSLASRV" Type="nvarchar" MaxLength="10" />
     <Property Name="cContractNotes" Type="nvarchar" MaxLength="512" />
     <Property Name="cContractReport" Type="nvarchar(max)" />
-    <Property Name="cTeamID" Type="varchar" MaxLength="36" />
+    <Property Name="cTeamID" Type="varchar" MaxLength="255" />
     <Property Name="cIsSubContract" Type="varchar" MaxLength="1" />
     <Property Name="cBillCycle" Type="nvarchar" MaxLength="512" />
     <Property Name="cBillNotes" Type="nvarchar" MaxLength="512" />
@@ -360,6 +360,7 @@
     <Property Name="cSecretaryName" Type="nvarchar" MaxLength="40" />
     <Property Name="cSalesNo" Type="nvarchar" MaxLength="30" />
     <Property Name="cShipmentNo" Type="nvarchar" MaxLength="30" />
+    <Property Name="cContractID" Type="nvarchar" MaxLength="10" />
     <Property Name="cFaultGroup" Type="nvarchar" MaxLength="30" />
     <Property Name="cFaultGroupNote1" Type="nvarchar" MaxLength="100" />
     <Property Name="cFaultGroupNote2" Type="nvarchar" MaxLength="100" />
