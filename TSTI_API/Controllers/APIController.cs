@@ -8613,14 +8613,299 @@ namespace TSTI_API.Controllers
 			}
 			return Json(OUTBean);
 		}
-		#endregion
+        #endregion
 
-		#endregion  -----↑↑↑↑↑ 滿意度調查接口 ↑↑↑↑↑-----     
+        #endregion  -----↑↑↑↑↑ 滿意度調查接口 ↑↑↑↑↑-----     
 
-		#region -----↓↓↓↓↓CALL RFC接口 ↓↓↓↓↓-----    
+        #region  -----↓↓↓↓↓合約管理相關 ↓↓↓↓↓-----    
 
-		#region 初始SapConnector
-		public void initSapConnector()
+        #region -----↓↓↓↓↓查詢是否可以讀取合約書PDF權限 ↓↓↓↓↓-----        
+
+        #region 查詢是否可以讀取合約書PDF權限資料        
+        [HttpPost]
+        public ActionResult API_VIEWCONTRACTSMEMBERSINFO_GET(VIEWCONTRACTSMEMBERSINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNO" : "10001567", 
+            //    "IV_CONTRACTID" : "11204075", 
+            //    "IV_SRTEAM": "SRV.12211000"
+            //}
+            #endregion
+
+            VIEWCONTRACTSMEMBERSINFO_OUTPUT ListOUT = new VIEWCONTRACTSMEMBERSINFO_OUTPUT();
+
+            ListOUT = VIEWCONTRACTSMEMBERSINFO_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得是否可以讀取合約書PDF權限資料
+        private VIEWCONTRACTSMEMBERSINFO_OUTPUT VIEWCONTRACTSMEMBERSINFO_GET(VIEWCONTRACTSMEMBERSINFO_INPUT beanIN)
+        {
+            VIEWCONTRACTSMEMBERSINFO_OUTPUT OUTBean = new VIEWCONTRACTSMEMBERSINFO_OUTPUT();
+
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
+            string IV_CONTRACTID = string.IsNullOrEmpty(beanIN.IV_CONTRACTID) ? "" : beanIN.IV_CONTRACTID.Trim();
+            string IV_SRTEAM = string.IsNullOrEmpty(beanIN.IV_SRTEAM) ? "" : beanIN.IV_SRTEAM.Trim();
+            string ContractIDLimit = CMF.findSysParameterValue(pOperationID_Contract, "OTHER", "T012", "ContractIDLimit");
+
+            string tSALES = string.Empty;
+            string tSALESNAME = string.Empty;
+            string tSALES_ASS = string.Empty;
+            string tSALES_ASSNAME = string.Empty;
+            string tMAINTAIN_SALES = string.Empty;
+            string tMAINTAIN_SALESNAME = string.Empty;
+            string tURL_LINK = string.Empty;
+            string tORG_CODE = string.Empty;
+            string tOBJ_NOTES = string.Empty;
+
+            DataTable dtORG = new DataTable();
+
+            Dictionary<string, string> DicORG = new Dictionary<string, string>(); //記錄服務組織人員
+
+            bool tIsCanRead = false;    //判斷是否可以看合約書URL
+            bool tIsExist = false;      //是否存在服務團隊
+
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+            try
+            {
+                var beanM = dbOne.TB_ONE_ContractMain.FirstOrDefault(x => x.Disabled == 0 && x.cContractID == beanIN.IV_CONTRACTID);
+
+                if (beanM != null)
+                {
+                    tSALES = beanM.cSoSales;
+                    tSALESNAME = beanM.cSoSalesName;
+                    tSALES_ASS = beanM.cSoSalesASS;
+                    tSALES_ASSNAME = beanM.cSoSalesASSName;
+                    tMAINTAIN_SALES = beanM.cMASales;
+                    tMAINTAIN_SALESNAME = beanM.cMASalesName;
+
+                    #region 判斷是否可以讀取合約書PDF權限
+                    if (int.Parse(beanIN.IV_CONTRACTID) < int.Parse(ContractIDLimit))
+                    {
+                        #region 抓舊的組織                        
+                        tIsExist = CMF.checkEmpIsExistSRTeamMapping_OLD(pOperationID_Contract, EmpBean.BUKRS, EmpBean.EmployeeNO);
+
+                        if (!tIsExist)
+                        {
+                            tIsExist = CMF.checkEmpIsExist7X24List(pOperationID_Contract, EmpBean.BUKRS, EmpBean.EmployeeNO);  //取得7X24相關人員
+                        }
+                        #endregion
+                    }
+                    else
+                    {
+                        #region 抓新的組織
+                        tIsExist = CMF.checkEmpIsExistSRTeamMapping(EmpBean.CostCenterID, EmpBean.DepartmentNO, IV_SRTEAM);
+
+                        if (!tIsExist)
+                        {
+                            tIsExist = CMF.checkEmpIsExist7X24List(pOperationID_Contract, EmpBean.BUKRS, EmpBean.EmployeeNO);  //取得7X24相關人員
+                        }
+                        #endregion
+                    }
+
+                    //取得合約相關人員
+                    CMF.SetDtORGPeople(tSALES, tSALESNAME, ref DicORG);
+                    CMF.SetDtORGPeople(tSALES_ASS, tSALES_ASSNAME, ref DicORG);
+                    CMF.SetDtORGPeople(tMAINTAIN_SALES, tMAINTAIN_SALESNAME, ref DicORG);
+
+                    //判斷是否可以讀取合約書PDF
+                    if (DicORG.Keys.Contains(IV_LOGINEMPNO) || tIsExist)
+                    {
+                        tIsCanRead = true;
+                    }
+                    #endregion
+
+                    if (tIsCanRead)
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+                        OUTBean.EV_IsCanRead = "Y";
+                    }
+                    else
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+                        OUTBean.EV_IsCanRead = "N";
+                    }
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無該文件編號相關資訊，請重新查詢！";
+                    OUTBean.EV_IsCanRead = "N";
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "VIEWCONTRACTSMEMBERSINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+                OUTBean.EV_IsCanRead = "N";
+            }
+
+            return OUTBean;
+        }
+        #endregion       
+
+        #region 查詢是否可以讀取合約書PDF權限資料INPUT資訊
+        /// <summary>查詢是否可以讀取合約書PDF權限資料INPUT資訊</summary>
+        public struct VIEWCONTRACTSMEMBERSINFO_INPUT
+        {
+            /// <summary>登入者員工編號ERPID</summary>
+            public string IV_LOGINEMPNO { get; set; }
+            /// <summary>文件編號</summary>
+            public string IV_CONTRACTID { get; set; }
+            /// <summary>服務團隊代碼</summary>
+            public string IV_SRTEAM { get; set; }
+        }
+        #endregion
+
+        #region 查詢是否可以讀取合約書PDF權限資料OUTPUT資訊
+        /// <summary>查詢是否可以讀取合約書PDF權限資料OUTPUT資訊</summary>
+        public struct VIEWCONTRACTSMEMBERSINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+            /// <summary>是否可以讀取合約書PDF(Y.是 N.否)</summary>
+            public string EV_IsCanRead { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑查詢是否可以讀取合約書PDF權限 ↑↑↑↑↑-----
+
+        #region -----↓↓↓↓↓合約主數據資料新增/異動時發送Mail通知 ↓↓↓↓↓-----        
+
+        #region 合約主數據資料新增/異動時發送Mail通知資料        
+        [HttpPost]
+        public ActionResult API_CONTRACTCHANGE_SENDMAIL(CONTRACTCHANGE_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNO" : "99120894",
+            //    "IV_CONTRACTID" : "11204075", 
+            //    "IV_LOG": "地點_舊值【 台北市敦化南路二段65-67號10樓】 新值【 台北市敦化南路二段65-67號10樓之1】 "
+            //}
+            #endregion
+
+            CONTRACTCHANGE_OUTPUT ListOUT = new CONTRACTCHANGE_OUTPUT();
+
+            ListOUT = CONTRACTCHANGE_SENDMAIL(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 發送Mail通知資料
+        private CONTRACTCHANGE_OUTPUT CONTRACTCHANGE_SENDMAIL(CONTRACTCHANGE_INPUT beanIN)
+        {
+            CONTRACTCHANGE_OUTPUT OUTBean = new CONTRACTCHANGE_OUTPUT();            
+
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
+            string IV_CONTRACTID = string.IsNullOrEmpty(beanIN.IV_CONTRACTID) ? "" : beanIN.IV_CONTRACTID.Trim();
+            string IV_LOG = string.IsNullOrEmpty(beanIN.IV_LOG) ? "" : beanIN.IV_LOG.Trim();
+
+            bool tIsFormal = false;
+            string pLoginName = string.Empty;
+            string tAPIURLName = string.Empty;
+            string tONEURLName = string.Empty;
+            string tBPMURLName = string.Empty;
+            string tPSIPURLName = string.Empty;
+            string tAttachURLName = string.Empty;
+
+            ContractCondition cCondition = ContractCondition.ADD;
+            cCondition = string.IsNullOrEmpty(IV_LOG) ? ContractCondition.ADD : ContractCondition.SAVE;
+
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+            if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
+            {
+                pLoginName = IV_LOGINEMPNO;
+            }
+            else
+            {
+                pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+            }
+
+            #region 取得系統位址參數相關資訊
+            SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+
+            tIsFormal = ParaBean.IsFormal;
+
+            tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+            tONEURLName = ParaBean.ONEURLName;
+            tBPMURLName = ParaBean.BPMURLName;
+            tPSIPURLName = ParaBean.PSIPURLName;
+            tAttachURLName = ParaBean.AttachURLName;            
+            #endregion
+
+            try
+            {                
+                #region 寄送Mail通知
+                CMF.SetContractMailContent(cCondition, pOperationID_Contract, IV_CONTRACTID, IV_LOG, tONEURLName, pLoginName, tIsFormal);
+
+                OUTBean.EV_MSGT = "Y";
+                OUTBean.EV_MSG = "";
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "CONTRACTCHANGE_SENDMAIL_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;               
+            }
+
+            return OUTBean;
+        }
+        #endregion       
+
+        #region 合約主數據資料新增/異動時發送Mail通知資料INPUT資訊
+        /// <summary>合約主數據資料新增/異動時發送Mail通知資料INPUT資訊</summary>
+        public struct CONTRACTCHANGE_INPUT
+        {
+            /// <summary>登入者員工編號ERPID</summary>
+            public string IV_LOGINEMPNO { get; set; }
+            /// <summary>文件編號</summary>
+            public string IV_CONTRACTID { get; set; }
+            /// <summary>LOG記錄</summary>
+            public string IV_LOG { get; set; }
+        }
+        #endregion
+
+        #region 合約主數據資料新增/異動時發送Mail通知資料OUTPUT資訊
+        /// <summary>合約主數據資料新增/異動時發送Mail通知資料OUTPUT資訊</summary>
+        public struct CONTRACTCHANGE_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }            
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑合約主數據資料異動時發送Mail通知 ↑↑↑↑↑-----
+
+        #endregion -----↑↑↑↑↑合約管理相關 ↑↑↑↑↑-----
+
+        #region -----↓↓↓↓↓CALL RFC接口 ↓↓↓↓↓-----    
+
+        #region 初始SapConnector
+        public void initSapConnector()
         {
             #region 呼叫SAPERP正式區或測試區(true.正式區 false.測試區)
             bool tIsFormal = CMF.getCallSAPERPPara(pOperationID_GenerallySR); //取得呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)
@@ -8826,172 +9111,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑查詢合約標的 ↑↑↑↑↑-----
-
-        #region -----↓↓↓↓↓查詢是否可以讀取合約書PDF權限 ↓↓↓↓↓-----        
-
-        #region 查詢是否可以讀取合約書PDF權限資料        
-        [HttpPost]
-        public ActionResult API_VIEWCONTRACTSMEMBERSINFO_GET(VIEWCONTRACTSMEMBERSINFO_INPUT beanIN)
-        {
-            #region Json範列格式(傳入格式)
-            //{
-            //    "IV_LOGINEMPNO" : "10001567", 
-            //    "IV_CONTRACTID" : "11204075", 
-            //    "IV_SRTEAM": "SRV.12211000"
-            //}
-            #endregion
-
-            VIEWCONTRACTSMEMBERSINFO_OUTPUT ListOUT = new VIEWCONTRACTSMEMBERSINFO_OUTPUT();
-
-            ListOUT = VIEWCONTRACTSMEMBERSINFO_GET(beanIN);
-
-            return Json(ListOUT);
-        }
-        #endregion
-
-        #region 取得是否可以讀取合約書PDF權限資料
-        private VIEWCONTRACTSMEMBERSINFO_OUTPUT VIEWCONTRACTSMEMBERSINFO_GET(VIEWCONTRACTSMEMBERSINFO_INPUT beanIN)
-        {
-            VIEWCONTRACTSMEMBERSINFO_OUTPUT OUTBean = new VIEWCONTRACTSMEMBERSINFO_OUTPUT();
-
-            string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
-            string IV_CONTRACTID = string.IsNullOrEmpty(beanIN.IV_CONTRACTID) ? "" : beanIN.IV_CONTRACTID.Trim();
-            string IV_SRTEAM = string.IsNullOrEmpty(beanIN.IV_SRTEAM) ? "" : beanIN.IV_SRTEAM.Trim().Substring(0, 8).PadRight(12, '0');
-            string ContractIDLimit = CMF.findSysParameterValue(pOperationID_Contract, "OTHER", "T012", "ContractIDLimit");
-
-            string tSALES = string.Empty;
-            string tSALESNAME = string.Empty;
-            string tSALES_ASS = string.Empty;
-            string tSALES_ASSNAME = string.Empty;
-            string tMAINTAIN_SALES = string.Empty;
-            string tMAINTAIN_SALESNAME = string.Empty;
-            string tURL_LINK = string.Empty;
-            string tORG_CODE = string.Empty;
-            string tOBJ_NOTES = string.Empty;
-            
-            DataTable dtORG = new DataTable();
-           
-            Dictionary<string, string> DicORG = new Dictionary<string, string>(); //記錄服務組織人員
-            
-            bool tIsCanRead = false;    //判斷是否可以看合約書URL
-            bool tIsExist = false;      //是否存在服務團隊
-
-            EmployeeBean EmpBean = new EmployeeBean();
-            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
-
-            try
-            {
-                var beanM = dbOne.TB_ONE_ContractMain.FirstOrDefault(x => x.Disabled == 0 && x.cContractID == beanIN.IV_CONTRACTID);                
-
-                if (beanM != null)
-                {
-                    tSALES = beanM.cSoSales;
-                    tSALESNAME = beanM.cSoSalesName;
-                    tSALES_ASS = beanM.cSoSalesASS;
-                    tSALES_ASSNAME = beanM.cSoSalesASSName;
-                    tMAINTAIN_SALES = beanM.cMASales;
-                    tMAINTAIN_SALESNAME = beanM.cMASalesName;
-
-                    #region 判斷是否可以讀取合約書PDF權限
-                    if (int.Parse(beanIN.IV_CONTRACTID) < int.Parse(ContractIDLimit)) 
-                    {
-                        #region 抓舊的組織                        
-                        tIsExist = CMF.checkEmpIsExistSRTeamMapping_OLD(pOperationID_Contract, EmpBean.BUKRS, EmpBean.EmployeeNO);
-                      
-                        if (!tIsExist)
-                        {
-                            tIsExist = CMF.checkEmpIsExist7X24List(pOperationID_Contract, EmpBean.BUKRS, EmpBean.EmployeeNO);  //取得7X24相關人員
-                        }
-                        #endregion
-                    }
-                    else
-                    {
-                        #region 抓新的組織
-                        tIsExist = CMF.checkEmpIsExistSRTeamMapping(EmpBean.CostCenterID, EmpBean.DepartmentNO, IV_SRTEAM);
-
-                        if (!tIsExist)
-                        {
-                            tIsExist = CMF.checkEmpIsExist7X24List(pOperationID_Contract, EmpBean.BUKRS, EmpBean.EmployeeNO);  //取得7X24相關人員
-                        }
-                        #endregion
-                    }
-
-                    //取得合約相關人員
-                    CMF.SetDtORGPeople(tSALES, tSALESNAME, ref DicORG);
-                    CMF.SetDtORGPeople(tSALES_ASS, tSALES_ASSNAME, ref DicORG);
-                    CMF.SetDtORGPeople(tMAINTAIN_SALES, tMAINTAIN_SALESNAME, ref DicORG);
-
-                    //判斷是否可以讀取合約書PDF
-                    if (DicORG.Keys.Contains(IV_LOGINEMPNO) || tIsExist)
-                    {
-                        tIsCanRead = true;
-                    }
-                    #endregion
-
-                    if (tIsCanRead)
-                    {
-                        OUTBean.EV_MSGT = "Y";
-                        OUTBean.EV_MSG = "";
-                        OUTBean.EV_IsCanRead = "Y";
-                    }
-                    else
-                    {
-                        OUTBean.EV_MSGT = "Y";
-                        OUTBean.EV_MSG = "";
-                        OUTBean.EV_IsCanRead = "N";
-                    }
-                }
-                else
-                {
-                    OUTBean.EV_MSGT = "E";
-                    OUTBean.EV_MSG = "查無該文件編號相關資訊，請重新查詢！";
-                    OUTBean.EV_IsCanRead = "N";
-                }
-            }
-            catch (Exception ex)
-            {
-                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
-                pMsg += " 失敗行數：" + ex.ToString();
-
-                CMF.writeToLog("", "VIEWCONTRACTSMEMBERSINFO_GET_API", pMsg, "SYS");
-
-                OUTBean.EV_MSGT = "E";
-                OUTBean.EV_MSG = ex.Message;
-                OUTBean.EV_IsCanRead = "N";
-            }
-
-            return OUTBean;
-        }
-        #endregion       
-
-        #region 查詢是否可以讀取合約書PDF權限資料INPUT資訊
-        /// <summary>查詢是否可以讀取合約書PDF權限資料INPUT資訊</summary>
-        public struct VIEWCONTRACTSMEMBERSINFO_INPUT
-        {
-            /// <summary>登入者員工編號ERPID</summary>
-            public string IV_LOGINEMPNO { get; set; }
-            /// <summary>文件編號</summary>
-            public string IV_CONTRACTID { get; set; }
-            /// <summary>服務團隊代碼</summary>
-            public string IV_SRTEAM { get; set; }            
-        }
-        #endregion
-
-        #region 查詢是否可以讀取合約書PDF權限資料OUTPUT資訊
-        /// <summary>查詢是否可以讀取合約書PDF權限資料OUTPUT資訊</summary>
-        public struct VIEWCONTRACTSMEMBERSINFO_OUTPUT
-        {
-            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
-            public string EV_MSGT { get; set; }
-            /// <summary>消息內容</summary>
-            public string EV_MSG { get; set; }
-            /// <summary>是否可以讀取合約書PDF(Y.是 N.否)</summary>
-            public string EV_IsCanRead { get; set; }
-        }
-        #endregion
-
-        #endregion -----↑↑↑↑↑查詢是否可以讀取合約書PDF權限 ↑↑↑↑↑-----
+        #endregion -----↑↑↑↑↑查詢合約標的 ↑↑↑↑↑-----        
 
         #region -----↓↓↓↓↓更新進出貨的資料 ↓↓↓↓↓-----
 
@@ -10621,6 +10741,87 @@ namespace TSTI_API.Controllers
         /// 純附件
         /// </summary>
         ATTACH
+    }
+    #endregion
+
+    #region 合約主數據資訊(For Mail)
+    /// <summary>合約主數據資訊(For Mail)</summary>
+    public class CONTRACTMAININFO
+    {
+        /// <summary>文件編號</summary>
+        public string ContractID { get; set; }        
+        /// <summary>服務團隊</summary>
+        public string TeamNAME { get; set; }
+        /// <summary>服務團隊主管</summary>
+        public string TeamMGR { get; set; }
+        /// <summary>主要工程師</summary>
+        public string MainENG { get; set; }
+        /// <summary>協助工程師</summary>
+        public string AssENG { get; set; }       
+        /// <summary>業務人員</summary>
+        public string SalesEMP { get; set; }
+        /// <summary>業務祕書</summary>
+        public string SecretaryEMP { get; set; }
+        /// <summary>維護業務人員</summary>
+        public string MASalesEMP { get; set; }
+        /// <summary>異動時間</summary>
+        public string ModifiedDate { get; set; }
+
+        /// <summary>銷售訂單</summary>
+        public string SoNo { get; set; }
+        /// <summary>客戶ID</summary>
+        public string CustomerID { get; set; }
+        /// <summary>客戶名稱</summary>
+        public string CustomerName { get; set; }
+        /// <summary>訂單說明</summary>
+        public string Desc { get; set; }
+        /// <summary>維護日期(起)</summary>
+        public string StartDate { get; set; }
+        /// <summary>維護日期(迄)</summary>
+        public string EndDate { get; set; }
+        /// <summary>維護週期</summary>
+        public string MACycle { get; set; }
+        /// <summary>維護備註</summary>
+        public string MANotes { get; set; }
+        /// <summary>維護地址</summary>
+        public string MAAddress { get; set; }
+        /// <summary>合約備註</summary>
+        public string ContractNotes { get; set; }
+        /// <summary>請款備註</summary>
+        public string BillNotes { get; set; }
+        /// <summary>Log記錄</summary>
+        public string Logs { get; set; }        
+
+        /// <summary>服務團隊主管Email</summary>
+        public string TeamMGREmail { get; set; }
+        /// <summary>主要工程師Email</summary>
+        public string MainENGEmail { get; set; }
+        /// <summary>協助工程師Email</summary>
+        public string AssENGEmail { get; set; }        
+        /// <summary>業務人員Email</summary>
+        public string SalesEmail { get; set; }
+        /// <summary>業務祕書Email</summary>
+        public string SecretaryEmail { get; set; }
+        /// <summary>維護業務人員Email</summary>
+        public string MASalesEmail { get; set; }
+    }
+    #endregion
+
+    #region 合約主數據執行條件
+    /// <summary>
+    /// 合約主數據執行條件
+    /// </summary>
+    public enum ContractCondition
+    {
+        /// <summary>
+        /// 新建
+        /// </summary>
+        ADD,        
+
+        /// <summary>
+        /// 保存
+        /// </summary>
+        SAVE       
     }
     #endregion
 }
