@@ -49,6 +49,7 @@ namespace TSTI_API.Models
         public string cSecretaryName { get; set; }
         public string cSalesNo { get; set; }
         public string cShipmentNo { get; set; }
+        public string cContractID { get; set; }
         public string cFaultGroup { get; set; }
         public string cFaultGroupNote1 { get; set; }
         public string cFaultGroupNote2 { get; set; }
