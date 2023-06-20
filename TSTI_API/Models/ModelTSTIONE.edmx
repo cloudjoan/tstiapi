@@ -97,6 +97,8 @@
           <Property Name="cBillCycle" Type="nvarchar" MaxLength="512" />
           <Property Name="cBillNotes" Type="nvarchar" MaxLength="512" />
           <Property Name="cInvalidReason" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
+          <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
           <Property Name="Disabled" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
@@ -498,9 +500,9 @@
           <EntitySet Name="TB_ONE_ContractDetail_ENG" EntityType="Model.TB_ONE_ContractDetail_ENG" />
           <EntitySet Name="TB_ONE_ContractDetail_OBJ" EntityType="Model.TB_ONE_ContractDetail_OBJ" />
           <EntitySet Name="TB_ONE_ContractDetail_SUB" EntityType="Model.TB_ONE_ContractDetail_SUB" />
-          <EntitySet Name="TB_ONE_ContractMain" EntityType="Model.TB_ONE_ContractMain" />
           <EntitySet Name="TB_ONE_ContractIDTemp" EntityType="Model.TB_ONE_ContractIDTemp" />
           <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
+          <EntitySet Name="TB_ONE_ContractMain" EntityType="Model.TB_ONE_ContractMain" />
           </EntityContainer>
         <EntityType Name="TB_ONE_SRDetail_Contact">
           <Key>
@@ -844,41 +846,6 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="TB_ONE_ContractMain">
-          <Key>
-            <PropertyRef Name="cContractID" />
-          </Key>
-          <Property Name="cContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="cSoNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="cSoSales" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="cSoSalesName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="cSoSalesASS" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="cSoSalesASSName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="cMASales" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="cMASalesName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="cCustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="cCustomerName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="cDesc" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="cStartDate" Type="DateTime" Precision="3" />
-          <Property Name="cEndDate" Type="DateTime" Precision="3" />
-          <Property Name="cMACycle" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="cMANotes" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="cMAAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="cSLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="cSLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="cContractNotes" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="cContractReport" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="cTeamID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="cIsSubContract" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="cBillCycle" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="cBillNotes" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="cInvalidReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Disabled" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="TB_ONE_ContractIDTemp">
           <Key>
             <PropertyRef Name="cContractID" />
@@ -940,6 +907,43 @@
           <Property Name="cFaultSpecNote2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="cFaultSpecNoteOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="cSystemGUID" Type="Guid" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_ONE_ContractMain">
+          <Key>
+            <PropertyRef Name="cContractID" />
+          </Key>
+          <Property Name="cContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cSoNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cSoSales" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cSoSalesName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cSoSalesASS" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cSoSalesASSName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cMASales" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cMASalesName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cCustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cCustomerName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cDesc" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="cStartDate" Type="DateTime" Precision="3" />
+          <Property Name="cEndDate" Type="DateTime" Precision="3" />
+          <Property Name="cMACycle" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="cMANotes" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="cMAAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cSLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cSLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContractNotes" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="cContractReport" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cTeamID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cIsSubContract" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="cBillCycle" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="cBillNotes" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="cInvalidReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContactName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Disabled" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
@@ -1308,42 +1312,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TB_ONE_ContractMain">
-            <EntityTypeMapping TypeName="Model.TB_ONE_ContractMain">
-              <MappingFragment StoreEntitySet="TB_ONE_ContractMain">
-                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
-                <ScalarProperty Name="cInvalidReason" ColumnName="cInvalidReason" />
-                <ScalarProperty Name="cBillNotes" ColumnName="cBillNotes" />
-                <ScalarProperty Name="cBillCycle" ColumnName="cBillCycle" />
-                <ScalarProperty Name="cIsSubContract" ColumnName="cIsSubContract" />
-                <ScalarProperty Name="cTeamID" ColumnName="cTeamID" />
-                <ScalarProperty Name="cContractReport" ColumnName="cContractReport" />
-                <ScalarProperty Name="cContractNotes" ColumnName="cContractNotes" />
-                <ScalarProperty Name="cSLASRV" ColumnName="cSLASRV" />
-                <ScalarProperty Name="cSLARESP" ColumnName="cSLARESP" />
-                <ScalarProperty Name="cMAAddress" ColumnName="cMAAddress" />
-                <ScalarProperty Name="cMANotes" ColumnName="cMANotes" />
-                <ScalarProperty Name="cMACycle" ColumnName="cMACycle" />
-                <ScalarProperty Name="cEndDate" ColumnName="cEndDate" />
-                <ScalarProperty Name="cStartDate" ColumnName="cStartDate" />
-                <ScalarProperty Name="cDesc" ColumnName="cDesc" />
-                <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
-                <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
-                <ScalarProperty Name="cMASalesName" ColumnName="cMASalesName" />
-                <ScalarProperty Name="cMASales" ColumnName="cMASales" />
-                <ScalarProperty Name="cSoSalesASSName" ColumnName="cSoSalesASSName" />
-                <ScalarProperty Name="cSoSalesASS" ColumnName="cSoSalesASS" />
-                <ScalarProperty Name="cSoSalesName" ColumnName="cSoSalesName" />
-                <ScalarProperty Name="cSoSales" ColumnName="cSoSales" />
-                <ScalarProperty Name="cSoNo" ColumnName="cSoNo" />
-                <ScalarProperty Name="cContractID" ColumnName="cContractID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TB_ONE_ContractIDTemp">
             <EntityTypeMapping TypeName="Model.TB_ONE_ContractIDTemp">
               <MappingFragment StoreEntitySet="TB_ONE_ContractIDTemp">
@@ -1409,6 +1377,44 @@
                 <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
                 <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
                 <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_ONE_ContractMain">
+            <EntityTypeMapping TypeName="Model.TB_ONE_ContractMain">
+              <MappingFragment StoreEntitySet="TB_ONE_ContractMain">
+                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="cContactEmail" ColumnName="cContactEmail" />
+                <ScalarProperty Name="cContactName" ColumnName="cContactName" />
+                <ScalarProperty Name="cInvalidReason" ColumnName="cInvalidReason" />
+                <ScalarProperty Name="cBillNotes" ColumnName="cBillNotes" />
+                <ScalarProperty Name="cBillCycle" ColumnName="cBillCycle" />
+                <ScalarProperty Name="cIsSubContract" ColumnName="cIsSubContract" />
+                <ScalarProperty Name="cTeamID" ColumnName="cTeamID" />
+                <ScalarProperty Name="cContractReport" ColumnName="cContractReport" />
+                <ScalarProperty Name="cContractNotes" ColumnName="cContractNotes" />
+                <ScalarProperty Name="cSLASRV" ColumnName="cSLASRV" />
+                <ScalarProperty Name="cSLARESP" ColumnName="cSLARESP" />
+                <ScalarProperty Name="cMAAddress" ColumnName="cMAAddress" />
+                <ScalarProperty Name="cMANotes" ColumnName="cMANotes" />
+                <ScalarProperty Name="cMACycle" ColumnName="cMACycle" />
+                <ScalarProperty Name="cEndDate" ColumnName="cEndDate" />
+                <ScalarProperty Name="cStartDate" ColumnName="cStartDate" />
+                <ScalarProperty Name="cDesc" ColumnName="cDesc" />
+                <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
+                <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
+                <ScalarProperty Name="cMASalesName" ColumnName="cMASalesName" />
+                <ScalarProperty Name="cMASales" ColumnName="cMASales" />
+                <ScalarProperty Name="cSoSalesASSName" ColumnName="cSoSalesASSName" />
+                <ScalarProperty Name="cSoSalesASS" ColumnName="cSoSalesASS" />
+                <ScalarProperty Name="cSoSalesName" ColumnName="cSoSalesName" />
+                <ScalarProperty Name="cSoSales" ColumnName="cSoSales" />
+                <ScalarProperty Name="cSoNo" ColumnName="cSoNo" />
+                <ScalarProperty Name="cContractID" ColumnName="cContractID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

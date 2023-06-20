@@ -39,6 +39,8 @@ namespace TSTI_API.Models
         public string cBillCycle { get; set; }
         public string cBillNotes { get; set; }
         public string cInvalidReason { get; set; }
+        public string cContactName { get; set; }
+        public string cContactEmail { get; set; }
         public Nullable<int> Disabled { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUserName { get; set; }

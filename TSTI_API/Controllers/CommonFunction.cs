@@ -24,6 +24,7 @@ namespace TSTI_API.Controllers
         ERP_PROXY_DBEntities dbProxy = new ERP_PROXY_DBEntities();
         PSIPEntities dbPSIP = new PSIPEntities();
         BIEntities dbBI = new BIEntities();
+        TAIFEntities dbBPM = new TAIFEntities();
 
         /// <summary>
         /// 程式作業編號檔系統ID(ALL，固定的GUID)
@@ -864,7 +865,7 @@ namespace TSTI_API.Controllers
 
             return reValue;
         }
-        #endregion
+        #endregion       
 
         #region 傳入服務團隊ID並取得公司別
         /// <summary>
@@ -2172,7 +2173,7 @@ namespace TSTI_API.Controllers
         /// </summary>
         /// <param name="keyword">ERPID</param>        
         /// <returns></returns>
-        public string findEmployeeNameInCludeLevae(string keyword)
+        public string findEmployeeNameInCludeLeave(string keyword)
         {
             string reValue = string.Empty;
 
@@ -5777,6 +5778,163 @@ namespace TSTI_API.Controllers
             }
 
             return reValue;
+        }
+        #endregion
+
+        #region 取得【用印或內部轉撥服務】BPM表單相關資料
+        /// <summary>
+        /// 取得【用印或內部轉撥服務】BPM表單相關資料
+        /// </summary>
+        /// <param name="BPMNO">表單編號</param>
+        /// <returns></returns>
+        public BPMCONTRACTINFO findBPMCONTRACTINFO(string BPMNO)
+        {
+            BPMCONTRACTINFO beanM = new BPMCONTRACTINFO();
+
+            bool tIsA2Form = false; //判斷是否為用印申請單
+
+            if (BPMNO.Substring(0,2) == "A2")
+            {
+                tIsA2Form = true;
+            }
+            
+            if (tIsA2Form)
+            {
+                #region 用印申請單
+                var bean = dbBPM.tblForm_ContractSeals.FirstOrDefault(x => x.cSystem_FormNo == BPMNO);
+
+                if (bean != null)
+                {
+                    beanM.IV_CONTACT = bean.cContent_ContractID;
+                    beanM.IV_SONO = "";                    
+                    beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO);
+                    beanM.IV_ASSITANCE = bean.cContent_Secretary;
+
+                    beanM.IV_ContractVendor = bean.cContent_ContractVendor.ToString();
+
+                    if (beanM.IV_ContractVendor == "0") //客戶
+                    {
+                        beanM.IV_CUSTOMER = bean.cContent_ContractUserID;
+                    }
+                    else
+                    {
+                        beanM.IV_CUSTOMER = "";
+                    }
+
+                    if (beanM.IV_ContractVendor == "1") //供應商
+                    {
+                        beanM.IV_SODESC = bean.cContent_ContractUserID + "_" + bean.cContent_ContractDesc;
+                        beanM.IV_SUBNUMBER = bean.cContent_ContractUserID;
+                        beanM.IV_ContractUser = bean.cContent_ContractUser;
+                    }
+                    else
+                    {
+                        beanM.IV_SODESC = bean.cContent_ContractDesc;
+                    }
+
+                    beanM.IV_SDATE = Convert.ToDateTime(bean.cContent_ContractStrDate);
+                    beanM.IV_EDATE = Convert.ToDateTime(bean.cContent_ContractEndDate);
+                    beanM.IV_REQPAY = bean.cContent_ContractInfo_MakeMoney;
+                    beanM.IV_CYCLE = bean.cContent_ContractInfo_Maintain;
+                    beanM.IV_NOTES = bean.cContent_ContractInfo_Note;
+                    beanM.IV_ADDR = bean.cContent_ContractInfo_Address;
+                    beanM.IV_SLASRV = bean.cContent_ContractInfo_Service;
+                    beanM.IV_SLARESP = bean.cContent_ContractInfo_Responses;
+                    beanM.IV_NOTE = bean.cContent_ContractInfo_Memo;
+                    beanM.IV_ORGID = bean.cContent_ContractInfo_Team;
+                    beanM.IV_MAINID = bean.cContent_ContractInfo_MainNo;
+                    beanM.IV_PAYNOTE = bean.cContent_ContractInfo_PayNote;
+                    beanM.IV_MAINTAIN_SALES = bean.cContent_MaintainSales;
+                    beanM.IV_ContactName = "";
+                    beanM.IV_ContactEmail = "";
+                }
+                #endregion
+            }
+            else
+            {
+                #region 內部轉撥服務單
+                var bean = dbBPM.tblForm_SubContractSeals.FirstOrDefault(x => x.cSystem_FormNo == BPMNO);
+
+                if (bean != null)
+                {
+                    beanM.IV_ContractVendor = bean.cContent_ContractVendor.ToString();
+
+                    if (beanM.IV_ContractVendor == "0") //客戶
+                    {
+                        beanM.IV_CUSTOMER = bean.cContent_ContractUserID;
+                        beanM.IV_SODESC = bean.cContent_ContractDesc;                        
+                        beanM.IV_SALES = findEmployeeInCludeLeaveEByERP_ID(bean.cContent_MainUser_EmployeeNO); //主約業務
+                        
+                    }
+                    else if (beanM.IV_ContractVendor == "1") //供應商
+                    {
+                        beanM.IV_CUSTOMER = "";
+                        beanM.IV_SODESC = bean.cContent_ContractUserID + "_" + bean.cContent_ContractDesc;
+                        beanM.IV_SUBNUMBER = bean.cContent_ContractUserID;
+                        beanM.IV_ContractUser = bean.cContent_ContractUser;
+                        beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO); //維護業務
+                    }
+                    else //其他
+                    {
+                        beanM.IV_CUSTOMER = "";
+                        beanM.IV_SODESC = bean.cContent_ContractDesc;
+                        beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO); //維護業務
+                    }
+
+                    beanM.IV_CONTACT = bean.cContent_ContractID;
+                    beanM.IV_SUBCONTACT = bean.cContent_ContractInfo_MainNo;
+                    beanM.IV_SONO = "";                    
+                    beanM.IV_ASSITANCE = bean.cContent_Secretary;
+                    beanM.IV_SDATE = Convert.ToDateTime(bean.cContent_ContractStrDate);
+                    beanM.IV_EDATE = Convert.ToDateTime(bean.cContent_ContractEndDate);
+                    beanM.IV_REQPAY = bean.cContent_ContractInfo_MakeMoney;
+                    beanM.IV_CYCLE = bean.cContent_ContractInfo_Maintain;
+                    beanM.IV_NOTES = bean.cContent_ContractInfo_Note;
+                    beanM.IV_ADDR = bean.cContent_ContractInfo_Address;
+                    beanM.IV_SLASRV = bean.cContent_ContractInfo_Service;
+                    beanM.IV_SLARESP = bean.cContent_ContractInfo_Responses;
+                    beanM.IV_NOTE = bean.cContent_ContractInfo_Memo;
+                    beanM.IV_ORGID = bean.cContent_ContractInfo_Team;
+                    beanM.IV_MAINID = bean.cContent_ContractInfo_MainNo;
+                    beanM.IV_PAYNOTE = bean.cContent_ContractInfo_PayNote;
+                    beanM.IV_MAINTAIN_SALES = bean.cContent_MaintainSales;
+                    beanM.IV_ContactName = "";
+                    beanM.IV_ContactEmail = "";
+                }
+                #endregion
+            }
+
+            return beanM;
+        }
+        #endregion
+
+        #region 傳入員工帳號，取得ERP_ID
+        /// <summary>
+        /// 傳入員工帳號，取得ERP_ID
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public string findEmployeeByERP_ID(string keyword)
+        {
+            tblEmployee tEmployee = dbBPM.tblEmployee.FirstOrDefault(x => x.cEmployee_NO == keyword &&
+                                                                       x.cEmployee_LeaveReason == null &&
+                                                                       x.cEmployee_LeaveDay == null);
+
+            return tEmployee.cEmployee_ERPID;
+        }
+        #endregion
+
+        #region 傳入員工帳號(含離職人員)，取得ERP_ID
+        /// <summary>
+        /// 傳入員工帳號(含離職人員)，取得ERP_ID
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public string findEmployeeInCludeLeaveEByERP_ID(string keyword)
+        {
+            tblEmployee tEmployee = dbBPM.tblEmployee.OrderByDescending(x => x.pk).FirstOrDefault(x => x.cEmployee_NO == keyword);
+
+            return tEmployee.cEmployee_ERPID;
         }
         #endregion
 

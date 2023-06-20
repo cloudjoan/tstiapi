@@ -92,6 +92,8 @@
     <Property Name="cBillCycle" Type="nvarchar" MaxLength="512" />
     <Property Name="cBillNotes" Type="nvarchar" MaxLength="512" />
     <Property Name="cInvalidReason" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
     <Property Name="Disabled" Type="int" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />

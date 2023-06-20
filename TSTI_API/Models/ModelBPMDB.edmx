@@ -1,0 +1,1230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TAIFModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblEmployee">
+          <Key>
+            <PropertyRef Name="cEmployee_ID" />
+          </Key>
+          <Property Name="cEmployee_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="cEmployee_NO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cEmployee_cName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="cEmployee_Ename" Type="nvarchar" MaxLength="50" />
+          <Property Name="cEmployee_Title" Type="varchar" MaxLength="20" />
+          <Property Name="cDepartment_ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="cEmployee_Level" Type="int" Nullable="false" />
+          <Property Name="cEmployee_PositionCode" Type="int" />
+          <Property Name="cEmployee_PositionCode2" Type="varchar" MaxLength="20" />
+          <Property Name="cEmployee_Away" Type="bit" Nullable="false" />
+          <Property Name="cEmployee_Tel" Type="varchar" MaxLength="50" />
+          <Property Name="cEmployee_Mobile" Type="varchar" MaxLength="50" />
+          <Property Name="cEmployee_Fax" Type="varchar" MaxLength="50" />
+          <Property Name="cEmployee_Email" Type="varchar" MaxLength="50" />
+          <Property Name="cEmployee_NotifyTypeID" Type="int" Nullable="false" />
+          <Property Name="cEmployee_Pluralism" Type="bit" Nullable="false" />
+          <Property Name="cEmployee_Status" Type="int" Nullable="false" />
+          <Property Name="cEmployee_PID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="cEmployee_BrithDay" Type="smalldatetime" />
+          <Property Name="cEmployee_ConstellationID" Type="varchar" MaxLength="20" />
+          <Property Name="cEmployee_PhotoPath" Type="nvarchar" MaxLength="200" />
+          <Property Name="cEmployee_SexID" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="cEmployee_JobStatusID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="cEmployee_RegestDate" Type="datetime" />
+          <Property Name="cEmployee_CallInDate" Type="datetime" />
+          <Property Name="cEmployee_CallOutDate" Type="datetime" />
+          <Property Name="cEmployee_ReplaceDate" Type="datetime" />
+          <Property Name="cEmployee_TakeDay" Type="smalldatetime" />
+          <Property Name="cEmployee_LeaveDay" Type="smalldatetime" />
+          <Property Name="cEmployee_LeaveReason" Type="nvarchar" MaxLength="100" />
+          <Property Name="cEmployee_CompanyCode" Type="varchar" MaxLength="20" />
+          <Property Name="cEmployee_AreaCode" Type="varchar" MaxLength="20" />
+          <Property Name="cEmployee_JobTypeID" Type="varchar" MaxLength="20" />
+          <Property Name="cEmployee_Title1" Type="varchar" MaxLength="20" />
+          <Property Name="cEmployee_Title2" Type="varchar" MaxLength="20" />
+          <Property Name="cEmployee_CapitalPosition1" Type="varchar" MaxLength="20" />
+          <Property Name="cEmployee_CapitalPosition2" Type="varchar" MaxLength="20" />
+          <Property Name="cEmployee_CpDate" Type="datetime" />
+          <Property Name="cEmployee_Position1" Type="varchar" MaxLength="20" />
+          <Property Name="cEmployee_Position2" Type="varchar" MaxLength="20" />
+          <Property Name="cEmployee_PositionDate" Type="datetime" />
+          <Property Name="cEmployee_CompanyPhone" Type="varchar" MaxLength="20" />
+          <Property Name="cEmployee_CompanyPhoneExt" Type="varchar" MaxLength="10" />
+          <Property Name="cEmployee_NationalityID" Type="nvarchar" MaxLength="10" />
+          <Property Name="cEmployee_BloodType" Type="varchar" MaxLength="2" />
+          <Property Name="cEmployee_WorkPlace" Type="nvarchar" MaxLength="100" />
+          <Property Name="cEmployee_ERPID" Type="nvarchar" MaxLength="10" />
+          <Property Name="cEmployee_Workers" Type="nvarchar" MaxLength="50" />
+          <Property Name="cEmployee_Center" Type="nvarchar" MaxLength="20" />
+          <Property Name="cEmployee_Assign_Type" Type="varchar" MaxLength="2" />
+          <Property Name="cEmployee_IsEnable" Type="bit" Nullable="false" />
+          <Property Name="cEmployee_Account" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="cEmployee_CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="cEmployee_CreateUser" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="cEmployee_ModifyDate" Type="datetime" />
+          <Property Name="cEmployee_ModifyUser" Type="uniqueidentifier" />
+          <Property Name="cEmployee_Level1" Type="nvarchar" MaxLength="50" />
+          <Property Name="cEmployee_Level2" Type="nvarchar" MaxLength="50" />
+          <Property Name="cEmployee_Level1_Date" Type="smalldatetime" />
+          <Property Name="cEmployee_Level2_Date" Type="smalldatetime" />
+          <Property Name="cEmployee_Introducer" Type="nvarchar" MaxLength="50" />
+          <Property Name="cEmployee_IsVegetarian" Type="bit" />
+          <Property Name="cEmployee_ProfitcenterID" Type="uniqueidentifier" />
+          <Property Name="cEmployee_CostCenterID" Type="uniqueidentifier" />
+          <Property Name="pk" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tblForm_ContractSeals">
+          <Key>
+            <PropertyRef Name="cSystem_FormNo" />
+          </Key>
+          <Property Name="cSystem_FormNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cSystem_ApplyDate" Type="datetime" />
+          <Property Name="cSystem_FinishDate" Type="datetime" />
+          <Property Name="cSystem_MainStatus" Type="varchar" MaxLength="10" />
+          <Property Name="cSystem_Status" Type="varchar" MaxLength="50" />
+          <Property Name="cSystem_StatusDescription" Type="nvarchar" MaxLength="100" />
+          <Property Name="cSystem_IsBatchApproval" Type="bit" />
+          <Property Name="cSystem_HasSubmitted" Type="bit" />
+          <Property Name="cSystem_TerminateReason" Type="nvarchar" MaxLength="300" />
+          <Property Name="cSystem_ErrorMessage" Type="nvarchar" MaxLength="300" />
+          <Property Name="cApplyUser_EmployeeNO" Type="varchar" MaxLength="50" />
+          <Property Name="cApplyUser_EmployeeID" Type="uniqueidentifier" />
+          <Property Name="cApplyUser_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="cApplyUser_Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="cApplyUser_DepartmentID" Type="uniqueidentifier" />
+          <Property Name="cApplyUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+          <Property Name="cApplyUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+          <Property Name="cApplyUser_PhoneExt" Type="varchar" MaxLength="20" />
+          <Property Name="cApplyUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+          <Property Name="cFillUser_EmployeeNO" Type="varchar" MaxLength="50" />
+          <Property Name="cFillUser_EmployeeID" Type="uniqueidentifier" />
+          <Property Name="cFillUser_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="cFillUser_Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="cFillUser_DepartmentID" Type="uniqueidentifier" />
+          <Property Name="cFillUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+          <Property Name="cFillUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+          <Property Name="cFillUser_PhoneExt" Type="varchar" MaxLength="20" />
+          <Property Name="cFillUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+          <Property Name="cAgentUser_EmployeeNO" Type="varchar" MaxLength="50" />
+          <Property Name="cAgentUser_EmployeeID" Type="uniqueidentifier" />
+          <Property Name="cAgentUser_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="cAgentUser_Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="cAgentUser_DepartmentID" Type="uniqueidentifier" />
+          <Property Name="cAgentUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+          <Property Name="cAgentUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+          <Property Name="cAgentUser_PhoneExt" Type="varchar" MaxLength="10" />
+          <Property Name="cAgentUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_FormSecretary" Type="nvarchar" MaxLength="30" />
+          <Property Name="cContent_FormSecretaryName" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_FormSecretaryID" Type="uniqueidentifier" />
+          <Property Name="cContent_ContractID" Type="nvarchar" MaxLength="10" />
+          <Property Name="cContent_OldContractID" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_IsRenew" Type="varchar" MaxLength="1" />
+          <Property Name="cContent_ContractReferenceNo" Type="nvarchar" MaxLength="30" />
+          <Property Name="cContent_ContractName" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ContractType" Type="nvarchar" MaxLength="2" />
+          <Property Name="cContent_ContractType_0" Type="nvarchar" MaxLength="2" />
+          <Property Name="cContent_ContractType_1" Type="nvarchar" MaxLength="2" />
+          <Property Name="cContent_ContractTypeOther1" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ContractType_2" Type="nvarchar" MaxLength="2" />
+          <Property Name="cContent_ContractTypeOther2" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ContractInfo_Maintain" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cContent_ContractInfo_MakeMoney" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cContent_ContractInfo_Note" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cContent_ContractInfo_Address" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ContractInfo_Responses" Type="nvarchar" MaxLength="10" />
+          <Property Name="cContent_ContractInfo_Service" Type="nvarchar" MaxLength="10" />
+          <Property Name="cContent_ContractInfo_Team" Type="nvarchar" MaxLength="15" />
+          <Property Name="cContent_ContractInfo_MainNo" Type="nvarchar" MaxLength="10" />
+          <Property Name="cContent_ContractInfo_MainNoCName" Type="nvarchar" MaxLength="500" />
+          <Property Name="cContent_ContractInfo_Memo" Type="nvarchar(max)" />
+          <Property Name="cContent_Secretary" Type="nvarchar" MaxLength="30" />
+          <Property Name="cContent_SecretaryName" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_SecretaryID" Type="uniqueidentifier" />
+          <Property Name="cContent_MaintainSales" Type="nvarchar" MaxLength="30" />
+          <Property Name="cContent_MaintainSalesName" Type="nvarchar" MaxLength="30" />
+          <Property Name="cContent_ContractFirst" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_CrmOppNo" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_CostFormNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContent_ContractVendor" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractUser" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ContractUserID" Type="nvarchar" MaxLength="15" />
+          <Property Name="cContent_ContractDesc" Type="nvarchar(max)" />
+          <Property Name="cContent_ContractStrDate" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_ContractEndDate" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_ContractYear" Type="nvarchar" MaxLength="3" />
+          <Property Name="cContent_ContractMonth" Type="nvarchar" MaxLength="2" />
+          <Property Name="cContent_ContractExtendDate" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_ContractPGYear" Type="nvarchar" MaxLength="4" />
+          <Property Name="cContent_ContractPGMonth" Type="nvarchar" MaxLength="2" />
+          <Property Name="cContent_ContractPGOther" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_AttatchementId" Type="nvarchar(max)" />
+          <Property Name="cContent_ContractECSApplyNo" Type="nvarchar" MaxLength="10" />
+          <Property Name="cContent_ContractPaper" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal1" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal2" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal3" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal4" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal5" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal6" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal7a" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_ContractSeal7b" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_ContractInfo1" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="cContent_ContractInfo1_IN" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="cContent_ContractInfo2" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="cContent_ContractInfo3" Type="nvarchar" MaxLength="2000" />
+          <Property Name="cContent_ContractInfo4" Type="nvarchar" MaxLength="2000" />
+          <Property Name="cContent_ContractInfo5" Type="nvarchar" MaxLength="2000" />
+          <Property Name="cContent_ContractInfo6" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractInfo6Other" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ContractInfo6Place" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ContractDept1" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractDept2" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractDept3" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractDept4" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractDept5" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractDept6" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractDept7" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractDept8" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractDept9" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractDept10" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractDept11" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractDept12" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ContractDescription" Type="nvarchar(max)" />
+          <Property Name="cContent_HandlingSecret" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_ClassifiedLevel" Type="varchar" MaxLength="2" />
+          <Property Name="cContent_HandlingTax" Type="nchar" MaxLength="1" />
+          <Property Name="cContent_HandlingTotalTax" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="cContent_AttatchementId_1" Type="nvarchar(max)" />
+          <Property Name="cContent_AttatchementId_2" Type="nvarchar(max)" />
+          <Property Name="cContent_AttatchementId_3" Type="nvarchar(max)" />
+          <Property Name="cContent_AttatchementId_4" Type="nvarchar(max)" />
+          <Property Name="cContent_IsSaved" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_IsHandlinged" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_IsHandlingChange" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_FlowStage" Type="varchar" MaxLength="2" />
+          <Property Name="cSystem_CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="cSystem_CreatedUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="cSystem_CreatedUserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="cSystem_ModifiedDate" Type="datetime" />
+          <Property Name="cSystem_ModifiedUserID" Type="uniqueidentifier" />
+          <Property Name="cSystem_ModifiedUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="cApplyUser_FullDepartmentName" Type="nvarchar" MaxLength="150" />
+          <Property Name="cFillUser_FullDepartmentName" Type="nvarchar" MaxLength="150" />
+          <Property Name="cAgentUser_FullDepartmentName" Type="nvarchar" MaxLength="150" />
+          <Property Name="cSystem_TaskStartDate" Type="datetime" />
+          <Property Name="cSystem_TaskUserAccounts" Type="nvarchar" MaxLength="300" />
+          <Property Name="cSystem_TaskUserNames" Type="nvarchar" MaxLength="500" />
+          <Property Name="cContent_ContractInfo3_0" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_ContractInfo_PayNote" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cContent_ContractInfo_MakeMoney2" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cContent_ContractInfo_PayNote2" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cContent_Secretary2" Type="nvarchar" MaxLength="30" />
+          <Property Name="cContent_SecretaryName2" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_SecretaryID2" Type="uniqueidentifier" />
+          <Property Name="cContent_ContractTypeOther0" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_SealsFormNo" Type="varchar" MaxLength="50" />
+          <Property Name="cContent_OrigCurrency" Type="nvarchar" MaxLength="5" />
+          <Property Name="cContent_OrigAmount" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="cContent_ExchangeRate" Type="nvarchar" MaxLength="10" />
+          <Property Name="cContent_IsCFOBeforeFlow" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_ReturnContractID" Type="nvarchar" MaxLength="10" />
+          <Property Name="cContent_ContractInfo3Note" Type="nvarchar" MaxLength="2000" />
+          <Property Name="cContent_ContractSeal8" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal9" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal10" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal11" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal12" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal13" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal14" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal15" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_ContractSeal16" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_PreSaleNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContent_ContractSealOther" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ChairmanApprove" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_CurrentType" Type="nvarchar" MaxLength="1" />
+          <Property Name="cInheritUser_EmployeeNO" Type="nvarchar" MaxLength="30" />
+          <Property Name="cInheritUser_Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="cInheritUser_EmployeeID" Type="uniqueidentifier" />
+          <Property Name="cInheritUser_DepartmentID" Type="uniqueidentifier" />
+          <Property Name="cInheritUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+          <Property Name="cInheritUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+          <Property Name="cInheritUser_PhoneExt" Type="varchar" MaxLength="10" />
+          <Property Name="cInheritUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_ContactType" Type="varchar" MaxLength="1" />
+          <Property Name="cContent_ContactPersonName" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContent_ContactPersonTitle" Type="varchar" MaxLength="1" />
+          <Property Name="cContent_ContactPersonAddCode" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_ContactPersonAddCity" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_ContactPersonAddTownship" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_ContactPersonAddRoad" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContent_ContactPersonAddNo" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_ContactPersonPhone" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_ContactPersonEmail" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_HandlingDate" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_HandlingFee" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="cContent_HandlingDelayMemo" Type="nvarchar(max)" />
+          <Property Name="cContent_ReceiveCondition" Type="nvarchar" MaxLength="5" />
+          <Property Name="cContent_ReceiveOther" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_ReceiveRemarks" Type="nvarchar(max)" />
+          <Property Name="cContent_SAPReceiveCondition" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContent_PaymentCondition" Type="nvarchar" MaxLength="5" />
+          <Property Name="cContent_PaymentOther" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_PaymentRemarks" Type="nvarchar(max)" />
+          <Property Name="cContent_SAPPaymentCondition" Type="nvarchar" MaxLength="50" />
+          <Property Name="cSystemGUID" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="tblForm_SubContractSeals">
+          <Key>
+            <PropertyRef Name="cSystem_FormNo" />
+          </Key>
+          <Property Name="cSystem_FormNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cSystem_ApplyDate" Type="datetime" />
+          <Property Name="cSystem_FinishDate" Type="datetime" />
+          <Property Name="cSystem_MainStatus" Type="varchar" MaxLength="10" />
+          <Property Name="cSystem_Status" Type="varchar" MaxLength="50" />
+          <Property Name="cSystem_StatusDescription" Type="nvarchar" MaxLength="100" />
+          <Property Name="cSystem_IsBatchApproval" Type="bit" />
+          <Property Name="cSystem_HasSubmitted" Type="bit" />
+          <Property Name="cSystem_TerminateReason" Type="nvarchar" MaxLength="300" />
+          <Property Name="cSystem_ErrorMessage" Type="nvarchar" MaxLength="300" />
+          <Property Name="cApplyUser_EmployeeNO" Type="varchar" MaxLength="50" />
+          <Property Name="cApplyUser_EmployeeID" Type="uniqueidentifier" />
+          <Property Name="cApplyUser_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="cApplyUser_Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="cApplyUser_DepartmentID" Type="uniqueidentifier" />
+          <Property Name="cApplyUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+          <Property Name="cApplyUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+          <Property Name="cApplyUser_PhoneExt" Type="varchar" MaxLength="20" />
+          <Property Name="cApplyUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+          <Property Name="cFillUser_EmployeeNO" Type="varchar" MaxLength="50" />
+          <Property Name="cFillUser_EmployeeID" Type="uniqueidentifier" />
+          <Property Name="cFillUser_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="cFillUser_Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="cFillUser_DepartmentID" Type="uniqueidentifier" />
+          <Property Name="cFillUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+          <Property Name="cFillUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+          <Property Name="cFillUser_PhoneExt" Type="varchar" MaxLength="20" />
+          <Property Name="cFillUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+          <Property Name="cAgentUser_EmployeeNO" Type="varchar" MaxLength="50" />
+          <Property Name="cAgentUser_EmployeeID" Type="uniqueidentifier" />
+          <Property Name="cAgentUser_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="cAgentUser_Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="cAgentUser_DepartmentID" Type="uniqueidentifier" />
+          <Property Name="cAgentUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+          <Property Name="cAgentUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+          <Property Name="cAgentUser_PhoneExt" Type="varchar" MaxLength="10" />
+          <Property Name="cAgentUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_ContractID" Type="nvarchar" MaxLength="10" />
+          <Property Name="cContent_CrmOppNo" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_CostFormNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContent_ContractName" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_MainUser_EmployeeNO" Type="varchar" MaxLength="50" />
+          <Property Name="cContent_MainUser_EmployeeID" Type="uniqueidentifier" />
+          <Property Name="cContent_MainUser_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContent_MainUser_DepartmentID" Type="uniqueidentifier" />
+          <Property Name="cContent_MainUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContent_Amount" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="cContent_Memo" Type="nvarchar(max)" />
+          <Property Name="cContent_ContractInfo_Maintain" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cContent_ContractInfo_MakeMoney" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cContent_ContractInfo_Note" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cContent_ContractInfo_PayNote" Type="nvarchar" MaxLength="1000" />
+          <Property Name="cContent_ContractInfo_Address" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ContractInfo_Responses" Type="nvarchar" MaxLength="10" />
+          <Property Name="cContent_ContractInfo_Service" Type="nvarchar" MaxLength="10" />
+          <Property Name="cContent_ContractInfo_Team" Type="nvarchar" MaxLength="15" />
+          <Property Name="cContent_ContractInfo_MainNo" Type="nvarchar" MaxLength="10" />
+          <Property Name="cContent_ContractInfo_MainNoCName" Type="nvarchar" MaxLength="500" />
+          <Property Name="cContent_ContractInfo_Memo" Type="nvarchar(max)" />
+          <Property Name="cContent_Secretary" Type="nvarchar" MaxLength="30" />
+          <Property Name="cContent_SecretaryName" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_SecretaryID" Type="uniqueidentifier" />
+          <Property Name="cContent_MaintainSales" Type="nvarchar" MaxLength="30" />
+          <Property Name="cContent_MaintainSalesName" Type="nvarchar" MaxLength="30" />
+          <Property Name="cContent_ContractVendor" Type="varchar" MaxLength="1" />
+          <Property Name="cContent_ContractUser" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ContractUserID" Type="nvarchar" MaxLength="15" />
+          <Property Name="cContent_ContractDesc" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ContractStrDate" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_ContractEndDate" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_ContractExtendDate" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_ContractPGYear" Type="nvarchar" MaxLength="3" />
+          <Property Name="cContent_ContractPGMonth" Type="nvarchar" MaxLength="2" />
+          <Property Name="cContent_ContractPGOther" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_OrigCurrency" Type="nvarchar" MaxLength="5" />
+          <Property Name="cContent_OrigAmount" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="cContent_ExchangeRate" Type="nvarchar" MaxLength="10" />
+          <Property Name="cContent_ContractInfo1" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="cContent_ContractInfo2" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="cContent_ContractInfo3_0" Type="nvarchar" MaxLength="1" />
+          <Property Name="cContent_ContractInfo3" Type="nvarchar" MaxLength="100" />
+          <Property Name="cContent_ContractInfo3Note" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ContractInfo4" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_ContractInfo5" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_AttatchementId" Type="nvarchar(max)" />
+          <Property Name="cContent_ClassifiedLevel" Type="varchar" MaxLength="2" />
+          <Property Name="cContent_IsEmptMaintain" Type="varchar" MaxLength="1" />
+          <Property Name="cContent_In1CostFormNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContent_In1CostItem" Type="nvarchar" MaxLength="255" />
+          <Property Name="cContent_NoMainNo" Type="varchar" MaxLength="1" />
+          <Property Name="cContent_InternalNo" Type="nvarchar" MaxLength="12" />
+          <Property Name="cContent_VBELN" Type="nvarchar" MaxLength="20" />
+          <Property Name="cContent_IsDoDraft" Type="varchar" MaxLength="1" />
+          <Property Name="cSystem_CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="cSystem_CreatedUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="cSystem_CreatedUserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="cSystem_ModifiedDate" Type="datetime" />
+          <Property Name="cSystem_ModifiedUserID" Type="uniqueidentifier" />
+          <Property Name="cSystem_ModifiedUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="cApplyUser_FullDepartmentName" Type="nvarchar" MaxLength="150" />
+          <Property Name="cFillUser_FullDepartmentName" Type="nvarchar" MaxLength="150" />
+          <Property Name="cAgentUser_FullDepartmentName" Type="nvarchar" MaxLength="150" />
+          <Property Name="cSystem_TaskStartDate" Type="datetime" />
+          <Property Name="cSystem_TaskUserAccounts" Type="nvarchar" MaxLength="300" />
+          <Property Name="cSystem_TaskUserNames" Type="nvarchar" MaxLength="500" />
+          <Property Name="cInheritUser_EmployeeNO" Type="nvarchar" MaxLength="30" />
+          <Property Name="cInheritUser_Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="cInheritUser_EmployeeID" Type="uniqueidentifier" />
+          <Property Name="cInheritUser_DepartmentID" Type="uniqueidentifier" />
+          <Property Name="cInheritUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+          <Property Name="cInheritUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+          <Property Name="cInheritUser_PhoneExt" Type="varchar" MaxLength="10" />
+          <Property Name="cInheritUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+          <Property Name="Content_FormSecretary" Type="nvarchar" MaxLength="50" />
+          <Property Name="Content_FormSecretaryName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Content_FormSecretaryID" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityContainer Name="TAIFModelStoreContainer">
+          <EntitySet Name="tblEmployee" EntityType="Self.tblEmployee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblForm_ContractSeals" EntityType="Self.tblForm_ContractSeals" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblForm_SubContractSeals" EntityType="Self.tblForm_SubContractSeals" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TAIFModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TAIFEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblForm_ContractSeals" EntityType="TAIFModel.tblForm_ContractSeals" />
+          <EntitySet Name="tblForm_SubContractSeals" EntityType="TAIFModel.tblForm_SubContractSeals" />
+          <EntitySet Name="tblEmployee" EntityType="TAIFModel.tblEmployee" />
+        </EntityContainer>
+        <EntityType Name="tblForm_ContractSeals">
+          <Key>
+            <PropertyRef Name="cSystem_FormNo" />
+          </Key>
+          <Property Name="cSystem_FormNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cSystem_ApplyDate" Type="DateTime" Precision="3" />
+          <Property Name="cSystem_FinishDate" Type="DateTime" Precision="3" />
+          <Property Name="cSystem_MainStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cSystem_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cSystem_StatusDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cSystem_IsBatchApproval" Type="Boolean" />
+          <Property Name="cSystem_HasSubmitted" Type="Boolean" />
+          <Property Name="cSystem_TerminateReason" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="cSystem_ErrorMessage" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="cApplyUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cApplyUser_EmployeeID" Type="Guid" />
+          <Property Name="cApplyUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cApplyUser_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cApplyUser_DepartmentID" Type="Guid" />
+          <Property Name="cApplyUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cApplyUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cApplyUser_PhoneExt" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cApplyUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cFillUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cFillUser_EmployeeID" Type="Guid" />
+          <Property Name="cFillUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cFillUser_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cFillUser_DepartmentID" Type="Guid" />
+          <Property Name="cFillUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cFillUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cFillUser_PhoneExt" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cFillUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cAgentUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cAgentUser_EmployeeID" Type="Guid" />
+          <Property Name="cAgentUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cAgentUser_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cAgentUser_DepartmentID" Type="Guid" />
+          <Property Name="cAgentUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cAgentUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cAgentUser_PhoneExt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cAgentUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_FormSecretary" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_FormSecretaryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_FormSecretaryID" Type="Guid" />
+          <Property Name="cContent_ContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_OldContractID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_IsRenew" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="cContent_ContractReferenceNo" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractType" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractType_0" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractType_1" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractTypeOther1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractType_2" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractTypeOther2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Maintain" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_MakeMoney" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Note" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Responses" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Service" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Team" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_MainNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_MainNoCName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Memo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_Secretary" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_SecretaryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_SecretaryID" Type="Guid" />
+          <Property Name="cContent_MaintainSales" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_MaintainSalesName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractFirst" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_CrmOppNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_CostFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractVendor" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractUser" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractUserID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractStrDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractEndDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractYear" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractExtendDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractPGYear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractPGMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractPGOther" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_AttatchementId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractECSApplyNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractPaper" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractSeal1" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractSeal2" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractSeal3" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractSeal4" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractSeal5" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractSeal6" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractSeal7a" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractSeal7b" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo1" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cContent_ContractInfo1_IN" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cContent_ContractInfo2" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cContent_ContractInfo3" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo4" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo5" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo6" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractInfo6Other" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo6Place" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractDept1" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractDept2" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractDept3" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractDept4" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractDept5" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractDept6" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractDept7" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractDept8" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractDept9" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractDept10" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractDept11" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractDept12" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ContractDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_HandlingSecret" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_ClassifiedLevel" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="cContent_HandlingTax" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="cContent_HandlingTotalTax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cContent_AttatchementId_1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_AttatchementId_2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_AttatchementId_3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_AttatchementId_4" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_IsSaved" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_IsHandlinged" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_IsHandlingChange" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_FlowStage" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="cSystem_CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="cSystem_CreatedUserID" Type="Guid" Nullable="false" />
+          <Property Name="cSystem_CreatedUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cSystem_ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="cSystem_ModifiedUserID" Type="Guid" />
+          <Property Name="cSystem_ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cApplyUser_FullDepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="cFillUser_FullDepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="cAgentUser_FullDepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="cSystem_TaskStartDate" Type="DateTime" Precision="3" />
+          <Property Name="cSystem_TaskUserAccounts" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="cSystem_TaskUserNames" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo3_0" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_PayNote" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_MakeMoney2" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_PayNote2" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_Secretary2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_SecretaryName2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_SecretaryID2" Type="Guid" />
+          <Property Name="cContent_ContractTypeOther0" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_SealsFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cContent_OrigCurrency" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_OrigAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cContent_ExchangeRate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_IsCFOBeforeFlow" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ReturnContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo3Note" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractSeal8" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractSeal9" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractSeal10" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractSeal11" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractSeal12" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractSeal13" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractSeal14" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractSeal15" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractSeal16" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_PreSaleNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractSealOther" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ChairmanApprove" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_CurrentType" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cInheritUser_EmployeeNO" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="cInheritUser_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cInheritUser_EmployeeID" Type="Guid" />
+          <Property Name="cInheritUser_DepartmentID" Type="Guid" />
+          <Property Name="cInheritUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cInheritUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cInheritUser_PhoneExt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cInheritUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContactType" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="cContent_ContactPersonName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContactPersonTitle" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="cContent_ContactPersonAddCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContactPersonAddCity" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContactPersonAddTownship" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContactPersonAddRoad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContactPersonAddNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContactPersonPhone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContactPersonEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_HandlingDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_HandlingFee" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cContent_HandlingDelayMemo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ReceiveCondition" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ReceiveOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ReceiveRemarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_SAPReceiveCondition" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_PaymentCondition" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_PaymentOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_PaymentRemarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_SAPPaymentCondition" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cSystemGUID" Type="Guid" />
+        </EntityType>
+        <EntityType Name="tblForm_SubContractSeals">
+          <Key>
+            <PropertyRef Name="cSystem_FormNo" />
+          </Key>
+          <Property Name="cSystem_FormNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cSystem_ApplyDate" Type="DateTime" Precision="3" />
+          <Property Name="cSystem_FinishDate" Type="DateTime" Precision="3" />
+          <Property Name="cSystem_MainStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cSystem_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cSystem_StatusDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cSystem_IsBatchApproval" Type="Boolean" />
+          <Property Name="cSystem_HasSubmitted" Type="Boolean" />
+          <Property Name="cSystem_TerminateReason" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="cSystem_ErrorMessage" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="cApplyUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cApplyUser_EmployeeID" Type="Guid" />
+          <Property Name="cApplyUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cApplyUser_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cApplyUser_DepartmentID" Type="Guid" />
+          <Property Name="cApplyUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cApplyUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cApplyUser_PhoneExt" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cApplyUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cFillUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cFillUser_EmployeeID" Type="Guid" />
+          <Property Name="cFillUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cFillUser_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cFillUser_DepartmentID" Type="Guid" />
+          <Property Name="cFillUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cFillUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cFillUser_PhoneExt" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cFillUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cAgentUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cAgentUser_EmployeeID" Type="Guid" />
+          <Property Name="cAgentUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cAgentUser_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cAgentUser_DepartmentID" Type="Guid" />
+          <Property Name="cAgentUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cAgentUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cAgentUser_PhoneExt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cAgentUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_CrmOppNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_CostFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_MainUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cContent_MainUser_EmployeeID" Type="Guid" />
+          <Property Name="cContent_MainUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_MainUser_DepartmentID" Type="Guid" />
+          <Property Name="cContent_MainUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cContent_Memo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Maintain" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_MakeMoney" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Note" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_PayNote" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Responses" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Service" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Team" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_MainNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_MainNoCName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo_Memo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_Secretary" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_SecretaryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_SecretaryID" Type="Guid" />
+          <Property Name="cContent_MaintainSales" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_MaintainSalesName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractVendor" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="cContent_ContractUser" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractUserID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractStrDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractEndDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractExtendDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractPGYear" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractPGMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractPGOther" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_OrigCurrency" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_OrigAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cContent_ExchangeRate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo1" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cContent_ContractInfo2" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cContent_ContractInfo3_0" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo3Note" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo4" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ContractInfo5" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_AttatchementId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_ClassifiedLevel" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="cContent_IsEmptMaintain" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="cContent_In1CostFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_In1CostItem" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_NoMainNo" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="cContent_InternalNo" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_VBELN" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cContent_IsDoDraft" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="cSystem_CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="cSystem_CreatedUserID" Type="Guid" Nullable="false" />
+          <Property Name="cSystem_CreatedUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cSystem_ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="cSystem_ModifiedUserID" Type="Guid" />
+          <Property Name="cSystem_ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cApplyUser_FullDepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="cFillUser_FullDepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="cAgentUser_FullDepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="cSystem_TaskStartDate" Type="DateTime" Precision="3" />
+          <Property Name="cSystem_TaskUserAccounts" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="cSystem_TaskUserNames" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="cInheritUser_EmployeeNO" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="cInheritUser_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cInheritUser_EmployeeID" Type="Guid" />
+          <Property Name="cInheritUser_DepartmentID" Type="Guid" />
+          <Property Name="cInheritUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cInheritUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cInheritUser_PhoneExt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cInheritUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Content_FormSecretary" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Content_FormSecretaryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Content_FormSecretaryID" Type="Guid" />
+        </EntityType>
+        <EntityType Name="tblEmployee">
+          <Key>
+            <PropertyRef Name="cEmployee_ID" />
+          </Key>
+          <Property Name="cEmployee_ID" Type="Guid" Nullable="false" />
+          <Property Name="cEmployee_NO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_cName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_Ename" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_Title" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cDepartment_ID" Type="Guid" Nullable="false" />
+          <Property Name="cEmployee_Level" Type="Int32" Nullable="false" />
+          <Property Name="cEmployee_PositionCode" Type="Int32" />
+          <Property Name="cEmployee_PositionCode2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_Away" Type="Boolean" Nullable="false" />
+          <Property Name="cEmployee_Tel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_NotifyTypeID" Type="Int32" Nullable="false" />
+          <Property Name="cEmployee_Pluralism" Type="Boolean" Nullable="false" />
+          <Property Name="cEmployee_Status" Type="Int32" Nullable="false" />
+          <Property Name="cEmployee_PID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_BrithDay" Type="DateTime" Precision="0" />
+          <Property Name="cEmployee_ConstellationID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_PhotoPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_SexID" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_JobStatusID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_RegestDate" Type="DateTime" Precision="3" />
+          <Property Name="cEmployee_CallInDate" Type="DateTime" Precision="3" />
+          <Property Name="cEmployee_CallOutDate" Type="DateTime" Precision="3" />
+          <Property Name="cEmployee_ReplaceDate" Type="DateTime" Precision="3" />
+          <Property Name="cEmployee_TakeDay" Type="DateTime" Precision="0" />
+          <Property Name="cEmployee_LeaveDay" Type="DateTime" Precision="0" />
+          <Property Name="cEmployee_LeaveReason" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_CompanyCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_AreaCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_JobTypeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_Title1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_Title2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_CapitalPosition1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_CapitalPosition2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_CpDate" Type="DateTime" Precision="3" />
+          <Property Name="cEmployee_Position1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_Position2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_PositionDate" Type="DateTime" Precision="3" />
+          <Property Name="cEmployee_CompanyPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_CompanyPhoneExt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_NationalityID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_BloodType" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_ERPID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_Workers" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_Center" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_Assign_Type" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="cEmployee_IsEnable" Type="Boolean" Nullable="false" />
+          <Property Name="cEmployee_Account" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="cEmployee_CreateUser" Type="Guid" Nullable="false" />
+          <Property Name="cEmployee_ModifyDate" Type="DateTime" Precision="3" />
+          <Property Name="cEmployee_ModifyUser" Type="Guid" />
+          <Property Name="cEmployee_Level1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_Level2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_Level1_Date" Type="DateTime" Precision="0" />
+          <Property Name="cEmployee_Level2_Date" Type="DateTime" Precision="0" />
+          <Property Name="cEmployee_Introducer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cEmployee_IsVegetarian" Type="Boolean" />
+          <Property Name="cEmployee_ProfitcenterID" Type="Guid" />
+          <Property Name="cEmployee_CostCenterID" Type="Guid" />
+          <Property Name="pk" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TAIFModelStoreContainer" CdmEntityContainer="TAIFEntities">
+          <EntitySetMapping Name="tblForm_ContractSeals">
+            <EntityTypeMapping TypeName="TAIFModel.tblForm_ContractSeals">
+              <MappingFragment StoreEntitySet="tblForm_ContractSeals">
+                <ScalarProperty Name="cSystemGUID" ColumnName="cSystemGUID" />
+                <ScalarProperty Name="cContent_SAPPaymentCondition" ColumnName="cContent_SAPPaymentCondition" />
+                <ScalarProperty Name="cContent_PaymentRemarks" ColumnName="cContent_PaymentRemarks" />
+                <ScalarProperty Name="cContent_PaymentOther" ColumnName="cContent_PaymentOther" />
+                <ScalarProperty Name="cContent_PaymentCondition" ColumnName="cContent_PaymentCondition" />
+                <ScalarProperty Name="cContent_SAPReceiveCondition" ColumnName="cContent_SAPReceiveCondition" />
+                <ScalarProperty Name="cContent_ReceiveRemarks" ColumnName="cContent_ReceiveRemarks" />
+                <ScalarProperty Name="cContent_ReceiveOther" ColumnName="cContent_ReceiveOther" />
+                <ScalarProperty Name="cContent_ReceiveCondition" ColumnName="cContent_ReceiveCondition" />
+                <ScalarProperty Name="cContent_HandlingDelayMemo" ColumnName="cContent_HandlingDelayMemo" />
+                <ScalarProperty Name="cContent_HandlingFee" ColumnName="cContent_HandlingFee" />
+                <ScalarProperty Name="cContent_HandlingDate" ColumnName="cContent_HandlingDate" />
+                <ScalarProperty Name="cContent_ContactPersonEmail" ColumnName="cContent_ContactPersonEmail" />
+                <ScalarProperty Name="cContent_ContactPersonPhone" ColumnName="cContent_ContactPersonPhone" />
+                <ScalarProperty Name="cContent_ContactPersonAddNo" ColumnName="cContent_ContactPersonAddNo" />
+                <ScalarProperty Name="cContent_ContactPersonAddRoad" ColumnName="cContent_ContactPersonAddRoad" />
+                <ScalarProperty Name="cContent_ContactPersonAddTownship" ColumnName="cContent_ContactPersonAddTownship" />
+                <ScalarProperty Name="cContent_ContactPersonAddCity" ColumnName="cContent_ContactPersonAddCity" />
+                <ScalarProperty Name="cContent_ContactPersonAddCode" ColumnName="cContent_ContactPersonAddCode" />
+                <ScalarProperty Name="cContent_ContactPersonTitle" ColumnName="cContent_ContactPersonTitle" />
+                <ScalarProperty Name="cContent_ContactPersonName" ColumnName="cContent_ContactPersonName" />
+                <ScalarProperty Name="cContent_ContactType" ColumnName="cContent_ContactType" />
+                <ScalarProperty Name="cInheritUser_WorkPlace" ColumnName="cInheritUser_WorkPlace" />
+                <ScalarProperty Name="cInheritUser_PhoneExt" ColumnName="cInheritUser_PhoneExt" />
+                <ScalarProperty Name="cInheritUser_DepartmentName" ColumnName="cInheritUser_DepartmentName" />
+                <ScalarProperty Name="cInheritUser_DepartmentNO" ColumnName="cInheritUser_DepartmentNO" />
+                <ScalarProperty Name="cInheritUser_DepartmentID" ColumnName="cInheritUser_DepartmentID" />
+                <ScalarProperty Name="cInheritUser_EmployeeID" ColumnName="cInheritUser_EmployeeID" />
+                <ScalarProperty Name="cInheritUser_Name" ColumnName="cInheritUser_Name" />
+                <ScalarProperty Name="cInheritUser_EmployeeNO" ColumnName="cInheritUser_EmployeeNO" />
+                <ScalarProperty Name="cContent_CurrentType" ColumnName="cContent_CurrentType" />
+                <ScalarProperty Name="cContent_ChairmanApprove" ColumnName="cContent_ChairmanApprove" />
+                <ScalarProperty Name="cContent_ContractSealOther" ColumnName="cContent_ContractSealOther" />
+                <ScalarProperty Name="cContent_PreSaleNo" ColumnName="cContent_PreSaleNo" />
+                <ScalarProperty Name="cContent_ContractSeal16" ColumnName="cContent_ContractSeal16" />
+                <ScalarProperty Name="cContent_ContractSeal15" ColumnName="cContent_ContractSeal15" />
+                <ScalarProperty Name="cContent_ContractSeal14" ColumnName="cContent_ContractSeal14" />
+                <ScalarProperty Name="cContent_ContractSeal13" ColumnName="cContent_ContractSeal13" />
+                <ScalarProperty Name="cContent_ContractSeal12" ColumnName="cContent_ContractSeal12" />
+                <ScalarProperty Name="cContent_ContractSeal11" ColumnName="cContent_ContractSeal11" />
+                <ScalarProperty Name="cContent_ContractSeal10" ColumnName="cContent_ContractSeal10" />
+                <ScalarProperty Name="cContent_ContractSeal9" ColumnName="cContent_ContractSeal9" />
+                <ScalarProperty Name="cContent_ContractSeal8" ColumnName="cContent_ContractSeal8" />
+                <ScalarProperty Name="cContent_ContractInfo3Note" ColumnName="cContent_ContractInfo3Note" />
+                <ScalarProperty Name="cContent_ReturnContractID" ColumnName="cContent_ReturnContractID" />
+                <ScalarProperty Name="cContent_IsCFOBeforeFlow" ColumnName="cContent_IsCFOBeforeFlow" />
+                <ScalarProperty Name="cContent_ExchangeRate" ColumnName="cContent_ExchangeRate" />
+                <ScalarProperty Name="cContent_OrigAmount" ColumnName="cContent_OrigAmount" />
+                <ScalarProperty Name="cContent_OrigCurrency" ColumnName="cContent_OrigCurrency" />
+                <ScalarProperty Name="cContent_SealsFormNo" ColumnName="cContent_SealsFormNo" />
+                <ScalarProperty Name="cContent_ContractTypeOther0" ColumnName="cContent_ContractTypeOther0" />
+                <ScalarProperty Name="cContent_SecretaryID2" ColumnName="cContent_SecretaryID2" />
+                <ScalarProperty Name="cContent_SecretaryName2" ColumnName="cContent_SecretaryName2" />
+                <ScalarProperty Name="cContent_Secretary2" ColumnName="cContent_Secretary2" />
+                <ScalarProperty Name="cContent_ContractInfo_PayNote2" ColumnName="cContent_ContractInfo_PayNote2" />
+                <ScalarProperty Name="cContent_ContractInfo_MakeMoney2" ColumnName="cContent_ContractInfo_MakeMoney2" />
+                <ScalarProperty Name="cContent_ContractInfo_PayNote" ColumnName="cContent_ContractInfo_PayNote" />
+                <ScalarProperty Name="cContent_ContractInfo3_0" ColumnName="cContent_ContractInfo3_0" />
+                <ScalarProperty Name="cSystem_TaskUserNames" ColumnName="cSystem_TaskUserNames" />
+                <ScalarProperty Name="cSystem_TaskUserAccounts" ColumnName="cSystem_TaskUserAccounts" />
+                <ScalarProperty Name="cSystem_TaskStartDate" ColumnName="cSystem_TaskStartDate" />
+                <ScalarProperty Name="cAgentUser_FullDepartmentName" ColumnName="cAgentUser_FullDepartmentName" />
+                <ScalarProperty Name="cFillUser_FullDepartmentName" ColumnName="cFillUser_FullDepartmentName" />
+                <ScalarProperty Name="cApplyUser_FullDepartmentName" ColumnName="cApplyUser_FullDepartmentName" />
+                <ScalarProperty Name="cSystem_ModifiedUserName" ColumnName="cSystem_ModifiedUserName" />
+                <ScalarProperty Name="cSystem_ModifiedUserID" ColumnName="cSystem_ModifiedUserID" />
+                <ScalarProperty Name="cSystem_ModifiedDate" ColumnName="cSystem_ModifiedDate" />
+                <ScalarProperty Name="cSystem_CreatedUserName" ColumnName="cSystem_CreatedUserName" />
+                <ScalarProperty Name="cSystem_CreatedUserID" ColumnName="cSystem_CreatedUserID" />
+                <ScalarProperty Name="cSystem_CreatedDate" ColumnName="cSystem_CreatedDate" />
+                <ScalarProperty Name="cContent_FlowStage" ColumnName="cContent_FlowStage" />
+                <ScalarProperty Name="cContent_IsHandlingChange" ColumnName="cContent_IsHandlingChange" />
+                <ScalarProperty Name="cContent_IsHandlinged" ColumnName="cContent_IsHandlinged" />
+                <ScalarProperty Name="cContent_IsSaved" ColumnName="cContent_IsSaved" />
+                <ScalarProperty Name="cContent_AttatchementId_4" ColumnName="cContent_AttatchementId_4" />
+                <ScalarProperty Name="cContent_AttatchementId_3" ColumnName="cContent_AttatchementId_3" />
+                <ScalarProperty Name="cContent_AttatchementId_2" ColumnName="cContent_AttatchementId_2" />
+                <ScalarProperty Name="cContent_AttatchementId_1" ColumnName="cContent_AttatchementId_1" />
+                <ScalarProperty Name="cContent_HandlingTotalTax" ColumnName="cContent_HandlingTotalTax" />
+                <ScalarProperty Name="cContent_HandlingTax" ColumnName="cContent_HandlingTax" />
+                <ScalarProperty Name="cContent_ClassifiedLevel" ColumnName="cContent_ClassifiedLevel" />
+                <ScalarProperty Name="cContent_HandlingSecret" ColumnName="cContent_HandlingSecret" />
+                <ScalarProperty Name="cContent_ContractDescription" ColumnName="cContent_ContractDescription" />
+                <ScalarProperty Name="cContent_ContractDept12" ColumnName="cContent_ContractDept12" />
+                <ScalarProperty Name="cContent_ContractDept11" ColumnName="cContent_ContractDept11" />
+                <ScalarProperty Name="cContent_ContractDept10" ColumnName="cContent_ContractDept10" />
+                <ScalarProperty Name="cContent_ContractDept9" ColumnName="cContent_ContractDept9" />
+                <ScalarProperty Name="cContent_ContractDept8" ColumnName="cContent_ContractDept8" />
+                <ScalarProperty Name="cContent_ContractDept7" ColumnName="cContent_ContractDept7" />
+                <ScalarProperty Name="cContent_ContractDept6" ColumnName="cContent_ContractDept6" />
+                <ScalarProperty Name="cContent_ContractDept5" ColumnName="cContent_ContractDept5" />
+                <ScalarProperty Name="cContent_ContractDept4" ColumnName="cContent_ContractDept4" />
+                <ScalarProperty Name="cContent_ContractDept3" ColumnName="cContent_ContractDept3" />
+                <ScalarProperty Name="cContent_ContractDept2" ColumnName="cContent_ContractDept2" />
+                <ScalarProperty Name="cContent_ContractDept1" ColumnName="cContent_ContractDept1" />
+                <ScalarProperty Name="cContent_ContractInfo6Place" ColumnName="cContent_ContractInfo6Place" />
+                <ScalarProperty Name="cContent_ContractInfo6Other" ColumnName="cContent_ContractInfo6Other" />
+                <ScalarProperty Name="cContent_ContractInfo6" ColumnName="cContent_ContractInfo6" />
+                <ScalarProperty Name="cContent_ContractInfo5" ColumnName="cContent_ContractInfo5" />
+                <ScalarProperty Name="cContent_ContractInfo4" ColumnName="cContent_ContractInfo4" />
+                <ScalarProperty Name="cContent_ContractInfo3" ColumnName="cContent_ContractInfo3" />
+                <ScalarProperty Name="cContent_ContractInfo2" ColumnName="cContent_ContractInfo2" />
+                <ScalarProperty Name="cContent_ContractInfo1_IN" ColumnName="cContent_ContractInfo1_IN" />
+                <ScalarProperty Name="cContent_ContractInfo1" ColumnName="cContent_ContractInfo1" />
+                <ScalarProperty Name="cContent_ContractSeal7b" ColumnName="cContent_ContractSeal7b" />
+                <ScalarProperty Name="cContent_ContractSeal7a" ColumnName="cContent_ContractSeal7a" />
+                <ScalarProperty Name="cContent_ContractSeal6" ColumnName="cContent_ContractSeal6" />
+                <ScalarProperty Name="cContent_ContractSeal5" ColumnName="cContent_ContractSeal5" />
+                <ScalarProperty Name="cContent_ContractSeal4" ColumnName="cContent_ContractSeal4" />
+                <ScalarProperty Name="cContent_ContractSeal3" ColumnName="cContent_ContractSeal3" />
+                <ScalarProperty Name="cContent_ContractSeal2" ColumnName="cContent_ContractSeal2" />
+                <ScalarProperty Name="cContent_ContractSeal1" ColumnName="cContent_ContractSeal1" />
+                <ScalarProperty Name="cContent_ContractPaper" ColumnName="cContent_ContractPaper" />
+                <ScalarProperty Name="cContent_ContractECSApplyNo" ColumnName="cContent_ContractECSApplyNo" />
+                <ScalarProperty Name="cContent_AttatchementId" ColumnName="cContent_AttatchementId" />
+                <ScalarProperty Name="cContent_ContractPGOther" ColumnName="cContent_ContractPGOther" />
+                <ScalarProperty Name="cContent_ContractPGMonth" ColumnName="cContent_ContractPGMonth" />
+                <ScalarProperty Name="cContent_ContractPGYear" ColumnName="cContent_ContractPGYear" />
+                <ScalarProperty Name="cContent_ContractExtendDate" ColumnName="cContent_ContractExtendDate" />
+                <ScalarProperty Name="cContent_ContractMonth" ColumnName="cContent_ContractMonth" />
+                <ScalarProperty Name="cContent_ContractYear" ColumnName="cContent_ContractYear" />
+                <ScalarProperty Name="cContent_ContractEndDate" ColumnName="cContent_ContractEndDate" />
+                <ScalarProperty Name="cContent_ContractStrDate" ColumnName="cContent_ContractStrDate" />
+                <ScalarProperty Name="cContent_ContractDesc" ColumnName="cContent_ContractDesc" />
+                <ScalarProperty Name="cContent_ContractUserID" ColumnName="cContent_ContractUserID" />
+                <ScalarProperty Name="cContent_ContractUser" ColumnName="cContent_ContractUser" />
+                <ScalarProperty Name="cContent_ContractVendor" ColumnName="cContent_ContractVendor" />
+                <ScalarProperty Name="cContent_CostFormNo" ColumnName="cContent_CostFormNo" />
+                <ScalarProperty Name="cContent_CrmOppNo" ColumnName="cContent_CrmOppNo" />
+                <ScalarProperty Name="cContent_ContractFirst" ColumnName="cContent_ContractFirst" />
+                <ScalarProperty Name="cContent_MaintainSalesName" ColumnName="cContent_MaintainSalesName" />
+                <ScalarProperty Name="cContent_MaintainSales" ColumnName="cContent_MaintainSales" />
+                <ScalarProperty Name="cContent_SecretaryID" ColumnName="cContent_SecretaryID" />
+                <ScalarProperty Name="cContent_SecretaryName" ColumnName="cContent_SecretaryName" />
+                <ScalarProperty Name="cContent_Secretary" ColumnName="cContent_Secretary" />
+                <ScalarProperty Name="cContent_ContractInfo_Memo" ColumnName="cContent_ContractInfo_Memo" />
+                <ScalarProperty Name="cContent_ContractInfo_MainNoCName" ColumnName="cContent_ContractInfo_MainNoCName" />
+                <ScalarProperty Name="cContent_ContractInfo_MainNo" ColumnName="cContent_ContractInfo_MainNo" />
+                <ScalarProperty Name="cContent_ContractInfo_Team" ColumnName="cContent_ContractInfo_Team" />
+                <ScalarProperty Name="cContent_ContractInfo_Service" ColumnName="cContent_ContractInfo_Service" />
+                <ScalarProperty Name="cContent_ContractInfo_Responses" ColumnName="cContent_ContractInfo_Responses" />
+                <ScalarProperty Name="cContent_ContractInfo_Address" ColumnName="cContent_ContractInfo_Address" />
+                <ScalarProperty Name="cContent_ContractInfo_Note" ColumnName="cContent_ContractInfo_Note" />
+                <ScalarProperty Name="cContent_ContractInfo_MakeMoney" ColumnName="cContent_ContractInfo_MakeMoney" />
+                <ScalarProperty Name="cContent_ContractInfo_Maintain" ColumnName="cContent_ContractInfo_Maintain" />
+                <ScalarProperty Name="cContent_ContractTypeOther2" ColumnName="cContent_ContractTypeOther2" />
+                <ScalarProperty Name="cContent_ContractType_2" ColumnName="cContent_ContractType_2" />
+                <ScalarProperty Name="cContent_ContractTypeOther1" ColumnName="cContent_ContractTypeOther1" />
+                <ScalarProperty Name="cContent_ContractType_1" ColumnName="cContent_ContractType_1" />
+                <ScalarProperty Name="cContent_ContractType_0" ColumnName="cContent_ContractType_0" />
+                <ScalarProperty Name="cContent_ContractType" ColumnName="cContent_ContractType" />
+                <ScalarProperty Name="cContent_ContractName" ColumnName="cContent_ContractName" />
+                <ScalarProperty Name="cContent_ContractReferenceNo" ColumnName="cContent_ContractReferenceNo" />
+                <ScalarProperty Name="cContent_IsRenew" ColumnName="cContent_IsRenew" />
+                <ScalarProperty Name="cContent_OldContractID" ColumnName="cContent_OldContractID" />
+                <ScalarProperty Name="cContent_ContractID" ColumnName="cContent_ContractID" />
+                <ScalarProperty Name="cContent_FormSecretaryID" ColumnName="cContent_FormSecretaryID" />
+                <ScalarProperty Name="cContent_FormSecretaryName" ColumnName="cContent_FormSecretaryName" />
+                <ScalarProperty Name="cContent_FormSecretary" ColumnName="cContent_FormSecretary" />
+                <ScalarProperty Name="cAgentUser_WorkPlace" ColumnName="cAgentUser_WorkPlace" />
+                <ScalarProperty Name="cAgentUser_PhoneExt" ColumnName="cAgentUser_PhoneExt" />
+                <ScalarProperty Name="cAgentUser_DepartmentName" ColumnName="cAgentUser_DepartmentName" />
+                <ScalarProperty Name="cAgentUser_DepartmentNO" ColumnName="cAgentUser_DepartmentNO" />
+                <ScalarProperty Name="cAgentUser_DepartmentID" ColumnName="cAgentUser_DepartmentID" />
+                <ScalarProperty Name="cAgentUser_Title" ColumnName="cAgentUser_Title" />
+                <ScalarProperty Name="cAgentUser_Name" ColumnName="cAgentUser_Name" />
+                <ScalarProperty Name="cAgentUser_EmployeeID" ColumnName="cAgentUser_EmployeeID" />
+                <ScalarProperty Name="cAgentUser_EmployeeNO" ColumnName="cAgentUser_EmployeeNO" />
+                <ScalarProperty Name="cFillUser_WorkPlace" ColumnName="cFillUser_WorkPlace" />
+                <ScalarProperty Name="cFillUser_PhoneExt" ColumnName="cFillUser_PhoneExt" />
+                <ScalarProperty Name="cFillUser_DepartmentName" ColumnName="cFillUser_DepartmentName" />
+                <ScalarProperty Name="cFillUser_DepartmentNO" ColumnName="cFillUser_DepartmentNO" />
+                <ScalarProperty Name="cFillUser_DepartmentID" ColumnName="cFillUser_DepartmentID" />
+                <ScalarProperty Name="cFillUser_Title" ColumnName="cFillUser_Title" />
+                <ScalarProperty Name="cFillUser_Name" ColumnName="cFillUser_Name" />
+                <ScalarProperty Name="cFillUser_EmployeeID" ColumnName="cFillUser_EmployeeID" />
+                <ScalarProperty Name="cFillUser_EmployeeNO" ColumnName="cFillUser_EmployeeNO" />
+                <ScalarProperty Name="cApplyUser_WorkPlace" ColumnName="cApplyUser_WorkPlace" />
+                <ScalarProperty Name="cApplyUser_PhoneExt" ColumnName="cApplyUser_PhoneExt" />
+                <ScalarProperty Name="cApplyUser_DepartmentName" ColumnName="cApplyUser_DepartmentName" />
+                <ScalarProperty Name="cApplyUser_DepartmentNO" ColumnName="cApplyUser_DepartmentNO" />
+                <ScalarProperty Name="cApplyUser_DepartmentID" ColumnName="cApplyUser_DepartmentID" />
+                <ScalarProperty Name="cApplyUser_Title" ColumnName="cApplyUser_Title" />
+                <ScalarProperty Name="cApplyUser_Name" ColumnName="cApplyUser_Name" />
+                <ScalarProperty Name="cApplyUser_EmployeeID" ColumnName="cApplyUser_EmployeeID" />
+                <ScalarProperty Name="cApplyUser_EmployeeNO" ColumnName="cApplyUser_EmployeeNO" />
+                <ScalarProperty Name="cSystem_ErrorMessage" ColumnName="cSystem_ErrorMessage" />
+                <ScalarProperty Name="cSystem_TerminateReason" ColumnName="cSystem_TerminateReason" />
+                <ScalarProperty Name="cSystem_HasSubmitted" ColumnName="cSystem_HasSubmitted" />
+                <ScalarProperty Name="cSystem_IsBatchApproval" ColumnName="cSystem_IsBatchApproval" />
+                <ScalarProperty Name="cSystem_StatusDescription" ColumnName="cSystem_StatusDescription" />
+                <ScalarProperty Name="cSystem_Status" ColumnName="cSystem_Status" />
+                <ScalarProperty Name="cSystem_MainStatus" ColumnName="cSystem_MainStatus" />
+                <ScalarProperty Name="cSystem_FinishDate" ColumnName="cSystem_FinishDate" />
+                <ScalarProperty Name="cSystem_ApplyDate" ColumnName="cSystem_ApplyDate" />
+                <ScalarProperty Name="cSystem_FormNo" ColumnName="cSystem_FormNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblForm_SubContractSeals">
+            <EntityTypeMapping TypeName="TAIFModel.tblForm_SubContractSeals">
+              <MappingFragment StoreEntitySet="tblForm_SubContractSeals">
+                <ScalarProperty Name="Content_FormSecretaryID" ColumnName="Content_FormSecretaryID" />
+                <ScalarProperty Name="Content_FormSecretaryName" ColumnName="Content_FormSecretaryName" />
+                <ScalarProperty Name="Content_FormSecretary" ColumnName="Content_FormSecretary" />
+                <ScalarProperty Name="cInheritUser_WorkPlace" ColumnName="cInheritUser_WorkPlace" />
+                <ScalarProperty Name="cInheritUser_PhoneExt" ColumnName="cInheritUser_PhoneExt" />
+                <ScalarProperty Name="cInheritUser_DepartmentName" ColumnName="cInheritUser_DepartmentName" />
+                <ScalarProperty Name="cInheritUser_DepartmentNO" ColumnName="cInheritUser_DepartmentNO" />
+                <ScalarProperty Name="cInheritUser_DepartmentID" ColumnName="cInheritUser_DepartmentID" />
+                <ScalarProperty Name="cInheritUser_EmployeeID" ColumnName="cInheritUser_EmployeeID" />
+                <ScalarProperty Name="cInheritUser_Name" ColumnName="cInheritUser_Name" />
+                <ScalarProperty Name="cInheritUser_EmployeeNO" ColumnName="cInheritUser_EmployeeNO" />
+                <ScalarProperty Name="cSystem_TaskUserNames" ColumnName="cSystem_TaskUserNames" />
+                <ScalarProperty Name="cSystem_TaskUserAccounts" ColumnName="cSystem_TaskUserAccounts" />
+                <ScalarProperty Name="cSystem_TaskStartDate" ColumnName="cSystem_TaskStartDate" />
+                <ScalarProperty Name="cAgentUser_FullDepartmentName" ColumnName="cAgentUser_FullDepartmentName" />
+                <ScalarProperty Name="cFillUser_FullDepartmentName" ColumnName="cFillUser_FullDepartmentName" />
+                <ScalarProperty Name="cApplyUser_FullDepartmentName" ColumnName="cApplyUser_FullDepartmentName" />
+                <ScalarProperty Name="cSystem_ModifiedUserName" ColumnName="cSystem_ModifiedUserName" />
+                <ScalarProperty Name="cSystem_ModifiedUserID" ColumnName="cSystem_ModifiedUserID" />
+                <ScalarProperty Name="cSystem_ModifiedDate" ColumnName="cSystem_ModifiedDate" />
+                <ScalarProperty Name="cSystem_CreatedUserName" ColumnName="cSystem_CreatedUserName" />
+                <ScalarProperty Name="cSystem_CreatedUserID" ColumnName="cSystem_CreatedUserID" />
+                <ScalarProperty Name="cSystem_CreatedDate" ColumnName="cSystem_CreatedDate" />
+                <ScalarProperty Name="cContent_IsDoDraft" ColumnName="cContent_IsDoDraft" />
+                <ScalarProperty Name="cContent_VBELN" ColumnName="cContent_VBELN" />
+                <ScalarProperty Name="cContent_InternalNo" ColumnName="cContent_InternalNo" />
+                <ScalarProperty Name="cContent_NoMainNo" ColumnName="cContent_NoMainNo" />
+                <ScalarProperty Name="cContent_In1CostItem" ColumnName="cContent_In1CostItem" />
+                <ScalarProperty Name="cContent_In1CostFormNo" ColumnName="cContent_In1CostFormNo" />
+                <ScalarProperty Name="cContent_IsEmptMaintain" ColumnName="cContent_IsEmptMaintain" />
+                <ScalarProperty Name="cContent_ClassifiedLevel" ColumnName="cContent_ClassifiedLevel" />
+                <ScalarProperty Name="cContent_AttatchementId" ColumnName="cContent_AttatchementId" />
+                <ScalarProperty Name="cContent_ContractInfo5" ColumnName="cContent_ContractInfo5" />
+                <ScalarProperty Name="cContent_ContractInfo4" ColumnName="cContent_ContractInfo4" />
+                <ScalarProperty Name="cContent_ContractInfo3Note" ColumnName="cContent_ContractInfo3Note" />
+                <ScalarProperty Name="cContent_ContractInfo3" ColumnName="cContent_ContractInfo3" />
+                <ScalarProperty Name="cContent_ContractInfo3_0" ColumnName="cContent_ContractInfo3_0" />
+                <ScalarProperty Name="cContent_ContractInfo2" ColumnName="cContent_ContractInfo2" />
+                <ScalarProperty Name="cContent_ContractInfo1" ColumnName="cContent_ContractInfo1" />
+                <ScalarProperty Name="cContent_ExchangeRate" ColumnName="cContent_ExchangeRate" />
+                <ScalarProperty Name="cContent_OrigAmount" ColumnName="cContent_OrigAmount" />
+                <ScalarProperty Name="cContent_OrigCurrency" ColumnName="cContent_OrigCurrency" />
+                <ScalarProperty Name="cContent_ContractPGOther" ColumnName="cContent_ContractPGOther" />
+                <ScalarProperty Name="cContent_ContractPGMonth" ColumnName="cContent_ContractPGMonth" />
+                <ScalarProperty Name="cContent_ContractPGYear" ColumnName="cContent_ContractPGYear" />
+                <ScalarProperty Name="cContent_ContractExtendDate" ColumnName="cContent_ContractExtendDate" />
+                <ScalarProperty Name="cContent_ContractEndDate" ColumnName="cContent_ContractEndDate" />
+                <ScalarProperty Name="cContent_ContractStrDate" ColumnName="cContent_ContractStrDate" />
+                <ScalarProperty Name="cContent_ContractDesc" ColumnName="cContent_ContractDesc" />
+                <ScalarProperty Name="cContent_ContractUserID" ColumnName="cContent_ContractUserID" />
+                <ScalarProperty Name="cContent_ContractUser" ColumnName="cContent_ContractUser" />
+                <ScalarProperty Name="cContent_ContractVendor" ColumnName="cContent_ContractVendor" />
+                <ScalarProperty Name="cContent_MaintainSalesName" ColumnName="cContent_MaintainSalesName" />
+                <ScalarProperty Name="cContent_MaintainSales" ColumnName="cContent_MaintainSales" />
+                <ScalarProperty Name="cContent_SecretaryID" ColumnName="cContent_SecretaryID" />
+                <ScalarProperty Name="cContent_SecretaryName" ColumnName="cContent_SecretaryName" />
+                <ScalarProperty Name="cContent_Secretary" ColumnName="cContent_Secretary" />
+                <ScalarProperty Name="cContent_ContractInfo_Memo" ColumnName="cContent_ContractInfo_Memo" />
+                <ScalarProperty Name="cContent_ContractInfo_MainNoCName" ColumnName="cContent_ContractInfo_MainNoCName" />
+                <ScalarProperty Name="cContent_ContractInfo_MainNo" ColumnName="cContent_ContractInfo_MainNo" />
+                <ScalarProperty Name="cContent_ContractInfo_Team" ColumnName="cContent_ContractInfo_Team" />
+                <ScalarProperty Name="cContent_ContractInfo_Service" ColumnName="cContent_ContractInfo_Service" />
+                <ScalarProperty Name="cContent_ContractInfo_Responses" ColumnName="cContent_ContractInfo_Responses" />
+                <ScalarProperty Name="cContent_ContractInfo_Address" ColumnName="cContent_ContractInfo_Address" />
+                <ScalarProperty Name="cContent_ContractInfo_PayNote" ColumnName="cContent_ContractInfo_PayNote" />
+                <ScalarProperty Name="cContent_ContractInfo_Note" ColumnName="cContent_ContractInfo_Note" />
+                <ScalarProperty Name="cContent_ContractInfo_MakeMoney" ColumnName="cContent_ContractInfo_MakeMoney" />
+                <ScalarProperty Name="cContent_ContractInfo_Maintain" ColumnName="cContent_ContractInfo_Maintain" />
+                <ScalarProperty Name="cContent_Memo" ColumnName="cContent_Memo" />
+                <ScalarProperty Name="cContent_Amount" ColumnName="cContent_Amount" />
+                <ScalarProperty Name="cContent_MainUser_DepartmentName" ColumnName="cContent_MainUser_DepartmentName" />
+                <ScalarProperty Name="cContent_MainUser_DepartmentID" ColumnName="cContent_MainUser_DepartmentID" />
+                <ScalarProperty Name="cContent_MainUser_Name" ColumnName="cContent_MainUser_Name" />
+                <ScalarProperty Name="cContent_MainUser_EmployeeID" ColumnName="cContent_MainUser_EmployeeID" />
+                <ScalarProperty Name="cContent_MainUser_EmployeeNO" ColumnName="cContent_MainUser_EmployeeNO" />
+                <ScalarProperty Name="cContent_ContractName" ColumnName="cContent_ContractName" />
+                <ScalarProperty Name="cContent_CostFormNo" ColumnName="cContent_CostFormNo" />
+                <ScalarProperty Name="cContent_CrmOppNo" ColumnName="cContent_CrmOppNo" />
+                <ScalarProperty Name="cContent_ContractID" ColumnName="cContent_ContractID" />
+                <ScalarProperty Name="cAgentUser_WorkPlace" ColumnName="cAgentUser_WorkPlace" />
+                <ScalarProperty Name="cAgentUser_PhoneExt" ColumnName="cAgentUser_PhoneExt" />
+                <ScalarProperty Name="cAgentUser_DepartmentName" ColumnName="cAgentUser_DepartmentName" />
+                <ScalarProperty Name="cAgentUser_DepartmentNO" ColumnName="cAgentUser_DepartmentNO" />
+                <ScalarProperty Name="cAgentUser_DepartmentID" ColumnName="cAgentUser_DepartmentID" />
+                <ScalarProperty Name="cAgentUser_Title" ColumnName="cAgentUser_Title" />
+                <ScalarProperty Name="cAgentUser_Name" ColumnName="cAgentUser_Name" />
+                <ScalarProperty Name="cAgentUser_EmployeeID" ColumnName="cAgentUser_EmployeeID" />
+                <ScalarProperty Name="cAgentUser_EmployeeNO" ColumnName="cAgentUser_EmployeeNO" />
+                <ScalarProperty Name="cFillUser_WorkPlace" ColumnName="cFillUser_WorkPlace" />
+                <ScalarProperty Name="cFillUser_PhoneExt" ColumnName="cFillUser_PhoneExt" />
+                <ScalarProperty Name="cFillUser_DepartmentName" ColumnName="cFillUser_DepartmentName" />
+                <ScalarProperty Name="cFillUser_DepartmentNO" ColumnName="cFillUser_DepartmentNO" />
+                <ScalarProperty Name="cFillUser_DepartmentID" ColumnName="cFillUser_DepartmentID" />
+                <ScalarProperty Name="cFillUser_Title" ColumnName="cFillUser_Title" />
+                <ScalarProperty Name="cFillUser_Name" ColumnName="cFillUser_Name" />
+                <ScalarProperty Name="cFillUser_EmployeeID" ColumnName="cFillUser_EmployeeID" />
+                <ScalarProperty Name="cFillUser_EmployeeNO" ColumnName="cFillUser_EmployeeNO" />
+                <ScalarProperty Name="cApplyUser_WorkPlace" ColumnName="cApplyUser_WorkPlace" />
+                <ScalarProperty Name="cApplyUser_PhoneExt" ColumnName="cApplyUser_PhoneExt" />
+                <ScalarProperty Name="cApplyUser_DepartmentName" ColumnName="cApplyUser_DepartmentName" />
+                <ScalarProperty Name="cApplyUser_DepartmentNO" ColumnName="cApplyUser_DepartmentNO" />
+                <ScalarProperty Name="cApplyUser_DepartmentID" ColumnName="cApplyUser_DepartmentID" />
+                <ScalarProperty Name="cApplyUser_Title" ColumnName="cApplyUser_Title" />
+                <ScalarProperty Name="cApplyUser_Name" ColumnName="cApplyUser_Name" />
+                <ScalarProperty Name="cApplyUser_EmployeeID" ColumnName="cApplyUser_EmployeeID" />
+                <ScalarProperty Name="cApplyUser_EmployeeNO" ColumnName="cApplyUser_EmployeeNO" />
+                <ScalarProperty Name="cSystem_ErrorMessage" ColumnName="cSystem_ErrorMessage" />
+                <ScalarProperty Name="cSystem_TerminateReason" ColumnName="cSystem_TerminateReason" />
+                <ScalarProperty Name="cSystem_HasSubmitted" ColumnName="cSystem_HasSubmitted" />
+                <ScalarProperty Name="cSystem_IsBatchApproval" ColumnName="cSystem_IsBatchApproval" />
+                <ScalarProperty Name="cSystem_StatusDescription" ColumnName="cSystem_StatusDescription" />
+                <ScalarProperty Name="cSystem_Status" ColumnName="cSystem_Status" />
+                <ScalarProperty Name="cSystem_MainStatus" ColumnName="cSystem_MainStatus" />
+                <ScalarProperty Name="cSystem_FinishDate" ColumnName="cSystem_FinishDate" />
+                <ScalarProperty Name="cSystem_ApplyDate" ColumnName="cSystem_ApplyDate" />
+                <ScalarProperty Name="cSystem_FormNo" ColumnName="cSystem_FormNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblEmployee">
+            <EntityTypeMapping TypeName="TAIFModel.tblEmployee">
+              <MappingFragment StoreEntitySet="tblEmployee">
+                <ScalarProperty Name="pk" ColumnName="pk" />
+                <ScalarProperty Name="cEmployee_CostCenterID" ColumnName="cEmployee_CostCenterID" />
+                <ScalarProperty Name="cEmployee_ProfitcenterID" ColumnName="cEmployee_ProfitcenterID" />
+                <ScalarProperty Name="cEmployee_IsVegetarian" ColumnName="cEmployee_IsVegetarian" />
+                <ScalarProperty Name="cEmployee_Introducer" ColumnName="cEmployee_Introducer" />
+                <ScalarProperty Name="cEmployee_Level2_Date" ColumnName="cEmployee_Level2_Date" />
+                <ScalarProperty Name="cEmployee_Level1_Date" ColumnName="cEmployee_Level1_Date" />
+                <ScalarProperty Name="cEmployee_Level2" ColumnName="cEmployee_Level2" />
+                <ScalarProperty Name="cEmployee_Level1" ColumnName="cEmployee_Level1" />
+                <ScalarProperty Name="cEmployee_ModifyUser" ColumnName="cEmployee_ModifyUser" />
+                <ScalarProperty Name="cEmployee_ModifyDate" ColumnName="cEmployee_ModifyDate" />
+                <ScalarProperty Name="cEmployee_CreateUser" ColumnName="cEmployee_CreateUser" />
+                <ScalarProperty Name="cEmployee_CreateDate" ColumnName="cEmployee_CreateDate" />
+                <ScalarProperty Name="cEmployee_Account" ColumnName="cEmployee_Account" />
+                <ScalarProperty Name="cEmployee_IsEnable" ColumnName="cEmployee_IsEnable" />
+                <ScalarProperty Name="cEmployee_Assign_Type" ColumnName="cEmployee_Assign_Type" />
+                <ScalarProperty Name="cEmployee_Center" ColumnName="cEmployee_Center" />
+                <ScalarProperty Name="cEmployee_Workers" ColumnName="cEmployee_Workers" />
+                <ScalarProperty Name="cEmployee_ERPID" ColumnName="cEmployee_ERPID" />
+                <ScalarProperty Name="cEmployee_WorkPlace" ColumnName="cEmployee_WorkPlace" />
+                <ScalarProperty Name="cEmployee_BloodType" ColumnName="cEmployee_BloodType" />
+                <ScalarProperty Name="cEmployee_NationalityID" ColumnName="cEmployee_NationalityID" />
+                <ScalarProperty Name="cEmployee_CompanyPhoneExt" ColumnName="cEmployee_CompanyPhoneExt" />
+                <ScalarProperty Name="cEmployee_CompanyPhone" ColumnName="cEmployee_CompanyPhone" />
+                <ScalarProperty Name="cEmployee_PositionDate" ColumnName="cEmployee_PositionDate" />
+                <ScalarProperty Name="cEmployee_Position2" ColumnName="cEmployee_Position2" />
+                <ScalarProperty Name="cEmployee_Position1" ColumnName="cEmployee_Position1" />
+                <ScalarProperty Name="cEmployee_CpDate" ColumnName="cEmployee_CpDate" />
+                <ScalarProperty Name="cEmployee_CapitalPosition2" ColumnName="cEmployee_CapitalPosition2" />
+                <ScalarProperty Name="cEmployee_CapitalPosition1" ColumnName="cEmployee_CapitalPosition1" />
+                <ScalarProperty Name="cEmployee_Title2" ColumnName="cEmployee_Title2" />
+                <ScalarProperty Name="cEmployee_Title1" ColumnName="cEmployee_Title1" />
+                <ScalarProperty Name="cEmployee_JobTypeID" ColumnName="cEmployee_JobTypeID" />
+                <ScalarProperty Name="cEmployee_AreaCode" ColumnName="cEmployee_AreaCode" />
+                <ScalarProperty Name="cEmployee_CompanyCode" ColumnName="cEmployee_CompanyCode" />
+                <ScalarProperty Name="cEmployee_LeaveReason" ColumnName="cEmployee_LeaveReason" />
+                <ScalarProperty Name="cEmployee_LeaveDay" ColumnName="cEmployee_LeaveDay" />
+                <ScalarProperty Name="cEmployee_TakeDay" ColumnName="cEmployee_TakeDay" />
+                <ScalarProperty Name="cEmployee_ReplaceDate" ColumnName="cEmployee_ReplaceDate" />
+                <ScalarProperty Name="cEmployee_CallOutDate" ColumnName="cEmployee_CallOutDate" />
+                <ScalarProperty Name="cEmployee_CallInDate" ColumnName="cEmployee_CallInDate" />
+                <ScalarProperty Name="cEmployee_RegestDate" ColumnName="cEmployee_RegestDate" />
+                <ScalarProperty Name="cEmployee_JobStatusID" ColumnName="cEmployee_JobStatusID" />
+                <ScalarProperty Name="cEmployee_SexID" ColumnName="cEmployee_SexID" />
+                <ScalarProperty Name="cEmployee_PhotoPath" ColumnName="cEmployee_PhotoPath" />
+                <ScalarProperty Name="cEmployee_ConstellationID" ColumnName="cEmployee_ConstellationID" />
+                <ScalarProperty Name="cEmployee_BrithDay" ColumnName="cEmployee_BrithDay" />
+                <ScalarProperty Name="cEmployee_PID" ColumnName="cEmployee_PID" />
+                <ScalarProperty Name="cEmployee_Status" ColumnName="cEmployee_Status" />
+                <ScalarProperty Name="cEmployee_Pluralism" ColumnName="cEmployee_Pluralism" />
+                <ScalarProperty Name="cEmployee_NotifyTypeID" ColumnName="cEmployee_NotifyTypeID" />
+                <ScalarProperty Name="cEmployee_Email" ColumnName="cEmployee_Email" />
+                <ScalarProperty Name="cEmployee_Fax" ColumnName="cEmployee_Fax" />
+                <ScalarProperty Name="cEmployee_Mobile" ColumnName="cEmployee_Mobile" />
+                <ScalarProperty Name="cEmployee_Tel" ColumnName="cEmployee_Tel" />
+                <ScalarProperty Name="cEmployee_Away" ColumnName="cEmployee_Away" />
+                <ScalarProperty Name="cEmployee_PositionCode2" ColumnName="cEmployee_PositionCode2" />
+                <ScalarProperty Name="cEmployee_PositionCode" ColumnName="cEmployee_PositionCode" />
+                <ScalarProperty Name="cEmployee_Level" ColumnName="cEmployee_Level" />
+                <ScalarProperty Name="cDepartment_ID" ColumnName="cDepartment_ID" />
+                <ScalarProperty Name="cEmployee_Title" ColumnName="cEmployee_Title" />
+                <ScalarProperty Name="cEmployee_Ename" ColumnName="cEmployee_Ename" />
+                <ScalarProperty Name="cEmployee_cName" ColumnName="cEmployee_cName" />
+                <ScalarProperty Name="cEmployee_NO" ColumnName="cEmployee_NO" />
+                <ScalarProperty Name="cEmployee_ID" ColumnName="cEmployee_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

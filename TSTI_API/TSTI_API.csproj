@@ -251,6 +251,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelAPP_DATA.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ModelBPMDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelBPMDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelBPMDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelBPMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelBPMDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelBPMDB.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\ModelEIPDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -358,6 +373,15 @@
     </Compile>
     <Compile Include="Models\STOCKWTY.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblEmployee.cs">
+      <DependentUpon>ModelBPMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblForm_ContractSeals.cs">
+      <DependentUpon>ModelBPMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblForm_SubContractSeals.cs">
+      <DependentUpon>ModelBPMDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TB_MAIL_CONTENT.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
@@ -488,6 +512,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelAPP_DATA.edmx</DependentUpon>
       <LastGenOutput>ModelAPP_DATA.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelBPMDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelBPMDB.edmx</DependentUpon>
+      <LastGenOutput>ModelBPMDB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ModelBPMDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelBPMDB.edmx</DependentUpon>
+      <LastGenOutput>ModelBPMDB.cs</LastGenOutput>
     </Content>
     <Content Include="Models\ModelEIPDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -628,6 +662,13 @@
     <Content Include="fonts\msjh.ttc" />
     <Content Include="fonts\msjh.ttf" />
     <Content Include="fonts\WINGDNG2.TTF" />
+    <EntityDeploy Include="Models\ModelBPMDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelBPMDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ModelBPMDB.edmx.diagram">
+      <DependentUpon>ModelBPMDB.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
