@@ -9019,23 +9019,8 @@ namespace TSTI_API.Controllers
                     dbOne.TB_ONE_ContractMain.Add(beanM);
                 }
                 else
-                {                   
-                    if (beanBMP.IV_SUBCONTACT != "") //判斷若是有內部轉撥服務過來的，若是下包約時，要順便更新主約的維護業務
-                    {
-                        #region 更新合約主數據(主約)的內部轉撥維護業務
-                        var beanM2 = dbOne.TB_ONE_ContractMain.FirstOrDefault(x => x.Disabled == 0 && x.cContractID == beanBMP.IV_SUBCONTACT);
-
-                        if (beanM2 != null)
-                        {
-                            beanM2.cMASales = beanBMP.IV_MAINTAIN_SALES;
-                            beanM2.cMASalesName = CMF.findEmployeeNameInCludeLeave(beanBMP.IV_MAINTAIN_SALES);
-                        }
-                        #endregion
-                    }
-                    else
-                    {
-                        tIsExist = true;
-                    }                   
+                {
+                    tIsExist = true;
                 }
                 #endregion
 
@@ -9088,6 +9073,21 @@ namespace TSTI_API.Controllers
                     {
                         if (!tIsExist) //文件編號不存在才需要發Mail通知
                         {
+                            #region 更新合約主數據(主約)的內部轉撥維護業務
+                            if (beanBMP.IV_SUBCONTACT != "") //判斷若是有內部轉撥服務過來的，若是下包約時，要順便更新主約的維護業務
+                            {                                
+                                var beanM2 = dbOne.TB_ONE_ContractMain.FirstOrDefault(x => x.Disabled == 0 && x.cContractID == beanBMP.IV_SUBCONTACT);
+
+                                if (beanM2 != null)
+                                {
+                                    beanM2.cMASales = beanBMP.IV_MAINTAIN_SALES;
+                                    beanM2.cMASalesName = CMF.findEmployeeNameInCludeLeave(beanBMP.IV_MAINTAIN_SALES);
+
+                                    dbOne.SaveChanges();
+                                }                               
+                            }                            
+                            #endregion
+
                             #region 寄送Mail通知
                             if (beanBMP.IV_CUSTOMER != "") //客戶代表是主約才需要寄送Mail通知
                             {
