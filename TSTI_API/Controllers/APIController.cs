@@ -8908,7 +8908,7 @@ namespace TSTI_API.Controllers
             #region Json範列格式(傳入格式)
             //{
             //    "IV_LOGINEMPNO" : "99120894",
-            //    "IV_CONTRACTID" : "11204075"            
+            //    "IV_BPMFORMNO" : "A2-20230626-001"           
             //}
             #endregion
 
@@ -8929,6 +8929,8 @@ namespace TSTI_API.Controllers
             string IV_BPMFORMNO = string.IsNullOrEmpty(beanIN.IV_BPMFORMNO) ? "" : beanIN.IV_BPMFORMNO.Trim();
 
             bool tIsFormal = false;
+            bool tIsExist = false; //判斷文件編號是否已存在
+
             string pLoginName = string.Empty;
             string tAPIURLName = string.Empty;
             string tONEURLName = string.Empty;
@@ -9017,10 +9019,10 @@ namespace TSTI_API.Controllers
                     dbOne.TB_ONE_ContractMain.Add(beanM);
                 }
                 else
-                {
-                    #region 更新合約主數據(主約)的內部轉撥維護業務
-                    if (beanBMP.IV_SUBCONTACT != "")
+                {                   
+                    if (beanBMP.IV_SUBCONTACT != "") //判斷若是有內部轉撥服務過來的，若是下包約時，要順便更新主約的維護業務
                     {
+                        #region 更新合約主數據(主約)的內部轉撥維護業務
                         var beanM2 = dbOne.TB_ONE_ContractMain.FirstOrDefault(x => x.Disabled == 0 && x.cContractID == beanBMP.IV_SUBCONTACT);
 
                         if (beanM2 != null)
@@ -9028,8 +9030,12 @@ namespace TSTI_API.Controllers
                             beanM2.cMASales = beanBMP.IV_MAINTAIN_SALES;
                             beanM2.cMASalesName = CMF.findEmployeeNameInCludeLeave(beanBMP.IV_MAINTAIN_SALES);
                         }
+                        #endregion
                     }
-                    #endregion
+                    else
+                    {
+                        tIsExist = true;
+                    }                   
                 }
                 #endregion
 
@@ -9066,27 +9072,38 @@ namespace TSTI_API.Controllers
                 }
                 #endregion
 
-                int result = dbOne.SaveChanges();
-
-                if (result <= 0)
+                if (!tIsExist)
                 {
-                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "儲存失敗" + Environment.NewLine;
-                    CMF.writeToLog(IV_CONTACT, "CONTRACT_CREATE_SENDMAIL_API", pMsg, pLoginName);
+                    int result = dbOne.SaveChanges();
 
-                    OUTBean.EV_MSGT = "E";
-                    OUTBean.EV_MSG = pMsg;
+                    if (result <= 0)
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "儲存失敗" + Environment.NewLine;
+                        CMF.writeToLog(IV_CONTACT, "CONTRACT_CREATE_SENDMAIL_API", pMsg, pLoginName);
+
+                        OUTBean.EV_MSGT = "E";
+                        OUTBean.EV_MSG = pMsg;
+                    }
+                    else
+                    {
+                        if (!tIsExist) //文件編號不存在才需要發Mail通知
+                        {
+                            #region 寄送Mail通知
+                            if (beanBMP.IV_CUSTOMER != "") //客戶代表是主約才需要寄送Mail通知
+                            {
+                                CMF.SetContractMailContent(cCondition, pOperationID_Contract, IV_CONTACT, "", tONEURLName, pLoginName, tIsFormal);
+                            }
+
+                            OUTBean.EV_MSGT = "Y";
+                            OUTBean.EV_MSG = "";
+                            #endregion
+                        }
+                    }
                 }
                 else
                 {
-                    #region 寄送Mail通知
-                    if (beanBMP.IV_CUSTOMER != "") //客戶代表是主約才需要寄送Mail通知
-                    {
-                        CMF.SetContractMailContent(cCondition, pOperationID_Contract, IV_CONTACT, "", tONEURLName, pLoginName, tIsFormal);
-                    }
-
                     OUTBean.EV_MSGT = "Y";
                     OUTBean.EV_MSG = "";
-                    #endregion
                 }
             }
             catch (Exception ex)
@@ -11113,7 +11130,7 @@ namespace TSTI_API.Controllers
         /// <summary>客戶聯絡人姓名</summary>
         public string IV_ContactName { get; set; }
         /// <summary>客戶聯絡人E-Mail</summary>
-        public string IV_ContactEmail { get; set; }
+        public string IV_ContactEmail { get; set; }        
     }
     #endregion
 }

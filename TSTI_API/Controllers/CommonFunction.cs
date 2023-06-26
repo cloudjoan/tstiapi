@@ -5806,6 +5806,7 @@ namespace TSTI_API.Controllers
                 if (bean != null)
                 {
                     beanM.IV_CONTACT = bean.cContent_ContractID;
+                    beanM.IV_SUBCONTACT = "";
                     beanM.IV_SONO = "";                    
                     beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO);
                     beanM.IV_ASSITANCE = bean.cContent_Secretary;
