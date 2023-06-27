@@ -3567,7 +3567,14 @@ namespace TSTI_API.Controllers
                         break;
                     case "65": //定維服務
                         EV_TYPE = "ZSR5";
-                        break;
+						EV_CONTACT = string.IsNullOrEmpty(beanM.cRepairName) ? "" : beanM.cRepairName;
+						EV_ADDR = string.IsNullOrEmpty(beanM.cRepairAddress) ? "" : beanM.cRepairAddress;
+						EV_TEL = string.IsNullOrEmpty(beanM.cRepairPhone) ? "" : beanM.cRepairPhone;
+						EV_MOBILE = string.IsNullOrEmpty(beanM.cRepairMobile) ? "" : beanM.cRepairMobile;
+						EV_EMAIL = string.IsNullOrEmpty(beanM.cRepairEmail) ? "" : beanM.cRepairEmail;
+						MAServiceType = string.IsNullOrEmpty(beanM.cMAServiceType) ? "" : beanM.cMAServiceType;
+						EV_SQ = string.IsNullOrEmpty(beanM.cSQPersonName) ? "" : beanM.cSQPersonName;
+						break;
                 }
 
                 EmployeeBean EmpBean = new EmployeeBean();
