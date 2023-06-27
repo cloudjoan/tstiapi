@@ -358,42 +358,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="TB_ONE_ContractMain">
-      <EntityTypeMapping TypeName="Model.TB_ONE_ContractMain">
-        <MappingFragment StoreEntitySet="TB_ONE_ContractMain">
-          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="Disabled" ColumnName="Disabled" />
-          <ScalarProperty Name="cInvalidReason" ColumnName="cInvalidReason" />
-          <ScalarProperty Name="cBillNotes" ColumnName="cBillNotes" />
-          <ScalarProperty Name="cBillCycle" ColumnName="cBillCycle" />
-          <ScalarProperty Name="cIsSubContract" ColumnName="cIsSubContract" />
-          <ScalarProperty Name="cTeamID" ColumnName="cTeamID" />
-          <ScalarProperty Name="cContractReport" ColumnName="cContractReport" />
-          <ScalarProperty Name="cContractNotes" ColumnName="cContractNotes" />
-          <ScalarProperty Name="cSLASRV" ColumnName="cSLASRV" />
-          <ScalarProperty Name="cSLARESP" ColumnName="cSLARESP" />
-          <ScalarProperty Name="cMAAddress" ColumnName="cMAAddress" />
-          <ScalarProperty Name="cMANotes" ColumnName="cMANotes" />
-          <ScalarProperty Name="cMACycle" ColumnName="cMACycle" />
-          <ScalarProperty Name="cEndDate" ColumnName="cEndDate" />
-          <ScalarProperty Name="cStartDate" ColumnName="cStartDate" />
-          <ScalarProperty Name="cDesc" ColumnName="cDesc" />
-          <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
-          <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
-          <ScalarProperty Name="cMASalesName" ColumnName="cMASalesName" />
-          <ScalarProperty Name="cMASales" ColumnName="cMASales" />
-          <ScalarProperty Name="cSoSalesASSName" ColumnName="cSoSalesASSName" />
-          <ScalarProperty Name="cSoSalesASS" ColumnName="cSoSalesASS" />
-          <ScalarProperty Name="cSoSalesName" ColumnName="cSoSalesName" />
-          <ScalarProperty Name="cSoSales" ColumnName="cSoSales" />
-          <ScalarProperty Name="cSoNo" ColumnName="cSoNo" />
-          <ScalarProperty Name="cContractID" ColumnName="cContractID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="TB_ONE_ContractIDTemp">
       <EntityTypeMapping TypeName="Model.TB_ONE_ContractIDTemp">
         <MappingFragment StoreEntitySet="TB_ONE_ContractIDTemp">
@@ -459,6 +423,44 @@
           <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
           <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
           <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_ContractMain">
+      <EntityTypeMapping TypeName="Model.TB_ONE_ContractMain">
+        <MappingFragment StoreEntitySet="TB_ONE_ContractMain">
+          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+          <ScalarProperty Name="cContactEmail" ColumnName="cContactEmail" />
+          <ScalarProperty Name="cContactName" ColumnName="cContactName" />
+          <ScalarProperty Name="cInvalidReason" ColumnName="cInvalidReason" />
+          <ScalarProperty Name="cBillNotes" ColumnName="cBillNotes" />
+          <ScalarProperty Name="cBillCycle" ColumnName="cBillCycle" />
+          <ScalarProperty Name="cIsSubContract" ColumnName="cIsSubContract" />
+          <ScalarProperty Name="cTeamID" ColumnName="cTeamID" />
+          <ScalarProperty Name="cContractReport" ColumnName="cContractReport" />
+          <ScalarProperty Name="cContractNotes" ColumnName="cContractNotes" />
+          <ScalarProperty Name="cSLASRV" ColumnName="cSLASRV" />
+          <ScalarProperty Name="cSLARESP" ColumnName="cSLARESP" />
+          <ScalarProperty Name="cMAAddress" ColumnName="cMAAddress" />
+          <ScalarProperty Name="cMANotes" ColumnName="cMANotes" />
+          <ScalarProperty Name="cMACycle" ColumnName="cMACycle" />
+          <ScalarProperty Name="cEndDate" ColumnName="cEndDate" />
+          <ScalarProperty Name="cStartDate" ColumnName="cStartDate" />
+          <ScalarProperty Name="cDesc" ColumnName="cDesc" />
+          <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
+          <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
+          <ScalarProperty Name="cMASalesName" ColumnName="cMASalesName" />
+          <ScalarProperty Name="cMASales" ColumnName="cMASales" />
+          <ScalarProperty Name="cSoSalesASSName" ColumnName="cSoSalesASSName" />
+          <ScalarProperty Name="cSoSalesASS" ColumnName="cSoSalesASS" />
+          <ScalarProperty Name="cSoSalesName" ColumnName="cSoSalesName" />
+          <ScalarProperty Name="cSoSales" ColumnName="cSoSales" />
+          <ScalarProperty Name="cSoNo" ColumnName="cSoNo" />
+          <ScalarProperty Name="cContractID" ColumnName="cContractID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

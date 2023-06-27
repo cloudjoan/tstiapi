@@ -4529,7 +4529,7 @@ namespace TSTI_API.Controllers
 
                         hTable.DefaultCell.Border = iTextSharp.text.Rectangle.NO_BORDER; // 無邊框
 
-                        PdfPCell hcell1 = new PdfPCell(new iTextSharp.text.Phrase("NO.", ChFont10U));
+                        PdfPCell hcell1 = new PdfPCell(new iTextSharp.text.Phrase("NO." + IV_SRID, ChFont10U));
                         hcell1.Border = PdfPCell.NO_BORDER;
                         hTable.AddCell(hcell1);
 

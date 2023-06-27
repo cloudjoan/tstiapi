@@ -1,0 +1,400 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TAIFModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblEmployee">
+    <Key>
+      <PropertyRef Name="cEmployee_ID" />
+    </Key>
+    <Property Name="cEmployee_ID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="cEmployee_NO" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="cEmployee_cName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="cEmployee_Ename" Type="nvarchar" MaxLength="50" />
+    <Property Name="cEmployee_Title" Type="varchar" MaxLength="20" />
+    <Property Name="cDepartment_ID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="cEmployee_Level" Type="int" Nullable="false" />
+    <Property Name="cEmployee_PositionCode" Type="int" />
+    <Property Name="cEmployee_PositionCode2" Type="varchar" MaxLength="20" />
+    <Property Name="cEmployee_Away" Type="bit" Nullable="false" />
+    <Property Name="cEmployee_Tel" Type="varchar" MaxLength="50" />
+    <Property Name="cEmployee_Mobile" Type="varchar" MaxLength="50" />
+    <Property Name="cEmployee_Fax" Type="varchar" MaxLength="50" />
+    <Property Name="cEmployee_Email" Type="varchar" MaxLength="50" />
+    <Property Name="cEmployee_NotifyTypeID" Type="int" Nullable="false" />
+    <Property Name="cEmployee_Pluralism" Type="bit" Nullable="false" />
+    <Property Name="cEmployee_Status" Type="int" Nullable="false" />
+    <Property Name="cEmployee_PID" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="cEmployee_BrithDay" Type="smalldatetime" />
+    <Property Name="cEmployee_ConstellationID" Type="varchar" MaxLength="20" />
+    <Property Name="cEmployee_PhotoPath" Type="nvarchar" MaxLength="200" />
+    <Property Name="cEmployee_SexID" Type="varchar" MaxLength="2" Nullable="false" />
+    <Property Name="cEmployee_JobStatusID" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="cEmployee_RegestDate" Type="datetime" />
+    <Property Name="cEmployee_CallInDate" Type="datetime" />
+    <Property Name="cEmployee_CallOutDate" Type="datetime" />
+    <Property Name="cEmployee_ReplaceDate" Type="datetime" />
+    <Property Name="cEmployee_TakeDay" Type="smalldatetime" />
+    <Property Name="cEmployee_LeaveDay" Type="smalldatetime" />
+    <Property Name="cEmployee_LeaveReason" Type="nvarchar" MaxLength="100" />
+    <Property Name="cEmployee_CompanyCode" Type="varchar" MaxLength="20" />
+    <Property Name="cEmployee_AreaCode" Type="varchar" MaxLength="20" />
+    <Property Name="cEmployee_JobTypeID" Type="varchar" MaxLength="20" />
+    <Property Name="cEmployee_Title1" Type="varchar" MaxLength="20" />
+    <Property Name="cEmployee_Title2" Type="varchar" MaxLength="20" />
+    <Property Name="cEmployee_CapitalPosition1" Type="varchar" MaxLength="20" />
+    <Property Name="cEmployee_CapitalPosition2" Type="varchar" MaxLength="20" />
+    <Property Name="cEmployee_CpDate" Type="datetime" />
+    <Property Name="cEmployee_Position1" Type="varchar" MaxLength="20" />
+    <Property Name="cEmployee_Position2" Type="varchar" MaxLength="20" />
+    <Property Name="cEmployee_PositionDate" Type="datetime" />
+    <Property Name="cEmployee_CompanyPhone" Type="varchar" MaxLength="20" />
+    <Property Name="cEmployee_CompanyPhoneExt" Type="varchar" MaxLength="10" />
+    <Property Name="cEmployee_NationalityID" Type="nvarchar" MaxLength="10" />
+    <Property Name="cEmployee_BloodType" Type="varchar" MaxLength="2" />
+    <Property Name="cEmployee_WorkPlace" Type="nvarchar" MaxLength="100" />
+    <Property Name="cEmployee_ERPID" Type="nvarchar" MaxLength="10" />
+    <Property Name="cEmployee_Workers" Type="nvarchar" MaxLength="50" />
+    <Property Name="cEmployee_Center" Type="nvarchar" MaxLength="20" />
+    <Property Name="cEmployee_Assign_Type" Type="varchar" MaxLength="2" />
+    <Property Name="cEmployee_IsEnable" Type="bit" Nullable="false" />
+    <Property Name="cEmployee_Account" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="cEmployee_CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="cEmployee_CreateUser" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="cEmployee_ModifyDate" Type="datetime" />
+    <Property Name="cEmployee_ModifyUser" Type="uniqueidentifier" />
+    <Property Name="cEmployee_Level1" Type="nvarchar" MaxLength="50" />
+    <Property Name="cEmployee_Level2" Type="nvarchar" MaxLength="50" />
+    <Property Name="cEmployee_Level1_Date" Type="smalldatetime" />
+    <Property Name="cEmployee_Level2_Date" Type="smalldatetime" />
+    <Property Name="cEmployee_Introducer" Type="nvarchar" MaxLength="50" />
+    <Property Name="cEmployee_IsVegetarian" Type="bit" />
+    <Property Name="cEmployee_ProfitcenterID" Type="uniqueidentifier" />
+    <Property Name="cEmployee_CostCenterID" Type="uniqueidentifier" />
+    <Property Name="pk" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="tblForm_ContractSeals">
+    <Key>
+      <PropertyRef Name="cSystem_FormNo" />
+    </Key>
+    <Property Name="cSystem_FormNo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="cSystem_ApplyDate" Type="datetime" />
+    <Property Name="cSystem_FinishDate" Type="datetime" />
+    <Property Name="cSystem_MainStatus" Type="varchar" MaxLength="10" />
+    <Property Name="cSystem_Status" Type="varchar" MaxLength="50" />
+    <Property Name="cSystem_StatusDescription" Type="nvarchar" MaxLength="100" />
+    <Property Name="cSystem_IsBatchApproval" Type="bit" />
+    <Property Name="cSystem_HasSubmitted" Type="bit" />
+    <Property Name="cSystem_TerminateReason" Type="nvarchar" MaxLength="300" />
+    <Property Name="cSystem_ErrorMessage" Type="nvarchar" MaxLength="300" />
+    <Property Name="cApplyUser_EmployeeNO" Type="varchar" MaxLength="50" />
+    <Property Name="cApplyUser_EmployeeID" Type="uniqueidentifier" />
+    <Property Name="cApplyUser_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="cApplyUser_Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="cApplyUser_DepartmentID" Type="uniqueidentifier" />
+    <Property Name="cApplyUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+    <Property Name="cApplyUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cApplyUser_PhoneExt" Type="varchar" MaxLength="20" />
+    <Property Name="cApplyUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+    <Property Name="cFillUser_EmployeeNO" Type="varchar" MaxLength="50" />
+    <Property Name="cFillUser_EmployeeID" Type="uniqueidentifier" />
+    <Property Name="cFillUser_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="cFillUser_Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="cFillUser_DepartmentID" Type="uniqueidentifier" />
+    <Property Name="cFillUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+    <Property Name="cFillUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cFillUser_PhoneExt" Type="varchar" MaxLength="20" />
+    <Property Name="cFillUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+    <Property Name="cAgentUser_EmployeeNO" Type="varchar" MaxLength="50" />
+    <Property Name="cAgentUser_EmployeeID" Type="uniqueidentifier" />
+    <Property Name="cAgentUser_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="cAgentUser_Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="cAgentUser_DepartmentID" Type="uniqueidentifier" />
+    <Property Name="cAgentUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+    <Property Name="cAgentUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cAgentUser_PhoneExt" Type="varchar" MaxLength="10" />
+    <Property Name="cAgentUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_FormSecretary" Type="nvarchar" MaxLength="30" />
+    <Property Name="cContent_FormSecretaryName" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_FormSecretaryID" Type="uniqueidentifier" />
+    <Property Name="cContent_ContractID" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContent_OldContractID" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_IsRenew" Type="varchar" MaxLength="1" />
+    <Property Name="cContent_ContractReferenceNo" Type="nvarchar" MaxLength="30" />
+    <Property Name="cContent_ContractName" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ContractType" Type="nvarchar" MaxLength="2" />
+    <Property Name="cContent_ContractType_0" Type="nvarchar" MaxLength="2" />
+    <Property Name="cContent_ContractType_1" Type="nvarchar" MaxLength="2" />
+    <Property Name="cContent_ContractTypeOther1" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ContractType_2" Type="nvarchar" MaxLength="2" />
+    <Property Name="cContent_ContractTypeOther2" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ContractInfo_Maintain" Type="nvarchar" MaxLength="1000" />
+    <Property Name="cContent_ContractInfo_MakeMoney" Type="nvarchar" MaxLength="1000" />
+    <Property Name="cContent_ContractInfo_Note" Type="nvarchar" MaxLength="1000" />
+    <Property Name="cContent_ContractInfo_Address" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ContractInfo_Responses" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContent_ContractInfo_Service" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContent_ContractInfo_Team" Type="nvarchar" MaxLength="15" />
+    <Property Name="cContent_ContractInfo_MainNo" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContent_ContractInfo_MainNoCName" Type="nvarchar" MaxLength="500" />
+    <Property Name="cContent_ContractInfo_Memo" Type="nvarchar(max)" />
+    <Property Name="cContent_Secretary" Type="nvarchar" MaxLength="30" />
+    <Property Name="cContent_SecretaryName" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_SecretaryID" Type="uniqueidentifier" />
+    <Property Name="cContent_MaintainSales" Type="nvarchar" MaxLength="30" />
+    <Property Name="cContent_MaintainSalesName" Type="nvarchar" MaxLength="30" />
+    <Property Name="cContent_ContractFirst" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_CrmOppNo" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_CostFormNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContent_ContractVendor" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractUser" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ContractUserID" Type="nvarchar" MaxLength="15" />
+    <Property Name="cContent_ContractDesc" Type="nvarchar(max)" />
+    <Property Name="cContent_ContractStrDate" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_ContractEndDate" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_ContractYear" Type="nvarchar" MaxLength="3" />
+    <Property Name="cContent_ContractMonth" Type="nvarchar" MaxLength="2" />
+    <Property Name="cContent_ContractExtendDate" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_ContractPGYear" Type="nvarchar" MaxLength="4" />
+    <Property Name="cContent_ContractPGMonth" Type="nvarchar" MaxLength="2" />
+    <Property Name="cContent_ContractPGOther" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_AttatchementId" Type="nvarchar(max)" />
+    <Property Name="cContent_ContractECSApplyNo" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContent_ContractPaper" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal1" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal2" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal3" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal4" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal5" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal6" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal7a" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_ContractSeal7b" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_ContractInfo1" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="cContent_ContractInfo1_IN" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="cContent_ContractInfo2" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="cContent_ContractInfo3" Type="nvarchar" MaxLength="2000" />
+    <Property Name="cContent_ContractInfo4" Type="nvarchar" MaxLength="2000" />
+    <Property Name="cContent_ContractInfo5" Type="nvarchar" MaxLength="2000" />
+    <Property Name="cContent_ContractInfo6" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractInfo6Other" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ContractInfo6Place" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ContractDept1" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractDept2" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractDept3" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractDept4" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractDept5" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractDept6" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractDept7" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractDept8" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractDept9" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractDept10" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractDept11" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractDept12" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ContractDescription" Type="nvarchar(max)" />
+    <Property Name="cContent_HandlingSecret" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_ClassifiedLevel" Type="varchar" MaxLength="2" />
+    <Property Name="cContent_HandlingTax" Type="nchar" MaxLength="1" />
+    <Property Name="cContent_HandlingTotalTax" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="cContent_AttatchementId_1" Type="nvarchar(max)" />
+    <Property Name="cContent_AttatchementId_2" Type="nvarchar(max)" />
+    <Property Name="cContent_AttatchementId_3" Type="nvarchar(max)" />
+    <Property Name="cContent_AttatchementId_4" Type="nvarchar(max)" />
+    <Property Name="cContent_IsSaved" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_IsHandlinged" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_IsHandlingChange" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_FlowStage" Type="varchar" MaxLength="2" />
+    <Property Name="cSystem_CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="cSystem_CreatedUserID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="cSystem_CreatedUserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="cSystem_ModifiedDate" Type="datetime" />
+    <Property Name="cSystem_ModifiedUserID" Type="uniqueidentifier" />
+    <Property Name="cSystem_ModifiedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cApplyUser_FullDepartmentName" Type="nvarchar" MaxLength="150" />
+    <Property Name="cFillUser_FullDepartmentName" Type="nvarchar" MaxLength="150" />
+    <Property Name="cAgentUser_FullDepartmentName" Type="nvarchar" MaxLength="150" />
+    <Property Name="cSystem_TaskStartDate" Type="datetime" />
+    <Property Name="cSystem_TaskUserAccounts" Type="nvarchar" MaxLength="300" />
+    <Property Name="cSystem_TaskUserNames" Type="nvarchar" MaxLength="500" />
+    <Property Name="cContent_ContractInfo3_0" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_ContractInfo_PayNote" Type="nvarchar" MaxLength="1000" />
+    <Property Name="cContent_ContractInfo_MakeMoney2" Type="nvarchar" MaxLength="1000" />
+    <Property Name="cContent_ContractInfo_PayNote2" Type="nvarchar" MaxLength="1000" />
+    <Property Name="cContent_Secretary2" Type="nvarchar" MaxLength="30" />
+    <Property Name="cContent_SecretaryName2" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_SecretaryID2" Type="uniqueidentifier" />
+    <Property Name="cContent_ContractTypeOther0" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_SealsFormNo" Type="varchar" MaxLength="50" />
+    <Property Name="cContent_OrigCurrency" Type="nvarchar" MaxLength="5" />
+    <Property Name="cContent_OrigAmount" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="cContent_ExchangeRate" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContent_IsCFOBeforeFlow" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_ReturnContractID" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContent_ContractInfo3Note" Type="nvarchar" MaxLength="2000" />
+    <Property Name="cContent_ContractSeal8" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal9" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal10" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal11" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal12" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal13" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal14" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal15" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_ContractSeal16" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_PreSaleNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContent_ContractSealOther" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ChairmanApprove" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_CurrentType" Type="nvarchar" MaxLength="1" />
+    <Property Name="cInheritUser_EmployeeNO" Type="nvarchar" MaxLength="30" />
+    <Property Name="cInheritUser_Name" Type="nvarchar" MaxLength="100" />
+    <Property Name="cInheritUser_EmployeeID" Type="uniqueidentifier" />
+    <Property Name="cInheritUser_DepartmentID" Type="uniqueidentifier" />
+    <Property Name="cInheritUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+    <Property Name="cInheritUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cInheritUser_PhoneExt" Type="varchar" MaxLength="10" />
+    <Property Name="cInheritUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_ContactType" Type="varchar" MaxLength="1" />
+    <Property Name="cContent_ContactPersonName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContent_ContactPersonTitle" Type="varchar" MaxLength="1" />
+    <Property Name="cContent_ContactPersonAddCode" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_ContactPersonAddCity" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_ContactPersonAddTownship" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_ContactPersonAddRoad" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContent_ContactPersonAddNo" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_ContactPersonPhone" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_ContactPersonEmail" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_HandlingDate" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_HandlingFee" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="cContent_HandlingDelayMemo" Type="nvarchar(max)" />
+    <Property Name="cContent_ReceiveCondition" Type="nvarchar" MaxLength="5" />
+    <Property Name="cContent_ReceiveOther" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_ReceiveRemarks" Type="nvarchar(max)" />
+    <Property Name="cContent_SAPReceiveCondition" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContent_PaymentCondition" Type="nvarchar" MaxLength="5" />
+    <Property Name="cContent_PaymentOther" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_PaymentRemarks" Type="nvarchar(max)" />
+    <Property Name="cContent_SAPPaymentCondition" Type="nvarchar" MaxLength="50" />
+    <Property Name="cSystemGUID" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityType Name="tblForm_SubContractSeals">
+    <Key>
+      <PropertyRef Name="cSystem_FormNo" />
+    </Key>
+    <Property Name="cSystem_FormNo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="cSystem_ApplyDate" Type="datetime" />
+    <Property Name="cSystem_FinishDate" Type="datetime" />
+    <Property Name="cSystem_MainStatus" Type="varchar" MaxLength="10" />
+    <Property Name="cSystem_Status" Type="varchar" MaxLength="50" />
+    <Property Name="cSystem_StatusDescription" Type="nvarchar" MaxLength="100" />
+    <Property Name="cSystem_IsBatchApproval" Type="bit" />
+    <Property Name="cSystem_HasSubmitted" Type="bit" />
+    <Property Name="cSystem_TerminateReason" Type="nvarchar" MaxLength="300" />
+    <Property Name="cSystem_ErrorMessage" Type="nvarchar" MaxLength="300" />
+    <Property Name="cApplyUser_EmployeeNO" Type="varchar" MaxLength="50" />
+    <Property Name="cApplyUser_EmployeeID" Type="uniqueidentifier" />
+    <Property Name="cApplyUser_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="cApplyUser_Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="cApplyUser_DepartmentID" Type="uniqueidentifier" />
+    <Property Name="cApplyUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+    <Property Name="cApplyUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cApplyUser_PhoneExt" Type="varchar" MaxLength="20" />
+    <Property Name="cApplyUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+    <Property Name="cFillUser_EmployeeNO" Type="varchar" MaxLength="50" />
+    <Property Name="cFillUser_EmployeeID" Type="uniqueidentifier" />
+    <Property Name="cFillUser_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="cFillUser_Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="cFillUser_DepartmentID" Type="uniqueidentifier" />
+    <Property Name="cFillUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+    <Property Name="cFillUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cFillUser_PhoneExt" Type="varchar" MaxLength="20" />
+    <Property Name="cFillUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+    <Property Name="cAgentUser_EmployeeNO" Type="varchar" MaxLength="50" />
+    <Property Name="cAgentUser_EmployeeID" Type="uniqueidentifier" />
+    <Property Name="cAgentUser_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="cAgentUser_Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="cAgentUser_DepartmentID" Type="uniqueidentifier" />
+    <Property Name="cAgentUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+    <Property Name="cAgentUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cAgentUser_PhoneExt" Type="varchar" MaxLength="10" />
+    <Property Name="cAgentUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_ContractID" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContent_CrmOppNo" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_CostFormNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContent_ContractName" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_MainUser_EmployeeNO" Type="varchar" MaxLength="50" />
+    <Property Name="cContent_MainUser_EmployeeID" Type="uniqueidentifier" />
+    <Property Name="cContent_MainUser_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContent_MainUser_DepartmentID" Type="uniqueidentifier" />
+    <Property Name="cContent_MainUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContent_Amount" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="cContent_Memo" Type="nvarchar(max)" />
+    <Property Name="cContent_ContractInfo_Maintain" Type="nvarchar" MaxLength="1000" />
+    <Property Name="cContent_ContractInfo_MakeMoney" Type="nvarchar" MaxLength="1000" />
+    <Property Name="cContent_ContractInfo_Note" Type="nvarchar" MaxLength="1000" />
+    <Property Name="cContent_ContractInfo_PayNote" Type="nvarchar" MaxLength="1000" />
+    <Property Name="cContent_ContractInfo_Address" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ContractInfo_Responses" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContent_ContractInfo_Service" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContent_ContractInfo_Team" Type="nvarchar" MaxLength="15" />
+    <Property Name="cContent_ContractInfo_MainNo" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContent_ContractInfo_MainNoCName" Type="nvarchar" MaxLength="500" />
+    <Property Name="cContent_ContractInfo_Memo" Type="nvarchar(max)" />
+    <Property Name="cContent_Secretary" Type="nvarchar" MaxLength="30" />
+    <Property Name="cContent_SecretaryName" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_SecretaryID" Type="uniqueidentifier" />
+    <Property Name="cContent_MaintainSales" Type="nvarchar" MaxLength="30" />
+    <Property Name="cContent_MaintainSalesName" Type="nvarchar" MaxLength="30" />
+    <Property Name="cContent_ContractVendor" Type="varchar" MaxLength="1" />
+    <Property Name="cContent_ContractUser" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ContractUserID" Type="nvarchar" MaxLength="15" />
+    <Property Name="cContent_ContractDesc" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ContractStrDate" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_ContractEndDate" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_ContractExtendDate" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_ContractPGYear" Type="nvarchar" MaxLength="3" />
+    <Property Name="cContent_ContractPGMonth" Type="nvarchar" MaxLength="2" />
+    <Property Name="cContent_ContractPGOther" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_OrigCurrency" Type="nvarchar" MaxLength="5" />
+    <Property Name="cContent_OrigAmount" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="cContent_ExchangeRate" Type="nvarchar" MaxLength="10" />
+    <Property Name="cContent_ContractInfo1" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="cContent_ContractInfo2" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="cContent_ContractInfo3_0" Type="nvarchar" MaxLength="1" />
+    <Property Name="cContent_ContractInfo3" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_ContractInfo3Note" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ContractInfo4" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_ContractInfo5" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_AttatchementId" Type="nvarchar(max)" />
+    <Property Name="cContent_ClassifiedLevel" Type="varchar" MaxLength="2" />
+    <Property Name="cContent_IsEmptMaintain" Type="varchar" MaxLength="1" />
+    <Property Name="cContent_In1CostFormNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContent_In1CostItem" Type="nvarchar" MaxLength="255" />
+    <Property Name="cContent_NoMainNo" Type="varchar" MaxLength="1" />
+    <Property Name="cContent_InternalNo" Type="nvarchar" MaxLength="12" />
+    <Property Name="cContent_VBELN" Type="nvarchar" MaxLength="20" />
+    <Property Name="cContent_IsDoDraft" Type="varchar" MaxLength="1" />
+    <Property Name="cSystem_CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="cSystem_CreatedUserID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="cSystem_CreatedUserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="cSystem_ModifiedDate" Type="datetime" />
+    <Property Name="cSystem_ModifiedUserID" Type="uniqueidentifier" />
+    <Property Name="cSystem_ModifiedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cApplyUser_FullDepartmentName" Type="nvarchar" MaxLength="150" />
+    <Property Name="cFillUser_FullDepartmentName" Type="nvarchar" MaxLength="150" />
+    <Property Name="cAgentUser_FullDepartmentName" Type="nvarchar" MaxLength="150" />
+    <Property Name="cSystem_TaskStartDate" Type="datetime" />
+    <Property Name="cSystem_TaskUserAccounts" Type="nvarchar" MaxLength="300" />
+    <Property Name="cSystem_TaskUserNames" Type="nvarchar" MaxLength="500" />
+    <Property Name="cInheritUser_EmployeeNO" Type="nvarchar" MaxLength="30" />
+    <Property Name="cInheritUser_Name" Type="nvarchar" MaxLength="100" />
+    <Property Name="cInheritUser_EmployeeID" Type="uniqueidentifier" />
+    <Property Name="cInheritUser_DepartmentID" Type="uniqueidentifier" />
+    <Property Name="cInheritUser_DepartmentNO" Type="nvarchar" MaxLength="10" />
+    <Property Name="cInheritUser_DepartmentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="cInheritUser_PhoneExt" Type="varchar" MaxLength="10" />
+    <Property Name="cInheritUser_WorkPlace" Type="nvarchar" MaxLength="100" />
+    <Property Name="Content_FormSecretary" Type="nvarchar" MaxLength="50" />
+    <Property Name="Content_FormSecretaryName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Content_FormSecretaryID" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityContainer Name="TAIFModelStoreContainer">
+    <EntitySet Name="tblEmployee" EntityType="Self.tblEmployee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblForm_ContractSeals" EntityType="Self.tblForm_ContractSeals" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblForm_SubContractSeals" EntityType="Self.tblForm_SubContractSeals" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>
