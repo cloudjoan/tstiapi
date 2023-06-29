@@ -3142,6 +3142,114 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑序號相關資訊查詢(產品序號資訊、保固SLA資訊(List)、服務案件資訊(List)、服務案件客戶聯絡人資訊(List)) ↑↑↑↑↑-----  
 
+        #region -----↓↓↓↓↓序號查詢【保固SLA資訊】接口 ↓↓↓↓↓----- 
+
+        #region 查詢序號相關資訊接口
+        [HttpPost]
+        public ActionResult API_WTSLAINFO_SEARCH(WTSLASEARCH_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_SERIAL": "SGH33223R6"            
+            //}
+            #endregion
+
+            WTSLASEARCH_OUTPUT ListOUT = new WTSLASEARCH_OUTPUT();
+
+            ListOUT = WTSLAINFO_SEARCH(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得序號相關資訊
+        private WTSLASEARCH_OUTPUT WTSLAINFO_SEARCH(WTSLASEARCH_INPUT beanIN)
+        {
+            WTSLASEARCH_OUTPUT SROUT = new WTSLASEARCH_OUTPUT();
+
+            bool tIsFormal = false;
+            string tAPIURLName = string.Empty;
+            string tONEURLName = string.Empty;
+            string tBPMURLName = string.Empty;
+            string tPSIPURLName = string.Empty;
+            string tAttachURLName = string.Empty;
+            string[] ArySERIAL = new string[1];
+
+            string IV_SERIAL = string.IsNullOrEmpty(beanIN.IV_SERIAL) ? "" : beanIN.IV_SERIAL.Trim();
+
+            #region 取得系統位址參數相關資訊
+            SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+
+            tIsFormal = ParaBean.IsFormal;
+
+            tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+            tONEURLName = ParaBean.ONEURLName;
+            tBPMURLName = ParaBean.BPMURLName;
+            tPSIPURLName = ParaBean.PSIPURLName;
+            tAttachURLName = ParaBean.AttachURLName;
+            #endregion           
+
+            try
+            {
+                if (IV_SERIAL != "")
+                {
+                    tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+
+                    #region 保固SLA資訊(List)
+                    List<SRWarranty> QueryToList = new List<SRWarranty>();    //查詢出來的清單                
+
+                    ArySERIAL[0] = beanIN.IV_SERIAL.Trim();
+
+                    QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(ArySERIAL, tBPMURLName, tPSIPURLName, tAPIURLName);
+                    QueryToList = QueryToList.OrderBy(x => x.SERIALID).ThenByDescending(x => x.WTYEDATE).ToList();
+
+                    SROUT.WTSLA_LIST = QueryToList;
+                    #endregion
+
+                    SROUT.EV_MSGT = "Y";
+                    SROUT.EV_MSG = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "WTSLAINFO_SEARCH_API", pMsg, "SYS");
+
+                SROUT.EV_MSGT = "E";
+                SROUT.EV_MSG = ex.Message;
+            }
+
+            return SROUT;
+        }
+        #endregion
+
+        #region 序號查詢保固SLAINPUT資訊
+        /// <summary>序號查詢保固SLAINPUT資訊</summary>
+        public struct WTSLASEARCH_INPUT
+        {
+            /// <summary>序號ID</summary>
+            public string IV_SERIAL { get; set; }
+        }
+        #endregion
+
+        #region 序號查詢保固SLAOUTPUT資訊
+        /// <summary>序號查詢保固SLAOUTPUT資訊</summary>
+        public struct WTSLASEARCH_OUTPUT
+        {           
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>保固SLA資訊清單</summary>
+            public List<SRWarranty> WTSLA_LIST { get; set; }         
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑序號查詢【保固SLA資訊】接口 ↑↑↑↑↑-----  
+
         #region -----↓↓↓↓↓序號查詢【料號和料號說明】接口 ↓↓↓↓↓-----        
 
         #region 查詢料號資料接口
