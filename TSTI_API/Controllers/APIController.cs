@@ -464,7 +464,7 @@ namespace TSTI_API.Controllers
                     {
                         if (IV_SERIAL != "")
                         {
-                            QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(PRcSerialID, tBPMURLName, tPSIPURLName, tAPIURLName);
+                            QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(PRcSerialID, tBPMURLName, tONEURLName, tAPIURLName);
 
                             #region 保固，因RFC已經有回傳所有清單，這邊暫時先不用
                             //foreach (string IV_SERIAL in ArySERIAL)
@@ -3057,7 +3057,7 @@ namespace TSTI_API.Controllers
 
                 ArySERIAL[0] = beanIN.IV_SERIAL.Trim();
 
-                QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(ArySERIAL, tBPMURLName, tPSIPURLName, tAPIURLName);
+                QueryToList = CMF.ZFM_TICC_SERIAL_SEARCHWTYList(ArySERIAL, tBPMURLName, tONEURLName, tAPIURLName);
                 QueryToList = QueryToList.OrderBy(x => x.SERIALID).ThenByDescending(x => x.WTYEDATE).ToList();
 
                 SROUT.WTSLA_LIST = QueryToList;
