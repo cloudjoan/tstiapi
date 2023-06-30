@@ -2488,9 +2488,7 @@ namespace TSTI_API.Controllers
                         var beansW = dbProxy.STOCKWTY.Where(x => x.IV_SERIAL == IV_SERIAL);
 
                         foreach(var bean in beansW)
-                        {                           
-                            tBPMNO = "";
-
+                        {
                             cWTYID = bean.IV_WTYID;                                                 //保固
                             cWTYName = bean.IV_WTYID;                                               //保固說明
                             cWTYSDATE = Convert.ToDateTime(bean.IV_SDATE).ToString("yyyy-MM-dd");       //保固開始日期
@@ -2498,8 +2496,8 @@ namespace TSTI_API.Controllers
                             cSLARESP = bean.IV_SLARESP;                                             //回應條件
                             cSLASRV = bean.IV_SLASRV;                                               //服務條件
                             cContractID = "";                                                      //合約編號
-                            tBPMNO = bean.BPM_NO;                                                   //BPM表單編號
-                            tAdvice = bean.ADVICE;                                                  //客服主管建議
+                            tBPMNO = string.IsNullOrEmpty(bean.BPM_NO) ? "": bean.BPM_NO;              //BPM表單編號
+                            tAdvice = string.IsNullOrEmpty(bean.ADVICE) ? "": bean.ADVICE;             //客服主管建議
 
                             var QueryInfo = setSRWarranty(IV_SERIAL, cWTYID, cWTYName, cWTYSDATE, cWTYEDATE, cSLARESP, cSLASRV, cContractID, tBPMNO,
                                                           tAdvice, tBGColor, tAPIURLName, tBPMURLName, tPSIPURLName);
