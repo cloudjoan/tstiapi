@@ -2346,10 +2346,10 @@ namespace TSTI_API.Controllers
         /// </summary>        
         /// <param name="ArySERIAL">序號Array</param>        
         /// <param name="tBPMURLName">BPM站台名稱</param>
-        /// <param name="tPSIPURLName">PSIP站台名稱</param>
+        /// <param name="tONEURLName">OneService站台名稱</param>
         /// <param name="tAPIURLName">API站台名稱</param>
         /// <returns></returns>
-        public List<SRWarranty> ZFM_TICC_SERIAL_SEARCHWTYList(string[] ArySERIAL, string tBPMURLName, string tPSIPURLName, string tAPIURLName)
+        public List<SRWarranty> ZFM_TICC_SERIAL_SEARCHWTYList(string[] ArySERIAL, string tBPMURLName, string tONEURLName, string tAPIURLName)
         {
             List<SRWarranty> QueryToList = new List<SRWarranty>();
 
@@ -2500,7 +2500,7 @@ namespace TSTI_API.Controllers
                             tAdvice = string.IsNullOrEmpty(bean.ADVICE) ? "": bean.ADVICE;             //客服主管建議
 
                             var QueryInfo = setSRWarranty(IV_SERIAL, cWTYID, cWTYName, cWTYSDATE, cWTYEDATE, cSLARESP, cSLASRV, cContractID, tBPMNO,
-                                                          tAdvice, tBGColor, tAPIURLName, tBPMURLName, tPSIPURLName);
+                                                          tAdvice, tBGColor, tAPIURLName, tBPMURLName, tONEURLName);
                             QueryToList.Add(QueryInfo);
                         }
                         #endregion
@@ -2524,7 +2524,7 @@ namespace TSTI_API.Controllers
                             tAdvice = "";                  //客服主管建議
 
                             var QueryInfo = setSRWarranty(IV_SERIAL, cWTYID, cWTYName, cWTYSDATE, cWTYEDATE, cSLARESP, cSLASRV, cContractID, tBPMNO,
-                                                          tAdvice, tBGColor, tAPIURLName, tBPMURLName, tPSIPURLName);
+                                                          tAdvice, tBGColor, tAPIURLName, tBPMURLName, tONEURLName);
                             QueryToList.Add(QueryInfo);
                         }
                         #endregion                        
@@ -2557,10 +2557,10 @@ namespace TSTI_API.Controllers
         /// <param name="tBGColor">tr背景顏色Class</param>
         /// <param name="tAPIURLName">API站台名稱</param>
         /// <param name="tBPMURLName">BPM站台名稱</param>
-        /// <param name="tPSIPURLName">PSIP站台名稱</param>
+        /// <param name="tONEURLName">OneService站台名稱</param>
         /// <returns></returns>
         public SRWarranty setSRWarranty(string IV_SERIAL, string cWTYID, string cWTYName, string cWTYSDATE, string cWTYEDATE, string cSLARESP, string cSLASRV, 
-                                      string cContractID, string tBPMNO, string tAdvice, string tBGColor, string tAPIURLName, string tBPMURLName, string tPSIPURLName)
+                                      string cContractID, string tBPMNO, string tAdvice, string tBGColor, string tAPIURLName, string tBPMURLName, string tONEURLName)
         {
             string cContractIDURL = string.Empty;   //合約編號Url
             string cSUB_CONTRACTID = string.Empty;  //下包文件編號             
@@ -2585,7 +2585,7 @@ namespace TSTI_API.Controllers
                         tURL = "http://" + tBPMURLName + "/ContractSeals/_layouts/FormServer.aspx?XmlLocation=%2fContractSeals%2fBPMContractSealsForm%2f" + tBPMNO + ".xml&ClientInstalled=true&DefaultItemOpen=1&source=/_layouts/TSTI.SharePoint.BPM/CloseWindow.aspx";
                     }
 
-                    cContractIDURL = "http://" + tPSIPURLName + "/Spare/QueryContractInfo?CONTRACTID=" + cContractID; //合約編號URL
+                    cContractIDURL = "http://" + tONEURLName + "/Contract/ContractMain?ContractID=" + cContractID; //合約編號URL
                 }
                 catch (Exception ex)
                 {
