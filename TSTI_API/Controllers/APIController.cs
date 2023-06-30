@@ -9291,7 +9291,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region -----↓↓↓↓↓查詢合約標的 ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓查詢合約標的(暫時先不用) ↓↓↓↓↓-----
 
         #region 測試取得合約標的資料
         //[HttpPost]
@@ -9464,7 +9464,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑查詢合約標的 ↑↑↑↑↑-----        
+        #endregion -----↑↑↑↑↑查詢合約標的(暫時先不用)↑↑↑↑↑-----        
 
         #region -----↓↓↓↓↓更新進出貨的資料 ↓↓↓↓↓-----
 
