@@ -4634,6 +4634,7 @@ namespace TSTI_API.Controllers
                     else if (cSRID.Substring(0, 2) == "65")
                     {
                         cStatusDesc = findSysParameterDescription(cOperationID_MaintainSR, "OTHER", cBUKRS, "SRSTATUS", beanM.cStatus);
+                        cContractID = beanM.cContractID;
                     }
 
                     cMAServiceType = findSysParameterDescription(cOperationID_GenerallySR, "OTHER", cBUKRS, "SRMATYPE", beanM.cMAServiceType); 
@@ -4850,8 +4851,8 @@ namespace TSTI_API.Controllers
                     tMailCcTemp += SRMain.SalesEmail;
                 }
 
-                //若為63.裝機才要取業務祕書
-                if (cSRID.Substring(0,2) == "63")
+                //若為(63.裝機、65.定維)才要取業務祕書
+                if (cSRID.Substring(0,2) == "63" || cSRID.Substring(0, 2) == "65")
                 {
                     //業務祕書
                     if (SRMain.SecretaryEmail != "")
@@ -5021,7 +5022,7 @@ namespace TSTI_API.Controllers
                 tMailBody = tMailBody.Replace("【<SalesNo>】", SRMain.SalesNo).Replace("【<ShipmentNo>】", SRMain.ShipmentNo).Replace("【<AttachementStockNoUrl>】", SRMain.CreatedDate);
 
                 tMailBody = tMailBody.Replace("<ContractID>", tContractID).Replace("【<MAServiceType>】", SRMain.MAServiceType).Replace("<SecFix>", tSecFix);
-                tMailBody = tMailBody.Replace("【<Desc>】", SRMain.Desc).Replace("【<Notes>】", SRMain.Notes);                
+                tMailBody = tMailBody.Replace("【<Desc>】", SRMain.Desc).Replace("【<Notes>】", SRMain.Notes).Replace("【<SalesName>】", SRMain.SalesEMP);                
                 tMailBody = tMailBody.Replace("<SRRepair_List>", tSRRepair_Table).Replace("<SRContact_List>", tSRContact_Table);
                 tMailBody = tMailBody.Replace("<SRSeiral_List>", tSRSeiral_Table).Replace("<SRParts_List>", tSRParts_Table);
                 tMailBody = tMailBody.Replace("<SRMaterial_List>", tSRMaterial_Table).Replace("<SRFeedBack_List>", tSRFeedBack_Table);
