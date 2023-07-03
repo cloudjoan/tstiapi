@@ -1330,7 +1330,7 @@ namespace TSTI_API.Controllers
             string IV_PROCESSWAY = string.IsNullOrEmpty(bean.IV_PROCESSWAY) ? "" : bean.IV_PROCESSWAY.Trim();
             string IV_ISAPPCLOSE = string.IsNullOrEmpty(bean.IV_ISAPPCLOSE) ? "" : bean.IV_ISAPPCLOSE.Trim();
 
-            if (IV_STATUS.IndexOf("TRANS") >= 0 || IV_STATUS.IndexOf("ADD") >= 0) //轉單或新建
+            if (IV_STATUS.IndexOf("|") >= 0) //「轉單」或「新建」或「狀態不一致」
             {
                 string[] tArySTATUS = IV_STATUS.Split('|');
 
@@ -1382,62 +1382,13 @@ namespace TSTI_API.Controllers
                     }
                     else
                     {
-                        if (beanM.cStatus != IV_STATUS)
+                        if (tExcType != "") //舊狀態
                         {
-                            switch (IV_STATUS)
-                            {
-                                case "E0002": //L2處理中(一般)
-                                case "E0003": //報價中(一般)
-                                case "E0005": //L3處理中(一般)
-                                case "E0008": //裝機中(裝機)
-                                case "E0016": //定保處理中(定維)
-                                    tCondition = SRCondition.SAVE;
-                                    break;
-
-                                case "E0004": //3rd Party處理中(一般)                            
-                                    tCondition = SRCondition.THRPARTY;
-                                    break;
-
-                                case "E0006": //完修(一般)                   
-                                    tCondition = SRCondition.DONE;
-                                    break;
-
-                                case "E0007": //技術支援升級(一般)           
-                                    tCondition = SRCondition.SUPPORT;
-                                    break;
-
-                                case "E0009": //維修/DOA(裝機)           
-                                    tCondition = SRCondition.DOA;
-                                    break;
-
-                                case "E0010": //裝機完成(裝機)           
-                                    tCondition = SRCondition.INSTALLDONE;
-                                    break;
-
-                                case "E0012": //HPGCSN 申請(一般)           
-                                    tCondition = SRCondition.HPGCSN;
-                                    break;
-
-                                case "E0013": //HPGCSN 完成(一般)
-                                    tCondition = SRCondition.HPGCSNDONE;
-                                    break;
-
-                                case "E0014": //駁回(共用)       
-                                    tCondition = SRCondition.REJECT;
-                                    break;
-
-                                case "E0015": //取消(共用)
-                                    tCondition = SRCondition.CANCEL;
-                                    break;                                
-
-                                case "E0017": //定保完成(定維)                   
-                                    tCondition = SRCondition.MAINTAINDONE;
-                                    break;
-                            }
+                            tCondition = findSRCondition(beanM.cStatus, tExcType); //從網頁更新                            
                         }
                         else
                         {
-                            tCondition = SRCondition.SAVE; //保存
+                            tCondition = findSRCondition(IV_STATUS, beanM.cStatus); //從APP更新                            
                         }
                     }
                     #endregion
@@ -1490,6 +1441,79 @@ namespace TSTI_API.Controllers
             }
 
             return SROUT;
+        }
+        #endregion
+
+        #region 判斷目前要執行什麼狀態
+        /// <summary>
+        /// 判斷目前要執行什麼狀態
+        /// </summary>
+        /// <param name="cNewStatus">新狀態</param>
+        /// <param name="cOldStatus">原狀態</param>
+        /// <returns></returns>
+        public SRCondition findSRCondition(string cNewStatus, string cOldStatus)
+        {
+            SRCondition tCondition = new SRCondition();
+
+            if (cNewStatus != cOldStatus)
+            {
+                switch (cNewStatus)
+                {
+                    case "E0002": //L2處理中(一般)
+                    case "E0003": //報價中(一般)
+                    case "E0005": //L3處理中(一般)
+                    case "E0008": //裝機中(裝機)
+                    case "E0016": //定保處理中(定維)
+                        tCondition = SRCondition.SAVE;
+                        break;
+
+                    case "E0004": //3rd Party處理中(一般)                            
+                        tCondition = SRCondition.THRPARTY;
+                        break;
+
+                    case "E0006": //完修(一般)                   
+                        tCondition = SRCondition.DONE;
+                        break;
+
+                    case "E0007": //技術支援升級(一般)           
+                        tCondition = SRCondition.SUPPORT;
+                        break;
+
+                    case "E0009": //維修/DOA(裝機)           
+                        tCondition = SRCondition.DOA;
+                        break;
+
+                    case "E0010": //裝機完成(裝機)           
+                        tCondition = SRCondition.INSTALLDONE;
+                        break;
+
+                    case "E0012": //HPGCSN 申請(一般)           
+                        tCondition = SRCondition.HPGCSN;
+                        break;
+
+                    case "E0013": //HPGCSN 完成(一般)
+                        tCondition = SRCondition.HPGCSNDONE;
+                        break;
+
+                    case "E0014": //駁回(共用)       
+                        tCondition = SRCondition.REJECT;
+                        break;
+
+                    case "E0015": //取消(共用)
+                        tCondition = SRCondition.CANCEL;
+                        break;
+
+                    case "E0017": //定保完成(定維)                   
+                        tCondition = SRCondition.MAINTAINDONE;
+                        break;
+                }
+            }
+            else
+            {
+                tCondition = SRCondition.SAVE; //保存
+            }
+
+            return tCondition;
         }
         #endregion
 

@@ -3128,7 +3128,7 @@ namespace TSTI_API.Controllers
 
                 string tSQL = @"select * from TB_ONE_SRMain
                                    where 
-                                   (cStatus <> 'E0015' and cStatus <> 'E0006' and cStatus <> 'E0010') and 
+                                   (cStatus <> 'E0015' and cStatus <> 'E0006' and cStatus <> 'E0010' and cStatus <> 'E0017') and 
                                    (
                                         (
                                             (cMainEngineerID = '{0}') or (cSalesID = '{0}') or (cSecretaryID = '{0}') or (cTechManagerID like '%{0}%')
@@ -3204,7 +3204,7 @@ namespace TSTI_API.Controllers
             }
             else
             {
-                beans = dbOne.TB_ONE_SRMain.Where(x => (x.cStatus != "E0015" && x.cStatus != "E0006" && x.cStatus != "E0010") && 
+                beans = dbOne.TB_ONE_SRMain.Where(x => (x.cStatus != "E0015" && x.cStatus != "E0006" && x.cStatus != "E0010" && x.cStatus != "E0017") && 
                                                     (x.cMainEngineerID == tERPID || x.cSalesID == tERPID || x.cSecretaryID == tERPID || x.cTechManagerID.Contains(tERPID) || x.cAssEngineerID.Contains(tERPID))
                                                 ).ToList();
 
