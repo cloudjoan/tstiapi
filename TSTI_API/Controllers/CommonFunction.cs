@@ -3911,7 +3911,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【共用】案件種類的郵件主旨
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
         /// <param name="SRID">服務ID</param>
         /// <param name="CusName">客戶名稱</param>
         /// <param name="TeamNAME">服務團隊</param>
@@ -3988,6 +3988,11 @@ namespace TSTI_API.Controllers
                     //[<客戶名稱>] <服務團隊>_<服務案件種類> 裝機完成通知[<服務ID>]，已裝機完成！
                     reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 裝機完成通知[" + SRID + "]，已裝機完成！";
                     break;
+
+                case SRCondition.MAINTAINDONE:
+                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 定保完成通知[<服務ID>]，已定保完成！
+                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 定保完成通知[" + SRID + "]，已定保完成！";
+                    break;
             }
 
             return reValue;
@@ -3998,7 +4003,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【一般服務】案件種類的郵件主旨(for客戶)
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
         /// <param name="SRID">服務ID</param>
         /// <param name="CusName">客戶名稱</param>        
         /// <returns></returns>
@@ -4492,7 +4497,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 組服務案件Mail相關資訊
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
         /// <param name="cOperationID_GenerallySR">程式作業編號檔系統ID(一般服務)</param>
         /// <param name="cOperationID_InstallSR">程式作業編號檔系統ID(裝機服務)</param>
         /// <param name="cOperationID_MaintainSR">程式作業編號檔系統ID(定維服務)</param>
@@ -4745,7 +4750,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 發送服務案件Mail相關資訊
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
         /// <param name="cSRID">SRID</param>
         /// <param name="tONEURLName">One Service站台名稱</param>
         /// <param name="cLoginName">登入人員姓名</param>
@@ -5047,7 +5052,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 發送服務案件Mail相關資訊(for客戶)
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
         /// <param name="cSRID">SRID</param>        
         /// <param name="cLoginName">登入人員姓名</param>
         /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>

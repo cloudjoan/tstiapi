@@ -1390,6 +1390,7 @@ namespace TSTI_API.Controllers
                                 case "E0003": //報價中(一般)
                                 case "E0005": //L3處理中(一般)
                                 case "E0008": //裝機中(裝機)
+                                case "E0016": //定保處理中(定維)
                                     tCondition = SRCondition.SAVE;
                                     break;
 
@@ -1427,6 +1428,10 @@ namespace TSTI_API.Controllers
 
                                 case "E0015": //取消(共用)
                                     tCondition = SRCondition.CANCEL;
+                                    break;                                
+
+                                case "E0017": //定保完成(定維)                   
+                                    tCondition = SRCondition.MAINTAINDONE;
                                     break;
                             }
                         }
@@ -11060,7 +11065,12 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 裝機完成
         /// </summary>
-        INSTALLDONE
+        INSTALLDONE,
+
+        /// <summary>
+        /// 定保完成
+        /// </summary>
+        MAINTAINDONE
     }
     #endregion
 
