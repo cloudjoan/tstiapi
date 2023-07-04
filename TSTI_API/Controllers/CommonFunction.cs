@@ -1,4 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿#region 更新歷程
+/*
+注意：若要更新正式區，請將搜尋「【測試】」，將它註解，並反註解「【正式】」，webconfig記得也要調整
+
+
+*/
+#endregion
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
@@ -2987,7 +2995,7 @@ namespace TSTI_API.Controllers
 
             try
             {
-                #region APP_INSTALL檔
+                #region APP_INSTALL檔(【測試】)
                 if (cID != 0)
                 {
                     var beanAPP = dbEIP.TB_SERVICES_APP_INSTALLTEMP.FirstOrDefault(x => x.ID == cID);
@@ -3014,7 +3022,7 @@ namespace TSTI_API.Controllers
                                 beanAPP.UPDATE_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");  //更新日期
                             }
                         }
-                    }                   
+                    }
                 }
                 else
                 {
@@ -3048,6 +3056,69 @@ namespace TSTI_API.Controllers
 
                     writeToLog(SRID, "SaveTB_SERVICES_APP_INSTALL", pMsg, pLoginName);
                 }
+                #endregion
+
+                #region APP_INSTALL檔(【正式】)
+                //if (cID != 0)
+                //{
+                //    var beanAPP = dbEIP.TB_SERVICES_APP_INSTALL.FirstOrDefault(x => x.ID == cID);
+
+                //    if (beanAPP != null)
+                //    {
+                //        if (TotalQuantity != "0")
+                //        {
+                //            if (tIsFromAPP == "Y")
+                //            {
+                //                beanAPP.TotalQuantity = Convert.ToDecimal(TotalQuantity);
+                //                beanAPP.InstallQuantity = Convert.ToDecimal(InstallQuantity);
+                //                beanAPP.InstallDate = InstallDate;
+                //                beanAPP.ExpectedDate = ExpectedDate;
+                //                beanAPP.UPDATE_ACCOUNT = pLoginAccount;
+                //                beanAPP.UPDATE_EMP_NAME = pLoginName;
+                //                beanAPP.UPDATE_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                //            }
+                //            else //非來自APP更新，只要更新總安裝數量就好
+                //            {
+                //                beanAPP.TotalQuantity = Convert.ToDecimal(TotalQuantity);           //總安裝數量
+                //                beanAPP.UPDATE_ACCOUNT = pLoginAccount;                           //變更者帳號                                
+                //                beanAPP.UPDATE_EMP_NAME = pLoginName;                             //變更者姓名
+                //                beanAPP.UPDATE_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");  //更新日期
+                //            }
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    TB_SERVICES_APP_INSTALL beanA = new TB_SERVICES_APP_INSTALL();
+
+                //    beanA.TotalQuantity = Convert.ToDecimal(TotalQuantity);             //總安裝數量
+                //    beanA.InstallQuantity = Convert.ToDecimal(InstallQuantity);         //已安裝數量
+                //    beanA.InstallDate = InstallDate;                                 //裝機起始日期
+                //    beanA.ExpectedDate = ExpectedDate;                               //裝機完成日期 
+                //    beanA.SRID = SRID;                                              //SRID
+                //    beanA.ACCOUNT = pLoginAccount;                                   //登入者帳號
+                //    beanA.ERP_ID = pLoginERPID;                                      //登入者ERPID
+                //    beanA.EMP_NAME = pLoginName;                                     //登入者姓名
+                //    beanA.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");   //建立日期                            
+
+                //    dbEIP.TB_SERVICES_APP_INSTALL.Add(beanA);
+                //}
+
+                //int result = dbEIP.SaveChanges();
+
+                //if (result <= 0)
+                //{
+                //    if (cID == 0) //新增
+                //    {
+                //        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新增失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
+                //    }
+                //    else
+                //    {
+                //        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "刪除失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
+                //    }
+
+                //    writeToLog(SRID, "SaveTB_SERVICES_APP_INSTALL", pMsg, pLoginName);
+                //}
                 #endregion
             }
             catch (Exception ex)

@@ -1,4 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿#region 更新歷程
+/*
+注意：若要更新正式區，請將搜尋「【測試】」，將它註解，並反註解「【正式】」，webconfig記得也要調整
+
+
+*/
+#endregion
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using iTextSharp.text.pdf;
@@ -14,7 +22,7 @@ using TSTI_API.Models;
 
 namespace TSTI_API.Controllers
 {
-    #region API Key，上正式再打開
+    #region API Key，上【正式】再打開
     //[ApiFilter] 
     #endregion
     public class APIController : Controller
@@ -7856,8 +7864,8 @@ namespace TSTI_API.Controllers
 
             try
             {
-                //var bean = dbEIP.TB_SERVICES_APP_INSTALL.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());
-                var bean = dbEIP.TB_SERVICES_APP_INSTALLTEMP.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());
+                //var bean = dbEIP.TB_SERVICES_APP_INSTALL.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());      //【正式】
+                var bean = dbEIP.TB_SERVICES_APP_INSTALLTEMP.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());  //【測試】
 
                 if (bean == null)
                 {
