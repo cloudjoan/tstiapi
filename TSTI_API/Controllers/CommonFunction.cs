@@ -159,16 +159,16 @@ namespace TSTI_API.Controllers
             if (tIsFormal)
             {
                 #region 正式區                
-                OUTBean.ONEURLName = "172.31.7.56:32200";
+                OUTBean.ONEURLName = @"https://oneservice.etatung.com/";
                 OUTBean.BPMURLName = "tsti-bpm01.etatung.com.tw";
                 OUTBean.PSIPURLName = "psip-prd-ap";
-                OUTBean.AttachURLName = "tsticrmmbgw.etatung.com:8082";
+                OUTBean.AttachURLName = "tsticrmmbgw.etatung.com:8081";
                 #endregion
             }
             else
             {
                 #region 測試區                
-                OUTBean.ONEURLName = "172.31.7.56:32200";
+                OUTBean.ONEURLName = @"http://172.31.7.56:32200";
                 OUTBean.BPMURLName = "tsti-bpm01.etatung.com.tw";
                 OUTBean.PSIPURLName = "psip-prd-ap";
                 OUTBean.AttachURLName = "tsticrmmbgw.etatung.com:8082";
@@ -983,11 +983,18 @@ namespace TSTI_API.Controllers
         /// <returns></returns>
         public string findSRTeamName(List<SRTEAMORGINFO> SRTeam)
         {
-            string reValue = string.Empty;          
+            string reValue = string.Empty;
+
+            List<string> tList = new List<string>();
 
             foreach(var bean in SRTeam)
             {
-                reValue += bean.TEAMNAME + ";";
+                if (!tList.Contains(bean.TEAMNAME))
+                {
+                    reValue += bean.TEAMNAME + ";";
+                    
+                    tList.Add(bean.TEAMNAME);
+                }
             }
 
             reValue = reValue.TrimEnd(';');
@@ -2585,7 +2592,7 @@ namespace TSTI_API.Controllers
                         tURL = "http://" + tBPMURLName + "/ContractSeals/_layouts/FormServer.aspx?XmlLocation=%2fContractSeals%2fBPMContractSealsForm%2f" + tBPMNO + ".xml&ClientInstalled=true&DefaultItemOpen=1&source=/_layouts/TSTI.SharePoint.BPM/CloseWindow.aspx";
                     }
 
-                    cContractIDURL = "http://" + tONEURLName + "/Contract/ContractMain?ContractID=" + cContractID; //合約編號URL
+                    cContractIDURL = tONEURLName + "/Contract/ContractMain?ContractID=" + cContractID; //合約編號URL
                 }
                 catch (Exception ex)
                 {
@@ -3729,7 +3736,7 @@ namespace TSTI_API.Controllers
 
             if (!string.IsNullOrEmpty(IV_SRID))
             {
-                #region 聯絡人窗口資訊
+                #region 聯絡人窗口資訊(共用)
                 var beanD_Con = dbOne.TB_ONE_SRDetail_Contact.FirstOrDefault(x => x.Disabled == 0 && x.cSRID == IV_SRID);
 
                 if (beanD_Con != null)
@@ -3742,7 +3749,7 @@ namespace TSTI_API.Controllers
                 }
                 #endregion
 
-                #region 產品序號資訊
+                #region 產品序號資訊(一般)
                 var beanD_Prd = dbOne.TB_ONE_SRDetail_Product.Where(x => x.Disabled == 0 && x.cSRID == IV_SRID);
 
                 List<SNLIST> snList = new List<SNLIST>();
@@ -3760,7 +3767,7 @@ namespace TSTI_API.Controllers
                 results.Add("table_ET_SNLIST", snList);
                 #endregion
 
-                #region 處理與工時紀錄
+                #region 處理與工時紀錄(共用)
                 var beanD_Rec = dbOne.TB_ONE_SRDetail_Record.Where(x => x.Disabled == 0 && x.cSRID == IV_SRID);
 
                 List<ENGProcessLIST> ENGPList = new List<ENGProcessLIST>();
@@ -3778,7 +3785,7 @@ namespace TSTI_API.Controllers
                 results.Add("table_ET_LABORLIST", ENGPList);
                 #endregion
 
-                #region 零件更換資訊
+                #region 零件更換資訊(一般)
                 var beanD_Part = dbOne.TB_ONE_SRDetail_PartsReplace.Where(x => x.Disabled == 0 && x.cSRID == IV_SRID);
 
                 List<XCLIST> xcList = new List<XCLIST>();
@@ -3798,6 +3805,22 @@ namespace TSTI_API.Controllers
                     xcList.Add(xcBean);
                 }
                 results.Add("table_ET_XCLIST", xcList);
+                #endregion
+
+                #region 序號回報資訊(裝機)
+                var beanD_SF = dbOne.TB_ONE_SRDetail_SerialFeedback.Where(x => x.Disabled == 0 && x.cSRID == IV_SRID);
+
+                List<SFSNLIST> sfsnList = new List<SFSNLIST>();
+
+                foreach (var beanD in beanD_SF)
+                {
+                    SFSNLIST snBean = new SFSNLIST();
+                    snBean.SNNO = beanD.cSerialID;              //機器序號                    
+
+                    sfsnList.Add(snBean);
+                }
+
+                results.Add("table_ET_SFSNLIST", sfsnList);
                 #endregion
             }
 
@@ -4954,20 +4977,20 @@ namespace TSTI_API.Controllers
                 {
                     if (cSRID.Substring(0, 2) == "61") //一般
                     {
-                        tHypeLink = "http://" + tONEURLName + "/ServiceRequest/GenerallySR?SRID=" + cSRID;
+                        tHypeLink = tONEURLName + "/ServiceRequest/GenerallySR?SRID=" + cSRID;
                     }
                     else if (cSRID.Substring(0, 2) == "63") //裝機
                     {
-                        tHypeLink = "http://" + tONEURLName + "/ServiceRequest/InstallSR?SRID=" + cSRID;
+                        tHypeLink = tONEURLName + "/ServiceRequest/InstallSR?SRID=" + cSRID;
                     }
                     else if (cSRID.Substring(0, 2) == "65") //定維
                     {
-                        tHypeLink = "http://" + tONEURLName + "/ServiceRequest/MaintainSR?SRID=" + cSRID;
+                        tHypeLink = tONEURLName + "/ServiceRequest/MaintainSR?SRID=" + cSRID;
                     }                    
                 }
                 else
                 {
-                    tHypeLink = "http://" + tONEURLName + "/ServiceRequest/ToDoList";
+                    tHypeLink = tONEURLName + "/ServiceRequest/ToDoList";
                 }
 
                 if (SRMain.ContractID != "")
@@ -5853,7 +5876,7 @@ namespace TSTI_API.Controllers
 
                 #endregion
 
-                tHypeLink = "http://" + tONEURLName + "/Contract/ContractMain?ContractID=" + cContractID;
+                tHypeLink = tONEURLName + "/Contract/ContractMain?ContractID=" + cContractID;
 
                 string tMailBody = GetMailBody("ONEContract_MAIL");
                 string Title = cCondition == ContractCondition.ADD ? "主管您好，有一份新的合約在CRM中建立，請您上線指派主要工程師：" : "親愛的主管/同仁您好,";

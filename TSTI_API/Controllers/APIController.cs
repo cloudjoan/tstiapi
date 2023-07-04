@@ -1009,7 +1009,16 @@ namespace TSTI_API.Controllers
 
                     //主表資料
                     beanM.cSRID = pSRID;
-                    beanM.cStatus = "E0001";
+
+                    if (IV_EMPNO != "")
+                    {
+                        beanM.cStatus = "E0008"; //新建但狀態是裝機中
+                    }
+                    else
+                    {
+                        beanM.cStatus = "E0001"; //新建
+                    }
+
                     beanM.cCustomerName = CCustomerName;
                     beanM.cCustomerID = IV_CUSTOMER;
                     beanM.cDesc = IV_DESC;
@@ -4416,8 +4425,8 @@ namespace TSTI_API.Controllers
             //    "IV_StartTime": "2023-04-18 18:25",
             //    "IV_ArriveTime": "2023-04-18 18:50",
             //    "IV_FinishTime": "2023-04-18 19:50",
-            //    "IV_Desc": "一、問題說明：test
-            //                二、問題判斷及處理：test
+            //    "IV_Desc": "一、問題判斷：test
+            //                二、問題處理過程：test
             //                三、結論：test",
             //    "IV_CusOpinion": "沒有意見",
             //    "IV_SRReportType": "SIGN",
@@ -4999,14 +5008,31 @@ namespace TSTI_API.Controllers
                         string SNNO = "";
                         string PRDNUMBER = "";
 
-                        List<SNLIST> products = srdetail.ContainsKey("table_ET_SNLIST") ? (List<SNLIST>)srdetail["table_ET_SNLIST"] : null;
-
-                        if (products.Count > 0)
+                        if (EV_TYPE == "ZSR1") //一般
                         {
-                            //取第一筆機器序號
-                            PRDID = products[0].PRDID;
-                            SNNO = products[0].SNNO;
-                            PRDNUMBER = products[0].PRDNUMBER;
+                            List<SNLIST> products = srdetail.ContainsKey("table_ET_SNLIST") ? (List<SNLIST>)srdetail["table_ET_SNLIST"] : null;
+
+                            if (products.Count > 0)
+                            {
+                                //取第一筆機器序號
+                                PRDID = products[0].PRDID;
+                                SNNO = products[0].SNNO;
+                                PRDNUMBER = products[0].PRDNUMBER;
+                            }
+                        }
+                        else if (EV_TYPE == "ZSR3") //裝機
+                        {
+                            List<SFSNLIST> products = srdetail.ContainsKey("table_ET_SFSNLIST") ? (List<SFSNLIST>)srdetail["table_ET_SFSNLIST"] : null;
+
+                            if (products.Count > 0)
+                            {
+                                foreach(var prod in products)
+                                {
+                                    SNNO += prod.SNNO + ";";
+                                }
+
+                                SNNO = SNNO.TrimEnd(';');                                
+                            }
                         }
 
                         PdfPCell pcell19 = new PdfPCell(new iTextSharp.text.Phrase("產品名稱", ChFont10));
@@ -11017,6 +11043,11 @@ namespace TSTI_API.Controllers
         public string HPCT { get; set; }
         public string CHANGEPART { get; set; }
         public string CHANGEPARTNAME { get; set; }
+    }
+
+    public struct SFSNLIST
+    {
+        public string SNNO { get; set; }        
     }
     #endregion
 
