@@ -9235,7 +9235,7 @@ namespace TSTI_API.Controllers
                     if (result <= 0)
                     {
                         pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "儲存失敗" + Environment.NewLine;
-                        CMF.writeToLog(IV_CONTACT, "CONTRACT_CREATE_SENDMAIL_API", pMsg, pLoginName);
+                        CMF.writeToLog(IV_CONTACT, "CONTRACT_CREATE_API", pMsg, pLoginName);
 
                         OUTBean.EV_MSGT = "E";
                         OUTBean.EV_MSG = pMsg;
@@ -9282,7 +9282,7 @@ namespace TSTI_API.Controllers
                 pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
                 pMsg += " 失敗行數：" + ex.ToString();
 
-                CMF.writeToLog(IV_CONTACT, "CONTRACT_CREATE_SENDMAIL_API", pMsg, pLoginName);
+                CMF.writeToLog(IV_CONTACT, "CONTRACT_CREATE_API", pMsg, pLoginName);
 
                 OUTBean.EV_MSGT = "E";
                 OUTBean.EV_MSG = ex.Message;
@@ -9315,6 +9315,189 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑建立ONE SERVICE 合約主數據接口 ↑↑↑↑↑-----
+
+        #region -----↓↓↓↓↓ 更新ONE SERVICE 合約主數據接口 ↓↓↓↓↓----- 
+
+        #region 更新ONE SERVICE 合約主數據資料        
+        [HttpPost]
+        public ActionResult API_CONTRACT_UPDATE(CONTRACT_UPDATE_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNO" : "99120894",
+            //    "IV_ContractID" : "11204075",            
+            //    "IV_SoSalesNO" : "99120993",
+            //    "IV_SoSalesASSNO" : "99121437",
+            //    "IV_MASalesNO" : "99120993",
+            //    "IV_SoNo" : "123456789",
+            //    "IV_BillCycle" : "202307_202310"
+            //}
+            #endregion
+
+            CONTRACT_UPDATE_OUTPUT ListOUT = new CONTRACT_UPDATE_OUTPUT();
+
+            ListOUT = CONTRACT_UPDATE(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 更新合約主數據資料
+        private CONTRACT_UPDATE_OUTPUT CONTRACT_UPDATE(CONTRACT_UPDATE_INPUT beanIN)
+        {
+            CONTRACT_UPDATE_OUTPUT OUTBean = new CONTRACT_UPDATE_OUTPUT();
+
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
+            string IV_ContractID = string.IsNullOrEmpty(beanIN.IV_ContractID) ? "" : beanIN.IV_ContractID.Trim();
+            string IV_SoSalesNO = string.IsNullOrEmpty(beanIN.IV_SoSalesNO) ? "" : beanIN.IV_SoSalesNO.Trim();
+            string IV_SoSalesASSNO = string.IsNullOrEmpty(beanIN.IV_SoSalesASSNO) ? "" : beanIN.IV_SoSalesASSNO.Trim();
+            string IV_MASalesNO = string.IsNullOrEmpty(beanIN.IV_MASalesNO) ? "" : beanIN.IV_MASalesNO.Trim();
+            string IV_SoNo = string.IsNullOrEmpty(beanIN.IV_SoNo) ? "" : beanIN.IV_SoNo.Trim();
+            string IV_BillCycle = string.IsNullOrEmpty(beanIN.IV_ContractID) ? "" : beanIN.IV_BillCycle.Trim();
+
+            bool tIsFormal = false;            
+
+            string pLoginName = string.Empty;
+            string tAPIURLName = string.Empty;
+            string tONEURLName = string.Empty;
+            string tBPMURLName = string.Empty;
+            string tPSIPURLName = string.Empty;
+            string tAttachURLName = string.Empty;            
+
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+            if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
+            {
+                pLoginName = IV_LOGINEMPNO;
+            }
+            else
+            {
+                pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+            }
+
+            #region 取得系統位址參數相關資訊
+            SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+
+            tIsFormal = ParaBean.IsFormal;
+
+            tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+            tONEURLName = ParaBean.ONEURLName;
+            tBPMURLName = ParaBean.BPMURLName;
+            tPSIPURLName = ParaBean.PSIPURLName;
+            tAttachURLName = ParaBean.AttachURLName;
+            #endregion
+
+            try
+            {
+                var beanM = dbOne.TB_ONE_ContractMain.FirstOrDefault(x => x.Disabled == 0 && x.cContractID == IV_ContractID);
+                
+                if (beanM != null)
+                {
+                    if (IV_SoSalesNO != "")
+                    {
+                        beanM.cSoSales = IV_SoSalesNO;
+                        beanM.cSoSalesName = CMF.findEmployeeNameInCludeLeave(IV_SoSalesNO);
+                    }
+
+                    if (IV_SoSalesASSNO != "")
+                    {
+                        beanM.cSoSalesASS = IV_SoSalesASSNO;
+                        beanM.cSoSalesASSName = CMF.findEmployeeNameInCludeLeave(IV_SoSalesASSNO);
+                    }
+
+                    if (IV_MASalesNO != "")
+                    {
+                        beanM.cMASales = IV_MASalesNO;
+                        beanM.cMASalesName = CMF.findEmployeeNameInCludeLeave(IV_MASalesNO);
+                    }
+
+                    if (IV_SoNo != "")
+                    {
+                        beanM.cSoNo = IV_SoNo;
+                    }
+
+                    if (IV_BillCycle != "")
+                    {
+                        beanM.cBillCycle = IV_BillCycle;
+                    }
+
+                    beanM.ModifiedDate = DateTime.Now;
+                    beanM.ModifiedUserName = pLoginName;                    
+
+                    int result = dbOne.SaveChanges();
+
+                    if (result <= 0)
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "儲存失敗" + Environment.NewLine;
+                        CMF.writeToLog(IV_ContractID, "CONTRACT_UPDATE_API", pMsg, pLoginName);
+
+                        OUTBean.EV_MSGT = "E";
+                        OUTBean.EV_MSG = pMsg;
+                    }
+                    else
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+                    }
+                }
+                else
+                {
+                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "儲存失敗，找不到該合約主檔資訊！" + Environment.NewLine;
+                    CMF.writeToLog(IV_ContractID, "CONTRACT_UPDATE_API", pMsg, pLoginName);
+
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = pMsg;
+                }                
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog(IV_ContractID, "CONTRACT_UPDATE_API", pMsg, pLoginName);
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion       
+
+        #region 更新ONE SERVICE 合約主數據資料INPUT資訊
+        /// <summary>更新ONE SERVICE 合約主數據資料INPUT資訊</summary>
+        public struct CONTRACT_UPDATE_INPUT
+        {
+            /// <summary>登入者員工編號ERPID</summary>
+            public string IV_LOGINEMPNO { get; set; }            
+            /// <summary>文件編號</summary>
+            public string IV_ContractID { get; set; }            
+            /// <summary>業務員ERPID</summary>
+            public string IV_SoSalesNO { get; set; }
+            /// <summary>業務祕書ERPID</summary>
+            public string IV_SoSalesASSNO { get; set; }
+            /// <summary>維護業務員ERPID</summary>
+            public string IV_MASalesNO { get; set; }
+            /// <summary>銷售訂單號</summary>
+            public string IV_SoNo { get; set; }
+            /// <summary>請款週期</summary>
+            public string IV_BillCycle { get; set; }            
+        }
+        #endregion
+
+        #region 更新ONE SERVICE 合約主數據資料OUTPUT資訊
+        /// <summary>更新ONE SERVICE 合約主數據資料OUTPUT資訊</summary>
+        public struct CONTRACT_UPDATE_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑更新ONE SERVICE 合約主數據接口 ↑↑↑↑↑-----
 
         #endregion -----↑↑↑↑↑合約管理相關 ↑↑↑↑↑-----
 
