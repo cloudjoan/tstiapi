@@ -9893,6 +9893,8 @@ namespace TSTI_API.Controllers
             DataTable dtENG = null;
 
             string pContractID = string.Empty;
+            string cStartDate = string.Empty;
+            string cEndDate = string.Empty;
 
             try
             {
@@ -9927,177 +9929,198 @@ namespace TSTI_API.Controllers
 
                         #region 寫入合約主數據4個Table
 
-                        try
-                        {
-                            #region 合約主數據
-                            if (dtMAIN.Rows.Count > 0)
-                            {
-                                string cContractID = pContractID;                                        //文件編號                        
-                                string cSoNo = dtMAIN.Rows[0]["SONUMBER"].ToString();                                     //銷售單號                        
-                                string cSoSales = dtMAIN.Rows[0]["SALES"].ToString().TrimStart('0').Trim();               //業務ERPID
-                                string cSoSalesName = CMF.findEmployeeNameInCludeLeave(cSoSales);                      //業務                        
-                                string cSoSalesASS = dtMAIN.Rows[0]["SALES_ASS"].ToString().TrimStart('0').Trim();        //業務祕書ERPID
-                                string cSoSalesASSName = CMF.findEmployeeNameInCludeLeave(cSoSalesASS);                //業務祕書
-                                string cMASales = dtMAIN.Rows[0]["MAINTAIN_SALES"].ToString().TrimStart('0').Trim();      //維護業務ERPID
-                                string cMASalesName = CMF.findEmployeeNameInCludeLeave(cMASales);                     //維護業務                            
-                                string cCustomerID = dtMAIN.Rows[0]["CUSTOMER_NUMBER"].ToString();                       //CRM客戶ID
-                                string cCustomerName = CMF.findCustName(cCustomerID);                                 //CRM客戶
-                                string cDesc = dtMAIN.Rows[0]["SO_DESC"].ToString();                                    //訂單說明                        
-                                string cStartDate = dtMAIN.Rows[0]["START_DATE"].ToString();                             //維護起始日期
-                                string cEndDate = dtMAIN.Rows[0]["FINISH_DATE"].ToString();                             //維護結束日期
-                                string cMACycle = dtMAIN.Rows[0]["PM_CYCLE"].ToString();                                //維護週期
-                                string cMANotes = dtMAIN.Rows[0]["PM_NOTES"].ToString();                                //維護備註
-                                string cMAAddress = dtMAIN.Rows[0]["PLACE"].ToString();                                //維護地址
-                                string cSLARESP = dtMAIN.Rows[0]["RESPONSE_LEVEL"].ToString();                          //回應條件
-                                string cSLASRV = dtMAIN.Rows[0]["SERVICE_LEVEL"].ToString();                            //服務條件
-                                string cContractNotes = dtMAIN.Rows[0]["CONTRACT_NOTES"].ToString();                    //合約備註
-                                string cContractReport = dtMAIN.Rows[0]["URL_LINK"].ToString();                        //合約書link
-                                string cTeamID = dtMAIN.Rows[0]["ORG_CODE"].ToString().TrimStart('0').Trim();           //服務組織
-                                string cIsSubContract = dtMAIN.Rows[0]["SUB_FLAG"].ToString() == "X" ? "Y" : "N";       //是否為下包合約
-                                string cBillCycle = dtMAIN.Rows[0]["BILLABLE_TIME"].ToString();                        //請款期間
-                                string cBillNotes = dtMAIN.Rows[0]["PAY_NOTE"].ToString();                            //請款備註
+                        //try
+                        //{
+                        //    #region 合約主數據
+                        //    if (dtMAIN.Rows.Count > 0)
+                        //    {
+                        //        string cContractID = pContractID;                                        //文件編號                        
+                        //        string cSoNo = dtMAIN.Rows[0]["SONUMBER"].ToString();                                     //銷售單號                        
+                        //        string cSoSales = dtMAIN.Rows[0]["SALES"].ToString().TrimStart('0').Trim();               //業務ERPID
+                        //        string cSoSalesName = CMF.findEmployeeNameInCludeLeave(cSoSales);                      //業務                        
+                        //        string cSoSalesASS = dtMAIN.Rows[0]["SALES_ASS"].ToString().TrimStart('0').Trim();        //業務祕書ERPID
+                        //        string cSoSalesASSName = CMF.findEmployeeNameInCludeLeave(cSoSalesASS);                //業務祕書
+                        //        string cMASales = dtMAIN.Rows[0]["MAINTAIN_SALES"].ToString().TrimStart('0').Trim();      //維護業務ERPID
+                        //        string cMASalesName = CMF.findEmployeeNameInCludeLeave(cMASales);                     //維護業務                            
+                        //        string cCustomerID = dtMAIN.Rows[0]["CUSTOMER_NUMBER"].ToString();                       //CRM客戶ID
+                        //        string cCustomerName = CMF.findCustName(cCustomerID);                                 //CRM客戶
+                        //        string cDesc = dtMAIN.Rows[0]["SO_DESC"].ToString();                                    //訂單說明                                                        
+                        //        string cMACycle = dtMAIN.Rows[0]["PM_CYCLE"].ToString();                                //維護週期
+                        //        string cMANotes = dtMAIN.Rows[0]["PM_NOTES"].ToString();                                //維護備註
+                        //        string cMAAddress = dtMAIN.Rows[0]["PLACE"].ToString();                                //維護地址
+                        //        string cSLARESP = dtMAIN.Rows[0]["RESPONSE_LEVEL"].ToString();                          //回應條件
+                        //        string cSLASRV = dtMAIN.Rows[0]["SERVICE_LEVEL"].ToString();                            //服務條件
+                        //        string cContractNotes = dtMAIN.Rows[0]["CONTRACT_NOTES"].ToString();                    //合約備註
+                        //        string cContractReport = dtMAIN.Rows[0]["URL_LINK"].ToString();                        //合約書link
+                        //        string cTeamID = dtMAIN.Rows[0]["ORG_CODE"].ToString().TrimStart('0').Trim();           //服務組織
+                        //        string cIsSubContract = dtMAIN.Rows[0]["SUB_FLAG"].ToString() == "X" ? "Y" : "N";       //是否為下包合約
+                        //        string cBillCycle = dtMAIN.Rows[0]["BILLABLE_TIME"].ToString();                        //請款期間
+                        //        string cBillNotes = dtMAIN.Rows[0]["PAY_NOTE"].ToString();                            //請款備註
 
-                                #region 寫入Table
-                                TB_ONE_ContractMain Main = new TB_ONE_ContractMain();
+                        //        if (string.IsNullOrEmpty(dtMAIN.Rows[0]["START_DATE"].ToString()) || dtMAIN.Rows[0]["START_DATE"].ToString() == "0000-00-00")
+                        //        {
+                        //            cStartDate = "";
+                        //        }
+                        //        else
+                        //        {
+                        //            cStartDate = dtMAIN.Rows[0]["START_DATE"].ToString() + " 00:00:00";               //維護起始日期
+                        //        }
 
-                                Main.cContractID = cContractID;
-                                Main.cSoNo = cSoNo;
-                                Main.cSoSales = cSoSales;
-                                Main.cSoSalesName = cSoSalesName;
-                                Main.cSoSalesASS = cSoSalesASS;
-                                Main.cSoSalesASSName = cSoSalesASSName;
-                                Main.cMASales = cMASales;
-                                Main.cMASalesName = cMASalesName;
-                                Main.cCustomerID = cCustomerID;
-                                Main.cCustomerName = cCustomerName;
-                                Main.cDesc = cDesc;
-                                Main.cStartDate = Convert.ToDateTime(cStartDate);
-                                Main.cEndDate = Convert.ToDateTime(cEndDate);
-                                Main.cMACycle = cMACycle;
-                                Main.cMANotes = cMANotes;
-                                Main.cMAAddress = cMAAddress;
-                                Main.cSLARESP = cSLARESP;
-                                Main.cSLASRV = cSLASRV;
-                                Main.cContractNotes = cContractNotes;
-                                Main.cContractReport = cContractReport;
-                                Main.cTeamID = cTeamID;
-                                Main.cIsSubContract = cIsSubContract;
-                                Main.cBillCycle = cBillCycle;
-                                Main.cBillNotes = cBillNotes;
-                                Main.cInvalidReason = "";
-                                Main.Disabled = 0;
+                        //        if (string.IsNullOrEmpty(dtMAIN.Rows[0]["FINISH_DATE"].ToString()) || dtMAIN.Rows[0]["FINISH_DATE"].ToString() == "0000-00-00")
+                        //        {
+                        //            cEndDate = "";
+                        //        }
+                        //        else
+                        //        {
+                        //            cEndDate = dtMAIN.Rows[0]["FINISH_DATE"].ToString() + " 00:00:00";               //維護結束日期
+                        //        }
 
-                                dbOne.TB_ONE_ContractMain.Add(Main);
-                                dbOne.SaveChanges();
-                                #endregion
-                            }
-                            #endregion
+                        //        #region 寫入Table
+                        //        TB_ONE_ContractMain Main = new TB_ONE_ContractMain();
 
-                            #region 下包合約
-                            if (dtSUB.Rows.Count > 0)
-                            {
-                                foreach (DataRow dr in dtSUB.Rows)
-                                {
-                                    string cContractID = pContractID;                                                  //主約文件編號
-                                    string cSubContractID = dr["SUB_CONTRACTID"].ToString();                                           //下包文件編號
-                                    string cSubSupplierID = dr["SUBCONTRACT_BUSINESS_NUMBER"].ToString();                               //下包商ID
-                                    string cSubSupplierName = dr["SUBCONTRACT_NAME"].ToString();                                       //下包商名稱
-                                    string cSubNotes = dr["SUBCONTRACT_NOTES"].ToString();                                             //下包備註                                
+                        //        Main.cContractID = cContractID;
+                        //        Main.cSoNo = cSoNo;
+                        //        Main.cSoSales = cSoSales;
+                        //        Main.cSoSalesName = cSoSalesName;
+                        //        Main.cSoSalesASS = cSoSalesASS;
+                        //        Main.cSoSalesASSName = cSoSalesASSName;
+                        //        Main.cMASales = cMASales;
+                        //        Main.cMASalesName = cMASalesName;
+                        //        Main.cCustomerID = cCustomerID;
+                        //        Main.cCustomerName = cCustomerName;
+                        //        Main.cDesc = cDesc;
 
-                                    #region 寫入Table
-                                    TB_ONE_ContractDetail_SUB DSub = new TB_ONE_ContractDetail_SUB();
+                        //        if (cStartDate != "")
+                        //        {
+                        //            Main.cStartDate = Convert.ToDateTime(cStartDate);
+                        //            Main.cEndDate = Convert.ToDateTime(cEndDate);
+                        //        }
 
-                                    DSub.cContractID = cContractID;
-                                    DSub.cSubContractID = cSubContractID;
-                                    DSub.cSubSupplierID = cSubSupplierID;
-                                    DSub.cSubSupplierName = cSubSupplierName;
-                                    DSub.cSubNotes = cSubNotes;
-                                    DSub.Disabled = 0;
+                        //        Main.cMACycle = cMACycle;
+                        //        Main.cMANotes = cMANotes;
+                        //        Main.cMAAddress = cMAAddress;
+                        //        Main.cSLARESP = cSLARESP;
+                        //        Main.cSLASRV = cSLASRV;
+                        //        Main.cContractNotes = cContractNotes;
+                        //        Main.cContractReport = cContractReport;
+                        //        Main.cTeamID = cTeamID;
+                        //        Main.cIsSubContract = cIsSubContract;
+                        //        Main.cBillCycle = cBillCycle;
+                        //        Main.cBillNotes = cBillNotes;
+                        //        Main.cInvalidReason = "";
+                        //        Main.Disabled = 0;
 
-                                    dbOne.TB_ONE_ContractDetail_SUB.Add(DSub);
-                                    #endregion
-                                }
+                        //        dbOne.TB_ONE_ContractMain.Add(Main);
+                        //        dbOne.SaveChanges();
+                        //        #endregion
+                        //    }
+                        //    #endregion
 
-                                dbOne.SaveChanges();
-                            }
-                            #endregion
+                        //    #region 下包合約
+                        //    if (dtSUB.Rows.Count > 0)
+                        //    {
+                        //        foreach (DataRow dr in dtSUB.Rows)
+                        //        {
+                        //            string cContractID = pContractID;                                                  //主約文件編號
+                        //            string cSubContractID = dr["SUB_CONTRACTID"].ToString();                                           //下包文件編號
+                        //            string cSubSupplierID = dr["SUBCONTRACT_BUSINESS_NUMBER"].ToString();                               //下包商ID
+                        //            string cSubSupplierName = dr["SUBCONTRACT_NAME"].ToString();                                       //下包商名稱
+                        //            string cSubNotes = dr["SUBCONTRACT_NOTES"].ToString();                                             //下包備註                                
 
-                            #region 標的
-                            if (dtOBJ.Rows.Count > 0)
-                            {
-                                foreach (DataRow dr in dtOBJ.Rows)
-                                {
-                                    string cContractID = pContractID;            //主約文件編號
-                                    string cHostName = dr["HOSTNAME"].ToString();                //HostName
-                                    string cSerialID = dr["SN"].ToString();                     //序號
-                                    string cPID = dr["PID"].ToString();                         //PID
-                                    string cBrands = dr["BRANDS"].ToString();                   //廠牌
-                                    string cModel = dr["MODEL"].ToString();                     //ProductModel
-                                    string cLocation = dr["LOCATION"].ToString();               //Location
-                                    string cAddress = dr["PLACE"].ToString();                   //地點
-                                    string cArea = dr["AREA"].ToString();                       //區域
-                                    string cSLARESP = dr["RESPONSE_LEVEL"].ToString();           //回應條件
-                                    string cSLASRV = dr["SERVICE_LEVEL"].ToString();            //服務條件
-                                    string cNotes = dr["NOTE"].ToString();                     //備註
-                                    string cSubContractID = dr["SUB_CONTRACTID"].ToString();    //下包文件編號
+                        //            #region 寫入Table
+                        //            TB_ONE_ContractDetail_SUB DSub = new TB_ONE_ContractDetail_SUB();
 
-                                    #region 寫入Table
-                                    TB_ONE_ContractDetail_OBJ DObj = new TB_ONE_ContractDetail_OBJ();
+                        //            DSub.cContractID = cContractID;
+                        //            DSub.cSubContractID = cSubContractID;
+                        //            DSub.cSubSupplierID = cSubSupplierID;
+                        //            DSub.cSubSupplierName = cSubSupplierName;
+                        //            DSub.cSubNotes = cSubNotes;
+                        //            DSub.Disabled = 0;
 
-                                    DObj.cContractID = cContractID;
-                                    DObj.cHostName = cHostName;
-                                    DObj.cSerialID = cSerialID;
-                                    DObj.cPID = cPID;
-                                    DObj.cBrands = cBrands;
-                                    DObj.cModel = cModel;
-                                    DObj.cLocation = cLocation;
-                                    DObj.cAddress = cAddress;
-                                    DObj.cArea = cArea;
-                                    DObj.cSLARESP = cSLARESP;
-                                    DObj.cSLASRV = cSLASRV;
-                                    DObj.cNotes = cNotes;
-                                    DObj.cSubContractID = cSubContractID;
-                                    DObj.Disabled = 0;
+                        //            dbOne.TB_ONE_ContractDetail_SUB.Add(DSub);
+                        //            #endregion
+                        //        }
 
-                                    dbOne.TB_ONE_ContractDetail_OBJ.Add(DObj);
-                                    #endregion
-                                }
+                        //        dbOne.SaveChanges();
+                        //    }
+                        //    #endregion
 
-                                dbOne.SaveChanges();
-                            }
-                            #endregion
+                        //    #region 標的
+                        //    if (dtOBJ.Rows.Count > 0)
+                        //    {
+                        //        foreach (DataRow dr in dtOBJ.Rows)
+                        //        {
+                        //            string cContractID = pContractID;            //主約文件編號
+                        //            string cHostName = dr["HOSTNAME"].ToString();                //HostName
+                        //            string cSerialID = dr["SN"].ToString();                     //序號
+                        //            string cPID = dr["PID"].ToString();                         //PID
+                        //            string cBrands = dr["BRANDS"].ToString();                   //廠牌
+                        //            string cModel = dr["MODEL"].ToString();                     //ProductModel
+                        //            string cLocation = dr["LOCATION"].ToString();               //Location
+                        //            string cAddress = dr["PLACE"].ToString();                   //地點
+                        //            string cArea = dr["AREA"].ToString();                       //區域
+                        //            string cSLARESP = dr["RESPONSE_LEVEL"].ToString();           //回應條件
+                        //            string cSLASRV = dr["SERVICE_LEVEL"].ToString();            //服務條件
+                        //            string cNotes = dr["NOTE"].ToString();                     //備註
+                        //            string cSubContractID = dr["SUB_CONTRACTID"].ToString();    //下包文件編號
 
-                            #region 工程師
-                            if (dtENG.Rows.Count > 0)
-                            {
-                                foreach (DataRow dr in dtENG.Rows)
-                                {
-                                    string cContractID = pContractID;                        //主約文件編號
-                                    string cEngineerID = dr["ENGINEER"].ToString().TrimStart('0').Trim();     //工程師ERPID
-                                    string cEngineerName = CMF.findEmployeeNameInCludeLeave(cEngineerID);   //工程師姓名
-                                    string cIsMainEngineer = dr["MAIN_FLAG"].ToString() == "X" ? "Y" : "N"; ;   //是否為主要工程師
+                        //            #region 寫入Table
+                        //            TB_ONE_ContractDetail_OBJ DObj = new TB_ONE_ContractDetail_OBJ();
 
-                                    #region 寫入Table
-                                    TB_ONE_ContractDetail_ENG DEng = new TB_ONE_ContractDetail_ENG();
+                        //            DObj.cContractID = cContractID;
+                        //            DObj.cHostName = cHostName;
+                        //            DObj.cSerialID = cSerialID;
+                        //            DObj.cPID = cPID;
+                        //            DObj.cBrands = cBrands;
+                        //            DObj.cModel = cModel;
+                        //            DObj.cLocation = cLocation;
+                        //            DObj.cAddress = cAddress;
+                        //            DObj.cArea = cArea;
+                        //            DObj.cSLARESP = cSLARESP;
+                        //            DObj.cSLASRV = cSLASRV;
+                        //            DObj.cNotes = cNotes;
+                        //            DObj.cSubContractID = cSubContractID;
+                        //            DObj.Disabled = 0;
 
-                                    DEng.cContractID = cContractID;
-                                    DEng.cEngineerID = cEngineerID;
-                                    DEng.cEngineerName = cEngineerName;
-                                    DEng.cIsMainEngineer = cIsMainEngineer;
-                                    DEng.Disabled = 0;
+                        //            dbOne.TB_ONE_ContractDetail_OBJ.Add(DObj);
+                        //            #endregion
+                        //        }
 
-                                    dbOne.TB_ONE_ContractDetail_ENG.Add(DEng);
-                                    #endregion
-                                }
+                        //        dbOne.SaveChanges();
+                        //    }
+                        //    #endregion
 
-                                dbOne.SaveChanges();
-                            }
-                            #endregion
-                        }
-                        catch (Exception ex)
-                        {
-                            pMsg += "文件編號【" + pContractID + "】，失敗原因：" + ex.Message + Environment.NewLine;
-                        }
+                        //    #region 工程師
+                        //    if (dtENG.Rows.Count > 0)
+                        //    {
+                        //        foreach (DataRow dr in dtENG.Rows)
+                        //        {
+                        //            string cContractID = pContractID;                        //主約文件編號
+                        //            string cEngineerID = dr["ENGINEER"].ToString().TrimStart('0').Trim();     //工程師ERPID
+                        //            string cEngineerName = CMF.findEmployeeNameInCludeLeave(cEngineerID);   //工程師姓名
+                        //            string cIsMainEngineer = dr["MAIN_FLAG"].ToString() == "X" ? "Y" : "N"; ;   //是否為主要工程師
+
+                        //            #region 寫入Table
+                        //            TB_ONE_ContractDetail_ENG DEng = new TB_ONE_ContractDetail_ENG();
+
+                        //            DEng.cContractID = cContractID;
+                        //            DEng.cEngineerID = cEngineerID;
+                        //            DEng.cEngineerName = cEngineerName;
+                        //            DEng.cIsMainEngineer = cIsMainEngineer;
+                        //            DEng.Disabled = 0;
+
+                        //            dbOne.TB_ONE_ContractDetail_ENG.Add(DEng);
+                        //            #endregion
+                        //        }
+
+                        //        dbOne.SaveChanges();
+                        //    }
+                        //    #endregion
+                        //}
+                        //catch (Exception ex)
+                        //{
+                        //    pMsg += "文件編號【" + pContractID + "】，失敗原因：" + ex.Message + Environment.NewLine;
+                        //}
                         #endregion
                     }
                 }
