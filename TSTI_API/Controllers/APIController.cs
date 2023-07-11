@@ -1159,6 +1159,7 @@ namespace TSTI_API.Controllers
                         foreach (var beanMA in bean.CREATEMATERIAL_LIST)
                         {
                             string MATERIALID = string.IsNullOrEmpty(beanMA.MATERIALID) ? "" : beanMA.MATERIALID.Trim();
+                            string MATERIALNAME = string.IsNullOrEmpty(beanMA.MATERIALNAME) ? "" : beanMA.MATERIALNAME.Trim();
                             string QTY = string.IsNullOrEmpty(beanMA.QTY) ? "1" : beanMA.QTY.Trim();
                             var MaInfo = CMF.findMaterialInfo(MATERIALID);
 
@@ -1168,7 +1169,16 @@ namespace TSTI_API.Controllers
 
                             beanD.cSRID = pSRID;
                             beanD.cMaterialID = MaInfo.MaterialID;
-                            beanD.cMaterialName = MaInfo.MaterialName;
+
+                            if (MATERIALNAME != "")
+                            {
+                                beanD.cMaterialName = MATERIALNAME;
+                            }
+                            else
+                            {
+                                beanD.cMaterialName = MaInfo.MaterialName;
+                            }
+
                             beanD.cQuantity = int.Parse(QTY);
                             beanD.cBasicContent = MaInfo.BasicContent;
                             beanD.cMFPNumber = MaInfo.MFPNumber;
@@ -1180,6 +1190,38 @@ namespace TSTI_API.Controllers
                             beanD.CreatedUserName = pLoginName;
 
                             dbOne.TB_ONE_SRDetail_MaterialInfo.Add(beanD);
+                        }
+                    }
+                    #endregion          
+
+                    #region 新增【序號回報資訊】明細
+                    if (bean.CREATEFEEDBACK_LIST != null)
+                    {
+                        foreach (var beanFB in bean.CREATEFEEDBACK_LIST)
+                        {
+                            string SERIALID = string.IsNullOrEmpty(beanFB.SERIALID) ? "" : beanFB.SERIALID.Trim();
+                            string cMaterialID = string.Empty;
+                            string cMaterialName = string.Empty;
+
+                            var ProBean = CMF.findMaterialBySerial(SERIALID);
+                            if (ProBean.IV_SERIAL != null)
+                            {                               
+                                cMaterialID = ProBean.ProdID;
+                                cMaterialName = ProBean.Product;                               
+                            }
+
+                            TB_ONE_SRDetail_SerialFeedback beanD = new TB_ONE_SRDetail_SerialFeedback();                           
+
+                            beanD.cSRID = pSRID;
+                            beanD.cSerialID = SERIALID;
+                            beanD.cMaterialID = cMaterialID;
+                            beanD.cMaterialName = cMaterialName;
+                            
+                            beanD.Disabled = 0;
+                            beanD.CreatedDate = DateTime.Now;
+                            beanD.CreatedUserName = pLoginName;
+
+                            dbOne.TB_ONE_SRDetail_SerialFeedback.Add(beanD);
                         }
                     }
                     #endregion          
@@ -1280,6 +1322,8 @@ namespace TSTI_API.Controllers
             public List<CREATECONTACTINFO> CREATECONTACT_LIST { get; set; }
             /// <summary>服務案件物料訊息資訊</summary>
             public List<CREATEMATERIAL> CREATEMATERIAL_LIST { get; set; }
+            /// <summary>服務案件序號回報資訊</summary>
+            public List<CREATEFEEDBACK> CREATEFEEDBACK_LIST { get; set; }
         }
         #endregion
 
@@ -11051,8 +11095,19 @@ namespace TSTI_API.Controllers
     {
         /// <summary>物料編號</summary>
         public string MATERIALID { get; set; }
+        /// <summary>物料說明</summary>
+        public string MATERIALNAME { get; set; }
         /// <summary>物料數量</summary>
         public string QTY { get; set; }
+    }
+    #endregion
+
+    #region 建立序號回報資訊
+    /// <summary>建立序號回報資訊</summary>
+    public class CREATEFEEDBACK
+    {
+        /// <summary>序號</summary>
+        public string SERIALID { get; set; }       
     }
     #endregion
 
