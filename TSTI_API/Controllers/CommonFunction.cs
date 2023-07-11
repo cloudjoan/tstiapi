@@ -3131,6 +3131,30 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 判斷是否為內部作業(true.是 false.否)
+        /// <summary>
+        /// 判斷是否為內部作業(true.是 false.否)
+        /// </summary>
+        /// <param name="cSRID">SRID</param>
+        /// <returns></returns>
+        public bool checkIsInternalWork(string cSRID)
+        {
+            bool reValue = false;
+
+            var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == cSRID);
+
+            if (beanM != null)
+            {
+                if (beanM.cIsInternalWork == "Y")
+                {
+                    reValue = true;
+                }
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region -----↓↓↓↓↓待辦清單 ↓↓↓↓↓-----
 
         #region 取得登入人員所有要負責的SRID
@@ -5189,10 +5213,24 @@ namespace TSTI_API.Controllers
             try
             {
                 #region 取得收件者
-                if (SRMain.RepairEmail != "") //有客戶報修人Email
+                //先抓聯絡人Email
+                foreach(var SRCon in SRContact_List)
                 {
-                    tMailToTemp = SRMain.RepairEmail;
-                }              
+                    if (SRCon.CONTEMAIL != "")
+                    {
+                        tMailToTemp = SRCon.CONTEMAIL;
+                        break;
+                    }
+                }
+
+                //若沒有聯絡人Email，再抓報修人Email
+                if (tMailToTemp == "")
+                {
+                    if (SRMain.RepairEmail != "")
+                    {
+                        tMailToTemp = SRMain.RepairEmail;
+                    }
+                }
 
                 if (tMailToTemp != "")
                 {

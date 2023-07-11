@@ -4183,6 +4183,7 @@ namespace TSTI_API.Controllers
             string cArriveTime = string.Empty;
             string cFinishTime = string.Empty;
             string cDesc = string.Empty;
+            string cIsInternalWork = string.Empty;  //是否為內部作業
             string cSRReport = string.Empty;
             string cReportID = string.Empty;
             string cSRReportFileName = string.Empty;
@@ -4219,7 +4220,7 @@ namespace TSTI_API.Controllers
                 cDesc = string.IsNullOrEmpty(beanIN.IV_Desc) ? "" : beanIN.IV_Desc;
                 cSRReportFileName = string.IsNullOrEmpty(beanIN.IV_SRReportFileName) ? "" : beanIN.IV_SRReportFileName;
                 cSENDREPORT = string.IsNullOrEmpty(beanIN.IV_SENDREPORT) ? "" : beanIN.IV_SENDREPORT;
-
+                cIsInternalWork = CMF.checkIsInternalWork(cSRID) ? "Y" : "N";
 
                 #region 取得工程師/技術主管姓名
                 EmployeeBean EmpBean = new EmployeeBean();
@@ -4332,6 +4333,13 @@ namespace TSTI_API.Controllers
                     {
                         OUTBean.EV_CID = cID.ToString();
                     }
+
+                    #region 若為內部作業就不寄送mail給客戶
+                    if (cIsInternalWork == "Y")
+                    {
+                        cSENDREPORT = "N";
+                    }
+                    #endregion
 
                     if (cSENDREPORT == "Y")
                     {
