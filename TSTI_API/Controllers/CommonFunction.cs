@@ -4636,6 +4636,7 @@ namespace TSTI_API.Controllers
             string cContractID = string.Empty;          //合約文件編號
             string cMAServiceType = string.Empty;       //維護服務種類
             string cSecFix = string.Empty;              //是否為二修
+            string cInternalWork = string.Empty;        //是否為內部作業
             string cSalesNo = string.Empty;             //銷售訂單號
             string cShipmentNo = string.Empty;          //出貨單號
             string cDesc = string.Empty;                //需求說明            
@@ -4738,6 +4739,7 @@ namespace TSTI_API.Controllers
 
                     cMAServiceType = findSysParameterDescription(cOperationID_GenerallySR, "OTHER", cBUKRS, "SRMATYPE", beanM.cMAServiceType); 
                     cSecFix = beanM.cIsSecondFix;
+                    cInternalWork = string.IsNullOrEmpty(beanM.cIsInternalWork) ? "N" : beanM.cIsInternalWork;
                     cSalesNo = string.IsNullOrEmpty(beanM.cSalesNo) ? "" : beanM.cSalesNo;
                     cShipmentNo = string.IsNullOrEmpty(beanM.cShipmentNo) ? "" : beanM.cShipmentNo;
                     cDesc = beanM.cDesc;
@@ -4759,10 +4761,11 @@ namespace TSTI_API.Controllers
                     SRMain.CreatedDate = cCreatedDate;
                     SRMain.MAServiceType = cMAServiceType;
                     SRMain.SecFix = cSecFix;
+                    SRMain.InternalWork = cInternalWork;
                     SRMain.SalesNo = cSalesNo;
                     SRMain.ShipmentNo = cShipmentNo;
                     SRMain.Desc = cDesc;
-                    SRMain.Notes = cNotes;
+                    SRMain.Notes = cNotes;                    
 
                     SRMain.CusName = cCusName;
                     SRMain.RepairName = cRepairName;
@@ -4820,7 +4823,10 @@ namespace TSTI_API.Controllers
                     {
                         if (cCondition == SRCondition.ADD || cCondition == SRCondition.DONE)
                         {
-                            SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                            if (SRMain.InternalWork != "Y")
+                            {
+                                SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                            }
                         }
                     }
                     #endregion

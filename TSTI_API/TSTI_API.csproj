@@ -416,6 +416,12 @@
     <Compile Include="Models\TB_ONE_RoleParameter.cs">
       <DependentUpon>ModelPSIP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_ONE_SRBatchInstallRecord.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_ONE_SRBatchInstallRecord_Detail.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_ONE_SRCustomerEmailMapping.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>

@@ -181,6 +181,7 @@ namespace TSTI_API.Controllers
             //     "IV_SNPID": "G-654081B21-057",
             //     "IV_WTY": "OM363636",
             //     "IV_REFIX": "N",
+            //     "IV_INTERNALWORK" : "N",
             //     "IV_ATTACHFiles" : "檔案",
             //     "CREATECONTACT_LIST": [
             //        {
@@ -256,6 +257,7 @@ namespace TSTI_API.Controllers
             string IV_SNPID = string.IsNullOrEmpty(bean.IV_SNPID) ? "" : bean.IV_SNPID.Trim();
             string IV_WTY = string.IsNullOrEmpty(bean.IV_WTY) ? "" : bean.IV_WTY.Trim();
             string IV_REFIX = string.IsNullOrEmpty(bean.IV_REFIX) ? "" : bean.IV_REFIX.Trim();
+            string IV_INTERNALWORK = string.IsNullOrEmpty(bean.IV_INTERNALWORK) ? "N" : bean.IV_INTERNALWORK.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -340,6 +342,7 @@ namespace TSTI_API.Controllers
                     beanM.cTechManagerID = "";
                     beanM.cSystemGUID = Guid.NewGuid();
                     beanM.cIsAPPClose = "";
+                    beanM.cIsInternalWork = IV_INTERNALWORK;
 
                     if (AttachFiles != null)
                     {
@@ -756,6 +759,8 @@ namespace TSTI_API.Controllers
             public string IV_WTY { get; set; }
             /// <summary>是否為二修(Y.是 N.否)</summary>
             public string IV_REFIX { get; set; }
+            /// <summary>是否為內部作業(Y.是 N.否)</summary>
+            public string IV_INTERNALWORK { get; set; }
             /// <summary>檢附文件</summary>
             public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 
@@ -1119,6 +1124,7 @@ namespace TSTI_API.Controllers
                     beanM.cSQPersonID = "";
                     beanM.cSQPersonName = "";
                     beanM.cIsAPPClose = "";
+                    beanM.cIsInternalWork = "N";
                     #endregion
 
                     dbOne.TB_ONE_SRMain.Add(beanM);
@@ -10789,6 +10795,8 @@ namespace TSTI_API.Controllers
         public string MAServiceType { get; set; }
         /// <summary>是否為二修</summary>
         public string SecFix { get; set; }
+        /// <summary>是否為內部作業</summary>
+        public string InternalWork { get; set; }
         /// <summary>銷售訂單號</summary>
         public string SalesNo { get; set; }
         /// <summary>出貨單號</summary>

@@ -31,6 +31,7 @@ namespace TSTI_API.Models
         public string cSRProcessWay { get; set; }
         public string cIsSecondFix { get; set; }
         public string cIsAPPClose { get; set; }
+        public string cIsInternalWork { get; set; }
         public string cRepairName { get; set; }
         public string cRepairAddress { get; set; }
         public string cRepairPhone { get; set; }
@@ -50,6 +51,8 @@ namespace TSTI_API.Models
         public string cSalesNo { get; set; }
         public string cShipmentNo { get; set; }
         public string cContractID { get; set; }
+        public Nullable<int> cCountIN { get; set; }
+        public Nullable<int> cCountOUT { get; set; }
         public string cFaultGroup { get; set; }
         public string cFaultGroupNote1 { get; set; }
         public string cFaultGroupNote2 { get; set; }
