@@ -9557,6 +9557,153 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑更新ONE SERVICE 合約主數據接口 ↑↑↑↑↑-----
 
+        #region -----↓↓↓↓↓ 作廢ONE SERVICE 合約主數據接口 ↓↓↓↓↓----- 
+
+        #region 作廢ONE SERVICE 合約主數據資料        
+        [HttpPost]
+        public ActionResult API_CONTRACT_DELETE(CONTRACT_DELETE_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNO" : "99120894",
+            //    "IV_ContractID" : "11204075"            
+            //}
+            #endregion
+
+            CONTRACT_DELETE_OUTPUT ListOUT = new CONTRACT_DELETE_OUTPUT();
+
+            ListOUT = CONTRACT_DELETE(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 更新合約主數據資料
+        private CONTRACT_DELETE_OUTPUT CONTRACT_DELETE(CONTRACT_DELETE_INPUT beanIN)
+        {
+            CONTRACT_DELETE_OUTPUT OUTBean = new CONTRACT_DELETE_OUTPUT();
+
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
+            string IV_ContractID = string.IsNullOrEmpty(beanIN.IV_ContractID) ? "" : beanIN.IV_ContractID.Trim();
+            string pLoginName = string.Empty;           
+
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+            if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
+            {
+                pLoginName = IV_LOGINEMPNO;
+            }
+            else
+            {
+                pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+            }          
+
+            try
+            {
+                //停用合約主檔
+                var beanM = dbOne.TB_ONE_ContractMain.FirstOrDefault(x => x.Disabled == 0 && x.cContractID == IV_ContractID);
+
+                if (beanM != null)
+                {
+                    beanM.Disabled = 1;
+                    beanM.ModifiedDate = DateTime.Now;
+                    beanM.ModifiedUserName = pLoginName;
+
+                    #region 停用合約明細-合約工程師檔
+                    var beansEng = dbOne.TB_ONE_ContractDetail_ENG.Where(x => x.Disabled == 0 && x.cContractID == IV_ContractID);
+                    foreach(var beanEng in beansEng)
+                    {
+                        beanEng.Disabled = 1;
+                        beanEng.ModifiedDate = DateTime.Now;
+                        beanEng.ModifiedUserName = pLoginName;
+                    }
+                    #endregion
+
+                    #region 停用合約明細-合約維護標的檔
+                    var beansObj = dbOne.TB_ONE_ContractDetail_OBJ.Where(x => x.Disabled == 0 && x.cContractID == IV_ContractID);
+                    foreach (var beanObj in beansObj)
+                    {
+                        beanObj.Disabled = 1;
+                        beanObj.ModifiedDate = DateTime.Now;
+                        beanObj.ModifiedUserName = pLoginName;
+                    }
+                    #endregion
+
+                    #region 停用合約明細-下包合約資料檔
+                    var beansSub = dbOne.TB_ONE_ContractDetail_SUB.Where(x => x.Disabled == 0 && x.cContractID == IV_ContractID);
+                    foreach (var beanSub in beansSub)
+                    {
+                        beanSub.Disabled = 1;
+                        beanSub.ModifiedDate = DateTime.Now;
+                        beanSub.ModifiedUserName = pLoginName;
+                    }
+                    #endregion
+
+                    int result = dbOne.SaveChanges();
+
+                    if (result <= 0)
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "儲存失敗" + Environment.NewLine;
+                        CMF.writeToLog(IV_ContractID, "CONTRACT_DELETE_API", pMsg, pLoginName);
+
+                        OUTBean.EV_MSGT = "E";
+                        OUTBean.EV_MSG = pMsg;
+                    }
+                    else
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+                    }
+                }
+                else
+                {
+                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "儲存失敗，找不到該合約主檔資訊！" + Environment.NewLine;
+                    CMF.writeToLog(IV_ContractID, "CONTRACT_DELETE_API", pMsg, pLoginName);
+
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = pMsg;
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog(IV_ContractID, "CONTRACT_DELETE_API", pMsg, pLoginName);
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion       
+
+        #region 作廢ONE SERVICE 合約主數據資料INPUT資訊
+        /// <summary>作廢ONE SERVICE 合約主數據資料INPUT資訊</summary>
+        public struct CONTRACT_DELETE_INPUT
+        {
+            /// <summary>登入者員工編號ERPID</summary>
+            public string IV_LOGINEMPNO { get; set; }
+            /// <summary>文件編號</summary>
+            public string IV_ContractID { get; set; }            
+        }
+        #endregion
+
+        #region 作廢ONE SERVICE 合約主數據資料OUTPUT資訊
+        /// <summary>作廢ONE SERVICE 合約主數據資料OUTPUT資訊</summary>
+        public struct CONTRACT_DELETE_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑更新ONE SERVICE 合約主數據接口 ↑↑↑↑↑-----
+
         #endregion -----↑↑↑↑↑合約管理相關 ↑↑↑↑↑-----
 
         #region -----↓↓↓↓↓CALL RFC接口 ↓↓↓↓↓-----    
