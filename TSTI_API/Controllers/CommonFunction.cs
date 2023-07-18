@@ -5337,6 +5337,8 @@ namespace TSTI_API.Controllers
                 }
                 #endregion
 
+                tHypeLink = @"https://0800.etatung.com/survey_oneservice.aspx?srId=" + cSRID;
+
                 if (cCondition == SRCondition.ADD) //新建
                 {
                     #region 內容格式參考(一般服務)新建
@@ -5353,8 +5355,7 @@ namespace TSTI_API.Controllers
                     //報修人	報修人電話	報修人手機	報修人地址	報修人Email								
                     //OOO	042OOO	09OOO	台北市OOO	TEST@OOO	
 
-                    //若後續維修上有任何問題，請儘速與我們連絡 0800-066-038 ，或至線上報修系統網站報修，謝謝!!
-                    //大同世界科技線上報修系統網站：www.etatung.com
+                    //若後續維修上有任何問題，請儘速與我們連絡 0800-066-038，謝謝!!                   
                     //-------此信件由系統管理員發出，請勿回覆此信件-------
                     #endregion
 
@@ -5381,8 +5382,10 @@ namespace TSTI_API.Controllers
                     //聯絡人	聯絡人電話	聯絡人手機	聯絡人地址	聯絡人Email								
                     //OOO	042OOO	09OOO	台北市OOO	TEST@OOO                    
 
-                    //若後續維修上有任何問題，請儘速與我們連絡 0800-066-038 ，或至線上報修系統網站報修，謝謝!!
-                    //大同世界科技線上報修系統網站：www.etatung.com
+                    //邀請您協助填寫滿意度調查，請點選下方網址，謝謝！
+                    //滿意度網址
+
+                    //若後續維修上有任何問題，請儘速與我們連絡 0800-066-038，謝謝!!                    
                     //-------此信件由系統管理員發出，請勿回覆此信件-------
                     #endregion
 
@@ -5393,6 +5396,7 @@ namespace TSTI_API.Controllers
                 tMailBody = tMailBody.Replace("【<SRID>】", cSRID).Replace("【<MaterialName>】", MaterialName).Replace("【<SerialID>】", SerialID).Replace("【<ProductNumber>】", ProductNumber);
                 tMailBody = tMailBody.Replace("【<Notes>】", SRMain.Notes);
                 tMailBody = tMailBody.Replace("<SRRepair_List>", tSRRepair_Table).Replace("<SRContact_List>", tSRContact_Table);
+                tMailBody = tMailBody.Replace("【<tHypeLink>】", tHypeLink);
 
                 if (MaterialName == "" && SerialID == "" && ProductNumber == "") //若沒有機器明細，則不顯示
                 {
