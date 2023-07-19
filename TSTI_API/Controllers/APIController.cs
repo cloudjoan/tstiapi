@@ -1370,9 +1370,10 @@ namespace TSTI_API.Controllers
             //     "IV_MKIND1": "",
             //     "IV_MKIND2": "",
             //     "IV_MKIND3": "",                 
-            //     "IV_SALESEMPNO": "10012088",
+            //     "IV_SALESEMPNO": "10012088",            
             //     "IV_SECRETARYEMPNO": "10005805",
-            //     "IV_EMPNO": "",
+            //     "IV_EMPNO": "10001567",
+            //     "IV_ASSEMPNO": "99120894",
             //     "IV_ATTACHFiles" :"檔案",
             //     "CREATECONTACT_LIST": [
             //        {
@@ -1430,6 +1431,7 @@ namespace TSTI_API.Controllers
             string IV_SALESEMPNO = string.IsNullOrEmpty(bean.IV_SALESEMPNO) ? "" : bean.IV_SALESEMPNO.Trim();
             string IV_SECRETARYEMPNO = string.IsNullOrEmpty(bean.IV_SECRETARYEMPNO) ? "" : bean.IV_SECRETARYEMPNO.Trim();
             string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
+            string IV_ASSEMPNO = string.IsNullOrEmpty(bean.IV_ASSEMPNO) ? "" : bean.IV_ASSEMPNO.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -1497,6 +1499,7 @@ namespace TSTI_API.Controllers
                     beanM.cTeamID = IV_SRTEAM;
                     beanM.cMainEngineerName = CMainEngineerName;
                     beanM.cMainEngineerID = IV_EMPNO;
+                    beanM.cAssEngineerID = string.IsNullOrEmpty(IV_ASSEMPNO) ? "" : IV_ASSEMPNO;
                     beanM.cSalesName = CSalesName;
                     beanM.cSalesID = IV_SALESEMPNO;
                     beanM.cSecretaryName = CSecretaryName;
@@ -1570,8 +1573,7 @@ namespace TSTI_API.Controllers
                     beanM.cMAServiceType = "";
                     beanM.cSRPathWay = "";
                     beanM.cSRProcessWay = "";
-                    beanM.cIsSecondFix = "";
-                    beanM.cAssEngineerID = "";
+                    beanM.cIsSecondFix = "";                    
                     beanM.cTechManagerID = "";
                     beanM.cSalesNo = "";
                     beanM.cShipmentNo = "";
@@ -1676,6 +1678,8 @@ namespace TSTI_API.Controllers
             public string IV_MKIND3 { get; set; }
             /// <summary>主要工程師員工編號</summary>
             public string IV_EMPNO { get; set; }
+            /// <summary>協助工程師員工編號(可准許多筆)</summary>
+            public string IV_ASSEMPNO { get; set; }
             /// <summary>業務人員員工編號</summary>
             public string IV_SALESEMPNO { get; set; }
             /// <summary>業務祕書員工編號</summary>
