@@ -1344,9 +1344,364 @@ namespace TSTI_API.Controllers
             /// <summary>消息內容</summary>
             public string EV_MSG { get; set; }
         }
+        #endregion
+
+        #endregion -----↑↑↑↑↑裝機服務案件建立 ↑↑↑↑↑-----    
+
+        #region -----↓↓↓↓↓定維服務案件建立 ↓↓↓↓↓-----       
+
+        #region 建立ONE SERVICE報修SR（定維服務案件）接口
+        /// <summary>
+        /// 建立ONE SERVICE報修SR（定維服務案件）接口
+        /// </summary>
+        /// <param name="bean"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult API_MAINTAINSR_CREATE(SRMain_MAINTAINSR_INPUT beanIN)
+        {
+            #region Json範列格式，一筆(建立MAINTAINSR_CREATEByAPI)
+            //{
+            //    "IV_LOGINEMPNO": "99120894",
+            //     "IV_CUSTOMER": "D86517315",
+            //     "IV_SRTEAM": "SRV.12200006",
+            //     "IV_CONTRACTID": "11012083",            
+            //     "IV_DESC": "【11012083】OneService系統批次定維派單",
+            //     "IV_LTXT": "【11012083】OneService系統批次定維派單",
+            //     "IV_MKIND1": "",
+            //     "IV_MKIND2": "",
+            //     "IV_MKIND3": "",                 
+            //     "IV_SALESEMPNO": "10012088",
+            //     "IV_SECRETARYEMPNO": "10005805",
+            //     "IV_EMPNO": "",
+            //     "IV_ATTACHFiles" :"檔案",
+            //     "CREATECONTACT_LIST": [
+            //        {
+            //        "CONTNAME": "張維倫",
+            //            "CONTADDR": "台北市大安區敦化南路二段38號",
+            //            "CONTTEL": "02-27067777#8011606",
+            //            "CONTMOBILE": "",
+            //            "CONTEMAIL": ""
+            //        }               
+            //    ]           
+            //}
+            #endregion
+
+            SRMain_MAINTAINSR_OUTPUT SROUT = new SRMain_MAINTAINSR_OUTPUT();
+
+            SROUT = SaveMaintainSR(beanIN, "ADD"); //新增
+
+            return Json(SROUT);
+        }
+        #endregion
+
+        #region 儲存定維服務案件
+        /// <summary>
+        /// 儲存定維服務案件
+        /// </summary>
+        /// <param name="bean">定維服務案件主檔資訊</param>
+        /// <param name="tType">ADD.新增 EDIT.修改</param>
+        /// <returns></returns>
+        private SRMain_MAINTAINSR_OUTPUT SaveMaintainSR(SRMain_MAINTAINSR_INPUT bean, string tType)
+        {
+            SRMain_MAINTAINSR_OUTPUT SROUT = new SRMain_MAINTAINSR_OUTPUT();
+
+            bool tIsFormal = false;            
+
+            string pLoginName = string.Empty;
+            string pBUKRS = string.Empty;
+            string pSRID = string.Empty;
+            string OldCStatus = string.Empty;
+            string tAPIURLName = string.Empty;
+            string tONEURLName = string.Empty;
+            string tBPMURLName = string.Empty;
+            string tPSIPURLName = string.Empty;
+            string tAttachURLName = string.Empty;
+            string tAttachPath = string.Empty;
+
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
+            string IV_CUSTOMER = string.IsNullOrEmpty(bean.IV_CUSTOMER) ? "" : bean.IV_CUSTOMER.Trim();
+            string IV_SRTEAM = string.IsNullOrEmpty(bean.IV_SRTEAM) ? "" : bean.IV_SRTEAM.Trim();
+            string IV_CONTRACTID = string.IsNullOrEmpty(bean.IV_CONTRACTID) ? "" : bean.IV_CONTRACTID.Trim();            
+            string IV_DESC = string.IsNullOrEmpty(bean.IV_DESC) ? "" : bean.IV_DESC.Trim();
+            string IV_LTXT = string.IsNullOrEmpty(bean.IV_LTXT) ? "" : bean.IV_LTXT.Trim();
+            string IV_MKIND1 = string.IsNullOrEmpty(bean.IV_MKIND1) ? "" : bean.IV_MKIND1.Trim();
+            string IV_MKIND2 = string.IsNullOrEmpty(bean.IV_MKIND2) ? "" : bean.IV_MKIND2.Trim();
+            string IV_MKIND3 = string.IsNullOrEmpty(bean.IV_MKIND3) ? "" : bean.IV_MKIND3.Trim();
+            string IV_SALESEMPNO = string.IsNullOrEmpty(bean.IV_SALESEMPNO) ? "" : bean.IV_SALESEMPNO.Trim();
+            string IV_SECRETARYEMPNO = string.IsNullOrEmpty(bean.IV_SECRETARYEMPNO) ? "" : bean.IV_SECRETARYEMPNO.Trim();
+            string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
+            HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
+
+            string CCustomerName = CMF.findCustName(IV_CUSTOMER);
+            string CMainEngineerName = CMF.findEmployeeName(IV_EMPNO);
+            string CSalesName = CMF.findEmployeeName(IV_SALESEMPNO);
+            string CSecretaryName = CMF.findEmployeeName(IV_SECRETARYEMPNO);
+
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+            if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
+            {
+                pLoginName = IV_LOGINEMPNO;
+                pBUKRS = "T012";
+            }
+            else
+            {
+                pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+                pBUKRS = EmpBean.BUKRS;
+            }
+
+            try
+            {
+                #region 取得系統位址參數相關資訊
+                SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+
+                tIsFormal = ParaBean.IsFormal;
+
+                tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+                tONEURLName = ParaBean.ONEURLName;
+                tBPMURLName = ParaBean.BPMURLName;
+                tPSIPURLName = ParaBean.PSIPURLName;
+                tAttachURLName = ParaBean.AttachURLName;
+                tAttachPath = Server.MapPath("~/REPORT");
+                #endregion
+
+                if (tType == "ADD")
+                {
+                    #region 新增主檔
+                    TB_ONE_SRMain beanM = new TB_ONE_SRMain();
+
+                    pSRID = GetSRID("65");
+
+                    //主表資料
+                    beanM.cSRID = pSRID;
+
+                    if (IV_EMPNO != "")
+                    {
+                        beanM.cStatus = "E0016"; //新建但狀態是定保處理中
+                    }
+                    else
+                    {
+                        beanM.cStatus = "E0001"; //新建
+                    }
+
+                    beanM.cCustomerName = CCustomerName;                    
+                    beanM.cCustomerID = IV_CUSTOMER;
+                    beanM.cContractID = IV_CONTRACTID;
+                    beanM.cDesc = IV_DESC;
+                    beanM.cNotes = IV_LTXT;
+                    beanM.cSRTypeOne = IV_MKIND1;
+                    beanM.cSRTypeSec = IV_MKIND2;
+                    beanM.cSRTypeThr = IV_MKIND3;                    
+
+                    beanM.cTeamID = IV_SRTEAM;
+                    beanM.cMainEngineerName = CMainEngineerName;
+                    beanM.cMainEngineerID = IV_EMPNO;
+                    beanM.cSalesName = CSalesName;
+                    beanM.cSalesID = IV_SALESEMPNO;
+                    beanM.cSecretaryName = CSecretaryName;
+                    beanM.cSecretaryID = IV_SECRETARYEMPNO;
+
+                    beanM.cSystemGUID = Guid.NewGuid();
+                    beanM.CreatedDate = DateTime.Now;
+                    beanM.CreatedUserName = pLoginName;
+
+                    if (AttachFiles != null)
+                    {
+                        #region 檢附文件
+                        if (AttachFiles.Length > 0)
+                        {
+                            Guid fileGuid = Guid.NewGuid();
+
+                            string cAttachementID = string.Empty;
+                            string path = string.Empty;
+                            string fileId = string.Empty;
+                            string fileOrgName = string.Empty;
+                            string fileName = string.Empty;
+                            string fileALLName = string.Empty;
+
+                            foreach (var Attach in AttachFiles)
+                            {
+                                if (Attach != null)
+                                {
+                                    #region 檔案部份
+                                    fileGuid = Guid.NewGuid();
+
+                                    cAttachementID += fileGuid.ToString() + ",";
+
+                                    fileId = fileGuid.ToString();
+                                    fileOrgName = Attach.FileName;
+                                    fileName = fileId + Path.GetExtension(Attach.FileName);
+                                    path = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+                                    Attach.SaveAs(path);
+                                    #endregion
+
+                                    #region table部份                                        
+                                    TB_ONE_DOCUMENT beanDoc = new TB_ONE_DOCUMENT();
+
+                                    beanDoc.ID = fileGuid;
+                                    beanDoc.FILE_ORG_NAME = fileOrgName;
+                                    beanDoc.FILE_NAME = fileName;
+                                    beanDoc.FILE_EXT = Path.GetExtension(Attach.FileName);
+                                    beanDoc.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                                    dbOne.TB_ONE_DOCUMENT.Add(beanDoc);
+                                    dbOne.SaveChanges();
+
+                                    fileALLName += fileName + ",";
+                                    #endregion
+                                }
+                            }
+
+                            beanM.cAttachement = cAttachementID;
+                        }
+                        #endregion
+                    }
+
+                    #region 未用到的欄位
+                    beanM.cAttachement = "";
+                    beanM.cAttachementStockNo = "";
+                    beanM.cRepairName = "";
+                    beanM.cRepairAddress = "";
+                    beanM.cRepairPhone = "";
+                    beanM.cRepairMobile = "";
+                    beanM.cRepairEmail = "";
+                    beanM.cDelayReason = "";
+                    beanM.cMAServiceType = "";
+                    beanM.cSRPathWay = "";
+                    beanM.cSRProcessWay = "";
+                    beanM.cIsSecondFix = "";
+                    beanM.cAssEngineerID = "";
+                    beanM.cTechManagerID = "";
+                    beanM.cSalesNo = "";
+                    beanM.cShipmentNo = "";
+                    beanM.cSQPersonID = "";
+                    beanM.cSQPersonName = "";
+                    beanM.cIsAPPClose = "";
+                    beanM.cIsInternalWork = "N";
+                    #endregion
+
+                    dbOne.TB_ONE_SRMain.Add(beanM);
+                    #endregion
+
+                    #region 新增【客戶聯絡人資訊】明細
+                    if (bean.CREATECONTACT_LIST != null)
+                    {
+                        foreach (var beanCon in bean.CREATECONTACT_LIST)
+                        {
+                            string IV_CONTNAME = string.IsNullOrEmpty(beanCon.CONTNAME) ? "" : beanCon.CONTNAME.Trim();
+                            string IV_CONTADDR = string.IsNullOrEmpty(beanCon.CONTADDR) ? "" : beanCon.CONTADDR.Trim();
+                            string IV_CONTTEL = string.IsNullOrEmpty(beanCon.CONTTEL) ? "" : beanCon.CONTTEL.Trim();
+                            string IV_CONTMOBILE = string.IsNullOrEmpty(beanCon.CONTMOBILE) ? "" : beanCon.CONTMOBILE.Trim();
+                            string IV_CONTEMAIL = string.IsNullOrEmpty(beanCon.CONTEMAIL) ? "" : beanCon.CONTEMAIL.Trim();
+
+                            TB_ONE_SRDetail_Contact beanD = new TB_ONE_SRDetail_Contact();
+
+                            beanD.cSRID = pSRID;
+                            beanD.cContactName = IV_CONTNAME;
+                            beanD.cContactAddress = IV_CONTADDR;
+                            beanD.cContactPhone = IV_CONTTEL;
+                            beanD.cContactMobile = IV_CONTMOBILE;
+                            beanD.cContactEmail = IV_CONTEMAIL;
+                            beanD.Disabled = 0;
+
+                            beanD.CreatedDate = DateTime.Now;
+                            beanD.CreatedUserName = pLoginName;
+
+                            dbOne.TB_ONE_SRDetail_Contact.Add(beanD);
+                        }
+                    }
+                    #endregion                  
+
+                    int result = dbOne.SaveChanges();
+
+                    if (result <= 0)
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新建失敗！" + Environment.NewLine;
+                        CMF.writeToLog(pSRID, "SaveMaintainSR_API", pMsg, pLoginName);
+
+                        SROUT.EV_SRID = pSRID;
+                        SROUT.EV_MSGT = "E";
+                        SROUT.EV_MSG = pMsg;
+                    }
+                    else
+                    {
+                        SROUT.EV_SRID = pSRID;
+                        SROUT.EV_MSGT = "Y";
+                        SROUT.EV_MSG = "";
+
+                        #region 寄送Mail通知
+                        CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, pBUKRS, pSRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
+                        #endregion
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog(pSRID, "SaveMaintainSR_API", pMsg, pLoginName);
+
+                SROUT.EV_SRID = pSRID;
+                SROUT.EV_MSGT = "E";
+                SROUT.EV_MSG = ex.Message;
+            }
+
+            return SROUT;
+        }
+        #endregion      
+
+        #region 定維服務案件主檔INPUT資訊
+        /// <summary>定維服務案件主檔INPUT資訊</summary>
+        public struct SRMain_MAINTAINSR_INPUT
+        {
+            /// <summary>建立者員工編號ERPID</summary>
+            public string IV_LOGINEMPNO { get; set; }
+            /// <summary>客戶ID</summary>
+            public string IV_CUSTOMER { get; set; }
+            /// <summary>服務團隊ID</summary>
+            public string IV_SRTEAM { get; set; }
+            /// <summary>合約文件編號</summary>
+            public string IV_CONTRACTID { get; set; }            
+            /// <summary>服務案件說明</summary>
+            public string IV_DESC { get; set; }
+            /// <summary>詳細描述</summary>
+            public string IV_LTXT { get; set; }
+            /// <summary>報修代碼(大類)</summary>
+            public string IV_MKIND1 { get; set; }
+            /// <summary>報修代碼(中類)</summary>
+            public string IV_MKIND2 { get; set; }
+            /// <summary>報修代碼(小類)</summary>
+            public string IV_MKIND3 { get; set; }
+            /// <summary>主要工程師員工編號</summary>
+            public string IV_EMPNO { get; set; }
+            /// <summary>業務人員員工編號</summary>
+            public string IV_SALESEMPNO { get; set; }
+            /// <summary>業務祕書員工編號</summary>
+            public string IV_SECRETARYEMPNO { get; set; }
+            /// <summary>檢附文件</summary>
+            public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
+
+            /// <summary>服務案件客戶聯絡人資訊</summary>
+            public List<CREATECONTACTINFO> CREATECONTACT_LIST { get; set; }            
+        }
+        #endregion
+
+        #region 定維服務案件主檔OUTPUT資訊
+        /// <summary>定維服務案件主檔OUTPUT資訊</summary>
+        public struct SRMain_MAINTAINSR_OUTPUT
+        {
+            /// <summary>SRID</summary>
+            public string EV_SRID { get; set; }
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+        }
         #endregion        
 
-        #endregion -----↑↑↑↑↑一般服務案件建立 ↑↑↑↑↑-----    
+        #endregion -----↑↑↑↑↑定維服務案件建立 ↑↑↑↑↑----- 
 
         #region -----↓↓↓↓↓服務案件(一般/裝機/定維)狀態更新 ↓↓↓↓↓-----
 
