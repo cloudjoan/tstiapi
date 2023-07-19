@@ -11307,6 +11307,8 @@ namespace TSTI_API.Controllers
         public string SecFix { get; set; }
         /// <summary>是否為內部作業</summary>
         public string InternalWork { get; set; }
+        /// <summary>報修管道</summary>
+        public string SRPathWay { get; set; }
         /// <summary>銷售訂單號</summary>
         public string SalesNo { get; set; }
         /// <summary>出貨單號</summary>

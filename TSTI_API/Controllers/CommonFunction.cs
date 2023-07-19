@@ -4035,66 +4035,72 @@ namespace TSTI_API.Controllers
         /// <param name="TeamNAME">服務團隊</param>
         /// <param name="SRCase">服務案件種類</param>
         /// <param name="MainENG">主要工程師</param>
+        /// <param name="SRPathWay">報修管道</param>
         /// <returns></returns>
-        public string findGenerallySRMailSubject(SRCondition cCondition, string SRID, string CusName, string TeamNAME, string SRCase, string MainENG)
+        public string findGenerallySRMailSubject(SRCondition cCondition, string SRID, string CusName, string TeamNAME, string SRCase, string MainENG, string SRPathWay)
         {
             string reValue = string.Empty;
+
+            if (SRPathWay != "")
+            {
+                SRPathWay = "[" + SRPathWay + "] ";
+            }
 
             switch (cCondition)
             {
                 case SRCondition.ADD:
-                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 派單通知[<服務ID>]                  
-                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 派單通知[" + SRID + "]";
+                    //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類> 派單通知[<服務ID>]                  
+                    reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 派單通知[" + SRID + "]";
                     break;
 
                 case SRCondition.TRANS:
-                    //[<客戶名稱>] <服務團隊>_<服務案件種類>[<服務ID>]已轉到[<主要工程師>]名下，請留意！
-                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + "[" + SRID + "]已轉到[" + MainENG + "]名下，請留意！";
+                    //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類>[<服務ID>]已轉到[<主要工程師>]名下，請留意！
+                    reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + "[" + SRID + "]已轉到[" + MainENG + "]名下，請留意！";
                     break;
 
                 case SRCondition.REJECT:
-                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 主管審核駁回通知[<服務ID>]
-                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 主管審核駁回通知[" + SRID + "]";
+                    //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類> 主管審核駁回通知[<服務ID>]
+                    reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 主管審核駁回通知[" + SRID + "]";
                     break;
 
                 case SRCondition.HPGCSN:
-                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 派單通知[<服務ID>]，需下料。
-                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 派單通知[" + SRID + "]，需下料。";
+                    //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類> 派單通知[<服務ID>]，需下料。
+                    reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 派單通知[" + SRID + "]，需下料。";
                     break;
 
                 case SRCondition.HPGCSNDONE:
-                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 派單通知[<服務ID>]，HPGCSN 已完成。
-                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 派單通知[" + SRID + "]，HPGCSN 已完成。";
+                    //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類> 派單通知[<服務ID>]，HPGCSN 已完成。
+                    reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 派單通知[" + SRID + "]，HPGCSN 已完成。";
                     break;
 
                 case SRCondition.SECFIX:
-                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 二修通知[<服務ID>]
-                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 二修通知[" + SRID + "]";
+                    //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類> 二修通知[<服務ID>]
+                    reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 二修通知[" + SRID + "]";
                     break;
 
                 case SRCondition.SUPPORT:
-                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 技術支援升級通知[<服務ID>]
-                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 技術支援升級通知[" + SRID + "]";
+                    //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類> 技術支援升級通知[<服務ID>]
+                    reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 技術支援升級通知[" + SRID + "]";
                     break;
 
                 case SRCondition.SAVE:
-                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 異動通知[<服務ID>]
-                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 異動通知[" + SRID + "]";
+                    //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類> 異動通知[<服務ID>]
+                    reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 異動通知[" + SRID + "]";
                     break;
 
                 case SRCondition.THRPARTY:
-                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 3Party通知[<服務ID>]
-                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 3Party通知[" + SRID + "]";
+                    //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類> 3Party通知[<服務ID>]
+                    reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 3Party通知[" + SRID + "]";
                     break;
 
                 case SRCondition.CANCEL:
-                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 取消通知[<服務ID>]，請關注！
-                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 取消通知[" + SRID + "]，請關注！";
+                    //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類> 取消通知[<服務ID>]，請關注！
+                    reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 取消通知[" + SRID + "]，請關注！";
                     break;
 
                 case SRCondition.DONE:
-                    //[<客戶名稱>] <服務團隊>_<服務案件種類> 完修通知[<服務ID>]，已完修！
-                    reValue = "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 完修通知[" + SRID + "]，已完修！";
+                    //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類> 完修通知[<服務ID>]，已完修！
+                    reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 完修通知[" + SRID + "]，已完修！";
                     break;
 
                 case SRCondition.DOA:
@@ -4661,6 +4667,7 @@ namespace TSTI_API.Controllers
             string cMAServiceType = string.Empty;       //維護服務種類
             string cSecFix = string.Empty;              //是否為二修
             string cInternalWork = string.Empty;        //是否為內部作業
+            string cSRPathWay = string.Empty;           //報修管道
             string cSalesNo = string.Empty;             //銷售訂單號
             string cShipmentNo = string.Empty;          //出貨單號
             string cDesc = string.Empty;                //需求說明            
@@ -4764,6 +4771,7 @@ namespace TSTI_API.Controllers
                     cMAServiceType = findSysParameterDescription(cOperationID_GenerallySR, "OTHER", cBUKRS, "SRMATYPE", beanM.cMAServiceType); 
                     cSecFix = beanM.cIsSecondFix;
                     cInternalWork = string.IsNullOrEmpty(beanM.cIsInternalWork) ? "N" : beanM.cIsInternalWork;
+                    cSRPathWay = findSysParameterDescription(cOperationID_GenerallySR, "OTHER", cBUKRS, "SRPATH", beanM.cSRPathWay);
                     cSalesNo = string.IsNullOrEmpty(beanM.cSalesNo) ? "" : beanM.cSalesNo;
                     cShipmentNo = string.IsNullOrEmpty(beanM.cShipmentNo) ? "" : beanM.cShipmentNo;
                     cDesc = beanM.cDesc;
@@ -4786,9 +4794,10 @@ namespace TSTI_API.Controllers
                     SRMain.MAServiceType = cMAServiceType;
                     SRMain.SecFix = cSecFix;
                     SRMain.InternalWork = cInternalWork;
+                    SRMain.SRPathWay = cSRPathWay;
                     SRMain.SalesNo = cSalesNo;
                     SRMain.ShipmentNo = cShipmentNo;
-                    SRMain.Desc = cDesc;
+                    SRMain.Desc = string.IsNullOrEmpty(cSRPathWay) ? cDesc : "【" + cSRPathWay + "】" + cDesc;
                     SRMain.Notes = cNotes;                    
 
                     SRMain.CusName = cCusName;
@@ -5037,7 +5046,7 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 郵件主旨
-                string tMailSubject = findGenerallySRMailSubject(cCondition, cSRID, SRMain.CusName, SRMain.TeamNAME, SRMain.SRCase, SRMain.MainENG);
+                string tMailSubject = findGenerallySRMailSubject(cCondition, cSRID, SRMain.CusName, SRMain.TeamNAME, SRMain.SRCase, SRMain.MainENG, SRMain.SRPathWay);
 
                 tMailSubject = strTest + tMailSubject;
                 #endregion
