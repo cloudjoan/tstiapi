@@ -8651,8 +8651,9 @@ namespace TSTI_API.Controllers
             try
             {
                 var tList = CMF.findSRTEAMINFO(beanIN.IV_COMPID);
+                var tListDis = tList.Select(m => new { m.cTeamOldID, m.cTeamOldName }).Distinct().ToList();
 
-                if (tList.Count == 0)
+                if (tListDis.Count == 0)
                 {
                     OUTBean.EV_MSGT = "E";
                     OUTBean.EV_MSG = "查無服務團隊資料，請重新查詢！";
@@ -8665,7 +8666,7 @@ namespace TSTI_API.Controllers
                     #region 取得服務團隊資料List
                     List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
 
-                    foreach (var bean in tList)
+                    foreach (var bean in tListDis)
                     {
                         OPTION_LIST beanTEAM = new OPTION_LIST();
 
@@ -10645,6 +10646,7 @@ namespace TSTI_API.Controllers
 
             try
             {
+                #region 註解
                 initSapConnector();
 
                 var beans = dbOne.TB_ONE_ContractIDTemp.ToList();
@@ -10871,6 +10873,50 @@ namespace TSTI_API.Controllers
                         #endregion
                     }
                 }
+                #endregion
+
+                #region 寫入客戶聯絡人暫存檔
+                //var beansM = dbProxy.CUSTOMER_ContactTemp;
+
+                //foreach (var bean in beansM)
+                //{
+                //    CUSTOMER_Contact ConTemp = new CUSTOMER_Contact();
+
+                //    ConTemp.ContactID = Guid.NewGuid();
+                //    ConTemp.KNA1_KUNNR = bean.KNA1_KUNNR;
+                //    ConTemp.KNA1_NAME1 = bean.KNA1_NAME1;
+                //    ConTemp.KNB1_BUKRS = "T016";
+                //    ConTemp.ContactType = "5";
+                //    ConTemp.ContactName = bean.ContactName;
+                //    ConTemp.ContactCity = bean.ContactCity;
+                //    ConTemp.ContactAddress = bean.ContactAddress;
+                //    ConTemp.ContactEmail = bean.ContactEmail;
+                //    ConTemp.ContactPhone = bean.ContactPhone;
+                //    ConTemp.ContactMobile = bean.ContactMobile;
+                //    ConTemp.BpmNo = "GenerallySR";
+                //    ConTemp.ModifiedUserName = "SYS";
+                //    ConTemp.ModifiedDate = DateTime.Now;
+                //    ConTemp.Disabled = 0;
+
+                //    dbProxy.CUSTOMER_Contact.Add(ConTemp);
+                //}
+
+                //int result = dbProxy.SaveChanges();
+
+                //if (result <= 0)
+                //{
+                //    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新增CUSTOMER_ContactTEMP失敗！" + Environment.NewLine;
+                //    CMF.writeToLog("", "CRMCONTACTINFO_GET_API", pMsg, "SYS");
+
+                //    OUTBean.EV_MSGT = "E";
+                //    OUTBean.EV_MSG = pMsg;
+                //}
+                //else
+                //{
+                //    OUTBean.EV_MSGT = "Y";
+                //    OUTBean.EV_MSG = "";
+                //}
+                #endregion
 
                 if (pMsg != "")
                 {
@@ -10999,45 +11045,7 @@ namespace TSTI_API.Controllers
                     }
 
                     OUTBean.CRMCONTACTINFO_LIST = tObjList;
-                    #endregion
-
-                    #region 寫入客戶聯絡人暫存檔
-                    //tObjList = tObjList.OrderBy(x => x.BPNUMBER).ThenBy(x => x.LASTNAME).ThenBy(x => x.EMAIL).ToList();
-
-                    //foreach (var bean in tObjList)
-                    //{
-                    //    CUSTOMER_ContactTEMP ConTemp = new CUSTOMER_ContactTEMP();
-
-                    //    ConTemp.ContactID = Guid.NewGuid();
-                    //    ConTemp.KNA1_KUNNR = bean.BPNUMBER;
-                    //    ConTemp.KNA1_NAME1 = bean.CUSTOMER;
-                    //    ConTemp.KNB1_BUKRS = "T012";
-                    //    ConTemp.ContactName = bean.LASTNAME;
-                    //    ConTemp.ContactCity = bean.CITY;
-                    //    ConTemp.ContactAddress = bean.STREET;
-                    //    ConTemp.ContactEmail = bean.EMAIL;
-                    //    ConTemp.ContactPhone = bean.TEL;
-                    //    ConTemp.ContactMobile = bean.MOB;
-
-                    //    dbProxy.CUSTOMER_ContactTEMP.Add(ConTemp);
-                    //}
-
-                    //int result = dbProxy.SaveChanges();
-
-                    //if (result <= 0 )
-                    //{
-                    //    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新增CUSTOMER_ContactTEMP失敗！" + Environment.NewLine;
-                    //    CMF.writeToLog("", "CRMCONTACTINFO_GET_API", pMsg, "SYS");
-
-                    //    OUTBean.EV_MSGT = "E";
-                    //    OUTBean.EV_MSG = pMsg;
-                    //}
-                    //else
-                    //{
-                    //    OUTBean.EV_MSGT = "Y";
-                    //    OUTBean.EV_MSG = "";
-                    //}
-                    #endregion
+                    #endregion                    
                 }
             }
             catch (Exception ex)

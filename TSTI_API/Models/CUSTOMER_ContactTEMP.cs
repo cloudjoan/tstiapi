@@ -12,17 +12,30 @@ namespace TSTI_API.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CUSTOMER_ContactTEMP
+    public partial class CUSTOMER_ContactTemp
     {
         public System.Guid ContactID { get; set; }
         public string KNA1_KUNNR { get; set; }
         public string KNA1_NAME1 { get; set; }
         public string KNB1_BUKRS { get; set; }
+        public string ContactType { get; set; }
         public string ContactName { get; set; }
         public string ContactCity { get; set; }
         public string ContactAddress { get; set; }
         public string ContactEmail { get; set; }
         public string ContactPhone { get; set; }
         public string ContactMobile { get; set; }
+        public Nullable<System.Guid> ContactStore { get; set; }
+        public string ContactDepartment { get; set; }
+        public string ContactPosition { get; set; }
+        public string BpmNo { get; set; }
+        public Nullable<System.Guid> ModifiedUserID { get; set; }
+        public string ModifiedUserName { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<int> Disabled { get; set; }
+        public Nullable<byte> IsMain { get; set; }
+        public Nullable<System.Guid> MainModifiedUserID { get; set; }
+        public string MainModifiedUserName { get; set; }
+        public Nullable<System.DateTime> MainModifiedDate { get; set; }
     }
 }

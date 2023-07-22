@@ -941,7 +941,7 @@ namespace TSTI_API.Controllers
             else
             {
                 tList = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0).ToList();
-            }
+            }           
 
             return tList;
         }

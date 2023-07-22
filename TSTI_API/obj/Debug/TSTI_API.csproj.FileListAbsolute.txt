@@ -119,7 +119,6 @@ D:\GIT\tstiapi\TSTI_API\bin\zh-Hant\System.Web.Razor.resources.dll
 D:\GIT\tstiapi\TSTI_API\bin\zh-Hant\System.Web.WebPages.resources.dll
 D:\GIT\tstiapi\TSTI_API\bin\zh-Hant\System.Web.WebPages.Deployment.resources.dll
 D:\GIT\tstiapi\TSTI_API\bin\zh-Hant\System.Web.WebPages.Razor.resources.dll
-D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.csprojAssemblyReference.cache
 D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.csproj.CoreCompileInputs.cache
 D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.csproj.CopyComplete
 D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.dll
@@ -250,3 +249,4 @@ D:\VSProject\TSTI_API\TSTI_API\obj\Debug\TSTI_API.csproj.CoreCompileInputs.cache
 D:\VSProject\TSTI_API\TSTI_API\obj\Debug\TSTI_API.csproj.CopyComplete
 D:\VSProject\TSTI_API\TSTI_API\obj\Debug\TSTI_API.dll
 D:\VSProject\TSTI_API\TSTI_API\obj\Debug\TSTI_API.pdb
+D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.csprojAssemblyReference.cache

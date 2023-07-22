@@ -38,6 +38,6 @@ namespace TSTI_API.Models
         public virtual DbSet<STOCKWTY> STOCKWTY { get; set; }
         public virtual DbSet<F0005> F0005 { get; set; }
         public virtual DbSet<CUSTOMER_Contact> CUSTOMER_Contact { get; set; }
-        public virtual DbSet<CUSTOMER_ContactTEMP> CUSTOMER_ContactTEMP { get; set; }
+        public virtual DbSet<CUSTOMER_ContactTemp> CUSTOMER_ContactTemp { get; set; }
     }
 }

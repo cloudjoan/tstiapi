@@ -218,7 +218,7 @@
     <Compile Include="Models\CUSTOMER_Contact.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CUSTOMER_ContactTEMP.cs">
+    <Compile Include="Models\CUSTOMER_ContactTemp.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Department.cs">

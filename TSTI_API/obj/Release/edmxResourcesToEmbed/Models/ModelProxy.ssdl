@@ -28,20 +28,33 @@
     <Property Name="MainModifiedUserName" Type="nvarchar" MaxLength="50" />
     <Property Name="MainModifiedDate" Type="datetime" />
   </EntityType>
-  <EntityType Name="CUSTOMER_ContactTEMP">
+  <EntityType Name="CUSTOMER_ContactTemp">
     <Key>
       <PropertyRef Name="ContactID" />
     </Key>
     <Property Name="ContactID" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="KNA1_KUNNR" Type="nvarchar" MaxLength="500" Nullable="false" />
-    <Property Name="KNA1_NAME1" Type="nvarchar" MaxLength="500" />
+    <Property Name="KNA1_KUNNR" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="KNA1_NAME1" Type="nvarchar" MaxLength="35" />
     <Property Name="KNB1_BUKRS" Type="nvarchar" MaxLength="4" Nullable="false" />
-    <Property Name="ContactName" Type="nvarchar" MaxLength="500" Nullable="false" />
-    <Property Name="ContactCity" Type="nvarchar" MaxLength="500" />
-    <Property Name="ContactAddress" Type="nvarchar" MaxLength="500" />
-    <Property Name="ContactEmail" Type="nvarchar" MaxLength="500" Nullable="false" />
-    <Property Name="ContactPhone" Type="nvarchar" MaxLength="500" />
-    <Property Name="ContactMobile" Type="nvarchar" MaxLength="500" />
+    <Property Name="ContactType" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="ContactName" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="ContactCity" Type="nvarchar" MaxLength="10" />
+    <Property Name="ContactAddress" Type="nvarchar" MaxLength="100" />
+    <Property Name="ContactEmail" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="ContactPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="ContactMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="ContactStore" Type="uniqueidentifier" />
+    <Property Name="ContactDepartment" Type="nvarchar" MaxLength="100" />
+    <Property Name="ContactPosition" Type="nvarchar" MaxLength="20" />
+    <Property Name="BpmNo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ModifiedUserID" Type="uniqueidentifier" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="IsMain" Type="tinyint" />
+    <Property Name="MainModifiedUserID" Type="uniqueidentifier" />
+    <Property Name="MainModifiedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="MainModifiedDate" Type="datetime" />
   </EntityType>
   <EntityType Name="F0005">
     <Key>
@@ -363,7 +376,7 @@
   </EntityType>
   <EntityContainer Name="ERP_PROXY_DBModelStoreContainer">
     <EntitySet Name="CUSTOMER_Contact" EntityType="Self.CUSTOMER_Contact" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="CUSTOMER_ContactTEMP" EntityType="Self.CUSTOMER_ContactTEMP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CUSTOMER_ContactTemp" EntityType="Self.CUSTOMER_ContactTemp" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="F0005" EntityType="Self.F0005" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="F4501" EntityType="Self.F4501" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MATERIAL" EntityType="Self.MATERIAL" Schema="dbo" store:Type="Tables" />
