@@ -161,7 +161,7 @@ namespace TSTI_API.Controllers
             //{
             //    "IV_LOGINEMPNO": "99120894",
             //     "IV_CUSTOMER": "D03251108",
-            //     "IV_SRTEAM": "SRV.12211000",
+            //     "IV_SRTEAM": "SRV.12100000",
             //     "IV_RKIND": "Z01",
             //     "IV_PATHWAY": "Z01",
             //     "IV_DESC": "Test20230106",
@@ -179,6 +179,8 @@ namespace TSTI_API.Controllers
             //     "IV_SQEMPID": "ZC103",
             //     "IV_SERIAL": "SGH33223R6",
             //     "IV_SNPID": "G-654081B21-057",
+            //     "IV_PIDNAME": "DL360pG8 E5-2650/8G*2/146G15K*2/D/R/IC-E",
+            //     "IV_PN": "654081-B21-057",
             //     "IV_WTY": "OM363636",
             //     "IV_REFIX": "N",
             //     "IV_INTERNALWORK" : "N",
@@ -255,6 +257,8 @@ namespace TSTI_API.Controllers
             string IV_SQEMPID = string.IsNullOrEmpty(bean.IV_SQEMPID) ? "" : bean.IV_SQEMPID.Trim();
             string IV_SERIAL = string.IsNullOrEmpty(bean.IV_SERIAL) ? "" : bean.IV_SERIAL.Trim();
             string IV_SNPID = string.IsNullOrEmpty(bean.IV_SNPID) ? "" : bean.IV_SNPID.Trim();
+            string IV_PIDNAME = string.IsNullOrEmpty(bean.IV_PIDNAME) ? "" : bean.IV_PIDNAME.Trim();
+            string IV_PN = string.IsNullOrEmpty(bean.IV_PN) ? "" : bean.IV_PN.Trim();
             string IV_WTY = string.IsNullOrEmpty(bean.IV_WTY) ? "" : bean.IV_WTY.Trim();
             string IV_REFIX = string.IsNullOrEmpty(bean.IV_REFIX) ? "" : bean.IV_REFIX.Trim();
             string IV_INTERNALWORK = string.IsNullOrEmpty(bean.IV_INTERNALWORK) ? "N" : bean.IV_INTERNALWORK.Trim();
@@ -434,8 +438,8 @@ namespace TSTI_API.Controllers
                     #region 新增【產品序號資訊】明細
                     string[] PRcSerialID = IV_SERIAL.Split(';');
                     string[] PRcMaterialID = IV_SNPID.Split(';');
-                    string PRcMaterialName = string.Empty;
-                    string PRcProductNumber = string.Empty;
+                    string[] PRcMaterialName = IV_PIDNAME.Split(';');
+                    string[] PRcProductNumber = IV_PN.Split(';');
                     string PRcInstallID = string.Empty;
 
                     int countPR = PRcSerialID.Length;
@@ -446,17 +450,35 @@ namespace TSTI_API.Controllers
                         {
                             TB_ONE_SRDetail_Product beanD = new TB_ONE_SRDetail_Product();
 
-                            PRcMaterialName = CMF.findMaterialName(PRcMaterialID[i]);
-                            PRcProductNumber = CMF.findMFRPNumber(PRcMaterialID[i]);
-                            PRcInstallID = CMF.findInstallNumber(IV_SERIAL);
+                            string cMaterialID = string.Empty;
+                            string cMaterialName = string.Empty;
+                            string cProductNumber = string.Empty;
+                            string cInstallID = string.Empty;
+
+                            if (PRcMaterialName[i] != "")
+                            {
+                                cMaterialID = PRcMaterialID[i];
+                                cMaterialName = PRcMaterialName[i];
+                                cProductNumber = PRcProductNumber[i];
+                                cInstallID = CMF.findInstallNumber(IV_SERIAL);
+                            }
+                            else
+                            {
+                                var ProBean = CMF.findMaterialBySerial(PRcSerialID[i]);
+
+                                cMaterialID = string.IsNullOrEmpty(PRcMaterialID[i]) ? ProBean.ProdID : PRcMaterialID[i];
+                                cMaterialName = ProBean.Product;
+                                cProductNumber = ProBean.MFRPN;
+                                cInstallID = ProBean.InstallNo;
+                            }                            
 
                             beanD.cSRID = pSRID;
                             beanD.cSerialID = PRcSerialID[i];
-                            beanD.cMaterialID = PRcMaterialID[i];
-                            beanD.cMaterialName = PRcMaterialName;
-                            beanD.cProductNumber = PRcProductNumber;
+                            beanD.cMaterialID = cMaterialID;
+                            beanD.cMaterialName = cMaterialName;
+                            beanD.cProductNumber = cProductNumber;
                             beanD.cNewSerialID = "";
-                            beanD.cInstallID = PRcInstallID;
+                            beanD.cInstallID = cInstallID;
                             beanD.Disabled = 0;
 
                             beanD.CreatedDate = DateTime.Now;
@@ -755,6 +777,10 @@ namespace TSTI_API.Controllers
             public string IV_SERIAL { get; set; }
             /// <summary>物料代號</summary>
             public string IV_SNPID { get; set; }
+            /// <summary>機器型號</summary>
+            public string IV_PIDNAME { get; set; }
+            /// <summary>Product Number(P/N)</summary>
+            public string IV_PN { get; set; }
             /// <summary>保固代號(若是合約則傳入合約編號)</summary>
             public string IV_WTY { get; set; }
             /// <summary>是否為二修(Y.是 N.否)</summary>
@@ -801,7 +827,7 @@ namespace TSTI_API.Controllers
             string tSubject = "test12345";
             string tBody = "測試Body";
             string tCustomerID = "D03251108";
-            string cTeamID = "SRV.12211000";
+            string cTeamID = "SRV.12100000";
 
             string CONTNAME = string.Empty;
             string CONTADDR = string.Empty;
@@ -9217,7 +9243,7 @@ namespace TSTI_API.Controllers
             //{
             //    "IV_LOGINEMPNO" : "10001567", 
             //    "IV_CONTRACTID" : "11204075", 
-            //    "IV_SRTEAM": "SRV.12211000"
+            //    "IV_SRTEAM": "SRV.12100000"
             //}
             #endregion
 
