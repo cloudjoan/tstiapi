@@ -11321,6 +11321,8 @@ namespace TSTI_API.Controllers
         public string StatusDesc { get; set; }
         /// <summary>服務案件種類</summary>
         public string SRCase { get; set; }
+        /// <summary>公司名稱</summary>
+        public string CompanyName { get; set; }
         /// <summary>服務團隊</summary>
         public string TeamNAME { get; set; }
         /// <summary>服務團隊主管</summary>

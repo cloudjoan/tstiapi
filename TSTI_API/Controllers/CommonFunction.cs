@@ -3155,6 +3155,38 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 傳入服務團隊並取得公司名稱
+        /// <summary>
+        /// 傳入服務團隊並取得公司名稱
+        /// </summary>
+        /// <param name="cTeamID">服務團隊ID</param>
+        /// <returns></returns>
+        public string findCompanyNameByTeamID(string cTeamID)
+        {
+            string reValue = "大同世界科技";
+
+            if (!string.IsNullOrEmpty(cTeamID))
+            {
+                switch (cTeamID.Substring(0, 6))
+                {
+                    case "SRV.12":
+                        reValue = "大同世界科技";
+                        break;
+
+                    case "SRV.16":
+                        reValue = "群輝商務科技";
+                        break;
+
+                    case "SRV.22":
+                        reValue = "協志聯合科技";
+                        break;
+                }
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region -----↓↓↓↓↓待辦清單 ↓↓↓↓↓-----
 
         #region 取得登入人員所有要負責的SRID
@@ -3769,6 +3801,7 @@ namespace TSTI_API.Controllers
             string EV_SLARESP = string.Empty;
             string EV_WTYKIND = string.Empty;
             string MAServiceType = string.Empty;
+            string EV_CompanyName = string.Empty;
 
             var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
 
@@ -3810,6 +3843,8 @@ namespace TSTI_API.Controllers
 
                 EV_WTYKIND = findSysParameterDescription(pOperationID_GenerallySR, "OTHER", EmpBean.BUKRS, "SRMATYPE", MAServiceType);
 
+                EV_CompanyName = findCompanyNameByTeamID(beanM.cTeamID);
+
                 results.Add("EV_CUSTOMER", beanM.cCustomerName);       //客戶名稱
                 results.Add("EV_DESC", beanM.cDesc);                  //說明                
                 results.Add("EV_PROBLEM", beanM.cNotes);              //詳細描述
@@ -3827,6 +3862,7 @@ namespace TSTI_API.Controllers
                 results.Add("EV_DEPARTMENT", EmpBean.BUKRS);        //公司別(T012、T016、C069、t022)
                 results.Add("EV_SLASRV", EV_SLASRV);               //SLA服務條件
                 results.Add("EV_WTYKIND", EV_WTYKIND);             //維護服務種類(Z01.保固內、Z02.保固外、Z03.合約、Z04.3rd Party)
+                results.Add("EV_CompanyName", EV_CompanyName);     //公司名稱
             }
 
             if (!string.IsNullOrEmpty(IV_SRID))
@@ -4131,8 +4167,9 @@ namespace TSTI_API.Controllers
         /// <param name="SRID">服務ID</param>
         /// <param name="CusName">客戶名稱</param>  
         /// <param name="SRPathWay">報修管道</param>
+        /// <param name="CompanyName">公司名稱</param>
         /// <returns></returns>
-        public string findGenerallySRMailSubject_ToCustomer(SRCondition cCondition, string SRID, string CusName, string SRPathWay)
+        public string findGenerallySRMailSubject_ToCustomer(SRCondition cCondition, string SRID, string CusName, string SRPathWay, string CompanyName)
         {
             string reValue = string.Empty;
 
@@ -4145,12 +4182,12 @@ namespace TSTI_API.Controllers
             {
                 case SRCondition.ADD:
                     //大同世界科技[<服務ID>] ，報修通知                 
-                    reValue = SRPathWay + "大同世界科技[" + SRID + "]，報修通知";
+                    reValue = SRPathWay + CompanyName + "[" + SRID + "]，報修通知";
                     break;               
 
                 case SRCondition.DONE:
                     //大同世界科技[<客戶名稱>]您的服務[<服務ID>]已完成
-                    reValue = SRPathWay + "大同世界科技[" + CusName + "] 您的服務[" + SRID + "]已完修";
+                    reValue = SRPathWay + CompanyName + "[" + CusName + "] 您的服務[" + SRID + "]已完修";
                     break;
             }
 
@@ -4650,7 +4687,8 @@ namespace TSTI_API.Controllers
             string tMailBCc = string.Empty;             //密件副本
             string tHypeLink = string.Empty;            //超連結
             string tSeverName = string.Empty;           //主機名稱
-            
+
+            string cCompanyName = string.Empty;         //公司名稱
             string cSRCase = string.Empty;              //服務案件種類            
             string cTeamName = string.Empty;            //服務團隊
             string cTeamMGR = string.Empty;             //服務團隊主管
@@ -4715,6 +4753,7 @@ namespace TSTI_API.Controllers
                     SRIDMAININFO SRMain = new SRIDMAININFO();
 
                     #region 服務團隊相關
+                    cCompanyName = findCompanyNameByTeamID(beanM.cTeamID);
                     SRTeam_List = findSRTEAMORGINFO(beanM.cTeamID);
                     cSRCase = findSRIDType(cSRID);
                     cTeamName = findSRTeamName(SRTeam_List);
@@ -4788,6 +4827,7 @@ namespace TSTI_API.Controllers
                     SRMain.Status = cStatus;
                     SRMain.StatusDesc = cStatusDesc;
                     SRMain.SRCase = cSRCase;
+                    SRMain.CompanyName = cCompanyName;
                     SRMain.TeamNAME = cTeamName;
                     SRMain.TeamMGR = cTeamMGR;
                     SRMain.MainENG = cMainENG;
@@ -5223,6 +5263,7 @@ namespace TSTI_API.Controllers
             string tMailBCc = string.Empty;         //密件副本
             string tHypeLink = string.Empty;        //超連結            
 
+            string tCompanyName = string.Empty;     //公司名稱
             string tStatus = string.Empty;          //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
             string tContractID = string.Empty;      //合約文件編號
             string tSecFix = string.Empty;          //是否為二修
@@ -5324,10 +5365,10 @@ namespace TSTI_API.Controllers
                     tMailTo = "Elvis.Chang@etatung.com;Jordan.Chang@etatung.com;Cara.Tien@etatung.com";
                     //tMailCc = "Elvis.Chang@etatung.com";
                 }
-                #endregion
+                #endregion              
 
                 #region 郵件主旨
-                string tMailSubject = findGenerallySRMailSubject_ToCustomer(cCondition, cSRID, SRMain.CusName, SRMain.SRPathWay);
+                string tMailSubject = findGenerallySRMailSubject_ToCustomer(cCondition, cSRID, SRMain.CusName, SRMain.SRPathWay, SRMain.CompanyName);
 
                 tMailSubject = strTest + tMailSubject;
                 #endregion
@@ -5458,6 +5499,7 @@ namespace TSTI_API.Controllers
             string CUSTOMER = string.Empty;
             string ENGINEER = string.Empty;
             string NOTES = string.Empty;
+            string CompanyName = string.Empty;
 
             // 獲得需求單明細資料
             Dictionary<string, object> srdetail = GetSRDetail(srId, pOperationID_GenerallySR);
@@ -5484,6 +5526,10 @@ namespace TSTI_API.Controllers
             ENGINEER = string.IsNullOrEmpty(mainEgnrName) ? srdetail["EV_MAINENG"].ToString() : mainEgnrName;
 
             NOTES = srdetail["EV_PROBLEM"].ToString();
+
+            CompanyName = srdetail["EV_CompanyName"].ToString();
+
+            pdfFileName = CompanyName + "客戶服務報告書[" + srId + "].pdf";
 
             //一併發送給主要工程師及支援工程師
             List<string> ccs = new List<string>();
