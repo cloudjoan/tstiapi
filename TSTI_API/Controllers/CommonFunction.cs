@@ -2042,11 +2042,11 @@ namespace TSTI_API.Controllers
 
             if (tCompCde == "Comp-1")
             {
-                tPLANT = "12G9";
+                tPLANT = "12G1";
             }
             else if (tCompCde == "Comp-2")
             {
-                tPLANT = "16G9";
+                tPLANT = "16G1";
             }
 
             if (keyword != "")
@@ -4129,22 +4129,28 @@ namespace TSTI_API.Controllers
         /// </summary>
         /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
         /// <param name="SRID">服務ID</param>
-        /// <param name="CusName">客戶名稱</param>        
+        /// <param name="CusName">客戶名稱</param>  
+        /// <param name="SRPathWay">報修管道</param>
         /// <returns></returns>
-        public string findGenerallySRMailSubject_ToCustomer(SRCondition cCondition, string SRID, string CusName)
+        public string findGenerallySRMailSubject_ToCustomer(SRCondition cCondition, string SRID, string CusName, string SRPathWay)
         {
             string reValue = string.Empty;
+
+            if (SRPathWay != "")
+            {
+                SRPathWay = "[" + SRPathWay + "] ";
+            }
 
             switch (cCondition)
             {
                 case SRCondition.ADD:
                     //大同世界科技[<服務ID>] ，報修通知                 
-                    reValue = "大同世界科技[" + SRID + "]，報修通知";
+                    reValue = SRPathWay + "大同世界科技[" + SRID + "]，報修通知";
                     break;               
 
                 case SRCondition.DONE:
                     //大同世界科技[<客戶名稱>]您的服務[<服務ID>]已完成
-                    reValue = "大同世界科技[" + CusName + "] 您的服務[" + SRID + "]已完成";
+                    reValue = SRPathWay + "大同世界科技[" + CusName + "] 您的服務[" + SRID + "]已完修";
                     break;
             }
 
@@ -4918,7 +4924,8 @@ namespace TSTI_API.Controllers
 
             string tStatus = string.Empty;          //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
             string tContractID = string.Empty;      //合約文件編號
-            string tSecFix = string.Empty;          //是否為二修            
+            string tSecFix = string.Empty;          //是否為二修
+            string EndString = string.Empty;       
             string tSRRepair_Table = string.Empty;
             string tSRContact_Table = string.Empty;
             string tSRSeiral_Table = string.Empty;
@@ -5113,6 +5120,11 @@ namespace TSTI_API.Controllers
                     tSecFix = "是否為二修：【" + SRMain.SecFix + "】</br>";
                 }
 
+                if (cCondition != SRCondition.DONE && cCondition != SRCondition.INSTALLDONE && cCondition != SRCondition.MAINTAINDONE && cCondition != SRCondition.CANCEL)
+                {
+                    EndString = "<p>請儘速至One Sevice 系統處理，謝謝！</p><p><span><a href=" + tHypeLink + "><span>查看待辦清單</span></a></span></p>";
+                }
+
                 #region 取得【共用】案件客戶報修窗口資訊Html Table
                 tSRRepair_Table = findGenerallySRRepair_Table(SRRepair_List, SRMain.CusName);
                 #endregion
@@ -5165,7 +5177,7 @@ namespace TSTI_API.Controllers
                 tMailBody = tMailBody.Replace("<SRSeiral_List>", tSRSeiral_Table).Replace("<SRParts_List>", tSRParts_Table);
                 tMailBody = tMailBody.Replace("<SRMaterial_List>", tSRMaterial_Table).Replace("<SRFeedBack_List>", tSRFeedBack_Table);
                 tMailBody = tMailBody.Replace("<SRRecord_List>", tSRRecord_Talbe);
-                tMailBody = tMailBody.Replace("【<tHypeLink>】", tHypeLink);
+                tMailBody = tMailBody.Replace("【<EndString>】", EndString);
                 #endregion               
 
                 //呼叫寄送Mail
@@ -5315,7 +5327,7 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 郵件主旨
-                string tMailSubject = findGenerallySRMailSubject_ToCustomer(cCondition, cSRID, SRMain.CusName);
+                string tMailSubject = findGenerallySRMailSubject_ToCustomer(cCondition, cSRID, SRMain.CusName, SRMain.SRPathWay);
 
                 tMailSubject = strTest + tMailSubject;
                 #endregion
