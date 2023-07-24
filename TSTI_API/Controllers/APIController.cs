@@ -11327,6 +11327,8 @@ namespace TSTI_API.Controllers
         public string TeamNAME { get; set; }
         /// <summary>服務團隊主管</summary>
         public string TeamMGR { get; set; }
+        /// <summary>派單人員</summary>
+        public string CreateUser { get; set; }
         /// <summary>主要工程師</summary>
         public string MainENG { get; set; }
         /// <summary>協助工程師</summary>
@@ -11370,6 +11372,8 @@ namespace TSTI_API.Controllers
         /// <summary>報修人Email</summary>
         public string RepairEmail { get; set; }
 
+        /// <summary>派單人員</summary>
+        public string CreateUserEmail { get; set; }
         /// <summary>服務團隊主管Email</summary>
         public string TeamMGREmail { get; set; }
         /// <summary>主要工程師Email</summary>

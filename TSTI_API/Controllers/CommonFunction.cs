@@ -2158,6 +2158,30 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得ERPID(傳入英文姓名)
+        /// <summary>
+        /// 取得ERPID(傳入英文姓名)
+        /// </summary>
+        /// <param name="keyword">英文姓名</param>        
+        /// <returns></returns>
+        public string findEmployeeERPIDByEName(string keyword)
+        {
+            string reValue = string.Empty;
+
+            if (keyword != "")
+            {
+                var bean = dbEIP.Person.FirstOrDefault(x => (x.Leave_Date == null && x.Leave_Reason == null) && x.Name == keyword.Trim());
+
+                if (bean != null)
+                {
+                    reValue = bean.ERP_ID.Trim();
+                }
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得人員中文+英文姓名(傳入ERPIID)
         /// <summary>
         /// 取得人員中文+英文姓名(傳入ERPIID)
@@ -4690,6 +4714,8 @@ namespace TSTI_API.Controllers
 
             string cCompanyName = string.Empty;         //公司名稱
             string cSRCase = string.Empty;              //服務案件種類            
+            string cCreateUser = string.Empty;          //派單人員
+            string cCreateUserEmail = string.Empty;     //派單人員Email
             string cTeamName = string.Empty;            //服務團隊
             string cTeamMGR = string.Empty;             //服務團隊主管
             string cTeamMGREmail = string.Empty;        //服務團隊主管Email
@@ -4727,6 +4753,7 @@ namespace TSTI_API.Controllers
             try
             {   
                 List<SRTEAMORGINFO> SRTeam_List = new List<SRTEAMORGINFO>();
+                List<SREMPINFO> SRCreateUser_List = new List<SREMPINFO>();
                 List<SREMPINFO> SRMainENG_List = new List<SREMPINFO>();
                 List<SREMPINFO> SRAssENG_List = new List<SREMPINFO>();
                 List<SREMPINFO> SRTechMGR_List = new List<SREMPINFO>();
@@ -4751,6 +4778,20 @@ namespace TSTI_API.Controllers
                 {
                     #region -----↓↓↓↓↓主檔 ↓↓↓↓↓-----
                     SRIDMAININFO SRMain = new SRIDMAININFO();
+
+                    #region 派單人員相關
+                    string[] AryUser = cLoginName.Split(' ');
+                    string cCreateUserERPID = string.Empty;
+
+                    if (AryUser.Length == 2)
+                    {
+                        cCreateUserERPID = findEmployeeERPIDByEName(AryUser[1]);
+                        
+                        SRCreateUser_List = findSREMPINFO(cCreateUserERPID);
+                        cCreateUser = cLoginName;
+                        cCreateUserEmail = findSREMPEmail(SRCreateUser_List);
+                    }
+                    #endregion
 
                     #region 服務團隊相關
                     cCompanyName = findCompanyNameByTeamID(beanM.cTeamID);
@@ -4828,6 +4869,7 @@ namespace TSTI_API.Controllers
                     SRMain.StatusDesc = cStatusDesc;
                     SRMain.SRCase = cSRCase;
                     SRMain.CompanyName = cCompanyName;
+                    SRMain.CreateUser = cCreateUser;
                     SRMain.TeamNAME = cTeamName;
                     SRMain.TeamMGR = cTeamMGR;
                     SRMain.MainENG = cMainENG;
@@ -4853,6 +4895,7 @@ namespace TSTI_API.Controllers
                     SRMain.RepairAddress = cRepairAddress;
                     SRMain.RepairEmail = cRepairEmail;
 
+                    SRMain.CreateUserEmail = cCreateUserEmail;
                     SRMain.TeamMGREmail = cTeamMGREmail;
                     SRMain.MainENGEmail = cMainENGEmail;
                     SRMain.AssENGEmail = cAssENGEmail;
@@ -5046,6 +5089,11 @@ namespace TSTI_API.Controllers
                     }
                 }
 
+                if (SRMain.CreateUserEmail != "") //派單人員Email
+                {
+                    tMailCcTemp += SRMain.CreateUserEmail;
+                }
+
                 if (tMailCcTemp != "")
                 {
                     foreach (string tValue in tMailCcTemp.TrimEnd(';').Split(';'))
@@ -5063,7 +5111,7 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 取得密件副本
-                tMailBCcTemp = "Elvis.Chang@etatung.com"; //測試用，等都正常了就註解掉
+                tMailBCcTemp = "Jordan.Chang@etatung.com;Elvis.Chang@etatung.com"; //測試用，等都正常了就註解掉
 
                 if (tMailBCcTemp != "")
                 {
@@ -5321,6 +5369,11 @@ namespace TSTI_API.Controllers
                     tMailCcTemp += SRMain.MainENGEmail;
                 }
 
+                if (SRMain.CreateUserEmail != "") //派單人員Email
+                {
+                    tMailCcTemp += SRMain.CreateUserEmail;
+                }
+
                 if (tMailCcTemp != "")
                 {
                     foreach (string tValue in tMailCcTemp.TrimEnd(';').Split(';'))
@@ -5338,7 +5391,7 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 取得密件副本
-                tMailBCcTemp = "Elvis.Chang@etatung.com"; //測試用，等都正常了就註解掉
+                tMailBCcTemp = "Jordan.Chang@etatung.com;Elvis.Chang@etatung.com"; //測試用，等都正常了就註解掉
 
                 if (tMailBCcTemp != "")
                 {
@@ -5968,7 +6021,7 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 取得密件副本
-                tMailBCcTemp = "Elvis.Chang@etatung.com"; //測試用，等都正常了就註解掉
+                tMailBCcTemp = "Jordan.Chang@etatung.com;Elvis.Chang@etatung.com"; //測試用，等都正常了就註解掉
 
                 if (tMailBCcTemp != "")
                 {
