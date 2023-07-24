@@ -41,30 +41,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="TB_ONE_SRDetail_Warranty">
-      <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_Warranty">
-        <MappingFragment StoreEntitySet="TB_ONE_SRDetail_Warranty">
-          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="cUsed" ColumnName="cUsed" />
-          <ScalarProperty Name="cSubContractID" ColumnName="cSubContractID" />
-          <ScalarProperty Name="cAdvice" ColumnName="cAdvice" />
-          <ScalarProperty Name="cBPMFormNo" ColumnName="cBPMFormNo" />
-          <ScalarProperty Name="cContractID" ColumnName="cContractID" />
-          <ScalarProperty Name="cSLASRV" ColumnName="cSLASRV" />
-          <ScalarProperty Name="cSLARESP" ColumnName="cSLARESP" />
-          <ScalarProperty Name="cWTYEDATE" ColumnName="cWTYEDATE" />
-          <ScalarProperty Name="cWTYSDATE" ColumnName="cWTYSDATE" />
-          <ScalarProperty Name="cWTYName" ColumnName="cWTYName" />
-          <ScalarProperty Name="cWTYID" ColumnName="cWTYID" />
-          <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
-          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
-          <ScalarProperty Name="cID" ColumnName="cID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="TB_ONE_LOG">
       <EntityTypeMapping TypeName="Model.TB_ONE_LOG">
         <MappingFragment StoreEntitySet="TB_ONE_LOG">
@@ -289,6 +265,8 @@
     <EntitySetMapping Name="TB_ONE_SRSatisfy_Survey">
       <EntityTypeMapping TypeName="Model.TB_ONE_SRSatisfy_Survey">
         <MappingFragment StoreEntitySet="TB_ONE_SRSatisfy_Survey">
+          <ScalarProperty Name="cIP" ColumnName="cIP" />
+          <ScalarProperty Name="cSource" ColumnName="cSource" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="cOpinion" ColumnName="cOpinion" />
           <ScalarProperty Name="cQuestion2" ColumnName="cQuestion2" />
@@ -504,6 +482,30 @@
           <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
           <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
           <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_SRDetail_Warranty">
+      <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_Warranty">
+        <MappingFragment StoreEntitySet="TB_ONE_SRDetail_Warranty">
+          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="cUsed" ColumnName="cUsed" />
+          <ScalarProperty Name="cSubContractID" ColumnName="cSubContractID" />
+          <ScalarProperty Name="cAdvice" ColumnName="cAdvice" />
+          <ScalarProperty Name="cBPMFormNo" ColumnName="cBPMFormNo" />
+          <ScalarProperty Name="cContractID" ColumnName="cContractID" />
+          <ScalarProperty Name="cSLASRV" ColumnName="cSLASRV" />
+          <ScalarProperty Name="cSLARESP" ColumnName="cSLARESP" />
+          <ScalarProperty Name="cWTYEDATE" ColumnName="cWTYEDATE" />
+          <ScalarProperty Name="cWTYSDATE" ColumnName="cWTYSDATE" />
+          <ScalarProperty Name="cWTYName" ColumnName="cWTYName" />
+          <ScalarProperty Name="cWTYID" ColumnName="cWTYID" />
+          <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
+          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
