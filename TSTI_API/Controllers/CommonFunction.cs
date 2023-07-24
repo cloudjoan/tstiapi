@@ -409,10 +409,21 @@ namespace TSTI_API.Controllers
         /// <returns></returns>
         public List<PCustomerContact> findCONTACTINFO(string CustomerID, string CONTACTNAME, string CONTACTTEL, string CONTACTMOBILE, string CONTACTEMAIL)
         {
+            #region 註解
+            //var qPjRec = dbProxy.CUSTOMER_Contact.OrderByDescending(x => x.ModifiedDate).
+            //                                   Where(x => (x.Disabled == null || x.Disabled != 1) &&
+            //                                              x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&
+            //                                              (x.ContactPhone != "" || (x.ContactMobile != "" && x.ContactMobile != null)) &&
+            //                                              (string.IsNullOrEmpty(CustomerID) ? true : (x.KNA1_KUNNR.Contains(CustomerID) || x.KNA1_NAME1.Contains(CustomerID))) &&
+            //                                              (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
+            //                                              (string.IsNullOrEmpty(CONTACTTEL) ? true : x.ContactPhone.Contains(CONTACTTEL)) &&
+            //                                              (string.IsNullOrEmpty(CONTACTMOBILE) ? true : x.ContactMobile.Contains(CONTACTMOBILE)) &&
+            //                                              (string.IsNullOrEmpty(CONTACTEMAIL) ? true : x.ContactEmail.Contains(CONTACTEMAIL))).ToList();
+            #endregion
+
             var qPjRec = dbProxy.CUSTOMER_Contact.OrderByDescending(x => x.ModifiedDate).
                                                Where(x => (x.Disabled == null || x.Disabled != 1) &&
-                                                          x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&
-                                                          (x.ContactPhone != "" || (x.ContactMobile != "" && x.ContactMobile != null)) &&
+                                                          x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&                                                          
                                                           (string.IsNullOrEmpty(CustomerID) ? true : (x.KNA1_KUNNR.Contains(CustomerID) || x.KNA1_NAME1.Contains(CustomerID))) &&
                                                           (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
                                                           (string.IsNullOrEmpty(CONTACTTEL) ? true : x.ContactPhone.Contains(CONTACTTEL)) &&
@@ -431,7 +442,7 @@ namespace TSTI_API.Controllers
                 {
                     tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + prBean.ContactName.Trim().Replace(" ", "");
 
-                    if (!tTempList.Contains(tTempValue)) //判斷客戶ID、公司別、聯絡人姓名、聯絡人門市不重覆才要顯示
+                    if (!tTempList.Contains(tTempValue)) //判斷客戶ID、聯絡人姓名不重覆才要顯示
                     {
                         tTempList.Add(tTempValue);
 
@@ -4788,6 +4799,10 @@ namespace TSTI_API.Controllers
                         cCreateUser = cLoginName;
                         cCreateUserEmail = findSREMPEmail(SRCreateUser_List);
                     }
+                    else
+                    {
+                        cCreateUser = cLoginName;
+                    }
                     #endregion
 
                     #region 服務團隊相關
@@ -5156,6 +5171,7 @@ namespace TSTI_API.Controllers
                 //協助工程師:	ASSEngineer
                 //技術主管:	TechMGR
                 //狀態:	處理中
+                //派單人員： 張豐穎 Elvis.Chang
                 //派單時間:	2016/1/5 13:36
                 //合約文件編號:	2540/7/23 00:00
                 //維護服務種類:	保固內
@@ -5253,7 +5269,7 @@ namespace TSTI_API.Controllers
 
                 tMailBody = tMailBody.Replace("【<SRID>】", cSRID).Replace("【<SRCase>】", SRMain.SRCase).Replace("【<TeamNAME>】", SRMain.TeamNAME);
                 tMailBody = tMailBody.Replace("【<TeamMGR>】", SRMain.TeamMGR).Replace("【<MainENG>】", SRMain.MainENG).Replace("【<AssENG>】", SRMain.AssENG);                
-                tMailBody = tMailBody.Replace("【<TechMGR>】", SRMain.TechMGR).Replace("【<StatusDesc>】", SRMain.StatusDesc).Replace("【<CreatedDate>】", SRMain.CreatedDate);
+                tMailBody = tMailBody.Replace("【<TechMGR>】", SRMain.TechMGR).Replace("【<StatusDesc>】", SRMain.StatusDesc).Replace("【<CreatedUser>】", SRMain.CreateUser).Replace("【<CreatedDate>】", SRMain.CreatedDate);
                 tMailBody = tMailBody.Replace("【<SalesNo>】", SRMain.SalesNo).Replace("【<ShipmentNo>】", SRMain.ShipmentNo).Replace("【<AttachementStockNoUrl>】", SRMain.CreatedDate);
 
                 tMailBody = tMailBody.Replace("<ContractID>", tContractID).Replace("【<MAServiceType>】", SRMain.MAServiceType).Replace("<SecFix>", tSecFix);

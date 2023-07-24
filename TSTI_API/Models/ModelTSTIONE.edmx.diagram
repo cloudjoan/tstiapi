@@ -7,7 +7,6 @@
       <Diagram DiagramId="21cf673a87bb4d39960c67fa4920e857" Name="Diagram1">
         <EntityTypeShape EntityType="Model.TB_ONE_SRDetail_Contact" Width="2.5" PointX="0.875" PointY="1" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRDetail_Record" Width="2.5" PointX="0.875" PointY="2.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="Model.TB_ONE_SRDetail_Warranty" Width="2.5" PointX="0.875" PointY="2" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_LOG" Width="2.25" PointX="3.75" PointY="0.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRCustomerEmailMapping" Width="2.25" PointX="3.75" PointY="2.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRIDFormat" Width="2.25" PointX="3.75" PointY="1" IsExpanded="false" />
@@ -30,6 +29,7 @@
         <EntityTypeShape EntityType="Model.TB_ONE_SRBatchInstallRecord" Width="2.75" PointX="3.75" PointY="5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRBatchInstallRecord_Detail" Width="2.75" PointX="3.75" PointY="5.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRMain" Width="2.5" PointX="0.875" PointY="0.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="Model.TB_ONE_SRDetail_Warranty" Width="2.5" PointX="0.875" PointY="2" IsExpanded="false" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

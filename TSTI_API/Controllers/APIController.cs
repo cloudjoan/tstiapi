@@ -15,10 +15,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
+using System.Text;
 using System.Data;
 using SAP.Middleware.Connector;
 using System.Web.Mvc;
 using TSTI_API.Models;
+using System.Data.Entity.Validation;
 
 namespace TSTI_API.Controllers
 {
@@ -671,17 +673,26 @@ namespace TSTI_API.Controllers
                         #endregion
                     }
                 }
-            }
-            catch (Exception ex)
+            }           
+            catch (DbEntityValidationException ex)
             {
-                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                StringBuilder sb = new StringBuilder();
+                foreach (DbEntityValidationResult e in ex.EntityValidationErrors)
+                {
+                    foreach (DbValidationError ve in e.ValidationErrors)
+                    {
+                        sb.AppendLine($"欄位 {ve.PropertyName} 發生錯誤: {ve.ErrorMessage}");
+                    }
+                }
+
+                pMsg = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + sb.ToString() + Environment.NewLine;
                 pMsg += " 失敗行數：" + ex.ToString();
 
                 CMF.writeToLog(pSRID, "SaveGenerallySR_API", pMsg, pLoginName);
 
                 SROUT.EV_SRID = pSRID;
                 SROUT.EV_MSGT = "E";
-                SROUT.EV_MSG = ex.Message;
+                SROUT.EV_MSG = pMsg;
             }
 
             return SROUT;
@@ -1301,16 +1312,25 @@ namespace TSTI_API.Controllers
                     }
                 }
             }
-            catch (Exception ex)
+            catch (DbEntityValidationException ex)
             {
-                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                StringBuilder sb = new StringBuilder();
+                foreach (DbEntityValidationResult e in ex.EntityValidationErrors)
+                {
+                    foreach (DbValidationError ve in e.ValidationErrors)
+                    {
+                        sb.AppendLine($"欄位 {ve.PropertyName} 發生錯誤: {ve.ErrorMessage}");
+                    }
+                }
+
+                pMsg = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + sb.ToString() + Environment.NewLine;
                 pMsg += " 失敗行數：" + ex.ToString();
 
-                CMF.writeToLog(pSRID, "SaveGenerallySR_API", pMsg, pLoginName);
+                CMF.writeToLog(pSRID, "SaveInstallSR_API", pMsg, pLoginName);
 
                 SROUT.EV_SRID = pSRID;
                 SROUT.EV_MSGT = "E";
-                SROUT.EV_MSG = ex.Message;
+                SROUT.EV_MSG = pMsg;
             }
 
             return SROUT;
@@ -1664,16 +1684,25 @@ namespace TSTI_API.Controllers
                     }
                 }
             }
-            catch (Exception ex)
+            catch (DbEntityValidationException ex)
             {
-                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                StringBuilder sb = new StringBuilder();
+                foreach (DbEntityValidationResult e in ex.EntityValidationErrors)
+                {
+                    foreach (DbValidationError ve in e.ValidationErrors)
+                    {
+                        sb.AppendLine($"欄位 {ve.PropertyName} 發生錯誤: {ve.ErrorMessage}");
+                    }
+                }
+
+                pMsg = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + sb.ToString() + Environment.NewLine;
                 pMsg += " 失敗行數：" + ex.ToString();
 
                 CMF.writeToLog(pSRID, "SaveMaintainSR_API", pMsg, pLoginName);
 
                 SROUT.EV_SRID = pSRID;
                 SROUT.EV_MSGT = "E";
-                SROUT.EV_MSG = ex.Message;
+                SROUT.EV_MSG = pMsg;
             }
 
             return SROUT;
@@ -2704,9 +2733,16 @@ namespace TSTI_API.Controllers
 
             try
             {
+                #region 註解
+                //var bean = dbProxy.CUSTOMER_Contact.FirstOrDefault(x => (x.Disabled == null || x.Disabled != 1) &&
+                //                                                     x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&
+                //                                                    (x.ContactPhone != "" || (x.ContactMobile != "" && x.ContactMobile != null)) &&
+                //                                                    x.BpmNo == tBpmNo && x.KNB1_BUKRS == cBUKRS &&
+                //                                                    x.KNA1_KUNNR == beanIN.IV_CUSTOMEID.Trim() && x.ContactName == beanIN.IV_CONTACTNAME.Trim());
+                #endregion
+
                 var bean = dbProxy.CUSTOMER_Contact.FirstOrDefault(x => (x.Disabled == null || x.Disabled != 1) &&
-                                                                     x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&
-                                                                    (x.ContactPhone != "" || (x.ContactMobile != "" && x.ContactMobile != null)) &&
+                                                                     x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&                                                                    
                                                                     x.BpmNo == tBpmNo && x.KNB1_BUKRS == cBUKRS &&
                                                                     x.KNA1_KUNNR == beanIN.IV_CUSTOMEID.Trim() && x.ContactName == beanIN.IV_CONTACTNAME.Trim());
 

@@ -321,7 +321,7 @@
     <Property Name="cContractID" Type="nvarchar" MaxLength="10" />
     <Property Name="cBPMFormNo" Type="varchar" MaxLength="50" />
     <Property Name="cAdvice" Type="nvarchar" MaxLength="2000" />
-    <Property Name="cSubContractID" Type="nvarchar" MaxLength="50" />
+    <Property Name="cSubContractID" Type="nvarchar" MaxLength="255" />
     <Property Name="cUsed" Type="varchar" MaxLength="1" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
@@ -450,6 +450,8 @@
     <Property Name="cQuestion1" Type="int" />
     <Property Name="cQuestion2" Type="int" />
     <Property Name="cOpinion" Type="nvarchar(max)" />
+    <Property Name="cSource" Type="varchar" MaxLength="10" />
+    <Property Name="cIP" Type="varchar" MaxLength="100" />
     <Property Name="CreatedDate" Type="datetime" />
   </EntityType>
   <EntityType Name="TB_ONE_SRSQPerson">

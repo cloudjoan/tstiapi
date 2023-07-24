@@ -20,5 +20,7 @@ namespace TSTI_API.Models
         public Nullable<int> cQuestion2 { get; set; }
         public string cOpinion { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
+        public string cSource { get; set; }
+        public string cIP { get; set; }
     }
 }
