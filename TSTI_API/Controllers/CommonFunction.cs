@@ -422,23 +422,20 @@ namespace TSTI_API.Controllers
             List<string> tTempList = new List<string>();
 
             string tTempValue = string.Empty;
-            string ContactMobile = string.Empty;
-            string ContactStore = string.Empty;
-            string ContactStoreName = string.Empty;
+            string ContactMobile = string.Empty;            
 
             List<PCustomerContact> liPCContact = new List<PCustomerContact>();
             if (qPjRec != null && qPjRec.Count() > 0)
             {
                 foreach (var prBean in qPjRec)
                 {
-                    tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + prBean.KNB1_BUKRS.Trim().Replace(" ", "") + "|" + prBean.ContactName.Trim().Replace(" ", "") + "|" + prBean.ContactStore.ToString();
+                    tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + prBean.ContactName.Trim().Replace(" ", "");
 
                     if (!tTempList.Contains(tTempValue)) //判斷客戶ID、公司別、聯絡人姓名、聯絡人門市不重覆才要顯示
                     {
                         tTempList.Add(tTempValue);
 
-                        ContactMobile = string.IsNullOrEmpty(prBean.ContactMobile) ? "" : prBean.ContactMobile.Trim().Replace(" ", "");
-                        ContactStore = string.IsNullOrEmpty(prBean.ContactStore.ToString()) ? "" : prBean.ContactStore.ToString();
+                        ContactMobile = string.IsNullOrEmpty(prBean.ContactMobile) ? "" : prBean.ContactMobile.Trim().Replace(" ", "");                        
 
                         PCustomerContact prDocBean = new PCustomerContact();
 
@@ -452,8 +449,8 @@ namespace TSTI_API.Controllers
                         prDocBean.Email = prBean.ContactEmail.Trim().Replace(" ", "");
                         prDocBean.Phone = prBean.ContactPhone.Trim().Replace(" ", "");
                         prDocBean.Mobile = ContactMobile;
-                        prDocBean.Store = ContactStore;
-                        prDocBean.StoreName = ContactStoreName;
+                        prDocBean.Store = "";
+                        prDocBean.StoreName = "";
                         prDocBean.BPMNo = prBean.BpmNo.Trim().Replace(" ", "");
 
                         liPCContact.Add(prDocBean);
