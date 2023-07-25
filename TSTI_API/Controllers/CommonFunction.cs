@@ -2531,50 +2531,53 @@ namespace TSTI_API.Controllers
 
                     if (IV_SERIAL != null)
                     {
-                        #region 取得進出貨資料檔
-                        var beansW = dbProxy.STOCKWTY.Where(x => x.IV_SERIAL == IV_SERIAL);
-
-                        foreach(var bean in beansW)
+                        if (IV_SERIAL.ToUpper() != "NA" && IV_SERIAL.ToUpper() != "N/A")
                         {
-                            cWTYID = bean.IV_WTYID;                                                 //保固
-                            cWTYName = bean.IV_WTYID;                                               //保固說明
-                            cWTYSDATE = Convert.ToDateTime(bean.IV_SDATE).ToString("yyyy-MM-dd");       //保固開始日期
-                            cWTYEDATE = Convert.ToDateTime(bean.IV_EDATE).ToString("yyyy-MM-dd");       //保固結束日期
-                            cSLARESP = bean.IV_SLARESP;                                             //回應條件
-                            cSLASRV = bean.IV_SLASRV;                                               //服務條件
-                            cContractID = "";                                                      //合約編號
-                            tBPMNO = string.IsNullOrEmpty(bean.BPM_NO) ? "": bean.BPM_NO;              //BPM表單編號
-                            tAdvice = string.IsNullOrEmpty(bean.ADVICE) ? "": bean.ADVICE;             //客服主管建議
+                            #region 取得進出貨資料檔
+                            var beansW = dbProxy.STOCKWTY.Where(x => x.IV_SERIAL == IV_SERIAL);
 
-                            var QueryInfo = setSRWarranty(IV_SERIAL, cWTYID, cWTYName, cWTYSDATE, cWTYEDATE, cSLARESP, cSLASRV, cContractID, tBPMNO,
-                                                          tAdvice, tBGColor, tAPIURLName, tBPMURLName, tONEURLName);
-                            QueryToList.Add(QueryInfo);
+                            foreach (var bean in beansW)
+                            {
+                                cWTYID = bean.IV_WTYID;                                                 //保固
+                                cWTYName = bean.IV_WTYID;                                               //保固說明
+                                cWTYSDATE = Convert.ToDateTime(bean.IV_SDATE).ToString("yyyy-MM-dd");       //保固開始日期
+                                cWTYEDATE = Convert.ToDateTime(bean.IV_EDATE).ToString("yyyy-MM-dd");       //保固結束日期
+                                cSLARESP = bean.IV_SLARESP;                                             //回應條件
+                                cSLASRV = bean.IV_SLASRV;                                               //服務條件
+                                cContractID = "";                                                      //合約編號
+                                tBPMNO = string.IsNullOrEmpty(bean.BPM_NO) ? "" : bean.BPM_NO;              //BPM表單編號
+                                tAdvice = string.IsNullOrEmpty(bean.ADVICE) ? "" : bean.ADVICE;             //客服主管建議
+
+                                var QueryInfo = setSRWarranty(IV_SERIAL, cWTYID, cWTYName, cWTYSDATE, cWTYEDATE, cSLARESP, cSLASRV, cContractID, tBPMNO,
+                                                              tAdvice, tBGColor, tAPIURLName, tBPMURLName, tONEURLName);
+                                QueryToList.Add(QueryInfo);
+                            }
+                            #endregion
+
+                            #region 取得合約標的檔
+                            var beansObj = dbOne.TB_ONE_ContractDetail_OBJ.Where(x => x.Disabled == 0 && x.cSerialID == IV_SERIAL);
+
+                            foreach (var bean in beansObj)
+                            {
+                                string[] AryValue = findContracSLADate(bean.cContractID);
+
+                                tBPMNO = "";    //BPM表單編號
+
+                                cWTYID = "";                   //保固
+                                cWTYName = "";                 //保固說明
+                                cWTYSDATE = AryValue[0];       //保固開始日期
+                                cWTYEDATE = AryValue[1];       //保固結束日期
+                                cSLARESP = bean.cSLARESP;       //回應條件
+                                cSLASRV = bean.cSLASRV;         //服務條件
+                                cContractID = bean.cContractID; //合約編號                            
+                                tAdvice = "";                  //客服主管建議
+
+                                var QueryInfo = setSRWarranty(IV_SERIAL, cWTYID, cWTYName, cWTYSDATE, cWTYEDATE, cSLARESP, cSLASRV, cContractID, tBPMNO,
+                                                              tAdvice, tBGColor, tAPIURLName, tBPMURLName, tONEURLName);
+                                QueryToList.Add(QueryInfo);
+                            }
+                            #endregion
                         }
-                        #endregion
-
-                        #region 取得合約標的檔
-                        var beansObj = dbOne.TB_ONE_ContractDetail_OBJ.Where(x => x.Disabled == 0 && x.cSerialID == IV_SERIAL);
-
-                        foreach (var bean in beansObj)
-                        {
-                            string[] AryValue = findContracSLADate(bean.cContractID);
-
-                            tBPMNO = "";    //BPM表單編號
-
-                            cWTYID = "";                   //保固
-                            cWTYName = "";                 //保固說明
-                            cWTYSDATE = AryValue[0];       //保固開始日期
-                            cWTYEDATE = AryValue[1];       //保固結束日期
-                            cSLARESP = bean.cSLARESP;       //回應條件
-                            cSLASRV = bean.cSLASRV;         //服務條件
-                            cContractID = bean.cContractID; //合約編號                            
-                            tAdvice = "";                  //客服主管建議
-
-                            var QueryInfo = setSRWarranty(IV_SERIAL, cWTYID, cWTYName, cWTYSDATE, cWTYEDATE, cSLARESP, cSLASRV, cContractID, tBPMNO,
-                                                          tAdvice, tBGColor, tAPIURLName, tBPMURLName, tONEURLName);
-                            QueryToList.Add(QueryInfo);
-                        }
-                        #endregion                        
                     }                   
                 }
             }
@@ -5101,9 +5104,13 @@ namespace TSTI_API.Controllers
                     }
                 }
 
-                if (SRMain.CreateUserEmail != "") //派單人員Email
+                //若為(61.一般)才要取派單人員
+                if (cSRID.Substring(0, 2) == "61")
                 {
-                    tMailCcTemp += SRMain.CreateUserEmail;
+                    if (SRMain.CreateUserEmail != "") //派單人員Email
+                    {
+                        tMailCcTemp += SRMain.CreateUserEmail;
+                    }
                 }
 
                 if (tMailCcTemp != "")

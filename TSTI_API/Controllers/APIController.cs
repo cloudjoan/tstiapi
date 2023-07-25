@@ -435,6 +435,25 @@ namespace TSTI_API.Controllers
                             dbOne.TB_ONE_SRDetail_Contact.Add(beanD);
                         }
                     }
+                    else
+                    {
+                        #region 若沒有傳入就預設同報修人
+                        TB_ONE_SRDetail_Contact beanD = new TB_ONE_SRDetail_Contact();
+
+                        beanD.cSRID = pSRID;
+                        beanD.cContactName = IV_REPAIRNAME;
+                        beanD.cContactAddress = IV_REPAIRADDR;
+                        beanD.cContactPhone = IV_REPAIRTEL;
+                        beanD.cContactMobile = IV_REPAIRMOB;
+                        beanD.cContactEmail = IV_REPAIREMAIL;
+                        beanD.Disabled = 0;
+
+                        beanD.CreatedDate = DateTime.Now;
+                        beanD.CreatedUserName = pLoginName;
+
+                        dbOne.TB_ONE_SRDetail_Contact.Add(beanD);
+                        #endregion
+                    }
                     #endregion
 
                     #region 新增【產品序號資訊】明細
@@ -2026,9 +2045,36 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑服務案件(一般/裝機/定維)狀態更新 ↑↑↑↑↑-----       
+        #endregion -----↑↑↑↑↑服務案件(一般/裝機/定維)狀態更新 ↑↑↑↑↑-----   
+       
+        #region -----↓↓↓↓↓主要工程師/技術主管/協助工程師異動 ↓↓↓↓↓-----
 
-        #region -----↓↓↓↓↓技術主管/協助工程師異動 ↓↓↓↓↓-----
+        #region ONE SERVICE主要工程師異動接口
+        /// <summary>
+        /// ONE SERVICE主要工程師異動接口
+        /// </summary>
+        /// <param name="beanIN"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult API_SRMAINENGINEER_CHANGE(SRMain_SREMPCHANGE_INPUT beanIN)
+        {
+            #region Json範列格式
+            //{
+            //     "IV_LOGINEMPNO": "99120894",
+            //     "IV_TRANSEMPNO": "99120894",
+            //     "IV_SRID": "612212070001"            
+            //}
+            #endregion
+
+            SRMain_SREMPCHANGE_OUTPUT SROUT = new SRMain_SREMPCHANGE_OUTPUT();
+
+            beanIN.IV_TRANSTYPE = "MAIN";
+
+            SROUT = SREMPCHANGE_CHANGE(beanIN);
+
+            return Json(SROUT);
+        }
+        #endregion
 
         #region ONE SERVICE 技術主管異動接口
         /// <summary>
@@ -2043,7 +2089,7 @@ namespace TSTI_API.Controllers
             //{
             //     "IV_LOGINEMPNO": "99120894",
             //     "IV_TRANSEMPNO": "99120894;99120023",
-            //     "IV_SRID": "612211250004"            
+            //     "IV_SRID": "612304130001"            
             //}
             #endregion
 
@@ -2196,6 +2242,11 @@ namespace TSTI_API.Controllers
                         {
                             beanM.cTechManagerID = IV_TRANSEMPNO;
                         }
+                        else if (IV_TRANSTYPE == "MAIN")
+                        {
+                            beanM.cMainEngineerID = IV_TRANSEMPNO;
+                            beanM.cMainEngineerName = CMF.findEmployeeName(IV_TRANSEMPNO);
+                        }
                         else if (IV_TRANSTYPE == "ASS")
                         {
                             beanM.cAssEngineerID = IV_TRANSEMPNO;
@@ -2252,9 +2303,9 @@ namespace TSTI_API.Controllers
         {
             /// <summary>修改者員工編號ERPID</summary>
             public string IV_LOGINEMPNO { get; set; }
-            /// <summary>類型(TECH.技術主管 ASS.協助工程師)</summary>
+            /// <summary>類型(TECH.技術主管 MAIN.主要工程師 ASS.協助工程師)</summary>
             public string IV_TRANSTYPE { get; set; }
-            /// <summary>(技術主管/協助工程師)員工編號ERPID(若有多人以分號隔開)</summary>
+            /// <summary>(主要工程師/技術主管/協助工程師)員工編號ERPID(若有多人以分號隔開)</summary>
             public string IV_TRANSEMPNO { get; set; }
             /// <summary>服務案件ID</summary>
             public string IV_SRID { get; set; }
@@ -2274,7 +2325,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion -----↑↑↑↑↑技術主管/協助工程師 ↑↑↑↑↑-----    
+        #endregion -----↑↑↑↑↑主要工程師/技術主管/協助工程師 ↑↑↑↑↑-----    
 
         #region -----↓↓↓↓↓法人客戶資料 ↓↓↓↓↓-----
 
@@ -7558,9 +7609,256 @@ namespace TSTI_API.Controllers
             /// <summary>服務報告書PDF檔名</summary>
             public string EV_FILENAME { get; set; }
         }
-        #endregion        
+        #endregion
 
         #endregion -----↑↑↑↑↑客戶手寫簽名圖片上傳並產生服務報告書pdf接口 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓異動產品序號資訊相關接口 ↓↓↓↓↓-----        
+
+        #region 新增產品序號資訊相關接口
+        [HttpPost]
+        public ActionResult API_SRPRODUCTSERIALNFO_CHAGE(SRPRODUCTSERIALNFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{                
+            //    "IV_LOGINEMPNO": "99120894",
+            //    "IV_CID": "1185",
+            //    "IV_SRID" : "612212070001",
+            //    "IV_SERIAL" : "SGH33223R0",
+            //    "IV_MaterialID" : "G-M21161-001-3M",
+            //    "IV_MaterialName" : "HP LCD BEZEL 13 HD"
+            //}
+            #endregion
+
+            SRPRODUCTSERIALNFO_OUTPUT ListOUT = new SRPRODUCTSERIALNFO_OUTPUT();
+
+            ListOUT = SaveSRPRODUCTSERIALNFO(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 刪除產品序號資訊相關接口
+        [HttpPost]
+        public ActionResult API_SRPRODUCTSERIALNFO_DELETE(SRPRODUCTSERIALNFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNO": "99120894", 
+            //    "IV_SRID": "612212070001",
+            //    "IV_CID": "1185"            
+            //}
+            #endregion
+
+            SRPRODUCTSERIALNFO_OUTPUT ListOUT = new SRPRODUCTSERIALNFO_OUTPUT();
+
+            beanIN.IV_ISDELETE = "Y";
+
+            ListOUT = SaveSRPRODUCTSERIALNFO(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 儲存產品序號資訊相關
+        private SRPRODUCTSERIALNFO_OUTPUT SaveSRPRODUCTSERIALNFO(SRPRODUCTSERIALNFO_INPUT beanIN)
+        {
+            SRPRODUCTSERIALNFO_OUTPUT OUTBean = new SRPRODUCTSERIALNFO_OUTPUT();
+
+            int cID = 0;
+
+            string IV_LOGINEMPNO = string.Empty;
+            string IV_LOGINEMPName = string.Empty;
+            string IV_SRID = string.Empty;
+            string IV_SERIAL = string.Empty;
+            string IV_MaterialID = string.Empty;
+            string IV_MaterialName = string.Empty;
+            string IV_ISDELETE = string.Empty;
+            string cMaterialID = string.Empty;
+            string cMaterialName = string.Empty;
+            string cProductNumber = string.Empty;
+            string cInstallID = string.Empty;
+
+            try
+            {
+                cID = string.IsNullOrEmpty(beanIN.IV_CID) ? 0 : int.Parse(beanIN.IV_CID);
+                IV_SRID = string.IsNullOrEmpty(beanIN.IV_SRID) ? "" : beanIN.IV_SRID;
+                IV_SERIAL = string.IsNullOrEmpty(beanIN.IV_SERIAL) ? "" : beanIN.IV_SERIAL;
+                IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO;
+                IV_MaterialID = string.IsNullOrEmpty(beanIN.IV_MaterialID) ? "" : beanIN.IV_MaterialID;
+                IV_MaterialName = string.IsNullOrEmpty(beanIN.IV_MaterialName) ? "" : beanIN.IV_MaterialName;
+                IV_ISDELETE = string.IsNullOrEmpty(beanIN.IV_ISDELETE) ? "N" : beanIN.IV_ISDELETE;               
+
+                if (IV_MaterialName != "")
+                {
+                    cMaterialID = IV_MaterialID;
+                    cMaterialName = IV_MaterialName;
+                    cProductNumber = CMF.findMFRPNumber(IV_MaterialID);
+                    cInstallID = CMF.findInstallNumber(IV_SERIAL);
+                }
+                else
+                {
+                    var ProBean = CMF.findMaterialBySerial(IV_MaterialID);
+
+                    cMaterialID = string.IsNullOrEmpty(IV_MaterialID) ? ProBean.ProdID : IV_MaterialID;
+                    cMaterialName = ProBean.Product;
+                    cProductNumber = ProBean.MFRPN;
+                    cInstallID = ProBean.InstallNo;
+                }
+
+                #region 取得登入人員姓名
+                EmployeeBean EmpBean = new EmployeeBean();
+                EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+                IV_LOGINEMPName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+                #endregion
+
+                if (cID == 0)
+                {
+                    #region 新增
+                    TB_ONE_SRDetail_Product SFB = new TB_ONE_SRDetail_Product();
+
+                    SFB.cSRID = IV_SRID;
+                    SFB.cSerialID = IV_SERIAL;
+                    SFB.cMaterialID = cMaterialID;
+                    SFB.cMaterialName = cMaterialName;
+                    SFB.cProductNumber = cProductNumber;
+                    SFB.cInstallID = cInstallID;
+                    SFB.cNewSerialID = "";
+
+                    SFB.Disabled = 0;
+                    SFB.CreatedDate = DateTime.Now;
+                    SFB.CreatedUserName = IV_LOGINEMPName;
+
+                    dbOne.TB_ONE_SRDetail_Product.Add(SFB);
+                    #endregion
+                }                
+                else //刪除
+                {
+                    if (IV_ISDELETE == "Y")
+                    {
+                        #region 刪除
+                        var bean = dbOne.TB_ONE_SRDetail_Product.FirstOrDefault(x => x.cID == cID);
+
+                        if (bean != null)
+                        {
+                            bean.Disabled = 1;
+
+                            bean.ModifiedDate = DateTime.Now;
+                            bean.ModifiedUserName = IV_LOGINEMPName;
+                        }
+                        #endregion                       
+                    }
+                    else
+                    {
+                        #region 更新
+                        var SFB = dbOne.TB_ONE_SRDetail_Product.FirstOrDefault(x => x.cID == cID);
+
+                        if (SFB != null)
+                        {                            
+                            SFB.cSerialID = IV_SERIAL;
+                            SFB.cMaterialID = cMaterialID;
+                            SFB.cMaterialName = cMaterialName;
+                            SFB.cProductNumber = cProductNumber;
+                            SFB.cInstallID = cInstallID;
+
+                            SFB.Disabled = 0;
+                            SFB.ModifiedDate = DateTime.Now;
+                            SFB.ModifiedUserName = IV_LOGINEMPName;
+                        }
+                        #endregion
+                    }
+                }
+
+                var result = dbOne.SaveChanges();
+
+                if (result <= 0)
+                {
+                    if (cID == 0) //新增
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新增失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "刪除失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
+                    }
+
+                    CMF.writeToLog(IV_SRID, "SaveSRPRODUCTSERIALNFO_API", pMsg, IV_LOGINEMPName);
+
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = pMsg;
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    if (cID == 0) //新增
+                    {
+                        var bean = dbOne.TB_ONE_SRDetail_Product.OrderByDescending(x => x.cID).FirstOrDefault(x => x.cSRID == IV_SRID);
+
+                        if (bean != null)
+                        {
+                            OUTBean.EV_CID = bean.cID.ToString();
+                        }
+                    }
+                    else
+                    {
+                        OUTBean.EV_CID = cID.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog(IV_SRID, "SaveSRPRODUCTSERIALNFO_API", pMsg, IV_LOGINEMPName);
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+                OUTBean.EV_CID = "";
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 異動產品序號資訊相關INPUT資訊
+        /// <summary>異動產品序號資訊相關INPUT資訊</summary>
+        public struct SRPRODUCTSERIALNFO_INPUT
+        {
+            /// <summary>系統ID</summary>
+            public string IV_CID { get; set; }
+            /// <summary>服務案件ID</summary>
+            public string IV_SRID { get; set; }
+            /// <summary>序號ID</summary>
+            public string IV_SERIAL { get; set; }
+            /// <summary>登入者員工編號</summary>
+            public string IV_LOGINEMPNO { get; set; }
+            /// <summary>更換零件料號ID</summary>
+            public string IV_MaterialID { get; set; }
+            /// <summary>料號說明</summary>
+            public string IV_MaterialName { get; set; }
+            /// <summary>是否要刪除(Y.是 N.否)</summary>
+            public string IV_ISDELETE { get; set; }            
+        }
+        #endregion
+
+        #region 異動產品序號資訊相關OUTPUT資訊
+        /// <summary>異動產品序號資訊相關OUTPUT資訊</summary>
+        public struct SRPRODUCTSERIALNFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+            /// <summary>系統ID</summary>
+            public string EV_CID { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑異動產品序號資訊相關查詢接口 ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓異動零件更換資訊相關接口 ↓↓↓↓↓-----        
 
@@ -8085,7 +8383,7 @@ namespace TSTI_API.Controllers
 
         #region 新增序號回報資訊相關接口
         [HttpPost]
-        public ActionResult API_SRSERIALFEEDBACKINFOINFO_CREATE(SRSERIALFEEDBACKINFOINFO_INPUT beanIN)
+        public ActionResult API_SRSERIALFEEDBACKINFO_CREATE(SRSERIALFEEDBACKINFO_INPUT beanIN)
         {
             #region Json範列格式(傳入格式)
             //{                
@@ -8098,9 +8396,9 @@ namespace TSTI_API.Controllers
             //}
             #endregion
 
-            SRSERIALFEEDBACKINFOINFO_OUTPUT ListOUT = new SRSERIALFEEDBACKINFOINFO_OUTPUT();
+            SRSERIALFEEDBACKINFO_OUTPUT ListOUT = new SRSERIALFEEDBACKINFO_OUTPUT();
 
-            ListOUT = SaveSRSERIALFEEDBACKINFOINFO(beanIN);
+            ListOUT = SaveSRSERIALFEEDBACKINFO(beanIN);
 
             return Json(ListOUT);
         }
@@ -8108,7 +8406,7 @@ namespace TSTI_API.Controllers
 
         #region 刪除序號回報資訊相關接口
         [HttpPost]
-        public ActionResult API_SRSERIALFEEDBACKINFOINFO_DELETE(SRSERIALFEEDBACKINFOINFO_INPUT beanIN)
+        public ActionResult API_SRSERIALFEEDBACKINFO_DELETE(SRSERIALFEEDBACKINFO_INPUT beanIN)
         {
             #region Json範列格式(傳入格式)
             //{
@@ -8118,18 +8416,18 @@ namespace TSTI_API.Controllers
             //}
             #endregion
 
-            SRSERIALFEEDBACKINFOINFO_OUTPUT ListOUT = new SRSERIALFEEDBACKINFOINFO_OUTPUT();
+            SRSERIALFEEDBACKINFO_OUTPUT ListOUT = new SRSERIALFEEDBACKINFO_OUTPUT();
 
-            ListOUT = SaveSRSERIALFEEDBACKINFOINFO(beanIN);
+            ListOUT = SaveSRSERIALFEEDBACKINFO(beanIN);
 
             return Json(ListOUT);
         }
         #endregion
 
         #region 儲存序號回報資訊相關
-        private SRSERIALFEEDBACKINFOINFO_OUTPUT SaveSRSERIALFEEDBACKINFOINFO(SRSERIALFEEDBACKINFOINFO_INPUT beanIN)
+        private SRSERIALFEEDBACKINFO_OUTPUT SaveSRSERIALFEEDBACKINFO(SRSERIALFEEDBACKINFO_INPUT beanIN)
         {
-            SRSERIALFEEDBACKINFOINFO_OUTPUT OUTBean = new SRSERIALFEEDBACKINFOINFO_OUTPUT();
+            SRSERIALFEEDBACKINFO_OUTPUT OUTBean = new SRSERIALFEEDBACKINFO_OUTPUT();
 
             int cID = 0;
 
@@ -8239,7 +8537,7 @@ namespace TSTI_API.Controllers
                         pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "刪除失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
                     }
 
-                    CMF.writeToLog(IV_SRID, "SaveSRSERIALFEEDBACKINFOINFO_API", pMsg, IV_LOGINEMPName);
+                    CMF.writeToLog(IV_SRID, "SaveSRSERIALFEEDBACKINFO_API", pMsg, IV_LOGINEMPName);
 
                     OUTBean.EV_MSGT = "E";
                     OUTBean.EV_MSG = pMsg;
@@ -8269,7 +8567,7 @@ namespace TSTI_API.Controllers
                 pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
                 pMsg += " 失敗行數：" + ex.ToString();
 
-                CMF.writeToLog(IV_SRID, "SaveSRSERIALFEEDBACKINFOINFO_API", pMsg, IV_LOGINEMPName);
+                CMF.writeToLog(IV_SRID, "SaveSRSERIALFEEDBACKINFO_API", pMsg, IV_LOGINEMPName);
 
                 OUTBean.EV_MSGT = "E";
                 OUTBean.EV_MSG = ex.Message;
@@ -8282,7 +8580,7 @@ namespace TSTI_API.Controllers
 
         #region 異動序號回報資訊相關INPUT資訊
         /// <summary>異動序號回報資訊相關INPUT資訊</summary>
-        public struct SRSERIALFEEDBACKINFOINFO_INPUT
+        public struct SRSERIALFEEDBACKINFO_INPUT
         {
             /// <summary>系統ID</summary>
             public string IV_CID { get; set; }
@@ -8303,7 +8601,7 @@ namespace TSTI_API.Controllers
 
         #region 異動序號回報資訊相關OUTPUT資訊
         /// <summary>異動序號回報資訊相關OUTPUT資訊</summary>
-        public struct SRSERIALFEEDBACKINFOINFO_OUTPUT
+        public struct SRSERIALFEEDBACKINFO_OUTPUT
         {
             /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
             public string EV_MSGT { get; set; }
