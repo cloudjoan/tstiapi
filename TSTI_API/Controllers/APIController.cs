@@ -4562,7 +4562,10 @@ namespace TSTI_API.Controllers
                                 {
                                     if (tAry[10].IndexOf(tERPID) >= 0) //【為技術主管但非E0007(技術支援升級)】才跳過
                                     {
-                                        continue;
+                                        if (tAry[7] != tERPID)
+                                        {
+                                            continue;
+                                        }
                                     }
                                 }
                             }
