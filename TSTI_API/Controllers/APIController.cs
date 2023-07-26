@@ -333,6 +333,9 @@ namespace TSTI_API.Controllers
 
             if (pMsg != "")
             {
+                pMsg = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + pMsg;
+                CMF.writeToLog(pSRID, "SaveGenerallySR_API", pMsg, pLoginName);
+
                 SROUT.EV_SRID = "";
                 SROUT.EV_MSGT = "E";
                 SROUT.EV_MSG = pMsg;
@@ -1156,6 +1159,9 @@ namespace TSTI_API.Controllers
 
             if (pMsg != "")
             {
+                pMsg = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + pMsg;
+                CMF.writeToLog(pSRID, "SaveInstallSR_API", pMsg, pLoginName);
+
                 SROUT.EV_SRID = pSRID;
                 SROUT.EV_MSGT = "E";
                 SROUT.EV_MSG = pMsg;
@@ -1668,6 +1674,9 @@ namespace TSTI_API.Controllers
 
             if (pMsg != "")
             {
+                pMsg = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + pMsg;
+                CMF.writeToLog(pSRID, "SaveMaintainSR_API", pMsg, pLoginName);
+
                 SROUT.EV_SRID = pSRID;
                 SROUT.EV_MSGT = "E";
                 SROUT.EV_MSG = pMsg;
