@@ -1340,8 +1340,9 @@ namespace TSTI_API.Controllers
 
             foreach (var bean in beans)
             {
-                SRCONTACTINFO SRCon = new SRCONTACTINFO();               
+                SRCONTACTINFO SRCon = new SRCONTACTINFO();
 
+                SRCon.CID = bean.cID.ToString();
                 SRCon.SRID = bean.cSRID;
                 SRCon.CONTNAME = bean.cContactName;
                 SRCon.CONTADDR = bean.cContactAddress;
@@ -1372,6 +1373,7 @@ namespace TSTI_API.Controllers
             {
                 SRSERIALMATERIALINFO SRSerial = new SRSERIALMATERIALINFO();
 
+                SRSerial.CID = bean.cID.ToString();
                 SRSerial.SRID = bean.cSRID;
                 SRSerial.SERIALID = bean.cSerialID;
                 SRSerial.NEWSERIALID = bean.cNewSerialID;
@@ -1450,6 +1452,7 @@ namespace TSTI_API.Controllers
 
                 SRWTSLAINFO SRWTSAL = new SRWTSLAINFO();
 
+                SRWTSAL.CID = bean.cID.ToString();
                 SRWTSAL.SRID = bean.cSRID;
                 SRWTSAL.SERIALID = bean.cSerialID;
                 SRWTSAL.WTYID = bean.cWTYID;
@@ -4791,21 +4794,20 @@ namespace TSTI_API.Controllers
                     SRIDMAININFO SRMain = new SRIDMAININFO();
 
                     #region 派單人員相關
-                    string[] AryUser = cLoginName.Split(' ');
-                    string cCreateUserERPID = string.Empty;
+                    if (beanM.CreatedUserName != "")
+                    {
+                        string[] AryUser = beanM.CreatedUserName.Split(' ');
+                        string cCreateUserERPID = string.Empty;
 
-                    if (AryUser.Length == 2)
-                    {
-                        cCreateUserERPID = findEmployeeERPIDByEName(AryUser[1]);
-                        
-                        SRCreateUser_List = findSREMPINFO(cCreateUserERPID);
-                        cCreateUser = cLoginName;
-                        cCreateUserEmail = findSREMPEmail(SRCreateUser_List);
-                    }
-                    else
-                    {
-                        cCreateUser = cLoginName;
-                    }
+                        if (AryUser.Length == 2)
+                        {
+                            cCreateUserERPID = findEmployeeERPIDByEName(AryUser[1]);
+
+                            SRCreateUser_List = findSREMPINFO(cCreateUserERPID);
+                            cCreateUser = cLoginName;
+                            cCreateUserEmail = findSREMPEmail(SRCreateUser_List);
+                        }                       
+                    }                    
                     #endregion
 
                     #region 服務團隊相關
