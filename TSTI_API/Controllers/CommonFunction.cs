@@ -5381,21 +5381,6 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 取得副本
-                if (SRMain.TeamMGREmail != "") //服務團隊主管Email
-                {
-                    tMailCcTemp += SRMain.TeamMGREmail;
-                }
-
-                if (SRMain.MainENGEmail != "") //主要工程師Email
-                {
-                    tMailCcTemp += SRMain.MainENGEmail;
-                }
-
-                if (SRMain.CreateUserEmail != "") //派單人員Email
-                {
-                    tMailCcTemp += SRMain.CreateUserEmail;
-                }
-
                 if (tMailCcTemp != "")
                 {
                     foreach (string tValue in tMailCcTemp.TrimEnd(';').Split(';'))
@@ -5413,7 +5398,22 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 取得密件副本
-                tMailBCcTemp = "Jordan.Chang@etatung.com;Elvis.Chang@etatung.com"; //測試用，等都正常了就註解掉
+                tMailBCcTemp = "Jordan.Chang@etatung.com;Elvis.Chang@etatung.com;"; //測試用，等都正常了就註解掉
+
+                if (SRMain.TeamMGREmail != "") //服務團隊主管Email
+                {
+                    tMailBCcTemp += SRMain.TeamMGREmail;
+                }
+
+                if (SRMain.MainENGEmail != "") //主要工程師Email
+                {
+                    tMailBCcTemp += SRMain.MainENGEmail;
+                }
+
+                if (SRMain.CreateUserEmail != "") //派單人員Email
+                {
+                    tMailBCcTemp += SRMain.CreateUserEmail;
+                }
 
                 if (tMailBCcTemp != "")
                 {

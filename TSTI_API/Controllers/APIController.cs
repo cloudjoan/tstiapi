@@ -323,12 +323,7 @@ namespace TSTI_API.Controllers
             if (string.IsNullOrEmpty(IV_REPAIRNAME))
             {
                 pMsg += "【報修人姓名】不得為空！" + Environment.NewLine;
-            }
-
-            if (string.IsNullOrEmpty(IV_REPAIRADDR))
-            {
-                pMsg += "【報修人地址】不得為空！" + Environment.NewLine;
-            }
+            }           
             #endregion
 
             if (pMsg != "")
@@ -368,6 +363,30 @@ namespace TSTI_API.Controllers
                         {
                             IV_ASSIGN = "E0005";
                         }
+
+                        #region 判斷是否要自動帶入報修人資訊
+                        if (string.IsNullOrEmpty(IV_REPAIRADDR))
+                        {
+                            List<PCustomerContact> ConList = CMF.findCONTACTINFO(IV_CUSTOMER, IV_REPAIRNAME, "", "", "");
+
+                            if (ConList.Count > 0)
+                            {
+                                foreach (var beanCon in ConList)
+                                {
+                                    IV_REPAIRADDR = beanCon.City + beanCon.Address;
+                                    IV_REPAIRTEL = beanCon.Phone;
+                                    IV_REPAIRMOB = beanCon.Mobile;
+                                    IV_REPAIREMAIL = beanCon.Email;
+
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                IV_REPAIRADDR = IV_REPAIRNAME;
+                            }
+                        }                      
+                        #endregion
 
                         #region 新增主檔
                         TB_ONE_SRMain beanM = new TB_ONE_SRMain();
