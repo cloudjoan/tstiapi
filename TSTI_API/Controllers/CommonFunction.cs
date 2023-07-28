@@ -4224,8 +4224,18 @@ namespace TSTI_API.Controllers
                     break;               
 
                 case SRCondition.DONE:
-                    //大同世界科技[<客戶名稱>]您的服務[<服務ID>]已完成
+                    //[報修管理]大同世界科技[<客戶名稱>]您的服務[<服務ID>]已完修
                     reValue = SRPathWay + CompanyName + "[" + CusName + "] 您的服務[" + SRID + "]已完修";
+                    break;
+
+                case SRCondition.INSTALLDONE:
+                    //大同世界科技[<客戶名稱>]您的服務[<服務ID>]已裝機完成
+                    reValue = CompanyName + "[" + CusName + "] 您的服務[" + SRID + "]已裝機完成";
+                    break;
+
+                case SRCondition.MAINTAINDONE:
+                    //大同世界科技[<客戶名稱>]您的服務[<服務ID>]已定保完成
+                    reValue = CompanyName + "[" + CusName + "] 您的服務[" + SRID + "]已定保完成";
                     break;
             }
 
@@ -4989,15 +4999,32 @@ namespace TSTI_API.Controllers
                     SRConfig_List = findSRCONFIGINFO(cSRID, tAttachURLName, tAttachPath);
                     #endregion -----↑↑↑↑↑裝機Config資訊 ↑↑↑↑↑-----
 
-                    #region 發送服務案件Mail相關資訊(for客戶)，一般服務(新建或完修)才要發給客戶
+                    #region 發送服務案件Mail相關資訊(for客戶)
                     if (cSRID.Substring(0, 2) == "61")
                     {
+                        //一般服務(新建和完修)都要寄
                         if (cCondition == SRCondition.ADD || cCondition == SRCondition.DONE)
                         {
                             if (SRMain.InternalWork != "Y")
                             {
                                 SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
                             }
+                        }
+                    }
+                    else if (cSRID.Substring(0, 2) == "63")
+                    {
+                        //裝機服務(裝機完成)才要寄
+                        if (cCondition == SRCondition.INSTALLDONE)
+                        {
+                            SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                        }
+                    }
+                    else if (cSRID.Substring(0, 2) == "65")
+                    {
+                        //定維服務(定保完成)才要寄
+                        if (cCondition == SRCondition.MAINTAINDONE)
+                        {
+                            SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
                         }
                     }
                     #endregion
@@ -5386,6 +5413,8 @@ namespace TSTI_API.Controllers
             string tStatus = string.Empty;          //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
             string tContractID = string.Empty;      //合約文件編號
             string tSecFix = string.Empty;          //是否為二修
+            string ProductString = string.Empty;    //產品序號相關字串
+            string STATUSNOTE = string.Empty;       //狀態說明
             string tSRRepair_Table = string.Empty;
             string tSRContact_Table = string.Empty;
             string tSRSeiral_Table = string.Empty;
@@ -5501,10 +5530,13 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 郵件內容
-                string tMailBody = string.Empty;                
+                string tMailBody = string.Empty;
 
                 #region 取得【一般服務】案件客戶報修窗口資訊Html Table
-                tSRRepair_Table = findGenerallySRRepair_Table(SRRepair_List, SRMain.CusName);               
+                if (cSRID.Substring(0, 2) == "61") //一般服務才抓客戶報修窗口資訊
+                {
+                    tSRRepair_Table = findGenerallySRRepair_Table(SRRepair_List, SRMain.CusName);
+                }
                 #endregion
 
                 #region 取得【一般服務】案件客戶聯絡窗口資訊Html Table
@@ -5525,6 +5557,18 @@ namespace TSTI_API.Controllers
                     break;
                 }
                 #endregion
+
+                if (cSRID.Substring(0, 2) == "61") //一般服務才抓產品序號資訊
+                {
+                    if (cCondition == SRCondition.ADD)
+                    {
+                        ProductString = MaterialName + "_" + SerialID + "_" + ProductNumber;
+                    }
+                    else
+                    {
+                        ProductString = "產品：" + MaterialName + "</br>產品描述：" + ProductNumber + "</br>產品序號：" + SerialID + "</br>";
+                    }
+                }
 
                 tHypeLink = @"https://0800.etatung.com/survey_oneservice.aspx?srId=" + cSRID;
 
@@ -5547,12 +5591,12 @@ namespace TSTI_API.Controllers
                     //若後續維修上有任何問題，請儘速與我們連絡 0800-066-038，謝謝!!                   
                     //-------此信件由系統管理員發出，請勿回覆此信件-------
                     #endregion
-
+                    
                     tMailBody = GetMailBody("ONECustomerRepair_MAIL");                    
                 }
-                else if (cCondition == SRCondition.DONE) //完修
+                else if (cCondition == SRCondition.DONE || cCondition == SRCondition.INSTALLDONE || cCondition == SRCondition.MAINTAINDONE) //完修、裝機完成、定保完成
                 {
-                    #region 內容格式參考(一般服務)完修
+                    #region 內容格式參考(一般服務)完修，若為裝機完成、定保完成則不顯示「產品、產品描述、產品序號」
                     //親愛的客戶您好，
                     //您的服務已完修，明細如下：                    
                     //服務案件ID：8100190298
@@ -5578,12 +5622,26 @@ namespace TSTI_API.Controllers
                     //-------此信件由系統管理員發出，請勿回覆此信件-------
                     #endregion
 
+                    switch(cCondition)
+                    {
+                        case SRCondition.DONE:
+                            STATUSNOTE = "已完修";
+                            break;
+
+                        case SRCondition.INSTALLDONE:
+                            STATUSNOTE = "已裝機完成";
+                            break;
+
+                        case SRCondition.MAINTAINDONE:
+                            STATUSNOTE = "已定保完成";
+                            break;
+                    }
+                    
                     tMailBody = GetMailBody("ONECustomerFinished_MAIL");                    
-                }
+                }               
 
                 tMailBody = tMailBody.Replace("【<CreatedDate>】", Convert.ToDateTime(SRMain.CreatedDate).ToString("yyyy-MM-dd")).Replace("【<FinishedDate>】", DateTime.Now.ToString("yyyy-MM-dd"));
-                tMailBody = tMailBody.Replace("【<SRID>】", cSRID).Replace("【<MaterialName>】", MaterialName).Replace("【<SerialID>】", SerialID).Replace("【<ProductNumber>】", ProductNumber);
-                tMailBody = tMailBody.Replace("【<Notes>】", SRMain.Notes);
+                tMailBody = tMailBody.Replace("【<STATUSNOTE>】", STATUSNOTE).Replace("【<SRID>】", cSRID).Replace("【<ProductString>】", ProductString).Replace("【<Notes>】", SRMain.Notes);                
                 tMailBody = tMailBody.Replace("<SRRepair_List>", tSRRepair_Table).Replace("<SRContact_List>", tSRContact_Table);
                 tMailBody = tMailBody.Replace("【<tHypeLink>】", tHypeLink);
 

@@ -1113,6 +1113,7 @@ namespace TSTI_API.Controllers
             string IV_SALESEMPNO = string.IsNullOrEmpty(bean.IV_SALESEMPNO) ? "" : bean.IV_SALESEMPNO.Trim();
             string IV_SECRETARYEMPNO = string.IsNullOrEmpty(bean.IV_SECRETARYEMPNO) ? "" : bean.IV_SECRETARYEMPNO.Trim();
             string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
+            string IV_PATHWAY = string.IsNullOrEmpty(bean.IV_PATHWAY) ? "" : bean.IV_PATHWAY.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -1231,6 +1232,7 @@ namespace TSTI_API.Controllers
                         beanM.cSRTypeThr = IV_MKIND3;
                         beanM.cSalesNo = IV_SALESNO;
                         beanM.cShipmentNo = IV_SHIPMENTNO;
+                        beanM.cSRPathWay = IV_PATHWAY;
 
                         beanM.cTeamID = IV_SRTEAM;
                         beanM.cMainEngineerName = CMainEngineerName;
@@ -1305,8 +1307,7 @@ namespace TSTI_API.Controllers
                         beanM.cRepairMobile = "";
                         beanM.cRepairEmail = "";
                         beanM.cDelayReason = "";
-                        beanM.cMAServiceType = "";
-                        beanM.cSRPathWay = "";
+                        beanM.cMAServiceType = "";                        
                         beanM.cSRProcessWay = "";
                         beanM.cIsSecondFix = "";
                         beanM.cAssEngineerID = "";
@@ -1510,6 +1511,8 @@ namespace TSTI_API.Controllers
             public string IV_DESC { get; set; }
             /// <summary>詳細描述</summary>
             public string IV_LTXT { get; set; }
+            /// <summary>報修管道</summary>
+            public string IV_PATHWAY { get; set; }
             /// <summary>報修代碼(大類)</summary>
             public string IV_MKIND1 { get; set; }
             /// <summary>報修代碼(中類)</summary>
