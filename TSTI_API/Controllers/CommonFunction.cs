@@ -4730,6 +4730,8 @@ namespace TSTI_API.Controllers
             string cSRCase = string.Empty;              //服務案件種類            
             string cCreateUser = string.Empty;          //派單人員
             string cCreateUserEmail = string.Empty;     //派單人員Email
+            string cModifiedUser = string.Empty;        //異動人員
+            string cModifiedUserEmail = string.Empty;   //異動人員Email
             string cTeamName = string.Empty;            //服務團隊
             string cTeamMGR = string.Empty;             //服務團隊主管
             string cTeamMGREmail = string.Empty;        //服務團隊主管Email
@@ -4742,11 +4744,12 @@ namespace TSTI_API.Controllers
             string cSalesEMP = string.Empty;            //業務人員
             string cSalesEMPEmail = string.Empty;       //業務人員Email
             string cSecretaryEMP = string.Empty;        //業務祕書
-            string cSecretaryEMPEmail = string.Empty;   //業務祕書Email
+            string cSecretaryEMPEmail = string.Empty;   //業務祕書Email           
 
             string cStatus = string.Empty;              //狀態
             string cStatusDesc = string.Empty;          //狀態說明            
             string cCreatedDate = string.Empty;         //派單時間
+            string cModifiedDate = string.Empty;        //異動時間
             string cContractID = string.Empty;          //合約文件編號
             string cMAServiceType = string.Empty;       //維護服務種類
             string cSecFix = string.Empty;              //是否為二修
@@ -4768,6 +4771,7 @@ namespace TSTI_API.Controllers
             {   
                 List<SRTEAMORGINFO> SRTeam_List = new List<SRTEAMORGINFO>();
                 List<SREMPINFO> SRCreateUser_List = new List<SREMPINFO>();
+                List<SREMPINFO> SRModifiedUser_List = new List<SREMPINFO>();
                 List<SREMPINFO> SRMainENG_List = new List<SREMPINFO>();
                 List<SREMPINFO> SRAssENG_List = new List<SREMPINFO>();
                 List<SREMPINFO> SRTechMGR_List = new List<SREMPINFO>();
@@ -4804,10 +4808,30 @@ namespace TSTI_API.Controllers
                             cCreateUserERPID = findEmployeeERPIDByEName(AryUser[1]);
 
                             SRCreateUser_List = findSREMPINFO(cCreateUserERPID);
-                            cCreateUser = cLoginName;
+                            cCreateUser = beanM.CreatedUserName;
                             cCreateUserEmail = findSREMPEmail(SRCreateUser_List);
                         }                       
-                    }                    
+                    }
+                    #endregion
+
+                    #region 異動人員相關(非新建才塞入)
+                    if (cCondition != SRCondition.ADD)
+                    {
+                        if (cLoginName != "")
+                        {
+                            string[] AryUser = cLoginName.Split(' ');
+                            string cModifiedUserERPID = string.Empty;
+
+                            if (AryUser.Length == 2)
+                            {
+                                cModifiedUserERPID = findEmployeeERPIDByEName(AryUser[1]);
+
+                                SRModifiedUser_List = findSREMPINFO(cModifiedUserERPID);
+                                cModifiedUser = cLoginName;
+                                cModifiedUserEmail = findSREMPEmail(SRModifiedUser_List);
+                            }
+                        }
+                    }
                     #endregion
 
                     #region 服務團隊相關
@@ -4854,8 +4878,13 @@ namespace TSTI_API.Controllers
 
                     #region 其他主檔相關
                     cContractID = findSRContractID(cSRID);
-                    cCreatedDate = Convert.ToDateTime(beanM.CreatedDate).ToString("yyyy-MM-dd HH:mm");
+                    cCreatedDate = Convert.ToDateTime(beanM.CreatedDate).ToString("yyyy-MM-dd HH:mm");                    
                     cStatus = beanM.cStatus;
+
+                    if (beanM.ModifiedDate != null)
+                    {
+                        cModifiedDate = Convert.ToDateTime(beanM.ModifiedDate).ToString("yyyy-MM-dd HH:mm");
+                    }
 
                     if (cSRID.Substring(0, 2) == "61")
                     {
@@ -4887,6 +4916,7 @@ namespace TSTI_API.Controllers
                     SRMain.SRCase = cSRCase;
                     SRMain.CompanyName = cCompanyName;
                     SRMain.CreateUser = cCreateUser;
+                    SRMain.ModifiedUser = cModifiedUser;
                     SRMain.TeamNAME = cTeamName;
                     SRMain.TeamMGR = cTeamMGR;
                     SRMain.MainENG = cMainENG;
@@ -4896,6 +4926,7 @@ namespace TSTI_API.Controllers
                     SRMain.SecretaryEMP = cSecretaryEMP;
                     SRMain.ContractID = cContractID;
                     SRMain.CreatedDate = cCreatedDate;
+                    SRMain.ModifiedDate = cModifiedDate;
                     SRMain.MAServiceType = cMAServiceType;
                     SRMain.SecFix = cSecFix;
                     SRMain.InternalWork = cInternalWork;
@@ -4913,6 +4944,7 @@ namespace TSTI_API.Controllers
                     SRMain.RepairEmail = cRepairEmail;
 
                     SRMain.CreateUserEmail = cCreateUserEmail;
+                    SRMain.ModifiedUserEmail = cModifiedUserEmail;
                     SRMain.TeamMGREmail = cTeamMGREmail;
                     SRMain.MainENGEmail = cMainENGEmail;
                     SRMain.AssENGEmail = cAssENGEmail;
@@ -5017,15 +5049,16 @@ namespace TSTI_API.Controllers
             string tMailCcTemp = string.Empty;
             string tMailBCcTemp = string.Empty;
 
-            string tMailTo = string.Empty;          //收件者            
-            string tMailCc = string.Empty;          //副本            
-            string tMailBCc = string.Empty;         //密件副本
-            string tHypeLink = string.Empty;        //超連結            
+            string tMailTo = string.Empty;              //收件者            
+            string tMailCc = string.Empty;              //副本            
+            string tMailBCc = string.Empty;             //密件副本
+            string tHypeLink = string.Empty;            //超連結            
 
-            string tStatus = string.Empty;          //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
-            string tContractID = string.Empty;      //合約文件編號
-            string tSecFix = string.Empty;          //是否為二修
-            string EndString = string.Empty;       
+            string tStatus = string.Empty;              //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
+            string tContractID = string.Empty;          //合約文件編號
+            string tSecFix = string.Empty;              //是否為二修
+            string EndString = string.Empty;            //結案要寫的字串
+            string ModifiedUserString = string.Empty;   //異動人員的字串
             string tSRRepair_Table = string.Empty;
             string tSRContact_Table = string.Empty;
             string tSRSeiral_Table = string.Empty;
@@ -5115,6 +5148,15 @@ namespace TSTI_API.Controllers
                     }
                 }
 
+                //異動人員(非新建才塞入)
+                if (cCondition != SRCondition.ADD)
+                {
+                    if (SRMain.ModifiedUserEmail != "")
+                    {
+                        tMailCcTemp += SRMain.ModifiedUserEmail;
+                    }
+                }
+
                 if (tMailCcTemp != "")
                 {
                     foreach (string tValue in tMailCcTemp.TrimEnd(';').Split(';'))
@@ -5180,6 +5222,8 @@ namespace TSTI_API.Controllers
                 //協助工程師:	ASSEngineer
                 //技術主管:	TechMGR
                 //狀態:	處理中
+                //異動人員： 洪佑典 jack.hung
+                //異動時間： 2016/1/6 13:38
                 //派單人員： 張豐穎 Elvis.Chang
                 //派單時間:	2016/1/5 13:36
                 //合約文件編號:	2540/7/23 00:00
@@ -5235,6 +5279,11 @@ namespace TSTI_API.Controllers
                     EndString = "<p>請儘速至One Sevice 系統處理，謝謝！</p><p><span><a href=" + tHypeLink + "><span>查看待辦清單</span></a></span></p>";
                 }
 
+                if (cCondition != SRCondition.ADD)
+                {
+                    ModifiedUserString = "異動人員："+ SRMain.ModifiedUser  +"</br>異動時間："+ SRMain.ModifiedDate + "</br>";
+                }
+
                 #region 取得【共用】案件客戶報修窗口資訊Html Table
                 tSRRepair_Table = findGenerallySRRepair_Table(SRRepair_List, SRMain.CusName);
                 #endregion
@@ -5279,7 +5328,7 @@ namespace TSTI_API.Controllers
                 tMailBody = tMailBody.Replace("【<SRID>】", cSRID).Replace("【<SRCase>】", SRMain.SRCase).Replace("【<TeamNAME>】", SRMain.TeamNAME);
                 tMailBody = tMailBody.Replace("【<TeamMGR>】", SRMain.TeamMGR).Replace("【<MainENG>】", SRMain.MainENG).Replace("【<AssENG>】", SRMain.AssENG);                
                 tMailBody = tMailBody.Replace("【<TechMGR>】", SRMain.TechMGR).Replace("【<StatusDesc>】", SRMain.StatusDesc).Replace("【<CreatedUser>】", SRMain.CreateUser).Replace("【<CreatedDate>】", SRMain.CreatedDate);
-                tMailBody = tMailBody.Replace("【<SalesNo>】", SRMain.SalesNo).Replace("【<ShipmentNo>】", SRMain.ShipmentNo).Replace("【<AttachementStockNoUrl>】", SRMain.CreatedDate);
+                tMailBody = tMailBody.Replace("【<ModifiedUserString>】", ModifiedUserString).Replace("【<SalesNo>】", SRMain.SalesNo).Replace("【<ShipmentNo>】", SRMain.ShipmentNo);                
 
                 tMailBody = tMailBody.Replace("<ContractID>", tContractID).Replace("【<MAServiceType>】", SRMain.MAServiceType).Replace("<SecFix>", tSecFix);
                 tMailBody = tMailBody.Replace("【<Desc>】", SRMain.Desc).Replace("【<Notes>】", SRMain.Notes).Replace("【<SalesName>】", SRMain.SalesEMP);                
@@ -5398,21 +5447,24 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 取得密件副本
-                tMailBCcTemp = "Jordan.Chang@etatung.com;Elvis.Chang@etatung.com;"; //測試用，等都正常了就註解掉
+                tMailBCcTemp = "Jordan.Chang@etatung.com;Elvis.Chang@etatung.com;"; //等都正常了就把我的拿掉
 
-                if (SRMain.TeamMGREmail != "") //服務團隊主管Email
+                if (cCondition == SRCondition.ADD) //新建時才要寄給下面這些人
                 {
-                    tMailBCcTemp += SRMain.TeamMGREmail;
-                }
+                    if (SRMain.TeamMGREmail != "") //服務團隊主管Email
+                    {
+                        tMailBCcTemp += SRMain.TeamMGREmail;
+                    }
 
-                if (SRMain.MainENGEmail != "") //主要工程師Email
-                {
-                    tMailBCcTemp += SRMain.MainENGEmail;
-                }
+                    if (SRMain.MainENGEmail != "") //主要工程師Email
+                    {
+                        tMailBCcTemp += SRMain.MainENGEmail;
+                    }
 
-                if (SRMain.CreateUserEmail != "") //派單人員Email
-                {
-                    tMailBCcTemp += SRMain.CreateUserEmail;
+                    if (SRMain.CreateUserEmail != "") //派單人員Email
+                    {
+                        tMailBCcTemp += SRMain.CreateUserEmail;
+                    }
                 }
 
                 if (tMailBCcTemp != "")
@@ -6043,7 +6095,7 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 取得密件副本
-                tMailBCcTemp = "Jordan.Chang@etatung.com;Elvis.Chang@etatung.com"; //測試用，等都正常了就註解掉
+                tMailBCcTemp = "Jordan.Chang@etatung.com;Elvis.Chang@etatung.com"; //等都正常了就把我的拿掉
 
                 if (tMailBCcTemp != "")
                 {

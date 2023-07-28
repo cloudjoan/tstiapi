@@ -7076,11 +7076,18 @@ namespace TSTI_API.Controllers
                         ccell2.Padding = 4;
                         pTable.AddCell(ccell2);
 
+                        string tProcessWay = string.Empty;
+                        if (IV_SRReportType == SRReportType.ONLINE || IV_SRReportType == SRReportType.REMOTE)
+                        {
+                            tProcessWay = IV_SRReportType == SRReportType.ONLINE ? "線上" : "遠端";
+                            tProcessWay = "處理方式-" + tProcessWay + "\n\n";
+                        }
+
                         string SLASRV = (srdetail["EV_SLASRV"] != null) ? srdetail["EV_SLASRV"].ToString() : "";
                         string WTYKIND = (srdetail["EV_WTYKIND"] != null) ? srdetail["EV_WTYKIND"].ToString() : "";
                         IV_CusOpinion = (String.IsNullOrEmpty(IV_CusOpinion) || String.Compare(IV_CusOpinion, "null", true) == 0) ? "" : IV_CusOpinion;
 
-                        PdfPCell ccell3 = new PdfPCell(new iTextSharp.text.Phrase("客戶意見 / 備註：\n\n" + IV_CusOpinion + "\n\n" + SLASRV + "\n\n" + WTYKIND, ChFont10));
+                        PdfPCell ccell3 = new PdfPCell(new iTextSharp.text.Phrase("客戶意見 / 備註：\n\n" + tProcessWay + IV_CusOpinion + "\n\n" + SLASRV + "\n\n" + WTYKIND, ChFont10));
                         ccell3.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
                         ccell3.BorderWidthRight = 0;
                         ccell3.BorderWidthTop = 0;
@@ -7177,7 +7184,9 @@ namespace TSTI_API.Controllers
                                     }
                                     else if (IV_SRReportType == SRReportType.ONLINE || IV_SRReportType == SRReportType.REMOTE)
                                     {
-                                        string tShowText = IV_SRReportType == SRReportType.ONLINE ? "線上" : "遠端";
+                                        #region 線上和遠端先不放在客戶簽章欄位
+                                        //string tShowText = IV_SRReportType == SRReportType.ONLINE ? "線上" : "遠端";
+                                        string tShowText = string.Empty;
 
                                         PdfPCell tmpcell5 = new PdfPCell(new iTextSharp.text.Phrase(tShowText, ChFont10));
                                         tmpcell5.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
@@ -7188,7 +7197,9 @@ namespace TSTI_API.Controllers
                                         tmpcell5.Colspan = 2;
                                         tmpcell5.Rowspan = 4;
                                         tmpcell5.Padding = 4;
+                                        tmpcell5.FixedHeight = 75;
                                         pTable.AddCell(tmpcell5);
+                                        #endregion
                                     }
 
                                     break;
@@ -11853,6 +11864,12 @@ namespace TSTI_API.Controllers
         public string TeamMGR { get; set; }
         /// <summary>派單人員</summary>
         public string CreateUser { get; set; }
+        /// <summary>派單時間</summary>
+        public string CreatedDate { get; set; }
+        /// <summary>異動人員</summary>
+        public string ModifiedUser { get; set; }
+        /// <summary>異動時間</summary>
+        public string ModifiedDate { get; set; }
         /// <summary>主要工程師</summary>
         public string MainENG { get; set; }
         /// <summary>協助工程師</summary>
@@ -11862,9 +11879,7 @@ namespace TSTI_API.Controllers
         /// <summary>業務人員</summary>
         public string SalesEMP { get; set; }
         /// <summary>業務祕書</summary>
-        public string SecretaryEMP { get; set; }
-        /// <summary>派單時間</summary>
-        public string CreatedDate { get; set; }
+        public string SecretaryEMP { get; set; }        
         /// <summary>合約文件編號</summary>
         public string ContractID { get; set; }
         /// <summary>維護服務種類</summary>
@@ -11895,9 +11910,11 @@ namespace TSTI_API.Controllers
         public string RepairAddress { get; set; }
         /// <summary>報修人Email</summary>
         public string RepairEmail { get; set; }
-
+        
         /// <summary>派單人員</summary>
         public string CreateUserEmail { get; set; }
+        /// <summary>異動人員</summary>
+        public string ModifiedUserEmail { get; set; }
         /// <summary>服務團隊主管Email</summary>
         public string TeamMGREmail { get; set; }
         /// <summary>主要工程師Email</summary>
