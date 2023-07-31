@@ -4820,7 +4820,11 @@ namespace TSTI_API.Controllers
                             SRCreateUser_List = findSREMPINFO(cCreateUserERPID);
                             cCreateUser = beanM.CreatedUserName;
                             cCreateUserEmail = findSREMPEmail(SRCreateUser_List);
-                        }                       
+                        }
+                        else
+                        {
+                            cCreateUser = beanM.CreatedUserName;
+                        }
                     }
                     #endregion
 
