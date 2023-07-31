@@ -294,6 +294,37 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得【資訊系統參數設定檔】的參數值，條件值為Like cNo
+        /// <summary>
+        /// 取得【資訊系統參數設定檔】的參數值，條件值為Like cNo
+        /// </summary>
+        /// <param name="cOperationID">程式作業編號檔系統ID</param>
+        /// <param name="cFunctionID">功能別(SENDMAIL.寄送Mail、ACCOUNT.取得人員帳號、OTHER.其他自定義)</param>
+        /// <param name="cCompanyID">公司別(ALL.全集團、T012.大世科、T016.群輝、C069.大世科技上海、T022.協志科)</param>
+        /// <param name="cNo">參數No</param>
+        /// <returns></returns>
+        public List<string> findSysParameterValueByIncludNo(string cOperationID, string cFunctionID, string cCompanyID, string cNo)
+        {
+            List<string> tList = new List<string>();
+
+            var beans = dbPSIP.TB_ONE_SysParameter.Where(x => x.Disabled == 0 &&
+                                                         x.cOperationID.ToString() == cOperationID &&
+                                                         x.cFunctionID == cFunctionID.Trim() &&
+                                                         x.cCompanyID == cCompanyID.Trim() &&
+                                                         x.cNo.Contains(cNo.Trim()));
+
+            foreach(var bean in beans)
+            {
+                if (!tList.Contains(bean.cValue.Trim()))
+                {
+                    tList.Add(bean.cValue.Trim());
+                }
+            }
+
+            return tList;
+        }
+        #endregion
+
         #region 取得【資訊系統參數設定檔】的參數值說明
         /// <summary>
         /// 取得【資訊系統參數設定檔】的參數值
@@ -384,13 +415,35 @@ namespace TSTI_API.Controllers
         /// </summary>
         /// <param name="keyword">客戶代號/客戶名稱</param>
         /// <returns></returns>
-        public List<VIEW_CUSTOMER_WithAddress> findCUSTOMERINFO(string keyword)
+        public List<VIEW_CUSTOMER_WithAddress> findCUSTOMERINFO(string IV_COMPID, string IV_CUSTOME)
         {
             List<VIEW_CUSTOMER_WithAddress> tList = new List<VIEW_CUSTOMER_WithAddress>();
 
-            if (keyword != "")
+            string tCOMPID = string.Empty;
+
+            switch(IV_COMPID)
             {
-                tList = dbProxy.VIEW_CUSTOMER_WithAddress.Where(x => x.KNA1_KUNNR.Contains(keyword.Trim()) || x.KNA1_NAME1.Contains(keyword.Trim())).Take(30).ToList();               
+                case "T012":
+                    tCOMPID = "12G";
+                    break;
+
+                case "T016":
+                    tCOMPID = "16G";
+                    break;
+
+                case "C069":
+                    tCOMPID = "69G";
+                    break;
+
+                case "T022":
+                    tCOMPID = "22G";
+                    break;
+            }
+
+            if (IV_CUSTOME != "")
+            {
+                tList = dbProxy.VIEW_CUSTOMER_WithAddress.Where(x => x.KNVV_VKORG.Substring(0, 3) == tCOMPID && 
+                                                                 (x.KNA1_KUNNR.Contains(IV_CUSTOME.Trim()) || x.KNA1_NAME1.Contains(IV_CUSTOME.Trim()))).Take(30).ToList();
             }
 
             return tList;
@@ -401,13 +454,14 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得法人客戶聯絡人資料
         /// </summary>
+        /// <param name="COMPID">公司別ID(T012、T016、C069、T022)</param>
         /// <param name="CustomerID">客戶代號/名稱</param>
         /// <param name="CONTACTNAME">聯絡人姓名</param>        
         /// <param name="CONTACTTEL">聯絡人電話</param>
         /// <param name="CONTACTMOBILE">聯絡人手機</param>
         /// <param name="CONTACTEMAIL">聯絡人Email</param>
         /// <returns></returns>
-        public List<PCustomerContact> findCONTACTINFO(string CustomerID, string CONTACTNAME, string CONTACTTEL, string CONTACTMOBILE, string CONTACTEMAIL)
+        public List<PCustomerContact> findCONTACTINFO(string COMPID, string CustomerID, string CONTACTNAME, string CONTACTTEL, string CONTACTMOBILE, string CONTACTEMAIL)
         {
             #region 註解
             //var qPjRec = dbProxy.CUSTOMER_Contact.OrderByDescending(x => x.ModifiedDate).
@@ -477,15 +531,17 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得個人客戶資料
         /// </summary>
-        /// <param name="keyword">客戶代號/客戶名稱</param>
+        /// <param name="IV_COMPID">公司別ID(T012、T016、C069、T022)</param>
+        /// <param name="IV_PERSONAL">客戶代號/客戶名稱</param>
         /// <returns></returns>
-        public List<PERSONAL_Contact> findPERSONALINFO(string keyword)
+        public List<PERSONAL_Contact> findPERSONALINFO(string IV_COMPID, string IV_PERSONAL)
         {
             List<PERSONAL_Contact> tList = new List<PERSONAL_Contact>();
 
-            if (keyword != "")
+            if (IV_PERSONAL != "")
             {
-                tList = dbProxy.PERSONAL_Contact.Where(x => x.Disabled == 0 && x.KNA1_KUNNR.Contains(keyword.Trim()) || x.KNA1_NAME1.Contains(keyword.Trim())).Take(30).ToList();
+                tList = dbProxy.PERSONAL_Contact.Where(x => x.Disabled == 0 && x.KNB1_BUKRS == IV_COMPID &&
+                                                        (x.KNA1_KUNNR.Contains(IV_PERSONAL.Trim()) || x.KNA1_NAME1.Contains(IV_PERSONAL.Trim()))).Take(30).ToList();
             }
 
             return tList;
@@ -496,17 +552,18 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得個人客戶聯絡人資料
         /// </summary>
+        /// <param name="COMPID">公司別ID(T012、T016、C069、T022)</param>
         /// <param name="PERSONALID">個人客戶代號/名稱</param>
         /// <param name="CONTACTNAME">聯絡人姓名</param>        
         /// <param name="CONTACTTEL">聯絡人電話</param>
         /// <param name="CONTACTMOBILE">聯絡人手機</param>
         /// <param name="CONTACTEMAIL">聯絡人Email</param>
         /// <returns></returns>
-        public List<PCustomerContact> findPERSONALCONTACTINFO(string PERSONALID, string CONTACTNAME, string CONTACTTEL, string CONTACTMOBILE, string CONTACTEMAIL)
+        public List<PCustomerContact> findPERSONALCONTACTINFO(string COMPID, string PERSONALID, string CONTACTNAME, string CONTACTTEL, string CONTACTMOBILE, string CONTACTEMAIL)
         {
             var qPjRec = dbProxy.PERSONAL_Contact.OrderByDescending(x => x.ModifiedDate).
                                                Where(x => x.Disabled == 0 && 
-                                                          x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&                                                           
+                                                          x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" && x.KNB1_BUKRS == COMPID &&
                                                           (string.IsNullOrEmpty(PERSONALID) ? true : (x.KNA1_KUNNR.Contains(PERSONALID) || x.KNA1_NAME1.Contains(PERSONALID))) &&
                                                           (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
                                                           (string.IsNullOrEmpty(CONTACTTEL) ? true : x.ContactPhone.Contains(CONTACTTEL)) &&
@@ -881,7 +938,61 @@ namespace TSTI_API.Controllers
 
             return reValue;
         }
-        #endregion       
+        #endregion
+
+        #region 取得該服務團隊中心單位管理者Email和姓名(中文+英文)
+        /// <summary>
+        /// 取得該服務團隊中心單位管理者Email和姓名(中文+英文)
+        /// </summary>        
+        /// <param name="tTeamOldID">服務團隊ID</param>
+        /// <param name="cFunctionID">功能別(SENDMAIL.寄送Mail、ACCOUNT.取得人員帳號、OTHER.其他自定義)</param>
+        /// <param name="cCompanyID">公司別(ALL.全集團、T012.大世科、T016.群輝、C069.大世科技上海、T022.協志科)</param>
+        /// <param name="cNo">參數No</param>
+        /// <returns></returns>      
+        public Dictionary<string, string> findContractCenterManager(string tTeamOldID, string cFunctionID, string cCompanyID, string cNo)
+        {
+            Dictionary<string, string> Dic = new Dictionary<string, string>(); //key.Email、Value.姓名
+
+            List<string> tList = findALLDeptIDListbyTeamID(tTeamOldID);
+            List<string> tProfitCenterList = new List<string>(); //利潤中心ID清單
+            List<string> tAccountList = new List<string>();      //管理員清單            
+
+            string tName = string.Empty;
+
+            #region 先取得所有利潤中心ID
+            foreach (var tValue in tList)
+            {
+                if (!tProfitCenterList.Contains(tValue.Substring(0, 4)))
+                {
+                    tProfitCenterList.Add(tValue.Substring(0, 4));
+                }
+            }
+            #endregion
+
+            #region 再撈取合約中心單位管理員
+            foreach(var tValue in tProfitCenterList)
+            {
+                string TempNo = cNo + "_" + tValue; //ex.CONTRACTCenterManager_12G3
+
+                tAccountList = findSysParameterValueByIncludNo(pSysOperationID, cFunctionID, cCompanyID, TempNo);
+
+                foreach(string tAccount in tAccountList)
+                {
+                    EmployeeBean empBean = findEmployeeInfoByAccount(tAccount);
+
+                    if (!Dic.ContainsKey(empBean.EmployeeEmail))
+                    {
+                        tName = empBean.EmployeeCName + " " + empBean.EmployeeEName;
+                        Dic.Add(empBean.EmployeeEmail, tName);
+                    }
+                }
+            }
+            #endregion
+
+            return Dic;
+        }
+        #endregion
+
 
         #region 傳入服務團隊ID並取得公司別
         /// <summary>
@@ -2167,7 +2278,7 @@ namespace TSTI_API.Controllers
 
             return ProBeans;
         }
-        #endregion
+        #endregion      
 
         #region 取得ERPID(傳入英文姓名)
         /// <summary>
@@ -5934,7 +6045,9 @@ namespace TSTI_API.Controllers
             string cSecretaryEMP = string.Empty;            //業務祕書
             string cSecretaryEMPEmail = string.Empty;       //業務祕書Email
             string cMASalesEMP = string.Empty;              //維護業務人員
-            string cMASalesEMPEmail = string.Empty;         //維護業務人員Email                                                           
+            string cMASalesEMPEmail = string.Empty;         //維護業務人員Email
+            string cCenterMGR = string.Empty;               //合約中心單位管理員
+            string cCenterMGREmail = string.Empty;          //合約中心單位管理員Email
 
             string cSoNo = string.Empty;                    //銷售訂單號
             string cCustomerID = string.Empty;              //客戶ID
@@ -5970,6 +6083,16 @@ namespace TSTI_API.Controllers
                     cTeamName = findSRTeamName(Team_List);
                     cTeamMGR = findSRTeamMGRName(Team_List);
                     cTeamMGREmail = findSRTeamMGREmail(Team_List);
+                    #endregion
+
+                    #region 合約中心單位管理員相關
+                    Dictionary<string, string> Dic = findContractCenterManager(beanM.cTeamID, "ACCOUNT", "T012", "CONTRACTCenterManager");
+
+                    foreach (KeyValuePair<string, string> item in Dic)
+                    {
+                        cCenterMGR += item.Value + ";";
+                        cCenterMGREmail += item.Key + ";";
+                    }
                     #endregion
 
                     #region 主要工程師/協助工程師相關
@@ -6026,7 +6149,8 @@ namespace TSTI_API.Controllers
                     ContractMain.AssENG = cAssENG;                    
                     ContractMain.SalesEMP = cSalesEMP;
                     ContractMain.SecretaryEMP = cSecretaryEMP;
-                    ContractMain.MASalesEMP = cMASalesEMP;                    
+                    ContractMain.MASalesEMP = cMASalesEMP;
+                    ContractMain.CenterMGR = cCenterMGR;
                     ContractMain.ModifiedDate = cModifiedDate;
 
                     ContractMain.SoNo = cSoNo;
@@ -6047,6 +6171,7 @@ namespace TSTI_API.Controllers
                     ContractMain.SalesEmail = cSalesEMPEmail;
                     ContractMain.SecretaryEmail = cSecretaryEMPEmail;
                     ContractMain.MASalesEmail = cMASalesEMPEmail;
+                    ContractMain.CenterMGREmail = cCenterMGREmail;
                     #endregion -----↑↑↑↑↑Mail相關 ↑↑↑↑↑-----                  
 
                     #region 發送合約主數據Mail相關資訊  
@@ -6138,6 +6263,11 @@ namespace TSTI_API.Controllers
                 if (ContractMain.MASalesEmail != "") //維護業務
                 {
                     tMailCcTemp += ContractMain.MASalesEmail;
+                }
+
+                if (ContractMain.CenterMGREmail != "") //合約中心單位管理員
+                {
+                    tMailCcTemp += ContractMain.CenterMGREmail;
                 }
 
                 if (tMailCcTemp != "")

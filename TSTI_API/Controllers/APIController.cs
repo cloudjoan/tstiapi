@@ -367,7 +367,7 @@ namespace TSTI_API.Controllers
                         #region 判斷是否要自動帶入報修人資訊
                         if (string.IsNullOrEmpty(IV_REPAIRADDR))
                         {
-                            List<PCustomerContact> ConList = CMF.findCONTACTINFO(IV_CUSTOMER, IV_REPAIRNAME, "", "", "");
+                            List<PCustomerContact> ConList = CMF.findCONTACTINFO(pBUKRS, IV_CUSTOMER, IV_REPAIRNAME, "", "", "");
 
                             if (ConList.Count > 0)
                             {
@@ -2594,6 +2594,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
+            //   "IV_COMPID": "T012",
             //    "IV_CUSTOME": "元大證券股份有限公司"
             //}
             #endregion
@@ -2611,9 +2612,12 @@ namespace TSTI_API.Controllers
         {
             CUSTOMERINFO_OUTPUT OUTBean = new CUSTOMERINFO_OUTPUT();
 
+            string IV_COMPID = string.IsNullOrEmpty(beanIN.IV_COMPID) ? "T012" : beanIN.IV_COMPID.Trim();
+            string IV_CUSTOME = string.IsNullOrEmpty(beanIN.IV_CUSTOME) ? "" : beanIN.IV_CUSTOME.Trim();
+
             try
             {
-                var tList = CMF.findCUSTOMERINFO(beanIN.IV_CUSTOME.Trim());
+                var tList = CMF.findCUSTOMERINFO(IV_COMPID, IV_CUSTOME);
 
                 if (tList.Count == 0)
                 {
@@ -2636,6 +2640,7 @@ namespace TSTI_API.Controllers
                         {
                             CUSTOMERINFO_LIST beanCust = new CUSTOMERINFO_LIST();
 
+                            beanCust.COMPID = IV_COMPID;
                             beanCust.CUSTOMERID = bean.KNA1_KUNNR.Trim();
                             beanCust.CUSTOMERNAME = bean.KNA1_NAME1.Trim();
                             beanCust.CUSTOMERCITY = bean.CITY.Trim();
@@ -2693,6 +2698,8 @@ namespace TSTI_API.Controllers
         /// <summary>查詢法人客戶資料資料INPUT資訊</summary>
         public struct CUSTOMERINFO_INPUT
         {
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string IV_COMPID { get; set; }
             /// <summary>法人客戶(統一編號/客戶名稱)</summary>
             public string IV_CUSTOME { get; set; }
         }
@@ -2713,6 +2720,8 @@ namespace TSTI_API.Controllers
 
         public struct CUSTOMERINFO_LIST
         {
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string COMPID { get; set; }
             /// <summary>客戶代號</summary>
             public string CUSTOMERID { get; set; }
             /// <summary>客戶名稱</summary>
@@ -2736,6 +2745,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
+            //   "IV_COMPID": "T012",
             //   "IV_CUSTOMEID": "D16151427",
             //   "IV_CONTACTNAME": "",
             //   "IV_CONTACTTEL": "",
@@ -2759,6 +2769,7 @@ namespace TSTI_API.Controllers
 
             try
             {
+                string COMPID = string.IsNullOrEmpty(beanIN.IV_COMPID) ? "T012" : beanIN.IV_COMPID.Trim();
                 string CUSTOMEID = string.IsNullOrEmpty(beanIN.IV_CUSTOMEID) ? "" : beanIN.IV_CUSTOMEID.Trim();
                 string CONTACTNAME = string.IsNullOrEmpty(beanIN.IV_CONTACTNAME) ? "" : beanIN.IV_CONTACTNAME.Trim();
                 string CONTACTTEL = string.IsNullOrEmpty(beanIN.IV_CONTACTTEL) ? "" : beanIN.IV_CONTACTTEL.Trim();
@@ -2772,7 +2783,7 @@ namespace TSTI_API.Controllers
                 }
                 else
                 {
-                    var tList = CMF.findCONTACTINFO(CUSTOMEID, CONTACTNAME, CONTACTTEL, CONTACTMOBILE, CONTACTEMAIL);
+                    var tList = CMF.findCONTACTINFO(COMPID, CUSTOMEID, CONTACTNAME, CONTACTTEL, CONTACTMOBILE, CONTACTEMAIL);
 
                     if (tList.Count == 0)
                     {
@@ -2791,6 +2802,7 @@ namespace TSTI_API.Controllers
                         {
                             CONTACTINFO_LIST beanCust = new CONTACTINFO_LIST();
 
+                            beanCust.COMPID = bean.BUKRS;
                             beanCust.CUSTOMERID = bean.CustomerID;
                             beanCust.CUSTOMERNAME = bean.CustomerName;
                             beanCust.CONTACTNAME = bean.Name;
@@ -2829,6 +2841,8 @@ namespace TSTI_API.Controllers
         /// <summary>查詢法人客戶聯絡人資料資料INPUT資訊</summary>
         public struct CONTACTINFO_INPUT
         {
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string IV_COMPID { get; set; }
             /// <summary>法人客戶代號</summary>
             public string IV_CUSTOMEID { get; set; }
             /// <summary>聯絡人姓名</summary>
@@ -2857,6 +2871,8 @@ namespace TSTI_API.Controllers
 
         public struct CONTACTINFO_LIST
         {
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string COMPID { get; set; }
             /// <summary>客戶代號</summary>
             public string CUSTOMERID { get; set; }
             /// <summary>客戶名稱</summary>
@@ -2891,6 +2907,7 @@ namespace TSTI_API.Controllers
             #region Json範列格式(傳入格式)
             //{
             //    "IV_LOGINEMPNO": "99120894",
+            //    "IV_COMPID": "T012",
             //    "IV_CUSTOMEID": "D16151427",
             //    "IV_CONTACTNAME": "張豐穎",
             //    "IV_CONTACTCITY": "台中市",
@@ -2915,6 +2932,7 @@ namespace TSTI_API.Controllers
             #region Json範列格式(傳入格式)
             //{
             //    "IV_LOGINEMPNO": "99120894",
+            //    "IV_COMPID": "T012",
             //    "IV_CUSTOMEID": "D16151427",
             //    "IV_CONTACTNAME": "張豐穎",
             //    "IV_CONTACTCITY": "台中市",
@@ -2943,10 +2961,10 @@ namespace TSTI_API.Controllers
         {
             CONTACTCREATE_OUTPUT SROUT = new CONTACTCREATE_OUTPUT();
 
-            string tBpmNo = "GenerallySR";
-            string cBUKRS = "T012";
+            string tBpmNo = "GenerallySR";            
             string pLoginName = string.Empty;
 
+            string cBUKRS = string.IsNullOrEmpty(beanIN.IV_COMPID) ? "T012" : beanIN.IV_COMPID.Trim();
             string CCustomerName = CMF.findCustName(beanIN.IV_CUSTOMEID);
             string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
             string IV_CUSTOMEID = string.IsNullOrEmpty(beanIN.IV_CUSTOMEID) ? "" : beanIN.IV_CUSTOMEID.Trim();
@@ -2969,7 +2987,7 @@ namespace TSTI_API.Controllers
             else
             {
                 pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
-                cBUKRS = EmpBean.BUKRS;
+                cBUKRS = string.IsNullOrEmpty(cBUKRS) ? EmpBean.BUKRS : cBUKRS;
             }
 
             try
@@ -2982,7 +3000,7 @@ namespace TSTI_API.Controllers
                 //                                                    x.KNA1_KUNNR == beanIN.IV_CUSTOMEID.Trim() && x.ContactName == beanIN.IV_CONTACTNAME.Trim());
                 #endregion
 
-                var bean = dbProxy.CUSTOMER_Contact.FirstOrDefault(x => (x.Disabled == null || x.Disabled != 1) &&
+                var bean = dbProxy.CUSTOMER_Contact.FirstOrDefault(x => (x.Disabled == null || x.Disabled != 1) && 
                                                                      x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&                                                                    
                                                                     x.BpmNo == tBpmNo && x.KNB1_BUKRS == cBUKRS &&
                                                                     x.KNA1_KUNNR == beanIN.IV_CUSTOMEID.Trim() && x.ContactName == beanIN.IV_CONTACTNAME.Trim());
@@ -3083,6 +3101,8 @@ namespace TSTI_API.Controllers
         {
             /// <summary>建立者員工編號ERPID</summary>
             public string IV_LOGINEMPNO { get; set; }
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string IV_COMPID { get; set; }
             /// <summary>法人客戶代號</summary>
             public string IV_CUSTOMEID { get; set; }
             /// <summary>聯絡人姓名</summary>
@@ -3127,6 +3147,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
+            //    "IV_COMPID": "T012",
             //    "IV_PERSONAL": "張豐穎"
             //}
             #endregion
@@ -3144,9 +3165,12 @@ namespace TSTI_API.Controllers
         {
             PERSONALINFO_OUTPUT OUTBean = new PERSONALINFO_OUTPUT();
 
+            string IV_COMPID = string.IsNullOrEmpty(beanIN.IV_COMPID) ? "T012" : beanIN.IV_COMPID.Trim();
+            string IV_PERSONAL = string.IsNullOrEmpty(beanIN.IV_PERSONAL) ? "" : beanIN.IV_PERSONAL.Trim();
+
             try
             {
-                var tList = CMF.findPERSONALINFO(beanIN.IV_PERSONAL.Trim());
+                var tList = CMF.findPERSONALINFO(IV_COMPID, IV_PERSONAL);
 
                 if (tList.Count == 0)
                 {
@@ -3169,6 +3193,7 @@ namespace TSTI_API.Controllers
                         {
                             PERSONALINFO_LIST beanCust = new PERSONALINFO_LIST();
 
+                            beanCust.COMPID = bean.KNB1_BUKRS;
                             beanCust.PERSONALID = bean.KNA1_KUNNR.Trim();
                             beanCust.PERSONALNAME = bean.KNA1_NAME1.Trim();
                             beanCust.PERSONALCITY = bean.ContactCity.Trim();
@@ -3227,6 +3252,8 @@ namespace TSTI_API.Controllers
         /// <summary>查詢個人客戶資料資料INPUT資訊</summary>
         public struct PERSONALINFO_INPUT
         {
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string IV_COMPID { get; set; }
             /// <summary>個人客戶(個人編號/客戶名稱)</summary>
             public string IV_PERSONAL { get; set; }
         }
@@ -3247,6 +3274,8 @@ namespace TSTI_API.Controllers
 
         public struct PERSONALINFO_LIST
         {
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string COMPID { get; set; }
             /// <summary>個人客戶代號</summary>
             public string PERSONALID { get; set; }
             /// <summary>個人客戶名稱</summary>
@@ -3272,6 +3301,7 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
+            //   "IV_COMPID": "T012",
             //   "IV_PERSONALID": "P00000001",
             //   "IV_CONTACTNAME": "",
             //   "IV_CONTACTTEL": "",
@@ -3295,6 +3325,7 @@ namespace TSTI_API.Controllers
 
             try
             {
+                string COMPID = string.IsNullOrEmpty(beanIN.IV_COMPID) ? "T012" : beanIN.IV_COMPID.Trim();
                 string PERSONALID = string.IsNullOrEmpty(beanIN.IV_PERSONALID) ? "" : beanIN.IV_PERSONALID.Trim();
                 string CONTACTNAME = string.IsNullOrEmpty(beanIN.IV_CONTACTNAME) ? "" : beanIN.IV_CONTACTNAME.Trim();
                 string CONTACTTEL = string.IsNullOrEmpty(beanIN.IV_CONTACTTEL) ? "" : beanIN.IV_CONTACTTEL.Trim();
@@ -3308,7 +3339,7 @@ namespace TSTI_API.Controllers
                 }
                 else
                 {
-                    var tList = CMF.findPERSONALCONTACTINFO(PERSONALID, CONTACTNAME, CONTACTTEL, CONTACTMOBILE, CONTACTEMAIL);
+                    var tList = CMF.findPERSONALCONTACTINFO(COMPID, PERSONALID, CONTACTNAME, CONTACTTEL, CONTACTMOBILE, CONTACTEMAIL);
 
                     if (tList.Count == 0)
                     {
@@ -3327,6 +3358,7 @@ namespace TSTI_API.Controllers
                         {
                             PERSONALCONTACTINFO_LIST beanCust = new PERSONALCONTACTINFO_LIST();
 
+                            beanCust.COMPID = bean.BUKRS;
                             beanCust.PERSONALID = bean.CustomerID;
                             beanCust.PERSONALNAME = bean.CustomerName;
                             beanCust.CONTACTNAME = bean.Name;
@@ -3363,6 +3395,8 @@ namespace TSTI_API.Controllers
         /// <summary>查詢個人客戶聯絡人資料資料INPUT資訊</summary>
         public struct PERSONALCONTACTINFO_INPUT
         {
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string IV_COMPID { get; set; }
             /// <summary>個人客戶代號</summary>
             public string IV_PERSONALID { get; set; }
             /// <summary>聯絡人姓名</summary>
@@ -3391,6 +3425,8 @@ namespace TSTI_API.Controllers
 
         public struct PERSONALCONTACTINFO_LIST
         {
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string COMPID { get; set; }
             /// <summary>個人客戶代號</summary>
             public string PERSONALID { get; set; }
             /// <summary>個人客戶名稱</summary>
@@ -3420,7 +3456,8 @@ namespace TSTI_API.Controllers
         {
             #region Json範列格式(傳入格式)
             //{
-            //    "IV_LOGINEMPNO": "99120894",            
+            //    "IV_LOGINEMPNO": "99120894",
+            //    "IV_COMPID": "T012",
             //    "IV_PERSONALNAME": "個人客戶-田巧如",
             //    "IV_CONTACTNAME": "田巧如",
             //    "IV_CONTACTCITY": "台中市",
@@ -3444,6 +3481,7 @@ namespace TSTI_API.Controllers
             #region Json範列格式(傳入格式)
             //{
             //    "IV_LOGINEMPNO": "99120894",
+            //    "IV_COMPID": "T012",
             //    "IV_PERSONALID": "P00000003",
             //    "IV_PERSONALNAME": "個人客戶-田巧如",
             //    "IV_CONTACTNAME": "田巧如",
@@ -3471,10 +3509,10 @@ namespace TSTI_API.Controllers
         private PERSONALCONTACTCREATE_OUTPUT SavePERSONALCONTACT(PERSONALCONTACTCREATE_INPUT beanIN)
         {
             PERSONALCONTACTCREATE_OUTPUT SROUT = new PERSONALCONTACTCREATE_OUTPUT();
-
-            string cBUKRS = "T012";
+            
             string pLoginName = string.Empty;
 
+            string cBUKRS = string.IsNullOrEmpty(beanIN.IV_COMPID) ? "T012" : beanIN.IV_COMPID.Trim();
             string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
             string IV_PERSONALID = string.IsNullOrEmpty(beanIN.IV_PERSONALID) ? "" : beanIN.IV_PERSONALID.Trim();
             string IV_PERSONALNAME = string.IsNullOrEmpty(beanIN.IV_PERSONALNAME) ? "" : beanIN.IV_PERSONALNAME.Trim();
@@ -3497,7 +3535,7 @@ namespace TSTI_API.Controllers
             else
             {
                 pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
-                cBUKRS = EmpBean.BUKRS;
+                cBUKRS = string.IsNullOrEmpty(cBUKRS) ? EmpBean.BUKRS : cBUKRS;
             }
 
             try
@@ -3598,6 +3636,8 @@ namespace TSTI_API.Controllers
         {
             /// <summary>建立者員工編號ERPID</summary>
             public string IV_LOGINEMPNO { get; set; }
+            /// <summary>公司別ID(T012、T016、C069、T022)</summary>
+            public string IV_COMPID { get; set; }
             /// <summary>個人客戶代號</summary>
             public string IV_PERSONALID { get; set; }
             /// <summary>個人客戶名稱</summary>
@@ -12565,6 +12605,8 @@ namespace TSTI_API.Controllers
         public string SecretaryEMP { get; set; }
         /// <summary>維護業務人員</summary>
         public string MASalesEMP { get; set; }
+        /// <summary>合約中心單位管理員</summary>
+        public string CenterMGR { get; set; }
         /// <summary>異動時間</summary>
         public string ModifiedDate { get; set; }
 
@@ -12605,6 +12647,8 @@ namespace TSTI_API.Controllers
         public string SecretaryEmail { get; set; }
         /// <summary>維護業務人員Email</summary>
         public string MASalesEmail { get; set; }
+        /// <summary>合約中心單位管理員Email</summary>
+        public string CenterMGREmail { get; set; }
     }
     #endregion
 
