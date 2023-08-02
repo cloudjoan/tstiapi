@@ -8892,8 +8892,8 @@ namespace TSTI_API.Controllers
 
             try
             {
-                //var bean = dbEIP.TB_SERVICES_APP_INSTALL.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());      //【正式】
-                var bean = dbEIP.TB_SERVICES_APP_INSTALLTEMP.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());  //【測試】
+                var bean = dbEIP.TB_SERVICES_APP_INSTALL.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());      //【正式】
+                //var bean = dbEIP.TB_SERVICES_APP_INSTALLTEMP.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());  //【測試】
 
                 if (bean == null)
                 {
