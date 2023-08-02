@@ -25,7 +25,7 @@ using System.Data.Entity.Validation;
 namespace TSTI_API.Controllers
 {
     #region API Key，上【正式】再打開
-    //[ApiFilter] 
+    [ApiFilter] 
     #endregion
     public class APIController : Controller
     {
