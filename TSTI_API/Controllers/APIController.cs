@@ -5098,18 +5098,25 @@ namespace TSTI_API.Controllers
                     var imgW = img.Width;
                     var imgH = img.Height;
 
-                    //壓縮照片
-                    img.ScaleAbsolute(1200, 1600);
+                    //img.ScaleAbsolute(1200, 1600);
+                    img.ScaleToFit(1200, 1600);
                     doc.SetPageSize(new iTextSharp.text.Rectangle(0, 0, 1200, 1600, 0));
 
-                    //如果圖片是橫的(寬大於長)
-                    if (imgW > imgH)
+
+					//如果圖片是橫的(寬大於長)
+					if (imgW > imgH)
                     {
                         img.RotationDegrees = -90; //counterclockwise逆時針旋轉
                         doc.SetPageSize(new iTextSharp.text.Rectangle(0, 0, img.Height, img.Width, 0));
                     }
                     doc.NewPage();
-                    img.SetAbsolutePosition(0, 0);
+
+					// 將圖片居中放置
+					float x = (doc.PageSize.Width - img.ScaledWidth) / 2;
+					float y = (doc.PageSize.Height - img.ScaledHeight) / 2;
+					img.SetAbsolutePosition(x, y);
+					//img.SetAbsolutePosition(0, 0);
+
                     writer.DirectContent.AddImage(img);
                 }
 
