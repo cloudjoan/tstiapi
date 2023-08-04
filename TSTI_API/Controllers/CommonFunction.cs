@@ -6011,7 +6011,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 組合約主數據Mail相關資訊
         /// </summary>        
-        /// <param name="cCondition">合約主數據執行條件(ADD.新建、SAVE.保存)</param>
+        /// <param name="cCondition">合約主數據執行條件(ADD.新建(合約主數據)、SAVE.保存(合約主數據)、ENGCHANGE.工程師異動)</param>
         /// <param name="cOperationID_Contract">程式作業編號檔系統ID(合約主數據查詢/維護)</param>  
         /// <param name="cContractID">文件編號</param>
         /// <param name="cLog">LOG記錄</param>
@@ -6193,7 +6193,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 發送合約主數據Mail相關資訊
         /// </summary>        
-        /// <param name="cCondition">合約主數據執行條件(ADD.新建、SAVE.保存)</param>
+        /// <param name="cCondition">合約主數據執行條件(ADD.新建(合約主數據)、SAVE.保存(合約主數據)、ENGCHANGE.工程師異動)</param>
         /// <param name="cContractID">文件編號</param>
         /// <param name="cLog">LOG記錄</param>
         /// <param name="tONEURLName">One Service站台名稱</param>

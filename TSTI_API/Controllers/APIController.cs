@@ -12666,14 +12666,19 @@ namespace TSTI_API.Controllers
     public enum ContractCondition
     {
         /// <summary>
-        /// 新建
+        /// 新建(合約主數據)
         /// </summary>
         ADD,
 
         /// <summary>
-        /// 保存
+        /// 保存(合約主數據)
         /// </summary>
-        SAVE
+        SAVE,
+
+        /// <summary>
+        /// 工程師異動
+        /// </summary>
+        ENGCHANGE       
     }
     #endregion
 
