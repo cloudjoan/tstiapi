@@ -9399,9 +9399,9 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑服務團隊資料接口 ↑↑↑↑↑-----  
 
-        #region -----↓↓↓↓↓料號資料接口 ↓↓↓↓↓-----        
+        #region -----↓↓↓↓↓料號(非備品)資料接口 ↓↓↓↓↓-----        
 
-        #region 查詢料號資料接口
+        #region 查詢料號(非備品)資料接口
         [HttpPost]
         public ActionResult API_MATERIALINFO_GET(MATERIALINFO_INPUT beanIV)
         {
@@ -9420,7 +9420,7 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得料號資料
+        #region 取得料號(非備品)資料
         private OPTION_OUTPUT MATERIALINFO_GET(MATERIALINFO_INPUT beanIN)
         {
             OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();
@@ -9485,7 +9485,84 @@ namespace TSTI_API.Controllers
         }
         #endregion      
 
-        #endregion -----↑↑↑↑↑料號資料接口 ↑↑↑↑↑-----  
+        #endregion -----↑↑↑↑↑料號(非備品)資料接口 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓料號(for備品)資料接口 ↓↓↓↓↓-----        
+
+        #region 查詢料號(for備品)資料接口
+        [HttpPost]
+        public ActionResult API_MATERIALSPAREINFO_GET(MATERIALINFO_INPUT beanIV)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNO": "99120894",
+            //    "IV_MATERIAL": "507284"
+            //}
+            #endregion
+
+            OPTION_OUTPUT ListOUT = new OPTION_OUTPUT();
+
+            ListOUT = MATERIALSPARE_GET(beanIV);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得料號(for備品)資料
+        private OPTION_OUTPUT MATERIALSPARE_GET(MATERIALINFO_INPUT beanIN)
+        {
+            OPTION_OUTPUT OUTBean = new OPTION_OUTPUT();
+
+            try
+            {
+                EmployeeBean EmpBean = new EmployeeBean();
+                EmpBean = CMF.findEmployeeInfoByERPID(beanIN.IV_LOGINEMPNO);
+
+                var tList = CMF.findMATERIALSPAREINFO(beanIN.IV_MATERIAL.Trim(), EmpBean.CompanyCode);
+
+                if (tList.Count == 0)
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無料號資料，請重新查詢！";
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+
+                    #region 取得料號資料List
+                    List<OPTION_LIST> tEMPList = new List<OPTION_LIST>();
+
+                    foreach (var bean in tList)
+                    {
+                        OPTION_LIST beanTEAM = new OPTION_LIST();
+
+                        beanTEAM.VALUE = bean.MARA_MATNR;   //料號ID
+                        beanTEAM.TEXT = bean.MAKT_TXZA1_ZF; //料號說明
+
+                        tEMPList.Add(beanTEAM);
+                    }
+
+                    OUTBean.OPTION_LIST = tEMPList;
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "MATERIALSPAREINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion      
+
+        #endregion -----↑↑↑↑↑料號(for備品)資料接口 ↑↑↑↑↑-----  
 
         #region -----↓↓↓↓↓報修類別資料接口 ↓↓↓↓↓-----        
 
@@ -10098,6 +10175,122 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑合約主數據資料異動時發送Mail通知 ↑↑↑↑↑-----
+
+        #region -----↓↓↓↓↓合約工程師資料新增/異動時發送Mail通知 ↓↓↓↓↓-----        
+
+        #region 合約工程師資料新增/異動時發送Mail通知資料        
+        [HttpPost]
+        public ActionResult API_CONTRACTENGCHANGE_SENDMAIL(CONTRACTENGCHANGE_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNO" : "99120894",
+            //    "IV_CONTRACTID" : "11204075", 
+            //    "IV_LOG": "地點_舊值【 台北市敦化南路二段65-67號10樓】 新值【 台北市敦化南路二段65-67號10樓之1】 "
+            //}
+            #endregion
+
+            CONTRACTENGCHANGE_OUTPUT ListOUT = new CONTRACTENGCHANGE_OUTPUT();
+
+            ListOUT = CONTRACTENGCHANGE_SENDMAIL(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 發送Mail通知資料
+        private CONTRACTENGCHANGE_OUTPUT CONTRACTENGCHANGE_SENDMAIL(CONTRACTENGCHANGE_INPUT beanIN)
+        {
+            CONTRACTENGCHANGE_OUTPUT OUTBean = new CONTRACTENGCHANGE_OUTPUT();
+
+            string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
+            string IV_CONTRACTID = string.IsNullOrEmpty(beanIN.IV_CONTRACTID) ? "" : beanIN.IV_CONTRACTID.Trim();
+            string IV_LOG = string.IsNullOrEmpty(beanIN.IV_LOG) ? "" : beanIN.IV_LOG.Trim();
+
+            bool tIsFormal = false;
+            string pLoginName = string.Empty;
+            string tAPIURLName = string.Empty;
+            string tONEURLName = string.Empty;
+            string tBPMURLName = string.Empty;
+            string tPSIPURLName = string.Empty;
+            string tAttachURLName = string.Empty;
+
+            ContractCondition cCondition = ContractCondition.ADD;
+            cCondition = string.IsNullOrEmpty(IV_LOG) ? ContractCondition.ADD : ContractCondition.SAVE;
+
+            EmployeeBean EmpBean = new EmployeeBean();
+            EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+            if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
+            {
+                pLoginName = IV_LOGINEMPNO;
+            }
+            else
+            {
+                pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+            }
+
+            #region 取得系統位址參數相關資訊
+            SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+
+            tIsFormal = ParaBean.IsFormal;
+
+            tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+            tONEURLName = ParaBean.ONEURLName;
+            tBPMURLName = ParaBean.BPMURLName;
+            tPSIPURLName = ParaBean.PSIPURLName;
+            tAttachURLName = ParaBean.AttachURLName;
+            #endregion
+
+            try
+            {
+                #region 寄送Mail通知
+                CMF.SetContractMailContent(cCondition, pOperationID_Contract, IV_CONTRACTID, IV_LOG, tONEURLName, pLoginName, tIsFormal);
+
+                OUTBean.EV_MSGT = "Y";
+                OUTBean.EV_MSG = "";
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "CONTRACTENGCHANGE_SENDMAIL_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion       
+
+        #region 合約工程師資料新增/異動時發送Mail通知資料INPUT資訊
+        /// <summary>合約工程師資料新增/異動時發送Mail通知資料INPUT資訊</summary>
+        public struct CONTRACTENGCHANGE_INPUT
+        {
+            /// <summary>登入者員工編號ERPID</summary>
+            public string IV_LOGINEMPNO { get; set; }
+            /// <summary>文件編號</summary>
+            public string IV_CONTRACTID { get; set; }
+            /// <summary>LOG記錄</summary>
+            public string IV_LOG { get; set; }
+        }
+        #endregion
+
+        #region 合約工程師資料新增/異動時發送Mail通知資料OUTPUT資訊
+        /// <summary>合約工程師資料新增/異動時發送Mail通知資料OUTPUT資訊</summary>
+        public struct CONTRACTENGCHANGE_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑合約工程師資料異動時發送Mail通知 ↑↑↑↑↑-----
 
         #region -----↓↓↓↓↓ 建立ONE SERVICE 合約主數據接口 ↓↓↓↓↓-----        
 
