@@ -10185,8 +10185,12 @@ namespace TSTI_API.Controllers
             #region Json範列格式(傳入格式)
             //{
             //    "IV_LOGINEMPNO" : "99120894",
-            //    "IV_CONTRACTID" : "11204075", 
-            //    "IV_LOG": "地點_舊值【 台北市敦化南路二段65-67號10樓】 新值【 台北市敦化南路二段65-67號10樓之1】 "
+            //    "IV_CONTRACTID" : "10411208", 
+            //    "IV_LOG": "工程師ERPID_舊值【 】 新值【99121417】 工程師姓名_舊值【 】 新值【胡崇閔 Choung.Hu】 是否為主要工程師_舊值【 】 新值【Y】",
+            //    "IV_STATUS": "ADD",
+            //    "IV_IsMain": "Y",
+            //    "IV_OldMainEngineer": "",
+            //    "IV_OldAssEngineer": ""
             //}
             #endregion
 
@@ -10206,6 +10210,10 @@ namespace TSTI_API.Controllers
             string IV_LOGINEMPNO = string.IsNullOrEmpty(beanIN.IV_LOGINEMPNO) ? "" : beanIN.IV_LOGINEMPNO.Trim();
             string IV_CONTRACTID = string.IsNullOrEmpty(beanIN.IV_CONTRACTID) ? "" : beanIN.IV_CONTRACTID.Trim();
             string IV_LOG = string.IsNullOrEmpty(beanIN.IV_LOG) ? "" : beanIN.IV_LOG.Trim();
+            string IV_STATUS = string.IsNullOrEmpty(beanIN.IV_STATUS) ? "" : beanIN.IV_STATUS.Trim();
+            string IV_IsMain = string.IsNullOrEmpty(beanIN.IV_IsMain) ? "" : beanIN.IV_IsMain.Trim();
+            string IV_OldMainEngineer = string.IsNullOrEmpty(beanIN.IV_OldMainEngineer) ? "" : beanIN.IV_OldMainEngineer.Trim();
+            string IV_OldAssEngineer = string.IsNullOrEmpty(beanIN.IV_OldAssEngineer) ? "" : beanIN.IV_OldAssEngineer.Trim();
 
             bool tIsFormal = false;
             string pLoginName = string.Empty;
@@ -10215,8 +10223,22 @@ namespace TSTI_API.Controllers
             string tPSIPURLName = string.Empty;
             string tAttachURLName = string.Empty;
 
-            ContractCondition cCondition = ContractCondition.ADD;
-            cCondition = string.IsNullOrEmpty(IV_LOG) ? ContractCondition.ADD : ContractCondition.SAVE;
+            ContractENGCondition cCondition = ContractENGCondition.ADD;
+
+            switch(IV_STATUS)
+            {
+                case "ADD":
+                    cCondition = ContractENGCondition.ADD;
+                    break;
+
+                case "EDIT":
+                    cCondition = ContractENGCondition.EDIT;
+                    break;
+
+                case "DEL":
+                    cCondition = ContractENGCondition.DEL;
+                    break;
+            }
 
             EmployeeBean EmpBean = new EmployeeBean();
             EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
@@ -10245,7 +10267,7 @@ namespace TSTI_API.Controllers
             try
             {
                 #region 寄送Mail通知
-                CMF.SetContractMailContent(cCondition, pOperationID_Contract, IV_CONTRACTID, IV_LOG, tONEURLName, pLoginName, tIsFormal);
+                CMF.SetContractENGMailContent(cCondition, pOperationID_Contract, IV_CONTRACTID, IV_LOG, IV_IsMain, IV_OldMainEngineer, IV_OldAssEngineer, tONEURLName, pLoginName, tIsFormal);
 
                 OUTBean.EV_MSGT = "Y";
                 OUTBean.EV_MSG = "";
@@ -10276,6 +10298,14 @@ namespace TSTI_API.Controllers
             public string IV_CONTRACTID { get; set; }
             /// <summary>LOG記錄</summary>
             public string IV_LOG { get; set; }
+            /// <summary>執行狀態(ADD.新增 EDIT.編輯 DEL.刪除)</summary>
+            public string IV_STATUS { get; set; }
+            /// <summary>此次異動是否為主要工程師(Y.是 N.否)</summary>
+            public string IV_IsMain { get; set; }
+            /// <summary>原主要工程師ERPID</summary>
+            public string IV_OldMainEngineer { get; set; }
+            /// <summary>原協助工程師ERPID</summary>
+            public string IV_OldAssEngineer { get; set; }
         }
         #endregion
 
@@ -12852,6 +12882,36 @@ namespace TSTI_API.Controllers
     }
     #endregion
 
+    #region 合約工程師資訊(For Mail)
+    /// <summary>合約工程師資訊(For Mail)</summary>
+    public class CONTRACTENGINFO
+    {
+        /// <summary>文件編號</summary>
+        public string ContractID { get; set; }
+        /// <summary>是否為主要工程師(Y.是 N.否)</summary>
+        public string IsMain { get; set; }
+        /// <summary>主要工程師</summary>
+        public string MainENG { get; set; }
+        /// <summary>原主要工程師</summary>
+        public string OldMainENG { get; set; }
+        /// <summary>協助工程師</summary>
+        public string AssENG { get; set; }
+        /// <summary>原協助工程師</summary>
+        public string OldAssENG { get; set; }        
+        /// <summary>異動時間</summary>
+        public string ModifiedDate { get; set; }       
+     
+        /// <summary>主要工程師Email</summary>
+        public string MainENGEmail { get; set; }
+        /// <summary>原主要工程師Email</summary>
+        public string OldMainENGEmail { get; set; }
+        /// <summary>協助工程師Email</summary>
+        public string AssENGEmail { get; set; }        
+        /// <summary>原協助工程師Email</summary>
+        public string OldAssENGEmail { get; set; }
+    }
+    #endregion
+
     #region 合約主數據執行條件
     /// <summary>
     /// 合約主數據執行條件
@@ -12859,19 +12919,37 @@ namespace TSTI_API.Controllers
     public enum ContractCondition
     {
         /// <summary>
-        /// 新建(合約主數據)
+        /// 新建
         /// </summary>
         ADD,
 
         /// <summary>
-        /// 保存(合約主數據)
+        /// 保存
         /// </summary>
         SAVE,
+    }
+    #endregion
+
+    #region 合約工程師執行條件
+    /// <summary>
+    /// 合約工程師執行條件
+    /// </summary>
+    public enum ContractENGCondition
+    {
+        /// <summary>
+        /// 新建
+        /// </summary>
+        ADD,
 
         /// <summary>
-        /// 工程師異動
+        /// 編輯
         /// </summary>
-        ENGCHANGE       
+        EDIT,
+
+        /// <summary>
+        /// 刪除
+        /// </summary>
+        DEL,
     }
     #endregion
 

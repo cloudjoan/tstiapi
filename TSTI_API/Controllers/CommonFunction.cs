@@ -6035,13 +6035,13 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑服務Mail相關 ↑↑↑↑↑-----  
 
-        #region -----↓↓↓↓↓合約管理Mail相關 ↓↓↓↓↓-----
+        #region -----↓↓↓↓↓合約管理Mail相關 ↓↓↓↓↓-----        
 
         #region 組合約主數據Mail相關資訊
         /// <summary>
         /// 組合約主數據Mail相關資訊
         /// </summary>        
-        /// <param name="cCondition">合約主數據執行條件(ADD.新建(合約主數據)、SAVE.保存(合約主數據)、ENGCHANGE.工程師異動)</param>
+        /// <param name="cCondition">合約主數據執行條件(ADD.新建(合約主數據)、SAVE.保存(合約主數據)</param>
         /// <param name="cOperationID_Contract">程式作業編號檔系統ID(合約主數據查詢/維護)</param>  
         /// <param name="cContractID">文件編號</param>
         /// <param name="cLog">LOG記錄</param>
@@ -6050,164 +6050,16 @@ namespace TSTI_API.Controllers
         /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
         public void SetContractMailContent(ContractCondition cCondition, string cOperationID_Contract, string cContractID, string cLog, string tONEURLName, string cLoginName, bool tIsFormal)
         {
-            string tMailToTemp = string.Empty;
-            string tMailCcTemp = string.Empty;
-            string tMailBCcTemp = string.Empty;
-
-            string tMailTo = string.Empty;                  //收件者            
-            string tMailCc = string.Empty;                  //副本            
-            string tMailBCc = string.Empty;                 //密件副本
-            string tHypeLink = string.Empty;                //超連結
-            string tSeverName = string.Empty;               //主機名稱
-            string tEngineerID = string.Empty;              //工程師ERPID
-
-            string cTeamName = string.Empty;                //服務團隊
-            string cTeamMGR = string.Empty;                 //服務團隊主管
-            string cTeamMGREmail = string.Empty;            //服務團隊主管Email
-            string cMainENG = string.Empty;                 //主要工程師
-            string cMainENGEmail = string.Empty;            //主要工程師Email
-            string cAssENG = string.Empty;                  //協助工程師
-            string cAssENGEmail = string.Empty;             //協助工程師Email
-            string cTechMGR = string.Empty;                 //技術主管
-            string cTechMGREmail = string.Empty;            //技術主管Email
-            string cSalesEMP = string.Empty;                //業務人員
-            string cSalesEMPEmail = string.Empty;           //業務人員Email            
-            string cSecretaryEMP = string.Empty;            //業務祕書
-            string cSecretaryEMPEmail = string.Empty;       //業務祕書Email
-            string cMASalesEMP = string.Empty;              //維護業務人員
-            string cMASalesEMPEmail = string.Empty;         //維護業務人員Email
-            string cCenterMGR = string.Empty;               //合約中心單位管理員
-            string cCenterMGREmail = string.Empty;          //合約中心單位管理員Email
-
-            string cSoNo = string.Empty;                    //銷售訂單號
-            string cCustomerID = string.Empty;              //客戶ID
-            string cCustomerName = string.Empty;            //客戶名稱        
-            string cDesc = string.Empty;                    //訂單說明
-            string cStartDate = string.Empty;               //維護日期(起)
-            string cEndDate = string.Empty;                 //維護日期(迄)
-            string cMACycle = string.Empty;                 //維護週期        
-            string cMANotes = string.Empty;                 //維護備註        
-            string cMAAddress = string.Empty;               //維護地址        
-            string cContractNotes = string.Empty;           //合約備註          
-            string cBillNotes = string.Empty;               //請款備註
-            string cModifiedDate = string.Empty;            //異動日期
-
             try
             {
-                List<SRTEAMORGINFO> Team_List = new List<SRTEAMORGINFO>();
-                List<SREMPINFO> MainENG_List = new List<SREMPINFO>();
-                List<SREMPINFO> AssENG_List = new List<SREMPINFO>();                
-                List<SREMPINFO> SalesEMP_List = new List<SREMPINFO>();
-                List<SREMPINFO> SecretaryEMP_List = new List<SREMPINFO>();
-                List<SREMPINFO> MASalesEMP_List = new List<SREMPINFO>();               
+                CONTRACTMAININFO ContractMain = SetMainContractContent(cContractID, cLoginName);
 
-                var beanM = dbOne.TB_ONE_ContractMain.FirstOrDefault(x => x.Disabled == 0 && x.cContractID == cContractID);
-
-                if (beanM != null)
+                if (!string.IsNullOrEmpty(ContractMain.ContractID))
                 {
-                    #region -----↓↓↓↓↓主檔 ↓↓↓↓↓-----
-                    CONTRACTMAININFO ContractMain = new CONTRACTMAININFO();
-
-                    #region 服務團隊相關
-                    Team_List = findSRTEAMORGINFO(beanM.cTeamID);                    
-                    cTeamName = findSRTeamName(Team_List);
-                    cTeamMGR = findSRTeamMGRName(Team_List);
-                    cTeamMGREmail = findSRTeamMGREmail(Team_List);
-                    #endregion
-
-                    #region 合約中心單位管理員相關
-                    Dictionary<string, string> Dic = findContractCenterManager(beanM.cTeamID, "ACCOUNT", "T012", "CONTRACTCenterManager");
-
-                    foreach (KeyValuePair<string, string> item in Dic)
-                    {
-                        cCenterMGR += item.Value + ";";
-                        cCenterMGREmail += item.Key + ";";
-                    }
-                    #endregion
-
-                    #region 主要工程師/協助工程師相關
-                    tEngineerID = findContractDetailENG(cContractID, "Y");
-                    if (tEngineerID != "")
-                    {
-                        MainENG_List = findSREMPINFO(tEngineerID);
-                        cMainENG = findSREMPName(MainENG_List);
-                        cMainENGEmail = findSREMPEmail(MainENG_List);
-                    }
-
-                    tEngineerID = findContractDetailENG(cContractID, "N");
-                    if (tEngineerID != "")
-                    {
-                        AssENG_List = findSREMPINFO(tEngineerID);
-                        cAssENG = findSREMPName(AssENG_List);
-                        cAssENGEmail = findSREMPEmail(AssENG_List);
-                    }
-                    #endregion
-
-                    #region 業務人員/業務祕書/維護業務相關
-                    SalesEMP_List = findSREMPINFO(beanM.cSoSales);
-                    cSalesEMP = findSREMPName(SalesEMP_List);
-                    cSalesEMPEmail = findSREMPEmail(SalesEMP_List);
-
-                    SecretaryEMP_List = findSREMPINFO(beanM.cSoSalesASS);
-                    cSecretaryEMP = findSREMPName(SecretaryEMP_List);
-                    cSecretaryEMPEmail = findSREMPEmail(SecretaryEMP_List);
-
-                    MASalesEMP_List = findSREMPINFO(beanM.cMASales);
-                    cMASalesEMP = findSREMPName(SalesEMP_List);
-                    cMASalesEMPEmail = findSREMPEmail(SalesEMP_List);
-                    #endregion                   
-
-                    #region 其他主檔相關  
-                    cSoNo = beanM.cSoNo;
-                    cCustomerID = beanM.cCustomerID;
-                    cCustomerName = beanM.cCustomerName;
-                    cDesc = beanM.cDesc;
-                    cStartDate = Convert.ToDateTime(beanM.cStartDate).ToString("yyyy-MM-dd");
-                    cEndDate = Convert.ToDateTime(beanM.cEndDate).ToString("yyyy-MM-dd");
-                    cMACycle = beanM.cMACycle;
-                    cMANotes = beanM.cMANotes;
-                    cMAAddress = beanM.cMAAddress;
-                    cContractNotes = beanM.cContractNotes;
-                    cBillNotes = beanM.cBillNotes;
-                    cModifiedDate = beanM.ModifiedDate == null ? "" : Convert.ToDateTime(beanM.ModifiedDate).ToString("yyyy-MM-dd");
-                    #endregion
-
-                    ContractMain.ContractID = cContractID;                 
-                    ContractMain.TeamNAME = cTeamName;
-                    ContractMain.TeamMGR = cTeamMGR;
-                    ContractMain.MainENG = cMainENG;
-                    ContractMain.AssENG = cAssENG;                    
-                    ContractMain.SalesEMP = cSalesEMP;
-                    ContractMain.SecretaryEMP = cSecretaryEMP;
-                    ContractMain.MASalesEMP = cMASalesEMP;
-                    ContractMain.CenterMGR = cCenterMGR;
-                    ContractMain.ModifiedDate = cModifiedDate;
-
-                    ContractMain.SoNo = cSoNo;
-                    ContractMain.CustomerID = cCustomerID;
-                    ContractMain.CustomerName = cCustomerName;
-                    ContractMain.Desc = cDesc;                    
-                    ContractMain.StartDate = cStartDate;
-                    ContractMain.EndDate = cEndDate;
-                    ContractMain.MACycle = cMACycle;
-                    ContractMain.MANotes = cMANotes;
-                    ContractMain.MAAddress = cMAAddress;
-                    ContractMain.ContractNotes = cContractNotes;
-                    ContractMain.BillNotes = cBillNotes;
-
-                    ContractMain.TeamMGREmail = cTeamMGREmail;
-                    ContractMain.MainENGEmail = cMainENGEmail;
-                    ContractMain.AssENGEmail = cAssENGEmail;                    
-                    ContractMain.SalesEmail = cSalesEMPEmail;
-                    ContractMain.SecretaryEmail = cSecretaryEMPEmail;
-                    ContractMain.MASalesEmail = cMASalesEMPEmail;
-                    ContractMain.CenterMGREmail = cCenterMGREmail;
-                    #endregion -----↑↑↑↑↑Mail相關 ↑↑↑↑↑-----                  
-
                     #region 發送合約主數據Mail相關資訊  
                     SendContractMail(cCondition, cContractID, cLog, tONEURLName, cLoginName, tIsFormal, ContractMain);
                     #endregion
-                }
+                }               
             }
             catch (Exception ex)
             {
@@ -6217,7 +6069,7 @@ namespace TSTI_API.Controllers
                 writeToLog(cContractID, "SetContractMailContent", pMsg, cLoginName);
             }
         }
-        #endregion
+        #endregion        
 
         #region 發送合約主數據Mail相關資訊
         /// <summary>
@@ -6445,6 +6297,545 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 組合約工程師異動Mail相關資訊
+        /// <summary>
+        /// 組合約工程師異動Mail相關資訊
+        /// </summary>        
+        /// <param name="cCondition">合約工程師執行條件(ADD.新建、EDIT.編輯 DEL.刪除)</param>
+        /// <param name="cOperationID_Contract">程式作業編號檔系統ID(合約主數據查詢/維護)</param>  
+        /// <param name="cContractID">文件編號</param>
+        /// <param name="cLog">Log紀錄</param>        
+        /// <param name="cIsMain">是否為主要工程師(Y.是 N.否)</param>
+        /// <param name="cOldMainEngineer">原主要工程師ERPID</param>
+        /// <param name="cOldAssEngineer">原協助工程師ERPID</param>
+        /// <param name="tONEURLName">One Service站台名稱</param>
+        /// <param name="cLoginName">登入人員姓名</param>
+        /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
+        public void SetContractENGMailContent(ContractENGCondition cCondition, string cOperationID_Contract, string cContractID, string cLog, 
+                                             string cIsMain, string cOldMainEngineer, string cOldAssEngineer, string tONEURLName, string cLoginName, bool tIsFormal)
+        {
+            try
+            {
+                CONTRACTMAININFO ContractMain = SetMainContractContent(cContractID, cLoginName);
+                CONTRACTENGINFO ContractEng = SetContractENGContent(cContractID, cIsMain, cOldMainEngineer, cOldAssEngineer, cLoginName);
+
+                if (!string.IsNullOrEmpty(ContractEng.ContractID))
+                {
+                    #region 發送合約工程師異動Mail相關資訊  
+                    SendContractENGMail(cCondition, cContractID, cLog, tONEURLName, cLoginName, tIsFormal, ContractMain, ContractEng);
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                writeToLog(cContractID, "SetContractENGMailContent", pMsg, cLoginName);
+            }
+        }
+        #endregion
+
+        #region 發送合約工程師異動Mail相關資訊
+        /// <summary>
+        /// 發送合約工程師異動Mail相關資訊
+        /// </summary>        
+        /// <param name="cCondition">合約工程師執行條件(ADD.新建、EDIT.編輯 DEL.刪除)</param>
+        /// <param name="cContractID">文件編號</param>        
+        /// <param name="cLog">>Log紀錄</param>
+        /// <param name="tONEURLName">One Service站台名稱</param>
+        /// <param name="cLoginName">登入人員姓名</param>
+        /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>        
+        /// <param name="ContractMain">合約主數據資訊(For Mail)</param>
+        /// <param name="ContractEng">合約工程師資訊(For Mail)</param>
+        public void SendContractENGMail(ContractENGCondition cCondition, string cContractID, string cLog, string tONEURLName, string cLoginName, bool tIsFormal, CONTRACTMAININFO ContractMain, CONTRACTENGINFO ContractEng)
+        {
+            List<string> tMailToList = new List<string>();
+            List<string> tMailCcList = new List<string>();
+            List<string> tMailBCcList = new List<string>();
+
+            string tMailToTemp = string.Empty;
+            string tMailCcTemp = string.Empty;
+            string tMailBCcTemp = string.Empty;
+
+            string tMailTo = string.Empty;          //收件者            
+            string tMailCc = string.Empty;          //副本            
+            string tMailBCc = string.Empty;         //密件副本
+            string tHypeLink = string.Empty;        //超連結
+            string MAINEngineerID = string.Empty;
+            string ASSEngineerID = string.Empty;
+
+            try
+            {
+                #region 取得收件者
+                if (ContractEng.MainENGEmail != "") //主要工程師
+                {
+                    tMailToTemp += ContractEng.MainENGEmail;
+                }                
+
+                if (ContractEng.AssENGEmail != "") //協助工程師
+                {
+                    tMailToTemp += ContractEng.AssENGEmail;
+                }
+
+                if (ContractEng.OldMainENGEmail != "") //原主要工程師
+                {
+                    tMailToTemp += ContractEng.OldMainENGEmail;
+                }
+
+                if (ContractEng.OldAssENGEmail != "") //原協助工程師
+                {
+                    tMailToTemp += ContractEng.OldAssENGEmail;
+                }
+
+                if (tMailToTemp != "")
+                {
+                    foreach (string tValue in tMailToTemp.TrimEnd(';').Split(';'))
+                    {
+                        if (!tMailToList.Contains(tValue))
+                        {
+                            tMailToList.Add(tValue);
+
+                            tMailTo += tValue + ";";
+                        }
+                    }
+
+                    tMailTo = tMailTo.TrimEnd(';');
+                }
+                #endregion
+
+                #region 取得副本
+                if (ContractMain.TeamMGREmail != "") //有服務團隊主管
+                {
+                    tMailCcTemp += ContractMain.TeamMGREmail;
+                }
+
+                if (ContractMain.CenterMGREmail != "") //合約中心單位管理員
+                {
+                    tMailCcTemp += ContractMain.CenterMGREmail;
+                }
+
+                if (tMailCcTemp != "")
+                {
+                    foreach (string tValue in tMailCcTemp.TrimEnd(';').Split(';'))
+                    {
+                        if (!tMailCcList.Contains(tValue))
+                        {
+                            tMailCcList.Add(tValue);
+
+                            tMailCc += tValue + ";";
+                        }
+                    }
+
+                    tMailCc = tMailCc.TrimEnd(';');
+                }
+                #endregion
+
+                #region 取得密件副本
+                tMailBCcTemp = "Jordan.Chang@etatung.com;Elvis.Chang@etatung.com"; //等都正常了就把我的拿掉
+
+                if (tMailBCcTemp != "")
+                {
+                    foreach (string tValue in tMailBCcTemp.TrimEnd(';').Split(';'))
+                    {
+                        if (!tMailBCcList.Contains(tValue))
+                        {
+                            tMailBCcList.Add(tValue);
+
+                            tMailBCc += tValue + ";";
+                        }
+                    }
+
+                    tMailBCc = tMailBCc.TrimEnd(';');
+                }
+                #endregion
+
+                #region 是否為測試區
+                string strTest = string.Empty;
+
+                if (!tIsFormal)
+                {
+                    strTest = "【*測試*】";
+                    //tMailTo = "Elvis.Chang@etatung.com";
+                    tMailCc += ";Elvis.Chang@etatung.com;Jordan.Chang@etatung.com;Cara.Tien@etatung.com";
+                }
+                #endregion
+
+                #region 郵件主旨
+                string tMailSubject = findContractENGMailSubject(cCondition, cContractID, ContractEng.IsMain, ContractEng.MainENG);
+
+                tMailSubject = strTest + tMailSubject;
+                #endregion
+
+                #region 郵件內容
+
+                #region 內容格式參考(合約工程師)
+
+                #region 保存的內容
+                //親愛的主管/同仁您好,有一份合約工程師已異動，內容如下：
+
+                //[工程師內容]
+                //主要工程師：胡OO                 
+                //協助工程師：王OO;黃OO                
+                //異動人員：張豐穎 Elvis.Chang
+                //異動時間：2023-06-14
+                //異動記錄：工程師ERPID_舊值【 】 新值【99121417】 工程師姓名_舊值【 】 新值【胡崇閔 Choung.Hu】 是否為主要工程師_舊值【 】 新值【Y】
+
+                //[合約主數據內容]
+                //客戶名稱：D86383738/台灣恩悌悌系統股份有限公司
+                //合約文件編號：11204075
+                //合約備註：原11104100續約；下包商:力麗、零壹  ※此筆含電腦、網路維護
+                //請款備註：
+                //訂單號碼：
+                //訂單/合約說明：FY23NTT_大廣國際機房維護
+                //合約開始日期：2023-04-01
+                //合約結束日期：2024-03-31
+                //維護週期：202306_202309_202312_202403
+                //維護備註：1. 維護期間:2023/04/01-2024/3/31  2. SLA:724
+                //維護地址：台灣恩悌悌NTT for 大廣國際
+                //業務：謝旻樺 Fion.Hsieh
+                //維護業務：謝旻樺 Fion.Hsieh
+
+                //請儘速至One Sevice 合約管理系統處理，謝謝！
+                //查看合約主數據內容 =>超連結(http://172.31.7.56:32200/Contract/ContractMain?ContractID=11204075)
+                //提醒您：此為系統發送信函請勿直接回覆此信。                
+
+                //-------此信件由系統管理員發出，請勿回覆此信件-------
+                #endregion
+
+                #endregion
+
+                tHypeLink = tONEURLName + "/Contract/ContractMain?ContractID=" + cContractID;
+
+                string tMailBody = GetMailBody("ONEContractENG_MAIL");
+                string Title = "親愛的主管/同仁您好,有一份合約工程師已異動，內容如下：";
+                string CustomerName = ContractMain.CustomerID + "/" + ContractMain.CustomerName;
+                string Desc = ContractMain.Desc;
+                string MANotes = ContractMain.MANotes;
+                string ModifiedUserName = "異動人員：" + cLoginName + "</br>";
+                string ModifiedDate = "異動時間：" + ContractEng.ModifiedDate + "</br>";
+                string Record = "異動記錄：" + cLog + "</br>";
+
+                MAINEngineerID = "主要工程師：" + ContractEng.MainENG + "</br>";
+                ASSEngineerID = "協助工程師：" + ContractEng.AssENG + "</br>";                
+
+                tMailBody = tMailBody.Replace("【<Title>】", Title).Replace("【<CustomerName>】", CustomerName).Replace("【<ContractID>】", ContractMain.ContractID);
+                tMailBody = tMailBody.Replace("【<MAINEngineerID>】", MAINEngineerID).Replace("【<ASSEngineerID>】", ASSEngineerID);
+                tMailBody = tMailBody.Replace("【<ContractNotes>】", ContractMain.ContractNotes).Replace("【<BillNotes>】", ContractMain.BillNotes);
+                tMailBody = tMailBody.Replace("【<SoNo>】", ContractMain.SoNo).Replace("【<Desc>】", Desc);
+                tMailBody = tMailBody.Replace("【<StartDate>】", ContractMain.StartDate).Replace("【<EndDate>】", ContractMain.EndDate);
+                tMailBody = tMailBody.Replace("【<MACycle>】", ContractMain.MACycle).Replace("【<MANotes>】", MANotes);
+                tMailBody = tMailBody.Replace("【<MAAddress>】", ContractMain.MAAddress).Replace("【<SalesEMP>】", ContractMain.SalesEMP);
+                tMailBody = tMailBody.Replace("【<MASalesEMP>】", ContractMain.MASalesEMP).Replace("【<ModifiedDate>】", ModifiedDate);
+                tMailBody = tMailBody.Replace("【<ModifiedUserName>】", ModifiedUserName).Replace("【<Record>】", Record).Replace("【<tHypeLink>】", tHypeLink);
+                #endregion
+
+                //呼叫寄送Mail
+                SendMailByAPI("SendSRMail_API", null, tMailTo, tMailCc, tMailBCc, tMailSubject, tMailBody, "", "");
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                writeToLog(cContractID, "SendContractMail", pMsg, cLoginName);
+            }
+        }
+        #endregion
+
+        #region 組合約主數據相關資訊
+        /// <summary>
+        /// 組合約主數據Mail相關資訊
+        /// </summary>                
+        /// <param name="cContractID">文件編號</param>        
+        /// <param name="cLoginName">登入人員姓名</param>        
+        public CONTRACTMAININFO SetMainContractContent(string cContractID, string cLoginName)
+        {
+            string tMailToTemp = string.Empty;
+            string tMailCcTemp = string.Empty;
+            string tMailBCcTemp = string.Empty;
+
+            string tMailTo = string.Empty;                  //收件者            
+            string tMailCc = string.Empty;                  //副本            
+            string tMailBCc = string.Empty;                 //密件副本
+            string tHypeLink = string.Empty;                //超連結
+            string tSeverName = string.Empty;               //主機名稱
+            string tEngineerID = string.Empty;              //工程師ERPID
+
+            string cTeamName = string.Empty;                //服務團隊
+            string cTeamMGR = string.Empty;                 //服務團隊主管
+            string cTeamMGREmail = string.Empty;            //服務團隊主管Email
+            string cMainENG = string.Empty;                 //主要工程師
+            string cMainENGEmail = string.Empty;            //主要工程師Email
+            string cAssENG = string.Empty;                  //協助工程師
+            string cAssENGEmail = string.Empty;             //協助工程師Email
+            string cTechMGR = string.Empty;                 //技術主管
+            string cTechMGREmail = string.Empty;            //技術主管Email
+            string cSalesEMP = string.Empty;                //業務人員
+            string cSalesEMPEmail = string.Empty;           //業務人員Email            
+            string cSecretaryEMP = string.Empty;            //業務祕書
+            string cSecretaryEMPEmail = string.Empty;       //業務祕書Email
+            string cMASalesEMP = string.Empty;              //維護業務人員
+            string cMASalesEMPEmail = string.Empty;         //維護業務人員Email
+            string cCenterMGR = string.Empty;               //合約中心單位管理員
+            string cCenterMGREmail = string.Empty;          //合約中心單位管理員Email
+
+            string cSoNo = string.Empty;                    //銷售訂單號
+            string cCustomerID = string.Empty;              //客戶ID
+            string cCustomerName = string.Empty;            //客戶名稱        
+            string cDesc = string.Empty;                    //訂單說明
+            string cStartDate = string.Empty;               //維護日期(起)
+            string cEndDate = string.Empty;                 //維護日期(迄)
+            string cMACycle = string.Empty;                 //維護週期        
+            string cMANotes = string.Empty;                 //維護備註        
+            string cMAAddress = string.Empty;               //維護地址        
+            string cContractNotes = string.Empty;           //合約備註          
+            string cBillNotes = string.Empty;               //請款備註
+            string cModifiedDate = string.Empty;            //異動日期
+
+            CONTRACTMAININFO ContractMain = new CONTRACTMAININFO();
+
+            try
+            {
+                List<SRTEAMORGINFO> Team_List = new List<SRTEAMORGINFO>();
+                List<SREMPINFO> MainENG_List = new List<SREMPINFO>();
+                List<SREMPINFO> AssENG_List = new List<SREMPINFO>();
+                List<SREMPINFO> SalesEMP_List = new List<SREMPINFO>();
+                List<SREMPINFO> SecretaryEMP_List = new List<SREMPINFO>();
+                List<SREMPINFO> MASalesEMP_List = new List<SREMPINFO>();
+
+                var beanM = dbOne.TB_ONE_ContractMain.FirstOrDefault(x => x.Disabled == 0 && x.cContractID == cContractID);
+
+                if (beanM != null)
+                {
+                    #region -----↓↓↓↓↓主檔 ↓↓↓↓↓-----                   
+
+                    #region 服務團隊相關
+                    Team_List = findSRTEAMORGINFO(beanM.cTeamID);
+                    cTeamName = findSRTeamName(Team_List);
+                    cTeamMGR = findSRTeamMGRName(Team_List);
+                    cTeamMGREmail = findSRTeamMGREmail(Team_List);
+                    #endregion
+
+                    #region 合約中心單位管理員相關
+                    Dictionary<string, string> Dic = findContractCenterManager(beanM.cTeamID, "ACCOUNT", "T012", "CONTRACTCenterManager");
+
+                    foreach (KeyValuePair<string, string> item in Dic)
+                    {
+                        cCenterMGR += item.Value + ";";
+                        cCenterMGREmail += item.Key + ";";
+                    }
+                    #endregion
+
+                    #region 主要工程師/協助工程師相關
+                    tEngineerID = findContractDetailENG(cContractID, "Y");
+                    if (tEngineerID != "")
+                    {
+                        MainENG_List = findSREMPINFO(tEngineerID);
+                        cMainENG = findSREMPName(MainENG_List);
+                        cMainENGEmail = findSREMPEmail(MainENG_List);
+                    }
+
+                    tEngineerID = findContractDetailENG(cContractID, "N");
+                    if (tEngineerID != "")
+                    {
+                        AssENG_List = findSREMPINFO(tEngineerID);
+                        cAssENG = findSREMPName(AssENG_List);
+                        cAssENGEmail = findSREMPEmail(AssENG_List);
+                    }
+                    #endregion
+
+                    #region 業務人員/業務祕書/維護業務相關
+                    SalesEMP_List = findSREMPINFO(beanM.cSoSales);
+                    cSalesEMP = findSREMPName(SalesEMP_List);
+                    cSalesEMPEmail = findSREMPEmail(SalesEMP_List);
+
+                    SecretaryEMP_List = findSREMPINFO(beanM.cSoSalesASS);
+                    cSecretaryEMP = findSREMPName(SecretaryEMP_List);
+                    cSecretaryEMPEmail = findSREMPEmail(SecretaryEMP_List);
+
+                    MASalesEMP_List = findSREMPINFO(beanM.cMASales);
+                    cMASalesEMP = findSREMPName(SalesEMP_List);
+                    cMASalesEMPEmail = findSREMPEmail(SalesEMP_List);
+                    #endregion                   
+
+                    #region 其他主檔相關  
+                    cSoNo = beanM.cSoNo;
+                    cCustomerID = beanM.cCustomerID;
+                    cCustomerName = beanM.cCustomerName;
+                    cDesc = beanM.cDesc;
+                    cStartDate = Convert.ToDateTime(beanM.cStartDate).ToString("yyyy-MM-dd");
+                    cEndDate = Convert.ToDateTime(beanM.cEndDate).ToString("yyyy-MM-dd");
+                    cMACycle = beanM.cMACycle;
+                    cMANotes = beanM.cMANotes;
+                    cMAAddress = beanM.cMAAddress;
+                    cContractNotes = beanM.cContractNotes;
+                    cBillNotes = beanM.cBillNotes;
+                    cModifiedDate = beanM.ModifiedDate == null ? "" : Convert.ToDateTime(beanM.ModifiedDate).ToString("yyyy-MM-dd HH:mm");
+                    #endregion
+
+                    ContractMain.ContractID = cContractID;
+                    ContractMain.TeamNAME = cTeamName;
+                    ContractMain.TeamMGR = cTeamMGR;
+                    ContractMain.MainENG = cMainENG;
+                    ContractMain.AssENG = cAssENG;
+                    ContractMain.SalesEMP = cSalesEMP;
+                    ContractMain.SecretaryEMP = cSecretaryEMP;
+                    ContractMain.MASalesEMP = cMASalesEMP;
+                    ContractMain.CenterMGR = cCenterMGR;
+                    ContractMain.ModifiedDate = cModifiedDate;
+
+                    ContractMain.SoNo = cSoNo;
+                    ContractMain.CustomerID = cCustomerID;
+                    ContractMain.CustomerName = cCustomerName;
+                    ContractMain.Desc = cDesc;
+                    ContractMain.StartDate = cStartDate;
+                    ContractMain.EndDate = cEndDate;
+                    ContractMain.MACycle = cMACycle;
+                    ContractMain.MANotes = cMANotes;
+                    ContractMain.MAAddress = cMAAddress;
+                    ContractMain.ContractNotes = cContractNotes;
+                    ContractMain.BillNotes = cBillNotes;
+
+                    ContractMain.TeamMGREmail = cTeamMGREmail;
+                    ContractMain.MainENGEmail = cMainENGEmail;
+                    ContractMain.AssENGEmail = cAssENGEmail;
+                    ContractMain.SalesEmail = cSalesEMPEmail;
+                    ContractMain.SecretaryEmail = cSecretaryEMPEmail;
+                    ContractMain.MASalesEmail = cMASalesEMPEmail;
+                    ContractMain.CenterMGREmail = cCenterMGREmail;
+                    #endregion -----↑↑↑↑↑Mail相關 ↑↑↑↑↑-----                    
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                writeToLog(cContractID, "SetMainContractContent", pMsg, cLoginName);
+            }
+
+            return ContractMain;
+        }
+        #endregion
+
+        #region 組合約工程師相關資訊
+        /// <summary>
+        /// 組合約工程師相關資訊
+        /// </summary>                
+        /// <param name="cContractID">文件編號</param>
+        /// <param name="cIsMain">是否為主要工程師(Y.是 N.否)</param>
+        /// <param name="cOldMainEngineer">原主要工程師ERPID</param>
+        /// <param name="cOldAssEngineer">原協助工程師ERPID</param>
+        /// <param name="cLoginName">登入人員姓名</param>        
+        public CONTRACTENGINFO SetContractENGContent(string cContractID, string cIsMain, string cOldMainEngineer, string cOldAssEngineer, string cLoginName)
+        {
+            string tMailToTemp = string.Empty;
+            string tMailCcTemp = string.Empty;
+            string tMailBCcTemp = string.Empty;
+
+            string tMailTo = string.Empty;               //收件者            
+            string tMailCc = string.Empty;               //副本            
+            string tMailBCc = string.Empty;              //密件副本
+            string tHypeLink = string.Empty;             //超連結
+            string tSeverName = string.Empty;            //主機名稱
+            string MAINEngineerID = string.Empty;        //工程師ERPID(抓table的)
+            string ASSEngineerID = string.Empty;         //協助工程師ERPID(抓table的)
+
+            string cMainENG = string.Empty;              //主要工程師
+            string cMainENGEmail = string.Empty;         //主要工程師Email            
+            string cOldMainENG = string.Empty;           //原主要工程師
+            string cOldMainENGEmail = string.Empty;      //原主要工程師Email            
+            string cAssENG = string.Empty;               //協助工程師
+            string cAssENGEmail = string.Empty;          //協助工程師Email            
+            string cOldAssENG = string.Empty;            //原協助工程師
+            string cOldAssENGEmail = string.Empty;       //原協助工程師Email            
+            string cModifiedDate = string.Empty;         //異動日期
+
+            CONTRACTENGINFO ContractEng = new CONTRACTENGINFO();
+
+            try
+            {                
+                List<SREMPINFO> MainENG_List = new List<SREMPINFO>();
+                List<SREMPINFO> OldMainENG_List = new List<SREMPINFO>();
+                List<SREMPINFO> AssENG_List = new List<SREMPINFO>();
+                List<SREMPINFO> OldAssENG_List = new List<SREMPINFO>();
+
+                #region 取得異動時間
+                var beanM = dbOne.TB_ONE_ContractDetail_ENG.OrderByDescending(x => x.ModifiedDate).FirstOrDefault(x => x.Disabled == 0 && x.cContractID == cContractID);
+
+                if (beanM != null)
+                {
+                    cModifiedDate = beanM.ModifiedDate == null ? "" : Convert.ToDateTime(beanM.ModifiedDate).ToString("yyyy-MM-dd HH:mm");
+                }                
+                #endregion
+
+                #region 取得主要工程師/協助工程師
+                var beans = dbOne.TB_ONE_ContractDetail_ENG.Where(x => x.Disabled == 0 && x.cContractID == cContractID);
+
+                foreach(var bean in beans)
+                {
+                    if (bean.cIsMainEngineer == "Y")
+                    {
+                        MAINEngineerID += bean.cEngineerID + ";";
+                    }
+                    else
+                    {
+                        ASSEngineerID += bean.cEngineerID + ";";
+                    }
+                }                
+                #endregion
+
+                #region 主要工程師相關
+                MainENG_List = findSREMPINFO(MAINEngineerID);
+                cMainENG = findSREMPName(MainENG_List);
+                cMainENGEmail = findSREMPEmail(MainENG_List);
+                #endregion
+
+                #region 原主要工程師相關
+                OldMainENG_List = findSREMPINFO(cOldMainEngineer);
+                cOldMainENG = findSREMPName(OldMainENG_List);
+                cOldMainENGEmail = findSREMPEmail(OldMainENG_List);
+                #endregion
+
+                #region 協助工程師相關
+                AssENG_List = findSREMPINFO(ASSEngineerID);
+                cAssENG = findSREMPName(AssENG_List);
+                cAssENGEmail = findSREMPEmail(AssENG_List);
+                #endregion
+
+                #region 原協助工程師相關
+                OldAssENG_List = findSREMPINFO(cOldAssEngineer);
+                cOldAssENG = findSREMPName(OldAssENG_List);
+                cOldAssENGEmail = findSREMPEmail(OldAssENG_List);
+                #endregion   
+
+                #region 組資訊
+                ContractEng.ContractID = cContractID;
+                ContractEng.IsMain = cIsMain;
+                ContractEng.ModifiedDate = cModifiedDate;
+                ContractEng.MainENG = cMainENG;
+                ContractEng.MainENGEmail = cMainENGEmail;
+                ContractEng.OldMainENG = cOldMainENG;
+                ContractEng.OldMainENGEmail = cOldMainENGEmail;
+                ContractEng.AssENG = cAssENG;
+                ContractEng.AssENGEmail = cAssENGEmail;
+                ContractEng.OldAssENG = cOldAssENG;
+                ContractEng.OldAssENGEmail = cOldAssENGEmail;
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                writeToLog(cContractID, "SetContractENGContent", pMsg, cLoginName);
+            }
+
+            return ContractEng;
+        }
+        #endregion
+
         #region 取得【共用】合約主數據的郵件主旨
         /// <summary>
         /// 取得【共用】合約主數據的郵件主旨
@@ -6459,15 +6850,59 @@ namespace TSTI_API.Controllers
 
             switch (cCondition)
             {
-                case ContractCondition.ADD:                    
+                case ContractCondition.ADD:
                     //[One Service]合約建檔完成[<文件編號>_<訂單說明>]
                     reValue = "[One Service] 合約建檔完成 [" + cContractID + "_" + cDesc + "]";
-                    break;            
+                    break;
 
                 case ContractCondition.SAVE:
                     //[One Service]合約主數據異動通知[<文件編號>_<訂單說明>]
                     reValue = "[One Service] 合約主數據異動通知 [" + cContractID + "_" + cDesc + "]";
-                    break;               
+                    break;
+            }
+
+            return reValue;
+        }
+        #endregion
+
+        #region 取得【共用】合約工程師的郵件主旨
+        /// <summary>
+        /// 取得【共用】合約工程師的郵件主旨
+        /// </summary>
+        /// <param name="cCondition">合約工程師執行條件(ADD.新建、EDIT.編輯 DEL.刪除)</param>
+        /// <param name="cContractID">文件編號</param>        
+        /// <param name="IsMain">是否為主要工程師(Y.是 N.否)</param>
+        /// <param name="cMainEngineerName">主要工程師姓名</param>
+        /// <returns></returns>
+        public string findContractENGMailSubject(ContractENGCondition cCondition, string cContractID, string IsMain, string cMainEngineerName)
+        {
+            string reValue = string.Empty;
+
+            if (cCondition == ContractENGCondition.ADD)
+            {
+                if (IsMain == "Y")
+                {
+                    reValue = "[One Service] 合約工程師異動通知 [" + cContractID + "] 主要工程師已指派[" + cMainEngineerName + "]名下，請留意！";
+                }
+                else
+                {
+                    reValue = "[One Service] 合約工程師異動通知 [" + cContractID + "] ";
+                }
+            }
+            else if (cCondition == ContractENGCondition.EDIT)
+            {
+                if (IsMain == "Y")
+                {
+                    reValue = "[One Service] 合約工程師異動通知 [" + cContractID + "] 主要工程師已轉到[" + cMainEngineerName + "]名下，請留意！";
+                }
+                else
+                {
+                    reValue = "[One Service] 合約工程師異動通知 [" + cContractID + "] ";
+                }
+            }
+            else if(cCondition == ContractENGCondition.DEL)
+            {
+                reValue = "[One Service] 合約工程師異動通知 [" + cContractID + "] ";
             }
 
             return reValue;
