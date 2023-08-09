@@ -4055,6 +4055,14 @@ namespace TSTI_API.Controllers
                     results.Add("EV_RMOBILE", beanD_Con.cContactMobile);    //聯絡人手機
                     results.Add("EV_EMAIL_R", beanD_Con.cContactEmail);     //聯絡人Email
                 }
+                else
+                {
+					results.Add("EV_REPORT", "");       //聯絡人姓名                    
+					results.Add("EV_RADDR", "");        //聯絡人地址
+					results.Add("EV_RTEL", "");         //聯絡人電話
+					results.Add("EV_RMOBILE", "");      //聯絡人手機
+					results.Add("EV_EMAIL_R", "");      //聯絡人Email
+				}
                 #endregion
 
                 #region 產品序號資訊(一般)
