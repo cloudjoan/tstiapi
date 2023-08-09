@@ -36,7 +36,6 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_ONE_DOCUMENT> TB_ONE_DOCUMENT { get; set; }
         public virtual DbSet<TB_ONE_ReportFormat> TB_ONE_ReportFormat { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_Product> TB_ONE_SRDetail_Product { get; set; }
-        public virtual DbSet<TB_ONE_SRFixRecord> TB_ONE_SRFixRecord { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_MaterialInfo> TB_ONE_SRDetail_MaterialInfo { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_PartsReplace> TB_ONE_SRDetail_PartsReplace { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_SerialFeedback> TB_ONE_SRDetail_SerialFeedback { get; set; }
@@ -50,5 +49,6 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_ONE_SRBatchInstallRecord_Detail> TB_ONE_SRBatchInstallRecord_Detail { get; set; }
         public virtual DbSet<TB_ONE_SRMain> TB_ONE_SRMain { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_Warranty> TB_ONE_SRDetail_Warranty { get; set; }
+        public virtual DbSet<TB_ONE_SRFixRecord> TB_ONE_SRFixRecord { get; set; }
     }
 }

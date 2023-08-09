@@ -286,7 +286,7 @@
           <Property Name="cArriveTime" Type="datetime" />
           <Property Name="cFinishTime" Type="datetime" />
           <Property Name="cWorkHours" Type="numeric" Precision="6" Scale="0" />
-          <Property Name="cDesc" Type="nvarchar" MaxLength="255" />
+          <Property Name="cDesc" Type="nvarchar" MaxLength="1000" />
           <Property Name="cSRReport" Type="nvarchar(max)" />
           <Property Name="Disabled" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
@@ -345,6 +345,7 @@
           <Property Name="cStartTime" Type="datetime" />
           <Property Name="cArriveTime" Type="datetime" />
           <Property Name="cFinishTime" Type="datetime" />
+          <Property Name="cDeleteTime" Type="datetime" />
           <Property Name="cLocationS" Type="nvarchar" MaxLength="100" />
           <Property Name="cLocationA" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedDate" Type="datetime" />
@@ -537,7 +538,6 @@
           <EntitySet Name="TB_ONE_DOCUMENT" EntityType="Model.TB_ONE_DOCUMENT" />
           <EntitySet Name="TB_ONE_ReportFormat" EntityType="Model.TB_ONE_ReportFormat" />
           <EntitySet Name="TB_ONE_SRDetail_Product" EntityType="Model.TB_ONE_SRDetail_Product" />
-          <EntitySet Name="TB_ONE_SRFixRecord" EntityType="Model.TB_ONE_SRFixRecord" />
           <EntitySet Name="TB_ONE_SRDetail_MaterialInfo" EntityType="Model.TB_ONE_SRDetail_MaterialInfo" />
           <EntitySet Name="TB_ONE_SRDetail_PartsReplace" EntityType="Model.TB_ONE_SRDetail_PartsReplace" />
           <EntitySet Name="TB_ONE_SRDetail_SerialFeedback" EntityType="Model.TB_ONE_SRDetail_SerialFeedback" />
@@ -551,6 +551,7 @@
           <EntitySet Name="TB_ONE_SRBatchInstallRecord_Detail" EntityType="Model.TB_ONE_SRBatchInstallRecord_Detail" />
           <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
           <EntitySet Name="TB_ONE_SRDetail_Warranty" EntityType="Model.TB_ONE_SRDetail_Warranty" />
+          <EntitySet Name="TB_ONE_SRFixRecord" EntityType="Model.TB_ONE_SRFixRecord" />
           </EntityContainer>
         <EntityType Name="TB_ONE_SRDetail_Contact">
           <Key>
@@ -582,7 +583,7 @@
           <Property Name="cArriveTime" Type="DateTime" Precision="3" />
           <Property Name="cFinishTime" Type="DateTime" Precision="3" />
           <Property Name="cWorkHours" Type="Decimal" Precision="6" Scale="0" />
-          <Property Name="cDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cDesc" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="cSRReport" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Disabled" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
@@ -719,25 +720,6 @@
           <Property Name="cProductNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="cInstallID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Disabled" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TB_ONE_SRFixRecord">
-          <Key>
-            <PropertyRef Name="cID" />
-          </Key>
-          <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="cSRID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="cEngineerID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="cEngineerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="cReceiveTime" Type="DateTime" Precision="3" />
-          <Property Name="cStartTime" Type="DateTime" Precision="3" />
-          <Property Name="cArriveTime" Type="DateTime" Precision="3" />
-          <Property Name="cFinishTime" Type="DateTime" Precision="3" />
-          <Property Name="cLocationS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="cLocationA" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
@@ -1041,6 +1023,26 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="TB_ONE_SRFixRecord">
+          <Key>
+            <PropertyRef Name="cID" />
+          </Key>
+          <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cSRID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cEngineerID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cEngineerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cReceiveTime" Type="DateTime" Precision="3" />
+          <Property Name="cStartTime" Type="DateTime" Precision="3" />
+          <Property Name="cArriveTime" Type="DateTime" Precision="3" />
+          <Property Name="cFinishTime" Type="DateTime" Precision="3" />
+          <Property Name="cDeleteTime" Type="DateTime" Precision="3" />
+          <Property Name="cLocationS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="cLocationA" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1220,26 +1222,6 @@
                 <ScalarProperty Name="cMaterialID" ColumnName="cMaterialID" />
                 <ScalarProperty Name="cNewSerialID" ColumnName="cNewSerialID" />
                 <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
-                <ScalarProperty Name="cSRID" ColumnName="cSRID" />
-                <ScalarProperty Name="cID" ColumnName="cID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TB_ONE_SRFixRecord">
-            <EntityTypeMapping TypeName="Model.TB_ONE_SRFixRecord">
-              <MappingFragment StoreEntitySet="TB_ONE_SRFixRecord">
-                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="cLocationA" ColumnName="cLocationA" />
-                <ScalarProperty Name="cLocationS" ColumnName="cLocationS" />
-                <ScalarProperty Name="cFinishTime" ColumnName="cFinishTime" />
-                <ScalarProperty Name="cArriveTime" ColumnName="cArriveTime" />
-                <ScalarProperty Name="cStartTime" ColumnName="cStartTime" />
-                <ScalarProperty Name="cReceiveTime" ColumnName="cReceiveTime" />
-                <ScalarProperty Name="cEngineerName" ColumnName="cEngineerName" />
-                <ScalarProperty Name="cEngineerID" ColumnName="cEngineerID" />
                 <ScalarProperty Name="cSRID" ColumnName="cSRID" />
                 <ScalarProperty Name="cID" ColumnName="cID" />
               </MappingFragment>
@@ -1550,6 +1532,27 @@
                 <ScalarProperty Name="cWTYName" ColumnName="cWTYName" />
                 <ScalarProperty Name="cWTYID" ColumnName="cWTYID" />
                 <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
+                <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+                <ScalarProperty Name="cID" ColumnName="cID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_ONE_SRFixRecord">
+            <EntityTypeMapping TypeName="Model.TB_ONE_SRFixRecord">
+              <MappingFragment StoreEntitySet="TB_ONE_SRFixRecord">
+                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="cLocationA" ColumnName="cLocationA" />
+                <ScalarProperty Name="cLocationS" ColumnName="cLocationS" />
+                <ScalarProperty Name="cDeleteTime" ColumnName="cDeleteTime" />
+                <ScalarProperty Name="cFinishTime" ColumnName="cFinishTime" />
+                <ScalarProperty Name="cArriveTime" ColumnName="cArriveTime" />
+                <ScalarProperty Name="cStartTime" ColumnName="cStartTime" />
+                <ScalarProperty Name="cReceiveTime" ColumnName="cReceiveTime" />
+                <ScalarProperty Name="cEngineerName" ColumnName="cEngineerName" />
+                <ScalarProperty Name="cEngineerID" ColumnName="cEngineerID" />
                 <ScalarProperty Name="cSRID" ColumnName="cSRID" />
                 <ScalarProperty Name="cID" ColumnName="cID" />
               </MappingFragment>

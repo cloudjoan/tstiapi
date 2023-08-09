@@ -1988,7 +1988,10 @@ namespace TSTI_API.Controllers
             //     "IV_SRID": "612212070001",
             //     "IV_STATUS": "E0005",
             //     "IV_PROCESSWAY" : "Z04",
-            //     "IV_ISAPPCLOSE" : "N"
+            //     "IV_ISAPPCLOSE" : "N",
+            //     "IV_SRTypeOne" : "ZA01",
+            //     "IV_SRTypeSec" : "ZB0101",
+            //     "IV_SRTypeThr" : "ZC010101"
             //}
             #endregion
 
@@ -2019,6 +2022,9 @@ namespace TSTI_API.Controllers
             string IV_STATUS = string.IsNullOrEmpty(bean.IV_STATUS) ? "" : bean.IV_STATUS.Trim();
             string IV_PROCESSWAY = string.IsNullOrEmpty(bean.IV_PROCESSWAY) ? "" : bean.IV_PROCESSWAY.Trim();
             string IV_ISAPPCLOSE = string.IsNullOrEmpty(bean.IV_ISAPPCLOSE) ? "" : bean.IV_ISAPPCLOSE.Trim();
+            string IV_SRTypeOne = string.IsNullOrEmpty(bean.IV_SRTypeOne) ? "" : bean.IV_SRTypeOne.Trim();
+            string IV_SRTypeSec = string.IsNullOrEmpty(bean.IV_SRTypeSec) ? "" : bean.IV_SRTypeSec.Trim();
+            string IV_SRTypeThr = string.IsNullOrEmpty(bean.IV_SRTypeThr) ? "" : bean.IV_SRTypeThr.Trim();
 
             if (IV_STATUS.IndexOf("|") >= 0) //「轉單」或「新建」或「狀態不一致」
             {
@@ -2093,6 +2099,21 @@ namespace TSTI_API.Controllers
                     if (IV_ISAPPCLOSE != "")
                     {
                         beanM.cIsAPPClose = IV_ISAPPCLOSE;
+                    }
+
+                    if (IV_SRTypeOne != "")
+                    {
+                        beanM.cSRTypeOne = IV_SRTypeOne;
+                    }
+
+                    if (IV_SRTypeSec != "")
+                    {
+                        beanM.cSRTypeSec = IV_SRTypeSec;
+                    }
+
+                    if (IV_SRTypeThr != "")
+                    {
+                        beanM.cSRTypeThr = IV_SRTypeThr;
                     }
 
                     beanM.ModifiedDate = DateTime.Now;
@@ -2221,6 +2242,12 @@ namespace TSTI_API.Controllers
             public string IV_PROCESSWAY { get; set; }
             /// <summary>是否為APP結案</summary>
             public string IV_ISAPPCLOSE { get; set; }
+            /// <summary>報修大類代碼</summary>
+            public string IV_SRTypeOne { get; set; }
+            /// <summary>報修中類代碼</summary>
+            public string IV_SRTypeSec { get; set; }
+            /// <summary>報修小類代碼</summary>
+            public string IV_SRTypeThr { get; set; }
         }
         #endregion
 
@@ -4704,7 +4731,8 @@ namespace TSTI_API.Controllers
             //{
             //    "IV_LOGINEMPNO": "99120894",
             //    "IV_CID": "1080",
-            //    "IV_CONTADDR": "臺北市文山區一壽街50號",
+            //    "IV_SRID" : "632304200001",
+            //    "IV_CONTADDR": "臺北市文山區一壽街501號",
             //    "IV_CONTTE": "(04)23300560",
             //    "IV_CONTMOBILE": "0900123456",
             //    "IV_CONTEMAIL": "elvis.chang@etatung.com"
@@ -4726,8 +4754,10 @@ namespace TSTI_API.Controllers
 
             string pLoginName = string.Empty;
             string cSRID = string.Empty;
+            int cID = string.IsNullOrEmpty(bean.IV_CID) ? 0 : int.Parse(bean.IV_CID.Trim());
+            string IV_SRID = string.IsNullOrEmpty(bean.IV_SRID) ? "" : bean.IV_SRID.Trim();
             string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
-            string IV_CID = string.IsNullOrEmpty(bean.IV_CID) ? "" : bean.IV_CID.Trim();
+            string IV_CONTNAME = string.IsNullOrEmpty(bean.IV_CONTNAME) ? "" : bean.IV_CONTNAME.Trim();
             string IV_CONTADDR = string.IsNullOrEmpty(bean.IV_CONTADDR) ? "" : bean.IV_CONTADDR.Trim();
             string IV_CONTTE = string.IsNullOrEmpty(bean.IV_CONTTE) ? "" : bean.IV_CONTTE.Trim();
             string IV_CONTMOBILE = string.IsNullOrEmpty(bean.IV_CONTMOBILE) ? "" : bean.IV_CONTMOBILE.Trim();
@@ -4747,33 +4777,71 @@ namespace TSTI_API.Controllers
 
             try
             {
-                var beanD = dbOne.TB_ONE_SRDetail_Contact.FirstOrDefault(x => x.cID.ToString() == IV_CID);
-
-                if (beanD != null)
+                if (cID == 0)
                 {
-                    cSRID = beanD.cSRID;
-                    beanD.cContactAddress = IV_CONTADDR;
-                    beanD.cContactPhone = IV_CONTTE;
-                    beanD.cContactMobile = IV_CONTMOBILE;
-                    beanD.cContactEmail = IV_CONTEMAIL;
+                    #region 新增
+                    TB_ONE_SRDetail_Contact SRC = new TB_ONE_SRDetail_Contact();
 
-                    beanD.ModifiedDate = DateTime.Now;
-                    beanD.ModifiedUserName = pLoginName;
+                    cSRID = IV_SRID;
+                    SRC.cSRID = IV_SRID;
+                    SRC.cContactName = IV_CONTNAME;
+                    SRC.cContactAddress = IV_CONTADDR;
+                    SRC.cContactPhone = IV_CONTTE;
+                    SRC.cContactMobile = IV_CONTMOBILE;
+                    SRC.cContactEmail = IV_CONTEMAIL;
 
-                    int result = dbOne.SaveChanges();
+                    SRC.Disabled = 0;
+                    SRC.CreatedDate = DateTime.Now;
+                    SRC.CreatedUserName = pLoginName;
 
-                    if (result <= 0)
+                    dbOne.TB_ONE_SRDetail_Contact.Add(SRC);
+                    #endregion
+                }
+                else
+                { 
+                    var beanD = dbOne.TB_ONE_SRDetail_Contact.FirstOrDefault(x => x.cID == cID);
+
+                    if (beanD != null)
                     {
-                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！" + Environment.NewLine;
-                        CMF.writeToLog(cSRID, "SRDETAILCONTACT_UPDATE_API", pMsg, pLoginName);
+                        cSRID = beanD.cSRID;
+                        beanD.cContactName = IV_CONTNAME;
+                        beanD.cContactAddress = IV_CONTADDR;
+                        beanD.cContactPhone = IV_CONTTE;
+                        beanD.cContactMobile = IV_CONTMOBILE;
+                        beanD.cContactEmail = IV_CONTEMAIL;
 
-                        SROUT.EV_MSGT = "E";
-                        SROUT.EV_MSG = pMsg;
+                        beanD.ModifiedDate = DateTime.Now;
+                        beanD.ModifiedUserName = pLoginName;                        
+                    }                    
+                }
+
+                int result = dbOne.SaveChanges();
+
+                if (result <= 0)
+                {
+                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！" + Environment.NewLine;
+                    CMF.writeToLog(cSRID, "SRDETAILCONTACT_UPDATE_API", pMsg, pLoginName);
+
+                    SROUT.EV_MSGT = "E";
+                    SROUT.EV_MSG = pMsg;
+                }
+                else
+                {
+                    SROUT.EV_MSGT = "Y";
+                    SROUT.EV_MSG = "";
+
+                    if (cID == 0) //新增
+                    {
+                        var beanC = dbOne.TB_ONE_SRDetail_Contact.OrderByDescending(x => x.cID).FirstOrDefault(x => x.cSRID == cSRID);
+
+                        if (beanC != null)
+                        {
+                            SROUT.EV_CID = beanC.cID.ToString();
+                        }
                     }
                     else
                     {
-                        SROUT.EV_MSGT = "Y";
-                        SROUT.EV_MSG = "";
+                        SROUT.EV_CID = cID.ToString();
                     }
                 }
             }
@@ -4800,6 +4868,10 @@ namespace TSTI_API.Controllers
             public string IV_LOGINEMPNO { get; set; }
             /// <summary>系統ID</summary>
             public string IV_CID { get; set; }
+            /// <summary>服務案件ID</summary>
+            public string IV_SRID { get; set; }            
+            /// <summary>聯絡人姓名</summary>
+            public string IV_CONTNAME { get; set; }
             /// <summary>聯絡人地址</summary>
             public string IV_CONTADDR { get; set; }
             /// <summary>聯絡人電話</summary>
@@ -4819,6 +4891,8 @@ namespace TSTI_API.Controllers
             public string EV_MSGT { get; set; }
             /// <summary>消息內容</summary>
             public string EV_MSG { get; set; }
+            /// <summary>系統ID</summary>
+            public string EV_CID { get; set; }
         }
         #endregion
 
@@ -8386,7 +8460,7 @@ namespace TSTI_API.Controllers
             //    "IV_ReceiveTime": "2023-01-18 18:20",
             //    "IV_StartTime": "2023-01-18 18:25",
             //    "IV_ArriveTime": "2023-01-18 18:50",
-            //    "IV_FinishTime": "2023-01-18 19:50",
+            //    "IV_FinishTime": "2023-01-18 19:50",            
             //    "IV_ISRENEW": "N",
             //    "IV_LocationS": "",
             //    "IV_LocationA": ""
@@ -8413,6 +8487,7 @@ namespace TSTI_API.Controllers
             string cStartTime = string.Empty;
             string cArriveTime = string.Empty;
             string cFinishTime = string.Empty;
+            string cDeleteTime = string.Empty;
             string cISRENEW = string.Empty;
             string cLocationS = string.Empty;
             string cLocationA = string.Empty;
@@ -8425,6 +8500,7 @@ namespace TSTI_API.Controllers
                 cStartTime = string.IsNullOrEmpty(beanIN.IV_StartTime) ? "" : beanIN.IV_StartTime.Trim();
                 cArriveTime = string.IsNullOrEmpty(beanIN.IV_ArriveTime) ? "" : beanIN.IV_ArriveTime.Trim();
                 cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime.Trim();
+                cDeleteTime = string.IsNullOrEmpty(beanIN.IV_DeleteTime) ? "" : beanIN.IV_DeleteTime.Trim();
                 cISRENEW = string.IsNullOrEmpty(beanIN.IV_ISRENEW) ? "" : beanIN.IV_ISRENEW.Trim();
                 cLocationS = string.IsNullOrEmpty(beanIN.IV_LocationS) ? "" : beanIN.IV_LocationS.Trim();
                 cLocationA = string.IsNullOrEmpty(beanIN.IV_LocationA) ? "" : beanIN.IV_LocationA.Trim();
@@ -8472,6 +8548,11 @@ namespace TSTI_API.Controllers
                         if (cFinishTime != "")
                         {
                             bean.cFinishTime = Convert.ToDateTime(cFinishTime);
+                        }
+
+                        if (cDeleteTime != "")
+                        {
+                            bean.cDeleteTime = Convert.ToDateTime(cDeleteTime);
                         }
 
                         if (cLocationS != "")
@@ -8544,6 +8625,7 @@ namespace TSTI_API.Controllers
             string cStartTime = string.IsNullOrEmpty(beanIN.IV_StartTime) ? "" : beanIN.IV_StartTime.Trim();
             string cArriveTime = string.IsNullOrEmpty(beanIN.IV_ArriveTime) ? "" : beanIN.IV_ArriveTime.Trim();
             string cFinishTime = string.IsNullOrEmpty(beanIN.IV_FinishTime) ? "" : beanIN.IV_FinishTime.Trim();
+            string cDeleteTime = string.IsNullOrEmpty(beanIN.IV_DeleteTime) ? "" : beanIN.IV_DeleteTime.Trim();
             string cLocationS = string.IsNullOrEmpty(beanIN.IV_LocationS) ? "" : beanIN.IV_LocationS.Trim();
             string cLocationA = string.IsNullOrEmpty(beanIN.IV_LocationA) ? "" : beanIN.IV_LocationA.Trim();
 
@@ -8572,6 +8654,11 @@ namespace TSTI_API.Controllers
             if (cFinishTime != "")
             {
                 SRRecord.cFinishTime = Convert.ToDateTime(cFinishTime);
+            }
+
+            if (cDeleteTime != "")
+            {
+                SRRecord.cDeleteTime = Convert.ToDateTime(cDeleteTime);
             }
 
             if (cLocationS != "")
@@ -8608,6 +8695,8 @@ namespace TSTI_API.Controllers
             public string IV_ArriveTime { get; set; }
             /// <summary>完成時間</summary>
             public string IV_FinishTime { get; set; }
+            /// <summary>刪除時間</summary>
+            public string IV_DeleteTime { get; set; }
             /// <summary>是否要重新新增</summary>
             public string IV_ISRENEW { get; set; }
             /// <summary>座標位置(接單)</summary>

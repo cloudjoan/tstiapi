@@ -281,7 +281,7 @@
     <Property Name="cArriveTime" Type="datetime" />
     <Property Name="cFinishTime" Type="datetime" />
     <Property Name="cWorkHours" Type="numeric" Precision="6" Scale="0" />
-    <Property Name="cDesc" Type="nvarchar" MaxLength="255" />
+    <Property Name="cDesc" Type="nvarchar" MaxLength="1000" />
     <Property Name="cSRReport" Type="nvarchar(max)" />
     <Property Name="Disabled" Type="int" />
     <Property Name="CreatedDate" Type="datetime" />
@@ -340,6 +340,7 @@
     <Property Name="cStartTime" Type="datetime" />
     <Property Name="cArriveTime" Type="datetime" />
     <Property Name="cFinishTime" Type="datetime" />
+    <Property Name="cDeleteTime" Type="datetime" />
     <Property Name="cLocationS" Type="nvarchar" MaxLength="100" />
     <Property Name="cLocationA" Type="nvarchar" MaxLength="100" />
     <Property Name="CreatedDate" Type="datetime" />

@@ -16,7 +16,6 @@
         <EntityTypeShape EntityType="Model.TB_ONE_DOCUMENT" Width="2.25" PointX="3.75" PointY="3.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_ReportFormat" Width="2.25" PointX="3.75" PointY="4" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRDetail_Product" Width="2.5" PointX="0.875" PointY="1.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="Model.TB_ONE_SRFixRecord" Width="2.25" PointX="3.75" PointY="4.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRDetail_MaterialInfo" Width="2.5" PointX="0.875" PointY="3.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRDetail_PartsReplace" Width="2.5" PointX="0.875" PointY="3" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRDetail_SerialFeedback" Width="2.5" PointX="0.875" PointY="4" IsExpanded="false" />
@@ -30,6 +29,7 @@
         <EntityTypeShape EntityType="Model.TB_ONE_SRBatchInstallRecord_Detail" Width="2.75" PointX="3.75" PointY="5.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRMain" Width="2.5" PointX="0.875" PointY="0.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRDetail_Warranty" Width="2.5" PointX="0.875" PointY="2" IsExpanded="false" />
+        <EntityTypeShape EntityType="Model.TB_ONE_SRFixRecord" Width="2.25" PointX="3.75" PointY="4.5" IsExpanded="false" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

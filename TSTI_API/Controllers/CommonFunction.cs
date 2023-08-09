@@ -5174,8 +5174,24 @@ namespace TSTI_API.Controllers
                     }
                     #endregion
 
-                    #region 發送服務案件Mail相關資訊  
-                    SendSRMail(cCondition, cSRID, tONEURLName, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRRecord_List, SRSeiral_List, SRParts_List, SRReport_List, SRMaterial_List, SRFeedBack_List, SRConfig_List);
+                    #region 發送服務案件Mail相關資訊
+                    switch(cCondition)
+                    {
+                        case SRCondition.ADD:
+                        case SRCondition.CANCEL:
+                        case SRCondition.REJECT:
+                        case SRCondition.TRANS:
+                        case SRCondition.HPGCSN:
+                        case SRCondition.HPGCSNDONE:
+                        case SRCondition.SUPPORT:
+                        case SRCondition.DONE:
+                        case SRCondition.INSTALLDONE:
+                        case SRCondition.MAINTAINDONE:
+                            SendSRMail(cCondition, cSRID, tONEURLName, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRRecord_List, SRSeiral_List, SRParts_List, SRReport_List, SRMaterial_List, SRFeedBack_List, SRConfig_List);
+                            
+                            break;
+                    }
+                    
                     #endregion
                 }
             }
