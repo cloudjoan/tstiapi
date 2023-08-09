@@ -457,11 +457,10 @@ namespace TSTI_API.Controllers
         /// <param name="COMPID">公司別ID(T012、T016、C069、T022)</param>
         /// <param name="CustomerID">客戶代號/名稱</param>
         /// <param name="CONTACTNAME">聯絡人姓名</param>        
-        /// <param name="CONTACTTEL">聯絡人電話</param>
-        /// <param name="CONTACTMOBILE">聯絡人手機</param>
+        /// <param name="CONTACTTEL">聯絡人電話/手機</param>        
         /// <param name="CONTACTEMAIL">聯絡人Email</param>
         /// <returns></returns>
-        public List<PCustomerContact> findCONTACTINFO(string COMPID, string CustomerID, string CONTACTNAME, string CONTACTTEL, string CONTACTMOBILE, string CONTACTEMAIL)
+        public List<PCustomerContact> findCONTACTINFO(string COMPID, string CustomerID, string CONTACTNAME, string CONTACTTEL, string CONTACTEMAIL)
         {
             #region 註解
             //var qPjRec = dbProxy.CUSTOMER_Contact.OrderByDescending(x => x.ModifiedDate).
@@ -480,8 +479,7 @@ namespace TSTI_API.Controllers
                                                           x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&                                                          
                                                           (string.IsNullOrEmpty(CustomerID) ? true : (x.KNA1_KUNNR.Contains(CustomerID) || x.KNA1_NAME1.Contains(CustomerID))) &&
                                                           (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
-                                                          (string.IsNullOrEmpty(CONTACTTEL) ? true : x.ContactPhone.Contains(CONTACTTEL)) &&
-                                                          (string.IsNullOrEmpty(CONTACTMOBILE) ? true : x.ContactMobile.Contains(CONTACTMOBILE)) &&
+                                                          (string.IsNullOrEmpty(CONTACTTEL) ? true : (x.ContactPhone.Contains(CONTACTTEL) || x.ContactMobile.Contains(CONTACTTEL))) &&                                                          
                                                           (string.IsNullOrEmpty(CONTACTEMAIL) ? true : x.ContactEmail.Contains(CONTACTEMAIL))).ToList();
 
             List<string> tTempList = new List<string>();

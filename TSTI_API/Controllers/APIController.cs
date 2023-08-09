@@ -367,7 +367,7 @@ namespace TSTI_API.Controllers
                         #region 判斷是否要自動帶入報修人資訊
                         if (string.IsNullOrEmpty(IV_REPAIRADDR))
                         {
-                            List<PCustomerContact> ConList = CMF.findCONTACTINFO(pBUKRS, IV_CUSTOMER, IV_REPAIRNAME, "", "", "");
+                            List<PCustomerContact> ConList = CMF.findCONTACTINFO(pBUKRS, IV_CUSTOMER, IV_REPAIRNAME, "", "");
 
                             if (ConList.Count > 0)
                             {
@@ -2775,8 +2775,7 @@ namespace TSTI_API.Controllers
             //   "IV_COMPID": "T012",
             //   "IV_CUSTOMEID": "D16151427",
             //   "IV_CONTACTNAME": "",
-            //   "IV_CONTACTTEL": "",
-            //   "IV_CONTACTMOBILE": "",
+            //   "IV_CONTACTTEL": "",            
             //   "IV_CONTACTEMAIL": ""
             //}
             #endregion
@@ -2799,18 +2798,17 @@ namespace TSTI_API.Controllers
                 string COMPID = string.IsNullOrEmpty(beanIN.IV_COMPID) ? "T012" : beanIN.IV_COMPID.Trim();
                 string CUSTOMEID = string.IsNullOrEmpty(beanIN.IV_CUSTOMEID) ? "" : beanIN.IV_CUSTOMEID.Trim();
                 string CONTACTNAME = string.IsNullOrEmpty(beanIN.IV_CONTACTNAME) ? "" : beanIN.IV_CONTACTNAME.Trim();
-                string CONTACTTEL = string.IsNullOrEmpty(beanIN.IV_CONTACTTEL) ? "" : beanIN.IV_CONTACTTEL.Trim();
-                string CONTACTMOBILE = string.IsNullOrEmpty(beanIN.IV_CONTACTMOBILE) ? "" : beanIN.IV_CONTACTMOBILE.Trim();
+                string CONTACTTEL = string.IsNullOrEmpty(beanIN.IV_CONTACTTEL) ? "" : beanIN.IV_CONTACTTEL.Trim();                
                 string CONTACTEMAIL = string.IsNullOrEmpty(beanIN.IV_CONTACTEMAIL) ? "" : beanIN.IV_CONTACTEMAIL.Trim();
 
-                if (CUSTOMEID == "" && CONTACTNAME == "" && CONTACTTEL == "" && CONTACTMOBILE == "" && CONTACTEMAIL == "")
+                if (CUSTOMEID == "" && CONTACTNAME == "" && CONTACTTEL == "" && CONTACTEMAIL == "")
                 {
                     OUTBean.EV_MSGT = "E";
                     OUTBean.EV_MSG = "請至少輸入一項查詢條件！";
                 }
                 else
                 {
-                    var tList = CMF.findCONTACTINFO(COMPID, CUSTOMEID, CONTACTNAME, CONTACTTEL, CONTACTMOBILE, CONTACTEMAIL);
+                    var tList = CMF.findCONTACTINFO(COMPID, CUSTOMEID, CONTACTNAME, CONTACTTEL, CONTACTEMAIL);
 
                     if (tList.Count == 0)
                     {
@@ -2874,10 +2872,8 @@ namespace TSTI_API.Controllers
             public string IV_CUSTOMEID { get; set; }
             /// <summary>聯絡人姓名</summary>
             public string IV_CONTACTNAME { get; set; }
-            /// <summary>聯絡人電話</summary>
-            public string IV_CONTACTTEL { get; set; }
-            /// <summary>聯絡人手機</summary>
-            public string IV_CONTACTMOBILE { get; set; }
+            /// <summary>聯絡人電話/手機</summary>
+            public string IV_CONTACTTEL { get; set; }            
             /// <summary>聯絡人Email</summary>
             public string IV_CONTACTEMAIL { get; set; }
         }
