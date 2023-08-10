@@ -264,6 +264,7 @@ namespace TSTI_API.Controllers
             string IV_WTY = string.IsNullOrEmpty(bean.IV_WTY) ? "" : bean.IV_WTY.Trim();
             string IV_REFIX = string.IsNullOrEmpty(bean.IV_REFIX) ? "" : bean.IV_REFIX.Trim();
             string IV_INTERNALWORK = string.IsNullOrEmpty(bean.IV_INTERNALWORK) ? "N" : bean.IV_INTERNALWORK.Trim();
+            string IV_REPAIRLEVEL = string.IsNullOrEmpty(bean.IV_REPAIRLEVEL) ? "Z03" : bean.IV_REPAIRLEVEL.Trim();            
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -427,6 +428,7 @@ namespace TSTI_API.Controllers
                         beanM.cSystemGUID = Guid.NewGuid();
                         beanM.cIsAPPClose = "";
                         beanM.cIsInternalWork = IV_INTERNALWORK;
+                        beanM.cSRRepairLevel = IV_REPAIRLEVEL;
 
                         if (AttachFiles != null)
                         {
@@ -897,6 +899,8 @@ namespace TSTI_API.Controllers
             public string IV_REFIX { get; set; }
             /// <summary>是否為內部作業(Y.是 N.否)</summary>
             public string IV_INTERNALWORK { get; set; }
+            /// <summary>故障報修等級</summary>
+            public string IV_REPAIRLEVEL { get; set; }
             /// <summary>檢附文件</summary>
             public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 
@@ -1316,6 +1320,7 @@ namespace TSTI_API.Controllers
                         beanM.cSQPersonName = "";
                         beanM.cIsAPPClose = "";
                         beanM.cIsInternalWork = "N";
+                        beanM.cSRRepairLevel = "";
                         #endregion
 
                         dbOne.TB_ONE_SRMain.Add(beanM);
@@ -1834,6 +1839,7 @@ namespace TSTI_API.Controllers
                         beanM.cSQPersonName = "";
                         beanM.cIsAPPClose = "";
                         beanM.cIsInternalWork = "N";
+                        beanM.cSRRepairLevel = "";
                         #endregion
 
                         dbOne.TB_ONE_SRMain.Add(beanM);

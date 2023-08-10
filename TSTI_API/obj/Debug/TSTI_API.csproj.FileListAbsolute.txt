@@ -249,3 +249,4 @@ D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.csproj.CoreCompileInputs.cache
 D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.csproj.CopyComplete
 D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.dll
 D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.pdb
+D:\GIT\tstiapi\TSTI_API\obj\Debug\TSTI_API.csprojAssemblyReference.cache

@@ -281,7 +281,7 @@
     <Property Name="cArriveTime" Type="datetime" />
     <Property Name="cFinishTime" Type="datetime" />
     <Property Name="cWorkHours" Type="numeric" Precision="6" Scale="0" />
-    <Property Name="cDesc" Type="nvarchar" MaxLength="1000" />
+    <Property Name="cDesc" Type="nvarchar" MaxLength="4000" />
     <Property Name="cSRReport" Type="nvarchar(max)" />
     <Property Name="Disabled" Type="int" />
     <Property Name="CreatedDate" Type="datetime" />
@@ -382,6 +382,7 @@
     <Property Name="cSRTypeThr" Type="nvarchar" MaxLength="20" />
     <Property Name="cSRPathWay" Type="nvarchar" MaxLength="3" />
     <Property Name="cSRProcessWay" Type="nvarchar" MaxLength="3" />
+    <Property Name="cSRRepairLevel" Type="nvarchar" MaxLength="3" />
     <Property Name="cIsSecondFix" Type="varchar" MaxLength="1" />
     <Property Name="cIsAPPClose" Type="varchar" MaxLength="1" />
     <Property Name="cIsInternalWork" Type="varchar" MaxLength="1" />

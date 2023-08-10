@@ -401,6 +401,51 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_SRDetail_Warranty">
+      <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_Warranty">
+        <MappingFragment StoreEntitySet="TB_ONE_SRDetail_Warranty">
+          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="cUsed" ColumnName="cUsed" />
+          <ScalarProperty Name="cSubContractID" ColumnName="cSubContractID" />
+          <ScalarProperty Name="cAdvice" ColumnName="cAdvice" />
+          <ScalarProperty Name="cBPMFormNo" ColumnName="cBPMFormNo" />
+          <ScalarProperty Name="cContractID" ColumnName="cContractID" />
+          <ScalarProperty Name="cSLASRV" ColumnName="cSLASRV" />
+          <ScalarProperty Name="cSLARESP" ColumnName="cSLARESP" />
+          <ScalarProperty Name="cWTYEDATE" ColumnName="cWTYEDATE" />
+          <ScalarProperty Name="cWTYSDATE" ColumnName="cWTYSDATE" />
+          <ScalarProperty Name="cWTYName" ColumnName="cWTYName" />
+          <ScalarProperty Name="cWTYID" ColumnName="cWTYID" />
+          <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
+          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_SRFixRecord">
+      <EntityTypeMapping TypeName="Model.TB_ONE_SRFixRecord">
+        <MappingFragment StoreEntitySet="TB_ONE_SRFixRecord">
+          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="cLocationA" ColumnName="cLocationA" />
+          <ScalarProperty Name="cLocationS" ColumnName="cLocationS" />
+          <ScalarProperty Name="cDeleteTime" ColumnName="cDeleteTime" />
+          <ScalarProperty Name="cFinishTime" ColumnName="cFinishTime" />
+          <ScalarProperty Name="cArriveTime" ColumnName="cArriveTime" />
+          <ScalarProperty Name="cStartTime" ColumnName="cStartTime" />
+          <ScalarProperty Name="cReceiveTime" ColumnName="cReceiveTime" />
+          <ScalarProperty Name="cEngineerName" ColumnName="cEngineerName" />
+          <ScalarProperty Name="cEngineerID" ColumnName="cEngineerID" />
+          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="TB_ONE_SRMain">
       <EntityTypeMapping TypeName="Model.TB_ONE_SRMain">
         <MappingFragment StoreEntitySet="TB_ONE_SRMain">
@@ -447,6 +492,7 @@
           <ScalarProperty Name="cIsInternalWork" ColumnName="cIsInternalWork" />
           <ScalarProperty Name="cIsAPPClose" ColumnName="cIsAPPClose" />
           <ScalarProperty Name="cIsSecondFix" ColumnName="cIsSecondFix" />
+          <ScalarProperty Name="cSRRepairLevel" ColumnName="cSRRepairLevel" />
           <ScalarProperty Name="cSRProcessWay" ColumnName="cSRProcessWay" />
           <ScalarProperty Name="cSRPathWay" ColumnName="cSRPathWay" />
           <ScalarProperty Name="cSRTypeThr" ColumnName="cSRTypeThr" />
@@ -462,51 +508,6 @@
           <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
           <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
           <ScalarProperty Name="cSRID" ColumnName="cSRID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="TB_ONE_SRDetail_Warranty">
-      <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_Warranty">
-        <MappingFragment StoreEntitySet="TB_ONE_SRDetail_Warranty">
-          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="cUsed" ColumnName="cUsed" />
-          <ScalarProperty Name="cSubContractID" ColumnName="cSubContractID" />
-          <ScalarProperty Name="cAdvice" ColumnName="cAdvice" />
-          <ScalarProperty Name="cBPMFormNo" ColumnName="cBPMFormNo" />
-          <ScalarProperty Name="cContractID" ColumnName="cContractID" />
-          <ScalarProperty Name="cSLASRV" ColumnName="cSLASRV" />
-          <ScalarProperty Name="cSLARESP" ColumnName="cSLARESP" />
-          <ScalarProperty Name="cWTYEDATE" ColumnName="cWTYEDATE" />
-          <ScalarProperty Name="cWTYSDATE" ColumnName="cWTYSDATE" />
-          <ScalarProperty Name="cWTYName" ColumnName="cWTYName" />
-          <ScalarProperty Name="cWTYID" ColumnName="cWTYID" />
-          <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
-          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
-          <ScalarProperty Name="cID" ColumnName="cID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="TB_ONE_SRFixRecord">
-      <EntityTypeMapping TypeName="Model.TB_ONE_SRFixRecord">
-        <MappingFragment StoreEntitySet="TB_ONE_SRFixRecord">
-          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="cLocationA" ColumnName="cLocationA" />
-          <ScalarProperty Name="cLocationS" ColumnName="cLocationS" />
-          <ScalarProperty Name="cDeleteTime" ColumnName="cDeleteTime" />
-          <ScalarProperty Name="cFinishTime" ColumnName="cFinishTime" />
-          <ScalarProperty Name="cArriveTime" ColumnName="cArriveTime" />
-          <ScalarProperty Name="cStartTime" ColumnName="cStartTime" />
-          <ScalarProperty Name="cReceiveTime" ColumnName="cReceiveTime" />
-          <ScalarProperty Name="cEngineerName" ColumnName="cEngineerName" />
-          <ScalarProperty Name="cEngineerID" ColumnName="cEngineerID" />
-          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
-          <ScalarProperty Name="cID" ColumnName="cID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
