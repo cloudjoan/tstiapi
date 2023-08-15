@@ -6974,7 +6974,7 @@ namespace TSTI_API.Controllers
 
                     if (beanM.IV_ContractVendor == "1") //供應商
                     {
-                        beanM.IV_SODESC = bean.cContent_ContractUserID + "_" + bean.cContent_ContractDesc;
+                        beanM.IV_SODESC = string.IsNullOrEmpty(bean.cContent_ContractDesc) ? bean.cContent_ContractUser : bean.cContent_ContractDesc;
                         beanM.IV_SUBNUMBER = bean.cContent_ContractUserID;
                         beanM.IV_ContractUser = bean.cContent_ContractUser;
                     }
@@ -7013,14 +7013,14 @@ namespace TSTI_API.Controllers
                     if (beanM.IV_ContractVendor == "0") //客戶
                     {
                         beanM.IV_CUSTOMER = bean.cContent_ContractUserID;
-                        beanM.IV_SODESC = bean.cContent_ContractDesc;                        
+                        beanM.IV_SODESC = string.IsNullOrEmpty(bean.cContent_ContractDesc) ? bean.cContent_ContractUser : bean.cContent_ContractDesc;
                         beanM.IV_SALES = findEmployeeInCludeLeaveEByERP_ID(bean.cContent_MainUser_EmployeeNO); //主約業務
                         
                     }
                     else if (beanM.IV_ContractVendor == "1") //供應商
                     {
                         beanM.IV_CUSTOMER = "";
-                        beanM.IV_SODESC = bean.cContent_ContractUserID + "_" + bean.cContent_ContractDesc;
+                        beanM.IV_SODESC = string.IsNullOrEmpty(bean.cContent_ContractDesc) ? bean.cContent_ContractUser : bean.cContent_ContractDesc;
                         beanM.IV_SUBNUMBER = bean.cContent_ContractUserID;
                         beanM.IV_ContractUser = bean.cContent_ContractUser;
                         beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO); //維護業務
@@ -7028,7 +7028,7 @@ namespace TSTI_API.Controllers
                     else //其他
                     {
                         beanM.IV_CUSTOMER = "";
-                        beanM.IV_SODESC = bean.cContent_ContractDesc;
+                        beanM.IV_SODESC = string.IsNullOrEmpty(bean.cContent_ContractDesc) ? bean.cContent_ContractUser : bean.cContent_ContractDesc;
                         beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO); //維護業務
                     }
 

@@ -265,6 +265,7 @@ namespace TSTI_API.Controllers
             string IV_REFIX = string.IsNullOrEmpty(bean.IV_REFIX) ? "" : bean.IV_REFIX.Trim();
             string IV_INTERNALWORK = string.IsNullOrEmpty(bean.IV_INTERNALWORK) ? "N" : bean.IV_INTERNALWORK.Trim();
             string IV_REPAIRLEVEL = string.IsNullOrEmpty(bean.IV_REPAIRLEVEL) ? "Z03" : bean.IV_REPAIRLEVEL.Trim();            
+            string IV_DELAYREASON = string.IsNullOrEmpty(bean.IV_DELAYREASON) ? "" : bean.IV_DELAYREASON.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -408,8 +409,7 @@ namespace TSTI_API.Controllers
                         beanM.cSRTypeSec = IV_MKIND2;
                         beanM.cSRTypeThr = IV_MKIND3;
                         beanM.cSRPathWay = IV_PATHWAY;
-                        beanM.cSRProcessWay = "";
-                        beanM.cDelayReason = "";
+                        beanM.cSRProcessWay = "";                       
                         beanM.cIsSecondFix = IV_REFIX;
                         beanM.cRepairName = IV_REPAIRNAME;
                         beanM.cRepairAddress = IV_REPAIRADDR;
@@ -429,6 +429,7 @@ namespace TSTI_API.Controllers
                         beanM.cIsAPPClose = "";
                         beanM.cIsInternalWork = IV_INTERNALWORK;
                         beanM.cSRRepairLevel = IV_REPAIRLEVEL;
+                        beanM.cDelayReason = IV_DELAYREASON;
 
                         if (AttachFiles != null)
                         {
@@ -901,6 +902,8 @@ namespace TSTI_API.Controllers
             public string IV_INTERNALWORK { get; set; }
             /// <summary>故障報修等級</summary>
             public string IV_REPAIRLEVEL { get; set; }
+            /// <summary>延遲結案原因</summary>
+            public string IV_DELAYREASON { get; set; }            
             /// <summary>檢附文件</summary>
             public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 
@@ -1118,6 +1121,7 @@ namespace TSTI_API.Controllers
             string IV_SECRETARYEMPNO = string.IsNullOrEmpty(bean.IV_SECRETARYEMPNO) ? "" : bean.IV_SECRETARYEMPNO.Trim();
             string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
             string IV_PATHWAY = string.IsNullOrEmpty(bean.IV_PATHWAY) ? "" : bean.IV_PATHWAY.Trim();
+            string IV_DELAYREASON = string.IsNullOrEmpty(bean.IV_DELAYREASON) ? "" : bean.IV_DELAYREASON.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -1178,7 +1182,27 @@ namespace TSTI_API.Controllers
             if (string.IsNullOrEmpty(IV_LTXT))
             {
                 pMsg += "【詳細描述】不得為空！" + Environment.NewLine;
-            }                      
+            }
+
+            if (bean.CREATECONTACT_LIST == null)
+            {
+                pMsg += "【客戶聯絡窗口資訊相關】不得為空！" + Environment.NewLine;
+            }
+            else if (bean.CREATECONTACT_LIST != null)
+            {
+                foreach (var beanCon in bean.CREATECONTACT_LIST)
+                {
+                    if (string.IsNullOrEmpty(beanCon.CONTNAME))
+                    {
+                        pMsg += "【客戶聯絡人姓名】不得為空！" + Environment.NewLine;
+                    }
+
+                    if (string.IsNullOrEmpty(beanCon.CONTADDR))
+                    {
+                        pMsg += "【客戶聯絡人地址】不得為空！" + Environment.NewLine;
+                    }
+                }
+            }            
             #endregion
 
             if (pMsg != "")
@@ -1237,6 +1261,7 @@ namespace TSTI_API.Controllers
                         beanM.cSalesNo = IV_SALESNO;
                         beanM.cShipmentNo = IV_SHIPMENTNO;
                         beanM.cSRPathWay = IV_PATHWAY;
+                        beanM.cDelayReason = IV_DELAYREASON;
 
                         beanM.cTeamID = IV_SRTEAM;
                         beanM.cMainEngineerName = CMainEngineerName;
@@ -1309,8 +1334,7 @@ namespace TSTI_API.Controllers
                         beanM.cRepairAddress = "";
                         beanM.cRepairPhone = "";
                         beanM.cRepairMobile = "";
-                        beanM.cRepairEmail = "";
-                        beanM.cDelayReason = "";
+                        beanM.cRepairEmail = "";                        
                         beanM.cMAServiceType = "";                        
                         beanM.cSRProcessWay = "";
                         beanM.cIsSecondFix = "";
@@ -1530,6 +1554,8 @@ namespace TSTI_API.Controllers
             public string IV_SALESEMPNO { get; set; }
             /// <summary>業務祕書員工編號</summary>
             public string IV_SECRETARYEMPNO { get; set; }
+            /// <summary>延遲結案原因</summary>
+            public string IV_DELAYREASON { get; set; }
             /// <summary>檢附文件</summary>
             public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 
@@ -1641,6 +1667,7 @@ namespace TSTI_API.Controllers
             string IV_SECRETARYEMPNO = string.IsNullOrEmpty(bean.IV_SECRETARYEMPNO) ? "" : bean.IV_SECRETARYEMPNO.Trim();
             string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
             string IV_ASSEMPNO = string.IsNullOrEmpty(bean.IV_ASSEMPNO) ? "" : bean.IV_ASSEMPNO.Trim();
+            string IV_DELAYREASON = string.IsNullOrEmpty(bean.IV_DELAYREASON) ? "" : bean.IV_DELAYREASON.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -1753,6 +1780,7 @@ namespace TSTI_API.Controllers
                         beanM.cSRTypeOne = IV_MKIND1;
                         beanM.cSRTypeSec = IV_MKIND2;
                         beanM.cSRTypeThr = IV_MKIND3;
+                        beanM.cDelayReason = IV_DELAYREASON;
 
                         beanM.cTeamID = IV_SRTEAM;
                         beanM.cMainEngineerName = CMainEngineerName;
@@ -1761,7 +1789,7 @@ namespace TSTI_API.Controllers
                         beanM.cSalesName = CSalesName;
                         beanM.cSalesID = IV_SALESEMPNO;
                         beanM.cSecretaryName = CSecretaryName;
-                        beanM.cSecretaryID = IV_SECRETARYEMPNO;
+                        beanM.cSecretaryID = IV_SECRETARYEMPNO;                        
 
                         beanM.cSystemGUID = Guid.NewGuid();
                         beanM.CreatedDate = DateTime.Now;
@@ -1826,8 +1854,7 @@ namespace TSTI_API.Controllers
                         beanM.cRepairAddress = "";
                         beanM.cRepairPhone = "";
                         beanM.cRepairMobile = "";
-                        beanM.cRepairEmail = "";
-                        beanM.cDelayReason = "";
+                        beanM.cRepairEmail = "";                        
                         beanM.cMAServiceType = "";
                         beanM.cSRPathWay = "";
                         beanM.cSRProcessWay = "";
@@ -1954,6 +1981,8 @@ namespace TSTI_API.Controllers
             public string IV_SALESEMPNO { get; set; }
             /// <summary>業務祕書員工編號</summary>
             public string IV_SECRETARYEMPNO { get; set; }
+            /// <summary>延遲結案原因</summary>
+            public string IV_DELAYREASON { get; set; }
             /// <summary>檢附文件</summary>
             public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 
