@@ -397,6 +397,11 @@ namespace TSTI_API.Controllers
 
             if (keyword != "")
             {
+                if (keyword.Substring(0,1) == "1" && keyword.Length == 9)
+                {
+                    keyword = "0" + keyword;
+                }
+
                 var bean = dbProxy.VIEW_CUSTOMER_2.FirstOrDefault(x => x.KNA1_KUNNR == keyword.Trim());
 
                 if (bean != null)
