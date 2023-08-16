@@ -5316,10 +5316,28 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 取得副本
-                //有服務團隊主管
-                if (SRMain.TeamMGREmail != "")
+                if (cSRID.Substring(0, 2) == "65")
                 {
-                    tMailCcTemp += SRMain.TeamMGREmail;
+                    #region 65.定維，狀態為【非新增】，才需要cc給主管
+                    if (cCondition != SRCondition.ADD)
+                    {
+                        //有服務團隊主管
+                        if (SRMain.TeamMGREmail != "")
+                        {
+                            tMailCcTemp += SRMain.TeamMGREmail;
+                        }
+                    }
+                    #endregion
+                }
+                else
+                {
+                    #region 非65.定維
+                    //有服務團隊主管
+                    if (SRMain.TeamMGREmail != "")
+                    {
+                        tMailCcTemp += SRMain.TeamMGREmail;
+                    }
+                    #endregion
                 }
 
                 //業務人員

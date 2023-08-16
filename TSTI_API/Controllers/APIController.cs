@@ -1667,7 +1667,7 @@ namespace TSTI_API.Controllers
             string IV_SECRETARYEMPNO = string.IsNullOrEmpty(bean.IV_SECRETARYEMPNO) ? "" : bean.IV_SECRETARYEMPNO.Trim();
             string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
             string IV_ASSEMPNO = string.IsNullOrEmpty(bean.IV_ASSEMPNO) ? "" : bean.IV_ASSEMPNO.Trim();
-            string IV_DELAYREASON = string.IsNullOrEmpty(bean.IV_DELAYREASON) ? "" : bean.IV_DELAYREASON.Trim();
+            string IV_DELAYREASON = string.IsNullOrEmpty(bean.IV_DELAYREASON) ? "" : bean.IV_DELAYREASON.Trim();            
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -1918,7 +1918,7 @@ namespace TSTI_API.Controllers
                             SROUT.EV_MSGT = "Y";
                             SROUT.EV_MSG = "";
 
-                            #region 寄送Mail通知
+                            #region 寄送Mail通知(非每月定期批次派工時才寄送mail)
                             CMF.SetSRMailContent(SRCondition.ADD, pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, pBUKRS, pSRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
                             #endregion
                         }
@@ -1982,7 +1982,7 @@ namespace TSTI_API.Controllers
             /// <summary>業務祕書員工編號</summary>
             public string IV_SECRETARYEMPNO { get; set; }
             /// <summary>延遲結案原因</summary>
-            public string IV_DELAYREASON { get; set; }
+            public string IV_DELAYREASON { get; set; }            
             /// <summary>檢附文件</summary>
             public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 
