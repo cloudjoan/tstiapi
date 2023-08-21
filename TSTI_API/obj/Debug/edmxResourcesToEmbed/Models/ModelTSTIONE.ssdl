@@ -81,11 +81,11 @@
     <Property Name="cStartDate" Type="datetime" />
     <Property Name="cEndDate" Type="datetime" />
     <Property Name="cMACycle" Type="nvarchar" MaxLength="512" />
-    <Property Name="cMANotes" Type="nvarchar" MaxLength="512" />
+    <Property Name="cMANotes" Type="nvarchar" MaxLength="1000" />
     <Property Name="cMAAddress" Type="nvarchar" MaxLength="255" />
     <Property Name="cSLARESP" Type="nvarchar" MaxLength="10" />
     <Property Name="cSLASRV" Type="nvarchar" MaxLength="10" />
-    <Property Name="cContractNotes" Type="nvarchar" MaxLength="512" />
+    <Property Name="cContractNotes" Type="nvarchar(max)" />
     <Property Name="cContractReport" Type="nvarchar(max)" />
     <Property Name="cTeamID" Type="varchar" MaxLength="255" />
     <Property Name="cIsSubContract" Type="varchar" MaxLength="1" />
@@ -94,6 +94,7 @@
     <Property Name="cInvalidReason" Type="nvarchar" MaxLength="255" />
     <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
     <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
+    <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />
     <Property Name="Disabled" Type="int" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />

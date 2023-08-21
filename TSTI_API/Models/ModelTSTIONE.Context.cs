@@ -44,11 +44,11 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_ONE_ContractDetail_OBJ> TB_ONE_ContractDetail_OBJ { get; set; }
         public virtual DbSet<TB_ONE_ContractDetail_SUB> TB_ONE_ContractDetail_SUB { get; set; }
         public virtual DbSet<TB_ONE_ContractIDTemp> TB_ONE_ContractIDTemp { get; set; }
-        public virtual DbSet<TB_ONE_ContractMain> TB_ONE_ContractMain { get; set; }
         public virtual DbSet<TB_ONE_SRBatchInstallRecord> TB_ONE_SRBatchInstallRecord { get; set; }
         public virtual DbSet<TB_ONE_SRBatchInstallRecord_Detail> TB_ONE_SRBatchInstallRecord_Detail { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_Warranty> TB_ONE_SRDetail_Warranty { get; set; }
         public virtual DbSet<TB_ONE_SRFixRecord> TB_ONE_SRFixRecord { get; set; }
         public virtual DbSet<TB_ONE_SRMain> TB_ONE_SRMain { get; set; }
+        public virtual DbSet<TB_ONE_ContractMain> TB_ONE_ContractMain { get; set; }
     }
 }

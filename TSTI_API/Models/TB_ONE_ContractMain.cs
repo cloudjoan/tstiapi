@@ -41,6 +41,7 @@ namespace TSTI_API.Models
         public string cInvalidReason { get; set; }
         public string cContactName { get; set; }
         public string cContactEmail { get; set; }
+        public string cContactPhone { get; set; }
         public Nullable<int> Disabled { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUserName { get; set; }

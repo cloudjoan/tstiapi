@@ -10649,15 +10649,24 @@ namespace TSTI_API.Controllers
                     OUTBean.EV_MSG = "";
                 }
             }
-            catch (Exception ex)
+            catch (DbEntityValidationException ex)
             {
-                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                StringBuilder sb = new StringBuilder();
+                foreach (DbEntityValidationResult e in ex.EntityValidationErrors)
+                {
+                    foreach (DbValidationError ve in e.ValidationErrors)
+                    {
+                        sb.AppendLine($"欄位 {ve.PropertyName} 發生錯誤: {ve.ErrorMessage}");
+                    }
+                }
+
+                pMsg = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + sb.ToString() + Environment.NewLine;
                 pMsg += " 失敗行數：" + ex.ToString();
 
                 CMF.writeToLog(IV_CONTACT, "CONTRACT_CREATE_API", pMsg, pLoginName);
 
                 OUTBean.EV_MSGT = "E";
-                OUTBean.EV_MSG = ex.Message;
+                OUTBean.EV_MSG = pMsg;
             }
 
             return OUTBean;
