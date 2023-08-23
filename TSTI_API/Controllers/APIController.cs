@@ -7206,7 +7206,16 @@ namespace TSTI_API.Controllers
                             scell1.Colspan = 8;
                             scell1.Rowspan = 13;
                             scell1.Padding = 8;
-                            scell1.FixedHeight = (18 * scell1.Rowspan) + 8;
+
+                            #region 調整若處理記錄超過20行，就不固定高度
+                            var AryDesc = IV_Desc.Split(new[] { '\r', '\n' });
+
+                            if (AryDesc.Length <= 20)
+                            {
+                                scell1.FixedHeight = (18 * scell1.Rowspan) + 8;
+                            }                            
+                            #endregion
+
                             pTable.AddCell(scell1);
                         }
                         #endregion
