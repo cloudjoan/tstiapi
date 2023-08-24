@@ -444,6 +444,19 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="TB_ONE_SRSatisfactionSurveyRemove">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cCustomerID" Type="nvarchar" MaxLength="10" />
+    <Property Name="cCustomerName" Type="nvarchar" MaxLength="35" />
+    <Property Name="Disabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="TB_ONE_SRSatisfy_Survey">
     <Key>
       <PropertyRef Name="cID" />
@@ -515,6 +528,7 @@
     <EntitySet Name="TB_ONE_SRIDFormat" EntityType="Self.TB_ONE_SRIDFormat" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRMain" EntityType="Self.TB_ONE_SRMain" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRRepairType" EntityType="Self.TB_ONE_SRRepairType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRSatisfactionSurveyRemove" EntityType="Self.TB_ONE_SRSatisfactionSurveyRemove" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRSatisfy_Survey" EntityType="Self.TB_ONE_SRSatisfy_Survey" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRSQPerson" EntityType="Self.TB_ONE_SRSQPerson" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRTeamMapping" EntityType="Self.TB_ONE_SRTeamMapping" Schema="dbo" store:Type="Tables" />

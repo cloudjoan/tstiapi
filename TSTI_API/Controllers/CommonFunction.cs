@@ -3369,6 +3369,48 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 判斷是否為滿意度調查排除的客戶(true.是 false.否)
+        /// <summary>
+        /// 判斷是否為滿意度調查排除的客戶(true.是 false.否)
+        /// </summary>
+        /// <param name="cCustomerID">客戶ID</param>
+        /// <returns></returns>
+        public bool checkIsExistsSRSatisfactionSurveyRemove(string cCustomerID)
+        {
+            bool reValue = false;
+
+            var beanM = dbOne.TB_ONE_SRSatisfactionSurveyRemove.FirstOrDefault(x => x.Disabled == 0 && x.cCustomerID == cCustomerID);
+
+            if (beanM != null)
+            {
+                reValue = true;
+            }
+
+            return reValue;
+        }
+        #endregion
+
+        #region 傳入SRID並取得客戶ID
+        /// <summary>
+        /// 傳入SRID並取得客戶ID
+        /// </summary>
+        /// <param name="cSRID">SRID</param>
+        /// <returns></returns>
+        public string findCustomerIDBySRID(string cSRID)
+        {
+            string reValue = string.Empty;
+
+            var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == cSRID);
+
+            if (beanM != null)
+            {
+                reValue = beanM.cCustomerID.Trim();
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region -----↓↓↓↓↓待辦清單 ↓↓↓↓↓-----
 
         #region 取得登入人員所有要負責的SRID
@@ -4877,7 +4919,9 @@ namespace TSTI_API.Controllers
         /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
         public void SetSRMailContent(SRCondition cCondition, string cOperationID_GenerallySR, string cOperationID_InstallSR, string cOperationID_MaintainSR, 
                                     string cBUKRS, string cSRID, string tONEURLName, string tAttachURLName, string tAttachPath, string cLoginName, bool tIsFormal)
-        {          
+        {
+            bool tNoSendMail = false;                 //不要寄送Mail(true.不寄送 false.寄送)
+
             string tMailToTemp = string.Empty;
             string tMailCcTemp = string.Empty; 
             string tMailBCcTemp = string.Empty;
@@ -4958,6 +5002,10 @@ namespace TSTI_API.Controllers
                 {
                     #region -----↓↓↓↓↓主檔 ↓↓↓↓↓-----
                     SRIDMAININFO SRMain = new SRIDMAININFO();
+
+                    #region 判斷是否為滿意度調查排除的客戶(true.是 false.否)
+                    tNoSendMail = checkIsExistsSRSatisfactionSurveyRemove(beanM.cCustomerID);
+                    #endregion
 
                     #region 派單人員相關
                     if (beanM.CreatedUserName != "")
@@ -5161,9 +5209,12 @@ namespace TSTI_API.Controllers
                         //一般服務(新建和完修)都要寄
                         if (cCondition == SRCondition.ADD || cCondition == SRCondition.DONE)
                         {
-                            if (SRMain.InternalWork != "Y")
+                            if (!tNoSendMail)
                             {
-                                SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                                if (SRMain.InternalWork != "Y")
+                                {
+                                    SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                                }
                             }
                         }
                     }
@@ -5172,7 +5223,10 @@ namespace TSTI_API.Controllers
                         //裝機服務(裝機完成)才要寄
                         if (cCondition == SRCondition.INSTALLDONE)
                         {
-                            SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                            if (!tNoSendMail)
+                            {
+                                SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                            }
                         }
                     }
                     else if (cSRID.Substring(0, 2) == "65")
@@ -5180,7 +5234,10 @@ namespace TSTI_API.Controllers
                         //定維服務(定保完成)才要寄
                         if (cCondition == SRCondition.MAINTAINDONE)
                         {
-                            SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                            if (!tNoSendMail)
+                            {
+                                SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                            }
                         }
                     }
                     #endregion

@@ -4984,7 +4984,10 @@ namespace TSTI_API.Controllers
 
             int cID = 0;
 
+            bool tNoSendMail = false;              //不要寄送Mail(true.不寄送 false.寄送)
             bool tIsFormal = false;
+
+            string cCustomerID = string.Empty;
             string cSRID = string.Empty;
             string cENGID = string.Empty;
             string cENGNAME = string.Empty;
@@ -5031,6 +5034,11 @@ namespace TSTI_API.Controllers
                 cSRReportFileName = string.IsNullOrEmpty(beanIN.IV_SRReportFileName) ? "" : beanIN.IV_SRReportFileName;
                 cSENDREPORT = string.IsNullOrEmpty(beanIN.IV_SENDREPORT) ? "" : beanIN.IV_SENDREPORT;
                 cIsInternalWork = CMF.checkIsInternalWork(cSRID) ? "Y" : "N";
+
+                #region 判斷是否為滿意度調查排除的客戶(true.是 false.否)
+                cCustomerID = CMF.findCustomerIDBySRID(cSRID);
+                tNoSendMail = CMF.checkIsExistsSRSatisfactionSurveyRemove(cCustomerID);
+                #endregion
 
                 #region 取得工程師/技術主管姓名
                 EmployeeBean EmpBean = new EmployeeBean();
@@ -5151,9 +5159,12 @@ namespace TSTI_API.Controllers
                     }
                     #endregion
 
-                    if (cSENDREPORT == "Y")
+                    if (!tNoSendMail)
                     {
-                        CMF.callSendReport(pOperationID_GenerallySR, cSRID, cPDFPath, cPDFFileName, cENGNAME, tIsFormal); //呼叫發送服務報告書report給客戶
+                        if (cSENDREPORT == "Y")
+                        {
+                            CMF.callSendReport(pOperationID_GenerallySR, cSRID, cPDFPath, cPDFFileName, cENGNAME, tIsFormal); //呼叫發送服務報告書report給客戶
+                        }
                     }
                 }
             }

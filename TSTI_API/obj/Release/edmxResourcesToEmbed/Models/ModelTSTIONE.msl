@@ -512,5 +512,19 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_SRSatisfactionSurveyRemove">
+      <EntityTypeMapping TypeName="Model.TB_ONE_SRSatisfactionSurveyRemove">
+        <MappingFragment StoreEntitySet="TB_ONE_SRSatisfactionSurveyRemove">
+          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+          <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
+          <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
