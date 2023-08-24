@@ -2146,7 +2146,7 @@ namespace TSTI_API.Controllers
                         beanM.cSRTypeSec = IV_SRTypeSec;
                     }
 
-                    if (IV_SRTypeThr != "")
+                    if (IV_SRTypeOne != "" && IV_SRTypeSec != "")
                     {
                         beanM.cSRTypeThr = IV_SRTypeThr;
                     }
