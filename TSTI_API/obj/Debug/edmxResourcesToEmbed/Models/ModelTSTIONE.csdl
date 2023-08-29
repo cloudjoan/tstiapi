@@ -525,8 +525,10 @@
       <PropertyRef Name="cID" />
     </Key>
     <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cDimension" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
     <Property Name="cCustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="cCustomerName" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+    <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="Disabled" Type="Int32" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />

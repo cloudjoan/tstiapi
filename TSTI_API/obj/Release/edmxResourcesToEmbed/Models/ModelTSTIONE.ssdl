@@ -449,8 +449,10 @@
       <PropertyRef Name="cID" />
     </Key>
     <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cDimension" Type="varchar" MaxLength="1" />
     <Property Name="cCustomerID" Type="nvarchar" MaxLength="10" />
     <Property Name="cCustomerName" Type="nvarchar" MaxLength="35" />
+    <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
     <Property Name="Disabled" Type="int" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />

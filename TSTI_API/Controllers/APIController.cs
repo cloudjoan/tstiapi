@@ -5037,7 +5037,7 @@ namespace TSTI_API.Controllers
 
                 #region 判斷是否為滿意度調查排除的客戶(true.是 false.否)
                 cCustomerID = CMF.findCustomerIDBySRID(cSRID);
-                tNoSendMail = CMF.checkIsExistsSRSatisfactionSurveyRemove(cCustomerID);
+                tNoSendMail = CMF.checkIsExistsSRSatisfactionSurveyRemove("0", cCustomerID, "");
                 #endregion
 
                 #region 取得工程師/技術主管姓名
@@ -5163,7 +5163,7 @@ namespace TSTI_API.Controllers
                     {
                         if (cSENDREPORT == "Y")
                         {
-                            CMF.callSendReport(pOperationID_GenerallySR, cSRID, cPDFPath, cPDFFileName, cENGNAME, tIsFormal); //呼叫發送服務報告書report給客戶
+                            CMF.callSendReport(pOperationID_GenerallySR, cCustomerID, cSRID, cPDFPath, cPDFFileName, cENGNAME, tIsFormal); //呼叫發送服務報告書report給客戶
                         }
                     }
                 }

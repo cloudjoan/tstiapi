@@ -3369,19 +3369,30 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 判斷是否為滿意度調查排除的客戶(true.是 false.否)
+        #region 判斷是否為滿意度調查排除的客戶或客戶聯絡人E-Mail(true.是 false.否)
         /// <summary>
-        /// 判斷是否為滿意度調查排除的客戶(true.是 false.否)
+        /// 判斷是否為滿意度調查排除的客戶或客戶聯絡人E-Mail(true.是 false.否)
         /// </summary>
+        /// <param name="cDimension">依據維度(0.依客戶、1.依聯絡人)</param>
         /// <param name="cCustomerID">客戶ID</param>
+        /// <param name="cContactEmail">客戶聯絡人E-Mail</param>
         /// <returns></returns>
-        public bool checkIsExistsSRSatisfactionSurveyRemove(string cCustomerID)
+        public bool checkIsExistsSRSatisfactionSurveyRemove(string cDimension, string cCustomerID, string cContactEmail)
         {
             bool reValue = false;
 
-            var beanM = dbOne.TB_ONE_SRSatisfactionSurveyRemove.FirstOrDefault(x => x.Disabled == 0 && x.cCustomerID == cCustomerID);
+            TB_ONE_SRSatisfactionSurveyRemove SRSSR = new TB_ONE_SRSatisfactionSurveyRemove();
 
-            if (beanM != null)
+            if (cDimension == "0")
+            {
+                SRSSR = dbOne.TB_ONE_SRSatisfactionSurveyRemove.FirstOrDefault(x => x.Disabled == 0 && x.cDimension == cDimension && x.cCustomerID == cCustomerID);
+            }
+            else if (cDimension == "1")
+            {
+                SRSSR = dbOne.TB_ONE_SRSatisfactionSurveyRemove.FirstOrDefault(x => x.Disabled == 0 && x.cDimension == cDimension && x.cCustomerID == cCustomerID && x.cContactEmail == cContactEmail);
+            }
+
+            if (SRSSR != null)
             {
                 reValue = true;
             }
@@ -5004,7 +5015,7 @@ namespace TSTI_API.Controllers
                     SRIDMAININFO SRMain = new SRIDMAININFO();
 
                     #region 判斷是否為滿意度調查排除的客戶(true.是 false.否)
-                    tNoSendMail = checkIsExistsSRSatisfactionSurveyRemove(beanM.cCustomerID);
+                    tNoSendMail = checkIsExistsSRSatisfactionSurveyRemove("0", beanM.cCustomerID, "");
                     #endregion
 
                     #region 派單人員相關
@@ -5213,7 +5224,7 @@ namespace TSTI_API.Controllers
                             {
                                 if (SRMain.InternalWork != "Y")
                                 {
-                                    SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                                    SendSRMail_ToCustomer(cCondition, beanM.cCustomerID, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
                                 }
                             }
                         }
@@ -5225,7 +5236,7 @@ namespace TSTI_API.Controllers
                         {
                             if (!tNoSendMail)
                             {
-                                SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                                SendSRMail_ToCustomer(cCondition, beanM.cCustomerID, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
                             }
                         }
                     }
@@ -5236,7 +5247,7 @@ namespace TSTI_API.Controllers
                         {
                             if (!tNoSendMail)
                             {
-                                SendSRMail_ToCustomer(cCondition, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
+                                SendSRMail_ToCustomer(cCondition, beanM.cCustomerID, cSRID, cLoginName, tIsFormal, SRMain, SRRepair_List, SRContact_List, SRSeiral_List, SRReport_List);
                             }
                         }
                     }
@@ -5631,7 +5642,8 @@ namespace TSTI_API.Controllers
         /// 發送服務案件Mail相關資訊(for客戶)
         /// </summary>
         /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
-        /// <param name="cSRID">SRID</param>        
+        /// <param name="cSRID">SRID</param>      
+        /// <param name="cCustomerID">客戶ID</param>
         /// <param name="cLoginName">登入人員姓名</param>
         /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
         /// <param name="SRMain">服務案件主檔資訊(For Mail)</param>
@@ -5639,7 +5651,7 @@ namespace TSTI_API.Controllers
         /// <param name="SRContact_List">服務案件客戶聯絡人資訊清單</param>
         /// <param name="SRSeiral_List">服務案件產品序號資訊清單</param>
         /// <param name="SRReport_List">服務報告書清單</param>
-        public void SendSRMail_ToCustomer(SRCondition cCondition, string cSRID, string cLoginName, bool tIsFormal, SRIDMAININFO SRMain, 
+        public void SendSRMail_ToCustomer(SRCondition cCondition, string cCustomerID, string cSRID, string cLoginName, bool tIsFormal, SRIDMAININFO SRMain, 
                                          List<SRCONTACTINFO> SRRepair_List, List<SRCONTACTINFO> SRContact_List, 
                                          List<SRSERIALMATERIALINFO> SRSeiral_List, List<SRREPORTINFO> SRReport_List)
         {
@@ -5688,6 +5700,15 @@ namespace TSTI_API.Controllers
                         tMailToTemp = SRMain.RepairEmail;
                     }
                 }
+
+                #region 判斷是否有要排除的Email
+                bool tNoSendMail = checkIsExistsSRSatisfactionSurveyRemove("1", cCustomerID, tMailToTemp);                
+
+                if (tNoSendMail)
+                {
+                    tMailToTemp = "";
+                }               
+                #endregion
 
                 if (tMailToTemp != "")
                 {
@@ -5920,14 +5941,16 @@ namespace TSTI_API.Controllers
         /// </summary>
         /// <param name="pOperationID_GenerallySR">程式作業編號檔系統ID(一般服務)</param>        
         /// <param name="srId">SRID</param>
+        /// <param name="cCustomerID">客戶ID</param>
         /// <param name="pdfPath">服務報告書檔案路徑</param>
         /// <param name="pdfFileName">服務報告書檔名</param>
         /// <param name="mainEgnrName">處理工程師姓名</param>
         /// <param name="tIsFormal">是否為正式區(true.是 false.不是)</param>
-        public void callSendReport(string pOperationID_GenerallySR, string srId, string pdfPath, string pdfFileName, string mainEgnrName, bool tIsFormal)
+        public void callSendReport(string pOperationID_GenerallySR, string cCustomerID, string srId, string pdfPath, string pdfFileName, string mainEgnrName, bool tIsFormal)
         {
             #region -- 發送Report給客戶 --
             string email = string.Empty;
+            string ToEmail = string.Empty;
             string CUSTOMER = string.Empty;
             string ENGINEER = string.Empty;
             string NOTES = string.Empty;
@@ -5948,6 +5971,22 @@ namespace TSTI_API.Controllers
                     email += ";" + srdetail["EV_EMAIL_R"].ToString();
                 }
             }
+
+            #region 判斷是否有要排除的Email
+            bool tNoSendMail = false;
+
+            foreach (string tMail in email.Split(';'))
+            {
+                tNoSendMail = checkIsExistsSRSatisfactionSurveyRemove("1", cCustomerID, tMail);
+
+                if (!tNoSendMail)
+                {
+                    ToEmail += tMail + ";";
+                }
+            }
+
+            ToEmail = ToEmail.TrimEnd(';');
+            #endregion
 
             CUSTOMER = srdetail["EV_CUSTOMER"].ToString();
             if (CUSTOMER.IndexOf(' ') != -1)
@@ -5999,9 +6038,9 @@ namespace TSTI_API.Controllers
             }
             #endregion
 
-            if (email != "") //有收件者才要寄
+            if (ToEmail != "") //有收件者才要寄
             {
-                SendReport(email, string.Join(";", ccs), srId, CUSTOMER, ENGINEER, NOTES, pdfPath, pdfFileName, mainEgnrName, tIsFormal); //發送服務報告書report給客戶
+                SendReport(ToEmail, string.Join(";", ccs), srId, CUSTOMER, ENGINEER, NOTES, pdfPath, pdfFileName, mainEgnrName, tIsFormal); //發送服務報告書report給客戶
             }
             #endregion
         }

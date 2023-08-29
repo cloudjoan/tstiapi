@@ -15,8 +15,10 @@ namespace TSTI_API.Models
     public partial class TB_ONE_SRSatisfactionSurveyRemove
     {
         public int cID { get; set; }
+        public string cDimension { get; set; }
         public string cCustomerID { get; set; }
         public string cCustomerName { get; set; }
+        public string cContactEmail { get; set; }
         public Nullable<int> Disabled { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUserName { get; set; }

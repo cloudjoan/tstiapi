@@ -454,8 +454,10 @@
             <PropertyRef Name="cID" />
           </Key>
           <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cDimension" Type="varchar" MaxLength="1" />
           <Property Name="cCustomerID" Type="nvarchar" MaxLength="10" />
           <Property Name="cCustomerName" Type="nvarchar" MaxLength="35" />
+          <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
           <Property Name="Disabled" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
@@ -1067,8 +1069,10 @@
             <PropertyRef Name="cID" />
           </Key>
           <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cDimension" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="cCustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="cCustomerName" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Disabled" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -1600,8 +1604,10 @@
                 <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="cContactEmail" ColumnName="cContactEmail" />
                 <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
                 <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
+                <ScalarProperty Name="cDimension" ColumnName="cDimension" />
                 <ScalarProperty Name="cID" ColumnName="cID" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -520,8 +520,10 @@
           <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+          <ScalarProperty Name="cContactEmail" ColumnName="cContactEmail" />
           <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
           <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
+          <ScalarProperty Name="cDimension" ColumnName="cDimension" />
           <ScalarProperty Name="cID" ColumnName="cID" />
         </MappingFragment>
       </EntityTypeMapping>
