@@ -27,6 +27,7 @@
     <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
     <EntitySet Name="TB_ONE_ContractMain" EntityType="Model.TB_ONE_ContractMain" />
     <EntitySet Name="TB_ONE_SRSatisfactionSurveyRemove" EntityType="Model.TB_ONE_SRSatisfactionSurveyRemove" />
+    <EntitySet Name="TB_ONE_SRTeamChangTemp" EntityType="Model.TB_ONE_SRTeamChangTemp" />
   </EntityContainer>
   <EntityType Name="TB_ONE_SRDetail_Contact">
     <Key>
@@ -534,5 +535,13 @@
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRTeamChangTemp">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cTeamNewID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="cTeamOldID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

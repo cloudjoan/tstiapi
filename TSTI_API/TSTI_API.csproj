@@ -467,6 +467,9 @@
     <Compile Include="Models\TB_ONE_SRSQPerson.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_ONE_SRTeamChangTemp.cs">
+      <DependentUpon>ModelTSTIONE.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_ONE_SRTeamMapping.cs">
       <DependentUpon>ModelTSTIONE.tt</DependentUpon>
     </Compile>

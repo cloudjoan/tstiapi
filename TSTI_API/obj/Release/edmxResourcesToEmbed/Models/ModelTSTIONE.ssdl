@@ -492,6 +492,14 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="TB_ONE_SRTeamChangTemp">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cTeamNewID" Type="varchar" MaxLength="36" Nullable="false" />
+    <Property Name="cTeamOldID" Type="varchar" MaxLength="36" Nullable="false" />
+  </EntityType>
   <EntityType Name="TB_ONE_SRTeamMapping">
     <Key>
       <PropertyRef Name="cID" />
@@ -533,6 +541,7 @@
     <EntitySet Name="TB_ONE_SRSatisfactionSurveyRemove" EntityType="Self.TB_ONE_SRSatisfactionSurveyRemove" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRSatisfy_Survey" EntityType="Self.TB_ONE_SRSatisfy_Survey" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRSQPerson" EntityType="Self.TB_ONE_SRSQPerson" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRTeamChangTemp" EntityType="Self.TB_ONE_SRTeamChangTemp" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRTeamMapping" EntityType="Self.TB_ONE_SRTeamMapping" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>

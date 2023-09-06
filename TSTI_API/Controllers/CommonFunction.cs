@@ -753,6 +753,90 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 判斷登入人員是否為該服務團隊主管
+        /// <summary>
+        /// 判斷登入人員是否為該服務團隊主管
+        /// </summary>
+        /// <param name="tLoginERPID">登入者ERPID</param>
+        /// <param name="tTeamOldID">服務團隊ID</param>
+        /// <returns></returns>      
+        public bool checkIsSRTeamMappingManager(string tLoginERPID, string tTeamOldID)
+        {
+            bool reValue = false;
+
+            List<string> tList = findALLDeptIDListbyTeamID(tTeamOldID);
+
+            string tMGRERPID = string.Empty;
+
+            foreach (var tValue in tList)
+            {
+                tMGRERPID = findDeptMGRERPID(tValue);
+
+                if (tMGRERPID == tLoginERPID)
+                {
+                    reValue = true;
+                    break;
+                }
+            }
+
+            return reValue;
+        }
+        #endregion
+
+        #region 取得該部門主管的ERPID
+        /// <summary>
+        /// 取得該部門主管的ERPID
+        /// </summary>
+        /// <param name="DEPTID">部門ID</param>        
+        /// <returns></returns>
+        public string findDeptMGRERPID(string DEPTID)
+        {
+            string reValue = string.Empty;
+            string tManagerID = string.Empty;
+
+            var beanDept = dbEIP.Department.FirstOrDefault(x => x.ID == DEPTID);
+
+            if (beanDept != null)
+            {
+                tManagerID = beanDept.ManagerID;
+
+                if (tManagerID != "")
+                {
+                    var beanP = dbEIP.Person.FirstOrDefault(x => x.ID == tManagerID);
+
+                    if (beanP != null)
+                    {
+                        reValue = beanP.ERP_ID;
+                    }
+                }
+            }
+
+            return reValue;
+        }
+        #endregion
+
+        #region 判斷是否為合約主要工程師或協助工程師
+        /// <summary>
+        /// 判斷是否為合約主要工程師或協助工程師
+        /// </summary>
+        /// <param name="tLoginERPID">登入者ERPID</param>
+        /// <param name="cContractID">文件編號</param>
+        /// <returns></returns>      
+        public bool checkIsContractENG(string tLoginERPID, string cContractID)
+        {
+            bool reValue = false;
+
+            var bean = dbOne.TB_ONE_ContractDetail_ENG.FirstOrDefault(x => x.Disabled == 0 && x.cEngineerID == tLoginERPID);
+
+            if (bean != null)
+            {
+                reValue = true;
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得員工資料
         /// <summary>
         /// 取得員工資料
@@ -7209,6 +7293,30 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑合約管理Mail相關 ↑↑↑↑↑-----  
+
+        #region log紀錄(新、舊值對照)
+        /// <summary>
+        /// log紀錄(新、舊值對照)
+        /// </summary>
+        /// <param name="tFieldName">欄位名稱</param>
+        /// <param name="tOldValue">舊值</param>
+        /// <param name="tNewValue">新值</param>
+        /// <returns></returns>
+        public string getNewAndOldLog(string tFieldName, string tOldValue, string tNewValue)
+        {
+            string tLog = string.Empty;
+
+            tOldValue = string.IsNullOrEmpty(tOldValue) ? "" : tOldValue;
+            tNewValue = string.IsNullOrEmpty(tNewValue) ? "" : tNewValue;
+
+            if (tOldValue != tNewValue)
+            {
+                tLog = tFieldName + "_舊值【 " + tOldValue + "】 新值【 " + tNewValue + "】" + Environment.NewLine;
+            }
+
+            return tLog;
+        }
+        #endregion
 
         #region 寫log 
         /// <summary>

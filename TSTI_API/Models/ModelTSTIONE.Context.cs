@@ -51,5 +51,6 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_ONE_SRMain> TB_ONE_SRMain { get; set; }
         public virtual DbSet<TB_ONE_ContractMain> TB_ONE_ContractMain { get; set; }
         public virtual DbSet<TB_ONE_SRSatisfactionSurveyRemove> TB_ONE_SRSatisfactionSurveyRemove { get; set; }
+        public virtual DbSet<TB_ONE_SRTeamChangTemp> TB_ONE_SRTeamChangTemp { get; set; }
     }
 }

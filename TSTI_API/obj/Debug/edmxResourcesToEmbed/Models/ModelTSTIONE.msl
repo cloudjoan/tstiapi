@@ -528,5 +528,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_SRTeamChangTemp">
+      <EntityTypeMapping TypeName="Model.TB_ONE_SRTeamChangTemp">
+        <MappingFragment StoreEntitySet="TB_ONE_SRTeamChangTemp">
+          <ScalarProperty Name="cTeamOldID" ColumnName="cTeamOldID" />
+          <ScalarProperty Name="cTeamNewID" ColumnName="cTeamNewID" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

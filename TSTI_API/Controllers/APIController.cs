@@ -10115,13 +10115,8 @@ namespace TSTI_API.Controllers
                     else
                     {
                         #region 抓新的組織
-                        tIsExist = CMF.checkEmpIsExistSRTeamMapping(EmpBean.CostCenterID, EmpBean.DepartmentNO, IV_SRTEAM);
-
-                        if (!tIsExist)
-                        {
-                            tIsExist = CMF.checkEmpIsExist7X24List(pOperationID_Contract, EmpBean.BUKRS, EmpBean.EmployeeNO);  //取得7X24相關人員
-                        }
-                        #endregion
+                        tIsExist = CMF.checkEmpIsExistSRTeamMapping(EmpBean.CostCenterID, EmpBean.DepartmentNO, IV_SRTEAM);                       
+                        #endregion                   
                     }
 
                     //取得合約相關人員
@@ -12092,6 +12087,66 @@ namespace TSTI_API.Controllers
         #endregion -----↑↑↑↑↑查詢現行CRM客戶聯絡人 ↑↑↑↑↑-----
 
         #endregion -----↑↑↑↑↑CALL RFC接口 ↑↑↑↑↑-----        
+
+        #region -----↓↓↓↓↓更新服務團隊新舊接口(一次性)  ↓↓↓↓↓-----
+        [HttpPost]
+        public ActionResult SRTeamChangOnce()
+        {
+            SRTODOLIST_OUTPUT OUTBean = new SRTODOLIST_OUTPUT();
+            StringBuilder tSQL = new StringBuilder();
+
+            string tLog = string.Empty;
+            string cSRID = string.Empty;
+            string cTeamNewID = string.Empty;
+            string cTeamOldID = string.Empty;
+            string cFinalTeamID = string.Empty;
+            string cOriTeamID = string.Empty;
+
+            try
+            {
+                var beans = dbOne.TB_ONE_SRTeamChangTemp.OrderBy(x => x.cTeamOldID);
+                
+                foreach(var bean in beans)
+                {                    
+                    cTeamNewID = bean.cTeamNewID;
+                    cTeamOldID = bean.cTeamOldID;
+
+                    #region 更新服務主檔
+                    var beansM = dbOne.TB_ONE_SRMain.Where(x => x.cTeamID.Contains(cTeamOldID));
+
+                    foreach(var beanM in beansM)
+                    {
+                        cSRID = beanM.cSRID;
+
+                        cOriTeamID = beanM.cTeamID;                                     //更新前
+                        cFinalTeamID = beanM.cTeamID.Replace(cTeamOldID, cTeamNewID);   //更新後
+
+                        beanM.cTeamID = cFinalTeamID;                      
+
+                        int result = dbOne.SaveChanges();
+
+                        if (result > 0)
+                        {
+                            #region 寫入Log
+                            tLog = CMF.getNewAndOldLog("服務團隊", cOriTeamID, cFinalTeamID);
+                            CMF.writeToLog(cSRID, "SaveGenerallySR", tLog, "SYS");
+                            #endregion
+                        }
+                    }
+                    #endregion
+                }
+
+                OUTBean.EV_MSGT = "Y";
+                OUTBean.EV_MSG = "";
+            }
+            catch (Exception ex)
+            {
+                OUTBean.EV_MSGT = "N";
+                OUTBean.EV_MSG = ex.Message;
+            }
+            return Json(OUTBean);
+        }
+        #endregion -----↓↓↓↓↓更新服務團隊新舊接口(一次性)  ↓↓↓↓↓-----
     }
 
     #region 取得系統位址參數相關資訊
