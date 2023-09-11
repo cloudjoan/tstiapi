@@ -3009,6 +3009,27 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 法人客戶聯絡人資料刪除接口
+        [HttpPost]
+        public ActionResult API_CONTACT_DELETE(CONTACTCREATE_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNO": "99120894",
+            //    "IV_COMPID": "T012",
+            //    "IV_CUSTOMEID": "D16151427",
+            //    "IV_CONTACTNAME": "張豐穎"            
+            //}
+            #endregion
+
+            beanIN.IV_ISDELETE = "Y";
+
+            var bean = SaveCONTACT(beanIN);
+
+            return Json(bean);
+        }
+        #endregion
+
         #region 儲存法人客戶聯絡人資料
         /// <summary>
         /// 儲存法人客戶聯絡人資料
@@ -3060,26 +3081,28 @@ namespace TSTI_API.Controllers
 
                 var bean = dbProxy.CUSTOMER_Contact.FirstOrDefault(x => (x.Disabled == null || x.Disabled != 1) && 
                                                                      x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&                                                                    
-                                                                    x.BpmNo == tBpmNo && x.KNB1_BUKRS == cBUKRS &&
-                                                                    x.KNA1_KUNNR == beanIN.IV_CUSTOMEID.Trim() && x.ContactName == beanIN.IV_CONTACTNAME.Trim());
+                                                                     x.KNB1_BUKRS == cBUKRS &&
+                                                                     x.KNA1_KUNNR == beanIN.IV_CUSTOMEID.Trim() && x.ContactName == beanIN.IV_CONTACTNAME.Trim());
 
                 if (bean != null) //修改
                 {
-                    bean.ContactCity = IV_CONTACTCITY;
-                    bean.ContactAddress = IV_CONTACTADDRESS;
-                    bean.ContactPhone = IV_CONTACTTEL;
-                    bean.ContactMobile = IV_CONTACTMOBILE;
-                    bean.ContactEmail = IV_CONTACTEMAIL;
-
-                    if (IV_CONTACTSTORE != "")
-                    {
-                        bean.ContactStore = Guid.Parse(IV_CONTACTSTORE);
-                    }
-
                     if (IV_ISDELETE == "Y")
                     {
                         bean.Disabled = 1;
                     }
+                    else
+                    {
+                        bean.ContactCity = IV_CONTACTCITY;
+                        bean.ContactAddress = IV_CONTACTADDRESS;
+                        bean.ContactPhone = IV_CONTACTTEL;
+                        bean.ContactMobile = IV_CONTACTMOBILE;
+                        bean.ContactEmail = IV_CONTACTEMAIL;
+
+                        if (IV_CONTACTSTORE != "")
+                        {
+                            bean.ContactStore = Guid.Parse(IV_CONTACTSTORE);
+                        }
+                    }                    
 
                     bean.ModifiedUserName = pLoginName;
                     bean.ModifiedDate = DateTime.Now;
@@ -3558,6 +3581,26 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 個人客戶聯絡人資料刪除接口
+        [HttpPost]
+        public ActionResult API_PERSONALCONTACT_DELETE(PERSONALCONTACTCREATE_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_LOGINEMPNO": "99120894",
+            //    "IV_COMPID": "T012",
+            //    "IV_PERSONALID": "P00000003"            
+            //}
+            #endregion
+
+            beanIN.IV_ISDELETE = "Y";
+
+            var bean = SavePERSONALCONTACT(beanIN);
+
+            return Json(bean);
+        }
+        #endregion
+
         #region 儲存個人客戶聯絡人資料
         /// <summary>
         /// 儲存個人客戶聯絡人資料
@@ -3600,22 +3643,23 @@ namespace TSTI_API.Controllers
             {
                 if (IV_PERSONALID != "") //修改
                 {
-                    var bean = dbProxy.PERSONAL_Contact.FirstOrDefault(x => x.Disabled == 0 && x.KNB1_BUKRS == cBUKRS &&
-                                                                        x.KNA1_KUNNR == IV_PERSONALID && x.ContactName == beanIN.IV_CONTACTNAME.Trim());
+                    var bean = dbProxy.PERSONAL_Contact.FirstOrDefault(x => x.Disabled == 0 && x.KNB1_BUKRS == cBUKRS && x.KNA1_KUNNR == IV_PERSONALID);
 
                     if (bean != null)
                     {
-                        bean.KNA1_NAME1 = IV_PERSONALNAME;
-                        bean.ContactCity = IV_CONTACTCITY;
-                        bean.ContactAddress = IV_CONTACTADDRESS;
-                        bean.ContactPhone = IV_CONTACTTEL;
-                        bean.ContactMobile = IV_CONTACTMOBILE;
-                        bean.ContactEmail = IV_CONTACTEMAIL;
-
                         if (IV_ISDELETE == "Y")
                         {
                             bean.Disabled = 1;
                         }
+                        else
+                        {
+                            bean.KNA1_NAME1 = IV_PERSONALNAME;
+                            bean.ContactCity = IV_CONTACTCITY;
+                            bean.ContactAddress = IV_CONTACTADDRESS;
+                            bean.ContactPhone = IV_CONTACTTEL;
+                            bean.ContactMobile = IV_CONTACTMOBILE;
+                            bean.ContactEmail = IV_CONTACTEMAIL;
+                        }                        
 
                         bean.ModifiedUserName = pLoginName;
                         bean.ModifiedDate = DateTime.Now;
