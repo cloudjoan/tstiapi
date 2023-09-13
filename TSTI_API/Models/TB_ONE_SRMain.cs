@@ -68,6 +68,9 @@ namespace TSTI_API.Models
         public string cFaultSpecNote1 { get; set; }
         public string cFaultSpecNote2 { get; set; }
         public string cFaultSpecNoteOther { get; set; }
+        public string cPerCallSLARESP { get; set; }
+        public string cPerCallSLASRV { get; set; }
+        public string cRemark { get; set; }
         public Nullable<System.Guid> cSystemGUID { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUserName { get; set; }

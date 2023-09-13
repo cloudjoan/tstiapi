@@ -4121,6 +4121,7 @@ namespace TSTI_API.Controllers
             string EV_WTYKIND = string.Empty;
             string MAServiceType = string.Empty;
             string EV_CompanyName = string.Empty;
+            string EV_Remark = string.Empty;
 
             var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
 
@@ -4160,9 +4161,23 @@ namespace TSTI_API.Controllers
                 EV_SLARESP = tArySLA[0];
                 EV_SLASRV = tArySLA[1];
 
+                #region 若沒有保固SLA資訊，則抓SLA(單筆per call)
+                if (string.IsNullOrEmpty(EV_SLARESP))
+                {
+                    EV_SLARESP = string.IsNullOrEmpty(beanM.cPerCallSLARESP) ? "" : beanM.cPerCallSLARESP;
+                }
+
+                if (string.IsNullOrEmpty(EV_SLASRV))
+                {
+                    EV_SLASRV = string.IsNullOrEmpty(beanM.cPerCallSLASRV) ? "" : beanM.cPerCallSLASRV;
+                }
+                #endregion
+
                 EV_WTYKIND = findSysParameterDescription(pOperationID_GenerallySR, "OTHER", EmpBean.BUKRS, "SRMATYPE", MAServiceType);
 
                 EV_CompanyName = findCompanyNameByTeamID(beanM.cTeamID);
+
+                EV_Remark = beanM.cRemark;
 
                 results.Add("EV_CUSTOMER", beanM.cCustomerName);       //客戶名稱
                 results.Add("EV_DESC", beanM.cDesc);                  //說明                
@@ -4179,9 +4194,11 @@ namespace TSTI_API.Controllers
                 results.Add("EV_COUNTOUT", "");                     //計數器出(群輝用，先保持空白)
                 results.Add("EV_SQ", EV_SQ);                       //SQ人員名稱
                 results.Add("EV_DEPARTMENT", EmpBean.BUKRS);        //公司別(T012、T016、C069、t022)
+                results.Add("EV_SLARESP", EV_SLARESP);             //SLA回應條件
                 results.Add("EV_SLASRV", EV_SLASRV);               //SLA服務條件
                 results.Add("EV_WTYKIND", EV_WTYKIND);             //維護服務種類(Z01.保固內、Z02.保固外、Z03.合約、Z04.3rd Party)
                 results.Add("EV_CompanyName", EV_CompanyName);     //公司名稱
+                results.Add("EV_Remark", EV_Remark);               //備註
             }
 
             if (!string.IsNullOrEmpty(IV_SRID))

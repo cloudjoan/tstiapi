@@ -27,7 +27,7 @@
     <Property Name="cSerialID" Type="nvarchar" MaxLength="40" />
     <Property Name="cPID" Type="nvarchar" MaxLength="40" />
     <Property Name="cBrands" Type="nvarchar" MaxLength="30" />
-    <Property Name="cModel" Type="nvarchar" MaxLength="40" />
+    <Property Name="cModel" Type="nvarchar" MaxLength="100" />
     <Property Name="cLocation" Type="nvarchar" MaxLength="100" />
     <Property Name="cAddress" Type="nvarchar" MaxLength="100" />
     <Property Name="cArea" Type="nvarchar" MaxLength="30" />
@@ -422,6 +422,9 @@
     <Property Name="cFaultSpecNote1" Type="nvarchar" MaxLength="100" />
     <Property Name="cFaultSpecNote2" Type="nvarchar" MaxLength="100" />
     <Property Name="cFaultSpecNoteOther" Type="nvarchar" MaxLength="100" />
+    <Property Name="cPerCallSLARESP" Type="nvarchar" MaxLength="10" />
+    <Property Name="cPerCallSLASRV" Type="nvarchar" MaxLength="10" />
+    <Property Name="cRemark" Type="nvarchar(max)" />
     <Property Name="cSystemGUID" Type="uniqueidentifier" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />

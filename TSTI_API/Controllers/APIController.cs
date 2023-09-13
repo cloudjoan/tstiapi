@@ -430,6 +430,9 @@ namespace TSTI_API.Controllers
                         beanM.cIsInternalWork = IV_INTERNALWORK;
                         beanM.cSRRepairLevel = IV_REPAIRLEVEL;
                         beanM.cDelayReason = IV_DELAYREASON;
+                        beanM.cPerCallSLARESP = "";
+                        beanM.cPerCallSLASRV = "";
+                        beanM.cRemark = "";
 
                         if (AttachFiles != null)
                         {
@@ -1345,6 +1348,9 @@ namespace TSTI_API.Controllers
                         beanM.cIsAPPClose = "";
                         beanM.cIsInternalWork = "N";
                         beanM.cSRRepairLevel = "";
+                        beanM.cPerCallSLARESP = "";
+                        beanM.cPerCallSLASRV = "";
+                        beanM.cRemark = "";
                         #endregion
 
                         dbOne.TB_ONE_SRMain.Add(beanM);
@@ -1867,6 +1873,9 @@ namespace TSTI_API.Controllers
                         beanM.cIsAPPClose = "";
                         beanM.cIsInternalWork = "N";
                         beanM.cSRRepairLevel = "";
+                        beanM.cPerCallSLARESP = "";
+                        beanM.cPerCallSLASRV = "";
+                        beanM.cRemark = "";
                         #endregion
 
                         dbOne.TB_ONE_SRMain.Add(beanM);
@@ -7302,11 +7311,18 @@ namespace TSTI_API.Controllers
                             tProcessWay = "處理方式-" + tProcessWay + "\n\n";
                         }
 
+                        IV_CusOpinion = (String.IsNullOrEmpty(IV_CusOpinion) || String.Compare(IV_CusOpinion, "null", true) == 0) ? "" : IV_CusOpinion + "\n\n";
+
+                        string SLARESP = (srdetail["EV_SLARESP"] != null) ? srdetail["EV_SLARESP"].ToString() : "";
                         string SLASRV = (srdetail["EV_SLASRV"] != null) ? srdetail["EV_SLASRV"].ToString() : "";
                         string WTYKIND = (srdetail["EV_WTYKIND"] != null) ? srdetail["EV_WTYKIND"].ToString() : "";
-                        IV_CusOpinion = (String.IsNullOrEmpty(IV_CusOpinion) || String.Compare(IV_CusOpinion, "null", true) == 0) ? "" : IV_CusOpinion;
+                        string Remark = (srdetail["EV_Remark"] != null) ? srdetail["EV_Remark"].ToString() : "";
 
-                        PdfPCell ccell3 = new PdfPCell(new iTextSharp.text.Phrase("客戶意見 / 備註：\n\n" + tProcessWay + IV_CusOpinion + "\n\n" + SLASRV + "\n\n" + WTYKIND, ChFont10));
+                        string TempSLA = string.IsNullOrEmpty(SLASRV) ? "" : SLARESP + "_" + SLASRV + "  ";
+                        string TempWTYKIND = string.IsNullOrEmpty(WTYKIND) ? "" : WTYKIND + "\n\n";
+                        string tTempNotes = TempSLA + TempWTYKIND + Remark;
+
+                        PdfPCell ccell3 = new PdfPCell(new iTextSharp.text.Phrase("客戶意見 / 備註：\n\n" + tProcessWay + IV_CusOpinion + tTempNotes, ChFont10));
                         ccell3.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
                         ccell3.BorderWidthRight = 0;
                         ccell3.BorderWidthTop = 0;

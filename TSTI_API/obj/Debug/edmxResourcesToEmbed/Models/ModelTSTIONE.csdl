@@ -24,10 +24,10 @@
     <EntitySet Name="TB_ONE_SRBatchInstallRecord_Detail" EntityType="Model.TB_ONE_SRBatchInstallRecord_Detail" />
     <EntitySet Name="TB_ONE_SRDetail_Warranty" EntityType="Model.TB_ONE_SRDetail_Warranty" />
     <EntitySet Name="TB_ONE_SRFixRecord" EntityType="Model.TB_ONE_SRFixRecord" />
-    <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
     <EntitySet Name="TB_ONE_ContractMain" EntityType="Model.TB_ONE_ContractMain" />
     <EntitySet Name="TB_ONE_SRSatisfactionSurveyRemove" EntityType="Model.TB_ONE_SRSatisfactionSurveyRemove" />
     <EntitySet Name="TB_ONE_SRTeamChangTemp" EntityType="Model.TB_ONE_SRTeamChangTemp" />
+    <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
   </EntityContainer>
   <EntityType Name="TB_ONE_SRDetail_Contact">
     <Key>
@@ -301,7 +301,7 @@
     <Property Name="cSerialID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
     <Property Name="cPID" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
     <Property Name="cBrands" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cModel" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cModel" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="cLocation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="cAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="cArea" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
@@ -419,70 +419,6 @@
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
-  <EntityType Name="TB_ONE_SRMain">
-    <Key>
-      <PropertyRef Name="cSRID" />
-    </Key>
-    <Property Name="cSRID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cCustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cCustomerName" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
-    <Property Name="cDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cNotes" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-    <Property Name="cAttachement" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cAttachementStockNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cStatus" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-    <Property Name="cMAServiceType" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-    <Property Name="cDelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cSRTypeOne" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cSRTypeSec" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cSRTypeThr" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cSRPathWay" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-    <Property Name="cSRProcessWay" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-    <Property Name="cSRRepairLevel" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-    <Property Name="cIsSecondFix" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-    <Property Name="cIsAPPClose" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-    <Property Name="cIsInternalWork" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-    <Property Name="cRepairName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="cRepairAddress" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
-    <Property Name="cRepairPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cRepairMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cRepairEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="cTeamID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="cMainEngineerID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cMainEngineerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="cAssEngineerID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cTechManagerID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cSQPersonID" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
-    <Property Name="cSQPersonName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cSalesID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cSalesName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="cSecretaryID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cSecretaryName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="cSalesNo" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cShipmentNo" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cCountIN" Type="Int32" />
-    <Property Name="cCountOUT" Type="Int32" />
-    <Property Name="cFaultGroup" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultGroupNote1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultGroupNote2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultGroupNote3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultGroupNote4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultGroupNoteOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultState" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultStateNote1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultStateNote2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultStateNoteOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultSpec" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultSpecNote1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultSpecNote2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cFaultSpecNoteOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cSystemGUID" Type="Guid" />
-    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-  </EntityType>
   <EntityType Name="TB_ONE_ContractMain">
     <Key>
       <PropertyRef Name="cContractID" />
@@ -543,5 +479,72 @@
     <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="cTeamNewID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
     <Property Name="cTeamOldID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="TB_ONE_SRMain">
+    <Key>
+      <PropertyRef Name="cSRID" />
+    </Key>
+    <Property Name="cSRID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cCustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cCustomerName" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+    <Property Name="cDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cNotes" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="cAttachement" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cAttachementStockNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cStatus" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="cMAServiceType" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="cDelayReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cSRTypeOne" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cSRTypeSec" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cSRTypeThr" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cSRPathWay" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="cSRProcessWay" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="cSRRepairLevel" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="cIsSecondFix" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cIsAPPClose" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cIsInternalWork" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cRepairName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cRepairAddress" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
+    <Property Name="cRepairPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cRepairMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cRepairEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="cTeamID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="cMainEngineerID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cMainEngineerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cAssEngineerID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cTechManagerID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cSQPersonID" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+    <Property Name="cSQPersonName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cSalesID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cSalesName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cSecretaryID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cSecretaryName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cSalesNo" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cShipmentNo" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cCountIN" Type="Int32" />
+    <Property Name="cCountOUT" Type="Int32" />
+    <Property Name="cFaultGroup" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultGroupNote1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultGroupNote2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultGroupNote3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultGroupNote4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultGroupNoteOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultState" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultStateNote1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultStateNote2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultStateNoteOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultSpec" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultSpecNote1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultSpecNote2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cFaultSpecNoteOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cPerCallSLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cPerCallSLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cSystemGUID" Type="Guid" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>
