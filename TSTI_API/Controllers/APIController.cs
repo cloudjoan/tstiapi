@@ -12174,31 +12174,7 @@ namespace TSTI_API.Controllers
                 foreach(var bean in beans)
                 {                    
                     cTeamNewID = bean.cTeamNewID;
-                    cTeamOldID = bean.cTeamOldID;
-
-                    #region 更新服務主檔
-                    //var beansM = dbOne.TB_ONE_SRMain.Where(x => x.cTeamID.Contains(cTeamOldID));
-
-                    //foreach(var beanM in beansM)
-                    //{
-                    //    cSRID = beanM.cSRID;
-
-                    //    cOriTeamID = beanM.cTeamID;                                     //更新前
-                    //    cFinalTeamID = beanM.cTeamID.Replace(cTeamOldID, cTeamNewID);   //更新後
-
-                    //    beanM.cTeamID = cFinalTeamID;                      
-
-                    //    int result = dbOne.SaveChanges();
-
-                    //    if (result > 0)
-                    //    {
-                    //        #region 寫入Log
-                    //        tLog = CMF.getNewAndOldLog("服務團隊", cOriTeamID, cFinalTeamID);
-                    //        CMF.writeToLog(cSRID, "SaveGenerallySR", tLog, "SYS");
-                    //        #endregion
-                    //    }
-                    //}
-                    #endregion
+                    cTeamOldID = bean.cTeamOldID;      
 
                     #region 取得服務主檔
                     tSQL.Append(" select cSRID,cTeamID from TB_ONE_SRMain where cTeamID like '%" + cTeamOldID + "%'");
