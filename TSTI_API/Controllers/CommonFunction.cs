@@ -4379,6 +4379,59 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 傳入語法直接執行sql(根據資料庫名稱)
+        /// <summary>
+        /// 傳入語法直接執行sql(根據資料庫名稱)
+        /// </summary>
+        /// <param name="tSQL">SQL語法</param>
+        /// <param name="dbName">資料庫名稱(dbOne; dbEIP; dbProxy; dbPSIP; dbBI)</param>
+        /// <returns>true.成功 false.失敗</returns>
+        public bool ExecuteNonQueryByDb(string tSQL, string dbName)
+        {
+            bool reValue = false;
+
+            string ConnectionString = string.Empty;
+
+            switch (dbName)
+            {
+                case "dbOne":
+                    ConnectionString = dbOne.Database.Connection.ConnectionString;
+                    break;
+                case "dbEIP":
+                    ConnectionString = dbEIP.Database.Connection.ConnectionString;
+                    break;
+                case "dbProxy":
+                    ConnectionString = dbProxy.Database.Connection.ConnectionString;
+                    break;
+                case "dbPSIP":
+                    ConnectionString = dbPSIP.Database.Connection.ConnectionString;
+                    break;
+                case "dbBI":
+                    ConnectionString = dbBI.Database.Connection.ConnectionString;
+                    break;
+            }
+
+            using (SqlConnection cn = new SqlConnection(ConnectionString))
+            {
+                cn.Open();
+
+                SqlCommand command = cn.CreateCommand();
+                command.Connection = cn;
+                command.CommandTimeout = 600; //設定timeout為600秒
+                command.CommandText = tSQL;
+
+                int result = command.ExecuteNonQuery();
+
+                if (result > 0)
+                {
+                    reValue = true;
+                }
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得合約明細-工程師指派檔之工程師員工編號(回傳多筆以;號隔開)
         /// <summary>
         ///  取得合約明細-工程師指派檔之工程師員工編號(回傳多筆以;號隔開)

@@ -12172,26 +12172,55 @@ namespace TSTI_API.Controllers
                     cTeamOldID = bean.cTeamOldID;
 
                     #region 更新服務主檔
-                    var beansM = dbOne.TB_ONE_SRMain.Where(x => x.cTeamID.Contains(cTeamOldID));
+                    //var beansM = dbOne.TB_ONE_SRMain.Where(x => x.cTeamID.Contains(cTeamOldID));
 
-                    foreach(var beanM in beansM)
+                    //foreach(var beanM in beansM)
+                    //{
+                    //    cSRID = beanM.cSRID;
+
+                    //    cOriTeamID = beanM.cTeamID;                                     //更新前
+                    //    cFinalTeamID = beanM.cTeamID.Replace(cTeamOldID, cTeamNewID);   //更新後
+
+                    //    beanM.cTeamID = cFinalTeamID;                      
+
+                    //    int result = dbOne.SaveChanges();
+
+                    //    if (result > 0)
+                    //    {
+                    //        #region 寫入Log
+                    //        tLog = CMF.getNewAndOldLog("服務團隊", cOriTeamID, cFinalTeamID);
+                    //        CMF.writeToLog(cSRID, "SaveGenerallySR", tLog, "SYS");
+                    //        #endregion
+                    //    }
+                    //}
+                    #endregion
+
+                    #region 取得服務主檔
+                    tSQL.Append(" select cSRID,cTeamID from TB_ONE_SRMain where cTeamID like '%" + cTeamOldID + "%'");
+
+                    DataTable dt = CMF.getDataTableByDb(tSQL.ToString(), "dbOne");
+
+                    foreach (DataRow dr in dt.Rows)
                     {
-                        cSRID = beanM.cSRID;
+                        cSRID = dr["cSRID"].ToString();
 
-                        cOriTeamID = beanM.cTeamID;                                     //更新前
-                        cFinalTeamID = beanM.cTeamID.Replace(cTeamOldID, cTeamNewID);   //更新後
+                        cOriTeamID = dr["cTeamID"].ToString();                                     //更新前
+                        cFinalTeamID = dr["cTeamID"].ToString().Replace(cTeamOldID, cTeamNewID);   //更新後
 
-                        beanM.cTeamID = cFinalTeamID;                      
+                        #region 更新服務團隊
+                        tSQL = new StringBuilder();
+                        tSQL.Append(" update TB_ONE_SRMain set cTeamID = '" + cFinalTeamID + "' where cSRID = '" + cSRID + "' ");
 
-                        int result = dbOne.SaveChanges();
+                        bool result = CMF.ExecuteNonQueryByDb(tSQL.ToString(), "dbOne");
 
-                        if (result > 0)
+                        if (result)
                         {
                             #region 寫入Log
                             tLog = CMF.getNewAndOldLog("服務團隊", cOriTeamID, cFinalTeamID);
                             CMF.writeToLog(cSRID, "SaveGenerallySR", tLog, "SYS");
                             #endregion
                         }
+                        #endregion
                     }
                     #endregion
                 }
