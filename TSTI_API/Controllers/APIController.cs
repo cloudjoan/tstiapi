@@ -8944,20 +8944,25 @@ namespace TSTI_API.Controllers
                     }
                     #endregion
 
-                    #region 新增
-                    TB_ONE_SRDetail_SerialFeedback SFB = new TB_ONE_SRDetail_SerialFeedback();
+                    #region 新增(若SRID+序號不存在時才新增)
+                    var beanSF = dbOne.TB_ONE_SRDetail_SerialFeedback.FirstOrDefault(x => x.Disabled == 0 && x.cSRID == IV_SRID && x.cSerialID == IV_SERIAL);
 
-                    SFB.cSRID = IV_SRID;
-                    SFB.cSerialID = IV_SERIAL;
-                    SFB.cMaterialID = IV_MaterialID;
-                    SFB.cMaterialName = IV_MaterialName;
-                    SFB.cConfigReport = IV_ConfigReport;
-                    SFB.Disabled = 0;
+                    if (beanSF == null)
+                    {
+                        TB_ONE_SRDetail_SerialFeedback SFB = new TB_ONE_SRDetail_SerialFeedback();
 
-                    SFB.CreatedDate = DateTime.Now;
-                    SFB.CreatedUserName = IV_LOGINEMPName;
+                        SFB.cSRID = IV_SRID;
+                        SFB.cSerialID = IV_SERIAL;
+                        SFB.cMaterialID = IV_MaterialID;
+                        SFB.cMaterialName = IV_MaterialName;
+                        SFB.cConfigReport = IV_ConfigReport;
+                        SFB.Disabled = 0;
 
-                    dbOne.TB_ONE_SRDetail_SerialFeedback.Add(SFB);
+                        SFB.CreatedDate = DateTime.Now;
+                        SFB.CreatedUserName = IV_LOGINEMPName;
+
+                        dbOne.TB_ONE_SRDetail_SerialFeedback.Add(SFB);
+                    }
                     #endregion
                 }
                 else //刪除
