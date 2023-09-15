@@ -12174,9 +12174,10 @@ namespace TSTI_API.Controllers
                 foreach(var bean in beans)
                 {                    
                     cTeamNewID = bean.cTeamNewID;
-                    cTeamOldID = bean.cTeamOldID;      
+                    cTeamOldID = bean.cTeamOldID;
 
                     #region 取得服務主檔
+                    tSQL = new StringBuilder();
                     tSQL.Append(" select cSRID,cTeamID from TB_ONE_SRMain where cTeamID like '%" + cTeamOldID + "%'");
 
                     DataTable dt = CMF.getDataTableByDb(tSQL.ToString(), "dbOne");
@@ -12197,8 +12198,23 @@ namespace TSTI_API.Controllers
                         if (result)
                         {
                             #region 寫入Log
+                            string tEventname = string.Empty;
+
+                            switch(cSRID.Substring(0,2))
+                            {
+                                case "61":
+                                    tEventname = "SaveGenerallySR";
+                                    break;
+                                case "63":
+                                    tEventname = "SaveInstallSR";
+                                    break;
+                                case "65":
+                                    tEventname = "SaveMaintainSR";
+                                    break;
+                            }
+
                             tLog = CMF.getNewAndOldLog("服務團隊", cOriTeamID, cFinalTeamID);
-                            CMF.writeToLog(cSRID, "SaveGenerallySR", tLog, "SYS");
+                            CMF.writeToLog(cSRID, tEventname, tLog, "SYS");
                             #endregion
                         }
                         #endregion
