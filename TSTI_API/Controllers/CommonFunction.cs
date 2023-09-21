@@ -2349,16 +2349,19 @@ namespace TSTI_API.Controllers
 
             if (IV_SERIAL != "")
             {
-                var bean = dbProxy.STOCKALL.FirstOrDefault(x => x.IV_SERIAL == IV_SERIAL.Trim());
-                
-                if (bean != null)
+                if (IV_SERIAL.ToUpper() != "NA" && IV_SERIAL.ToUpper() != "N/A")
                 {
-                    ProBean.IV_SERIAL = bean.IV_SERIAL;
-                    ProBean.ProdID = bean.ProdID;
-                    ProBean.Product = bean.Product;
-                    ProBean.MFRPN = findMFRPNumber(bean.ProdID);
-                    ProBean.InstallNo = findInstallNumber(IV_SERIAL);
-                }              
+                    var bean = dbProxy.STOCKALL.FirstOrDefault(x => x.IV_SERIAL == IV_SERIAL.Trim());
+
+                    if (bean != null)
+                    {
+                        ProBean.IV_SERIAL = bean.IV_SERIAL;
+                        ProBean.ProdID = bean.ProdID;
+                        ProBean.Product = bean.Product;
+                        ProBean.MFRPN = findMFRPNumber(bean.ProdID);
+                        ProBean.InstallNo = findInstallNumber(IV_SERIAL);
+                    }
+                }
             }
 
             return ProBean;
@@ -2377,19 +2380,22 @@ namespace TSTI_API.Controllers
 
             if (IV_SERIAL != "")
             {
-                var beans = dbProxy.STOCKALL.Where(x => x.IV_SERIAL.Contains(IV_SERIAL));
-
-                foreach(var bean in beans)
+                if (IV_SERIAL.ToUpper() != "NA" && IV_SERIAL.ToUpper() != "N/A")
                 {
-                    SerialMaterialInfo ProBean = new SerialMaterialInfo();
+                    var beans = dbProxy.STOCKALL.Where(x => x.IV_SERIAL.Contains(IV_SERIAL));
 
-                    ProBean.IV_SERIAL = bean.IV_SERIAL;
-                    ProBean.ProdID = bean.ProdID;
-                    ProBean.Product = bean.Product;
-                    ProBean.MFRPN = findMFRPNumber(bean.ProdID);
-                    ProBean.InstallNo = findInstallNumber(IV_SERIAL);
+                    foreach (var bean in beans)
+                    {
+                        SerialMaterialInfo ProBean = new SerialMaterialInfo();
 
-                    ProBeans.Add(ProBean);
+                        ProBean.IV_SERIAL = bean.IV_SERIAL;
+                        ProBean.ProdID = bean.ProdID;
+                        ProBean.Product = bean.Product;
+                        ProBean.MFRPN = findMFRPNumber(bean.ProdID);
+                        ProBean.InstallNo = findInstallNumber(IV_SERIAL);
+
+                        ProBeans.Add(ProBean);
+                    }
                 }
             }
 
@@ -2606,11 +2612,14 @@ namespace TSTI_API.Controllers
             string reValue = string.Empty;
 
             #region 取得裝機號碼
-            var beanM = dbPSIP.TB_PIS_INSTALLMaterial.FirstOrDefault(x => x.SRSerial == IV_SERIAL.Trim());
-
-            if (beanM != null)
+            if (IV_SERIAL.ToUpper() != "NA" && IV_SERIAL.ToUpper() != "N/A")
             {
-                reValue = beanM.SRID;
+                var beanM = dbPSIP.TB_PIS_INSTALLMaterial.FirstOrDefault(x => x.SRSerial == IV_SERIAL.Trim());
+
+                if (beanM != null)
+                {
+                    reValue = beanM.SRID;
+                }
             }
             #endregion           
 
