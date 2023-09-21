@@ -12282,8 +12282,8 @@ namespace TSTI_API.Controllers
                 dbOne.SaveChanges();
                 #endregion
 
-                #region 存照片Guid到對應公務車欄位
-                var BookingInfo = appDB.TB_CAR_BOOKING.Where(x => x.BOOKING_ID == BookingId).FirstOrDefault();
+                #region 存照片Guid對應到相關欄位
+                
                 #endregion
             }
             catch (Exception ex)

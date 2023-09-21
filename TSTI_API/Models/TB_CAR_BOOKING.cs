@@ -26,12 +26,10 @@ namespace TSTI_API.Models
         public string FILL_USER_ERPID { get; set; }
         public string RENT_REASON { get; set; }
         public string RENT_DESC { get; set; }
-        public string IMG_LF { get; set; }
-        public string IMG_RF { get; set; }
-        public string IMG_LB { get; set; }
-        public string IMG_RB { get; set; }
         public string DISABLED { get; set; }
         public string OVER_TIME { get; set; }
+        public string ENGINE_START_TIME { get; set; }
+        public string ENGINE_STOP_TIME { get; set; }
         public string INSERT_TIME { get; set; }
     }
 }

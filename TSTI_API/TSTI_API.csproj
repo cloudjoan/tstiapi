@@ -389,6 +389,15 @@
     <Compile Include="Models\TB_CAR_CHECKLIST.cs">
       <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_CAR_DATA.cs">
+      <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_CAR_OWNER.cs">
+      <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_CAR_PHOTOS.cs">
+      <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_MAIL_CONTENT.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
