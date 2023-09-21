@@ -383,6 +383,12 @@
     <Compile Include="Models\tblForm_SubContractSeals.cs">
       <DependentUpon>ModelBPMDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_CAR_BOOKING.cs">
+      <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_CAR_CHECKLIST.cs">
+      <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_MAIL_CONTENT.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>

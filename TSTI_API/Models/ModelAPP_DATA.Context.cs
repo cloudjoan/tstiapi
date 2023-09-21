@@ -27,5 +27,7 @@ namespace TSTI_API.Models
     
         public virtual DbSet<TB_SURVEY_ANS_MAINTAIN> TB_SURVEY_ANS_MAINTAIN { get; set; }
         public virtual DbSet<TB_SURVEY_QUS_MAINTAIN> TB_SURVEY_QUS_MAINTAIN { get; set; }
+        public virtual DbSet<TB_CAR_BOOKING> TB_CAR_BOOKING { get; set; }
+        public virtual DbSet<TB_CAR_CHECKLIST> TB_CAR_CHECKLIST { get; set; }
     }
 }

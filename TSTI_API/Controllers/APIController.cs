@@ -12233,6 +12233,92 @@ namespace TSTI_API.Controllers
             return Json(OUTBean);
         }
         #endregion -----↓↓↓↓↓更新服務團隊新舊接口(一次性)  ↓↓↓↓↓-----
+
+        #region 公務車借用相關
+
+        #region 照片上傳
+        [HttpPost]
+        public ActionResult UploadCarImg(HttpPostedFileBase ImgLF, HttpPostedFileBase ImgRF, HttpPostedFileBase ImgLB, HttpPostedFileBase ImgRB, string BookingId, string ErpId)
+        {
+            UploadCarImgByPosition(ImgLF, "LF", BookingId, ErpId);
+            UploadCarImgByPosition(ImgRF, "RF", BookingId, ErpId);
+            UploadCarImgByPosition(ImgLB, "LB", BookingId, ErpId);
+            UploadCarImgByPosition(ImgRB, "RB", BookingId, ErpId);
+
+            return Json("FinishAllImg");
+        }
+
+        public void UploadCarImgByPosition(HttpPostedFileBase Img, string PositionCode, string BookingId, string ErpId)
+        {
+            Guid fileGuid = Guid.NewGuid();
+
+            string path         = "";
+            string fileId       = string.Empty;
+            string fileOrgName  = string.Empty;
+            string fileName     = string.Empty;
+            string fileALLName  = string.Empty;
+            try
+            {
+                fileGuid = Guid.NewGuid();
+
+                #region 存照片到主機
+                fileId      = fileGuid.ToString();
+                fileOrgName = Img.FileName;
+                fileName    = fileId + Path.GetExtension(Img.FileName);
+                path        = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+                Img.SaveAs(path);
+                #endregion
+
+                #region 存照片對應資訊到Table
+                TB_ONE_DOCUMENT bean = new TB_ONE_DOCUMENT();
+
+                bean.ID             = fileGuid;
+                bean.FILE_ORG_NAME  = fileOrgName;
+                bean.FILE_NAME      = fileName;
+                bean.FILE_EXT       = Path.GetExtension(Img.FileName);
+                bean.INSERT_TIME    = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                dbOne.TB_ONE_DOCUMENT.Add(bean);
+                dbOne.SaveChanges();
+                #endregion
+
+                #region 存照片Guid到對應公務車欄位
+                var BookingInfo = appDB.TB_CAR_BOOKING.Where(x => x.BOOKING_ID == BookingId).FirstOrDefault();
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "【ATTACH】公務車照片上傳失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString() + Environment.NewLine;
+
+                CMF.writeToLog(BookingId, "UploadImgByPosition", pMsg, ErpId);
+                CMF.SendMailByAPI("UploadImg_ATTACH_API", null, "Joy.Chi@etatung.com", "", "", "UploadImg_UploadImgByPosition_ATTACH_API錯誤 - " + BookingId + " - " + PositionCode, pMsg, null, null);
+            }
+
+            //return Json("Finish");
+        }
+        #endregion
+
+        #region 檢點表
+        [HttpPost]
+        public ActionResult SaveCarCheckList(TB_CAR_CHECKLIST bean)
+        {
+            appDB.TB_CAR_CHECKLIST.Add(bean);
+            var result = appDB.SaveChanges();
+
+            if (result > 0)
+            {
+                return Json("Finsih");
+            }
+            else
+            {
+                return Json("Fail");
+            }
+
+        }
+        #endregion
+
+        #endregion
     }
 
     #region 取得系統位址參數相關資訊
