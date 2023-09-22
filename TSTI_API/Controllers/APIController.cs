@@ -12238,17 +12238,48 @@ namespace TSTI_API.Controllers
 
         #region 照片上傳
         [HttpPost]
-        public ActionResult UploadCarImg(HttpPostedFileBase ImgLF, HttpPostedFileBase ImgRF, HttpPostedFileBase ImgLB, HttpPostedFileBase ImgRB, string BookingId, string ErpId)
+        public ActionResult UploadCarImg(HttpPostedFileBase ImgLF, HttpPostedFileBase ImgRF, HttpPostedFileBase ImgLB, HttpPostedFileBase ImgRB, string BookingId, string ErpId, string ImgStatus)
         {
-            UploadCarImgByPosition(ImgLF, "LF", BookingId, ErpId);
-            UploadCarImgByPosition(ImgRF, "RF", BookingId, ErpId);
-            UploadCarImgByPosition(ImgLB, "LB", BookingId, ErpId);
-            UploadCarImgByPosition(ImgRB, "RB", BookingId, ErpId);
+            Guid GuidLF;
+            Guid GuidRF;
+            Guid GuidLB;
+            Guid GuidRB;
+
+            GuidLF = UploadCarImgByPosition(ImgLF, "LF", BookingId, ErpId, ImgStatus);
+            GuidRF = UploadCarImgByPosition(ImgRF, "RF", BookingId, ErpId, ImgStatus);
+            GuidLB = UploadCarImgByPosition(ImgLB, "LB", BookingId, ErpId, ImgStatus);
+            GuidRB = UploadCarImgByPosition(ImgRB, "RB", BookingId, ErpId, ImgStatus);
+
+            #region 存照片Guid對應到相關欄位
+            var CarPhotoInfo = appDB.TB_CAR_PHOTOS.Where(x => x.BOOKING_ID == BookingId && x.IMG_STATUS == ImgStatus).FirstOrDefault();
+
+            if (CarPhotoInfo == null)
+            {
+                TB_CAR_PHOTOS CarPhoto = new TB_CAR_PHOTOS();
+
+                CarPhoto.BOOKING_ID     = BookingId;
+                CarPhoto.IMG_STATUS     = ImgStatus;
+                CarPhoto.IMG_LF         = GuidLF.ToString();
+                CarPhoto.IMG_RF         = GuidRF.ToString();
+                CarPhoto.IMG_LB         = GuidLB.ToString();
+                CarPhoto.IMG_RB         = GuidRB.ToString();
+                CarPhoto.INSERT_TIME    = (DateTime.Now).ToString("yyyy/MM/dd HH:mm:ss");
+
+                appDB.TB_CAR_PHOTOS.Add(CarPhoto);
+                appDB.SaveChanges();
+            }
+            else
+            {
+                CMF.writeToLog(BookingId, "UploadImg", "UploadImg_ATTACH_API資料已存在 - " + BookingId + " - " + ImgStatus, ErpId);
+                CMF.SendMailByAPI("UploadImg_ATTACH_API", null, "Joy.Chi@etatung.com", "", "", "UploadImg_ATTACH_API資料已存在", "BookingId：" + BookingId + "<br>ImgStatus：" + ImgStatus, null, null);
+            }
+
+            #endregion
 
             return Json("FinishAllImg");
         }
 
-        public void UploadCarImgByPosition(HttpPostedFileBase Img, string PositionCode, string BookingId, string ErpId)
+        public Guid UploadCarImgByPosition(HttpPostedFileBase Img, string PositionCode, string BookingId, string ErpId, string ImgStatus)
         {
             Guid fileGuid = Guid.NewGuid();
 
@@ -12259,8 +12290,6 @@ namespace TSTI_API.Controllers
             string fileALLName  = string.Empty;
             try
             {
-                fileGuid = Guid.NewGuid();
-
                 #region 存照片到主機
                 fileId      = fileGuid.ToString();
                 fileOrgName = Img.FileName;
@@ -12280,11 +12309,7 @@ namespace TSTI_API.Controllers
 
                 dbOne.TB_ONE_DOCUMENT.Add(bean);
                 dbOne.SaveChanges();
-                #endregion
-
-                #region 存照片Guid對應到相關欄位
-                
-                #endregion
+                #endregion         
             }
             catch (Exception ex)
             {
@@ -12292,10 +12317,10 @@ namespace TSTI_API.Controllers
                 pMsg += " 失敗行數：" + ex.ToString() + Environment.NewLine;
 
                 CMF.writeToLog(BookingId, "UploadImgByPosition", pMsg, ErpId);
-                CMF.SendMailByAPI("UploadImg_ATTACH_API", null, "Joy.Chi@etatung.com", "", "", "UploadImg_UploadImgByPosition_ATTACH_API錯誤 - " + BookingId + " - " + PositionCode, pMsg, null, null);
+                CMF.SendMailByAPI("UploadImg_ATTACH_API", null, "Joy.Chi@etatung.com", "", "", "UploadImg_UploadImgByPosition_ATTACH_API錯誤 - " + BookingId + " - " + PositionCode + " - " + ImgStatus, pMsg, null, null);
             }
 
-            //return Json("Finish");
+            return fileGuid;
         }
         #endregion
 
