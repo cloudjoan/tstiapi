@@ -1,5 +1,80 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="APP_DATAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="TB_CAR_BOOKING">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BOOKING_ID" Type="varchar" MaxLength="10" />
+    <Property Name="CAR_NO" Type="nvarchar" MaxLength="20" />
+    <Property Name="RENT_DATE" Type="varchar" MaxLength="22" />
+    <Property Name="START_TIME" Type="varchar" MaxLength="22" />
+    <Property Name="END_TIME" Type="varchar" MaxLength="22" />
+    <Property Name="USER_NAME" Type="nvarchar" MaxLength="50" />
+    <Property Name="USER_ERPID" Type="varchar" MaxLength="20" />
+    <Property Name="FILL_USER_NAME" Type="nvarchar" MaxLength="50" />
+    <Property Name="FILL_USER_ERPID" Type="varchar" MaxLength="20" />
+    <Property Name="RENT_REASON" Type="nvarchar" MaxLength="200" />
+    <Property Name="RENT_DESC" Type="nvarchar" MaxLength="2000" />
+    <Property Name="DISABLED" Type="varchar" MaxLength="2" />
+    <Property Name="OVER_TIME" Type="varchar" MaxLength="2" />
+    <Property Name="ENGINE_START_TIME" Type="varchar" MaxLength="22" />
+    <Property Name="ENGINE_STOP_TIME" Type="varchar" MaxLength="22" />
+    <Property Name="INSERT_TIME" Type="varchar" MaxLength="22" />
+  </EntityType>
+  <EntityType Name="TB_CAR_CHECKLIST">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BOOKING_ID" Type="nvarchar" MaxLength="10" />
+    <Property Name="ITEM1" Type="nvarchar" MaxLength="2" />
+    <Property Name="ITEM2" Type="nvarchar" MaxLength="2" />
+    <Property Name="ITEM3" Type="nvarchar" MaxLength="2" />
+    <Property Name="ITEM4" Type="nvarchar" MaxLength="2" />
+    <Property Name="ITEM5" Type="nvarchar" MaxLength="2" />
+    <Property Name="ITEM6" Type="nvarchar" MaxLength="2" />
+    <Property Name="ITEM7" Type="nvarchar" MaxLength="2" />
+    <Property Name="ITEM8" Type="nvarchar" MaxLength="2" />
+    <Property Name="ITEM9" Type="nvarchar" MaxLength="2" />
+    <Property Name="ITEM10" Type="nvarchar" MaxLength="2" />
+    <Property Name="ITEM11" Type="nvarchar" MaxLength="2" />
+    <Property Name="ITEM12" Type="nvarchar" MaxLength="2" />
+    <Property Name="INSERT_USER" Type="nvarchar" MaxLength="22" />
+    <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+  </EntityType>
+  <EntityType Name="TB_CAR_DATA">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CAR_NO" Type="nvarchar" MaxLength="100" />
+    <Property Name="CAR_STYLE" Type="nvarchar" MaxLength="100" />
+    <Property Name="PHOTO_URLS" Type="nvarchar" MaxLength="300" />
+    <Property Name="INSERT_TIME" Type="varchar" MaxLength="22" />
+  </EntityType>
+  <EntityType Name="TB_CAR_OWNER">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CAR_NO" Type="nvarchar" MaxLength="20" />
+    <Property Name="OWNER" Type="varchar" MaxLength="20" />
+    <Property Name="OWNER_NAME" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="TB_CAR_PHOTOS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BOOKING_ID" Type="varchar" MaxLength="10" />
+    <Property Name="IMG_STATUS" Type="nvarchar" MaxLength="30" />
+    <Property Name="IMG_LF" Type="nvarchar" MaxLength="50" />
+    <Property Name="IMG_RF" Type="nvarchar" MaxLength="50" />
+    <Property Name="IMG_LB" Type="nvarchar" MaxLength="50" />
+    <Property Name="IMG_RB" Type="nvarchar" MaxLength="50" />
+    <Property Name="INSERT_TIME" Type="varchar" MaxLength="22" />
+  </EntityType>
   <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
     <Key>
       <PropertyRef Name="hash" />
@@ -11,7 +86,7 @@
     <Property Name="emp_erpid" Type="nvarchar" MaxLength="10" />
     <Property Name="emp_name" Type="nvarchar" MaxLength="20" />
     <Property Name="submitTime" Type="nvarchar" MaxLength="22" />
-    <Property Name="srid" Type="nvarchar" MaxLength="10" />
+    <Property Name="srid" Type="nvarchar" MaxLength="20" />
     <Property Name="product_name" Type="nvarchar" MaxLength="50" />
     <Property Name="product_serial_no" Type="nvarchar" MaxLength="50" />
     <Property Name="maintain_type" Type="nvarchar" MaxLength="200" />
@@ -135,6 +210,11 @@
     <Property Name="UPDATE_TIME" Type="nvarchar" MaxLength="22" />
   </EntityType>
   <EntityContainer Name="APP_DATAModelStoreContainer">
+    <EntitySet Name="TB_CAR_BOOKING" EntityType="Self.TB_CAR_BOOKING" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_CAR_CHECKLIST" EntityType="Self.TB_CAR_CHECKLIST" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_CAR_DATA" EntityType="Self.TB_CAR_DATA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_CAR_OWNER" EntityType="Self.TB_CAR_OWNER" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_CAR_PHOTOS" EntityType="Self.TB_CAR_PHOTOS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_SURVEY_ANS_MAINTAIN" EntityType="Self.TB_SURVEY_ANS_MAINTAIN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_SURVEY_QUS_MAINTAIN" EntityType="Self.TB_SURVEY_QUS_MAINTAIN" Schema="dbo" store:Type="Tables" />
   </EntityContainer>

@@ -137,5 +137,85 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_CAR_CHECKLIST">
+      <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_CHECKLIST">
+        <MappingFragment StoreEntitySet="TB_CAR_CHECKLIST">
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="INSERT_USER" ColumnName="INSERT_USER" />
+          <ScalarProperty Name="ITEM12" ColumnName="ITEM12" />
+          <ScalarProperty Name="ITEM11" ColumnName="ITEM11" />
+          <ScalarProperty Name="ITEM10" ColumnName="ITEM10" />
+          <ScalarProperty Name="ITEM9" ColumnName="ITEM9" />
+          <ScalarProperty Name="ITEM8" ColumnName="ITEM8" />
+          <ScalarProperty Name="ITEM7" ColumnName="ITEM7" />
+          <ScalarProperty Name="ITEM6" ColumnName="ITEM6" />
+          <ScalarProperty Name="ITEM5" ColumnName="ITEM5" />
+          <ScalarProperty Name="ITEM4" ColumnName="ITEM4" />
+          <ScalarProperty Name="ITEM3" ColumnName="ITEM3" />
+          <ScalarProperty Name="ITEM2" ColumnName="ITEM2" />
+          <ScalarProperty Name="ITEM1" ColumnName="ITEM1" />
+          <ScalarProperty Name="BOOKING_ID" ColumnName="BOOKING_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_CAR_DATA">
+      <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_DATA">
+        <MappingFragment StoreEntitySet="TB_CAR_DATA">
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="PHOTO_URLS" ColumnName="PHOTO_URLS" />
+          <ScalarProperty Name="CAR_STYLE" ColumnName="CAR_STYLE" />
+          <ScalarProperty Name="CAR_NO" ColumnName="CAR_NO" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_CAR_OWNER">
+      <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_OWNER">
+        <MappingFragment StoreEntitySet="TB_CAR_OWNER">
+          <ScalarProperty Name="OWNER_NAME" ColumnName="OWNER_NAME" />
+          <ScalarProperty Name="OWNER" ColumnName="OWNER" />
+          <ScalarProperty Name="CAR_NO" ColumnName="CAR_NO" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_CAR_PHOTOS">
+      <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_PHOTOS">
+        <MappingFragment StoreEntitySet="TB_CAR_PHOTOS">
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="IMG_RB" ColumnName="IMG_RB" />
+          <ScalarProperty Name="IMG_LB" ColumnName="IMG_LB" />
+          <ScalarProperty Name="IMG_RF" ColumnName="IMG_RF" />
+          <ScalarProperty Name="IMG_LF" ColumnName="IMG_LF" />
+          <ScalarProperty Name="IMG_STATUS" ColumnName="IMG_STATUS" />
+          <ScalarProperty Name="BOOKING_ID" ColumnName="BOOKING_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_CAR_BOOKING">
+      <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_BOOKING">
+        <MappingFragment StoreEntitySet="TB_CAR_BOOKING">
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="ENGINE_STOP_TIME" ColumnName="ENGINE_STOP_TIME" />
+          <ScalarProperty Name="ENGINE_START_TIME" ColumnName="ENGINE_START_TIME" />
+          <ScalarProperty Name="OVER_TIME" ColumnName="OVER_TIME" />
+          <ScalarProperty Name="DISABLED" ColumnName="DISABLED" />
+          <ScalarProperty Name="RENT_DESC" ColumnName="RENT_DESC" />
+          <ScalarProperty Name="RENT_REASON" ColumnName="RENT_REASON" />
+          <ScalarProperty Name="FILL_USER_ERPID" ColumnName="FILL_USER_ERPID" />
+          <ScalarProperty Name="FILL_USER_NAME" ColumnName="FILL_USER_NAME" />
+          <ScalarProperty Name="USER_ERPID" ColumnName="USER_ERPID" />
+          <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
+          <ScalarProperty Name="END_TIME" ColumnName="END_TIME" />
+          <ScalarProperty Name="START_TIME" ColumnName="START_TIME" />
+          <ScalarProperty Name="RENT_DATE" ColumnName="RENT_DATE" />
+          <ScalarProperty Name="CAR_NO" ColumnName="CAR_NO" />
+          <ScalarProperty Name="BOOKING_ID" ColumnName="BOOKING_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

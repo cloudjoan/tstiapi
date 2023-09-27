@@ -3,6 +3,11 @@
   <EntityContainer Name="APP_DATAEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="TB_SURVEY_ANS_MAINTAIN" EntityType="APP_DATAModel.TB_SURVEY_ANS_MAINTAIN" />
     <EntitySet Name="TB_SURVEY_QUS_MAINTAIN" EntityType="APP_DATAModel.TB_SURVEY_QUS_MAINTAIN" />
+    <EntitySet Name="TB_CAR_CHECKLIST" EntityType="APP_DATAModel.TB_CAR_CHECKLIST" />
+    <EntitySet Name="TB_CAR_DATA" EntityType="APP_DATAModel.TB_CAR_DATA" />
+    <EntitySet Name="TB_CAR_OWNER" EntityType="APP_DATAModel.TB_CAR_OWNER" />
+    <EntitySet Name="TB_CAR_PHOTOS" EntityType="APP_DATAModel.TB_CAR_PHOTOS" />
+    <EntitySet Name="TB_CAR_BOOKING" EntityType="APP_DATAModel.TB_CAR_BOOKING" />
   </EntityContainer>
   <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
     <Key>
@@ -15,7 +20,7 @@
     <Property Name="emp_erpid" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="emp_name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="submitTime" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
-    <Property Name="srid" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="srid" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="product_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="product_serial_no" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="maintain_type" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -137,5 +142,80 @@
     <Property Name="DISABLED" Type="Int32" />
     <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
     <Property Name="UPDATE_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_CAR_CHECKLIST">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BOOKING_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="ITEM1" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ITEM2" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ITEM3" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ITEM4" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ITEM5" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ITEM6" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ITEM7" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ITEM8" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ITEM9" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ITEM10" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ITEM11" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ITEM12" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="INSERT_USER" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+    <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_CAR_DATA">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CAR_NO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CAR_STYLE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PHOTO_URLS" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="TB_CAR_OWNER">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CAR_NO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="OWNER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="OWNER_NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_CAR_PHOTOS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BOOKING_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="IMG_STATUS" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="IMG_LF" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IMG_RF" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IMG_LB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IMG_RB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="TB_CAR_BOOKING">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BOOKING_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="CAR_NO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="RENT_DATE" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+    <Property Name="START_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+    <Property Name="END_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+    <Property Name="USER_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="USER_ERPID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="FILL_USER_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FILL_USER_ERPID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="RENT_REASON" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="RENT_DESC" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="DISABLED" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="OVER_TIME" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="ENGINE_START_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+    <Property Name="ENGINE_STOP_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+    <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

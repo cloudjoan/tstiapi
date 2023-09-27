@@ -1157,6 +1157,11 @@ namespace TSTI_API.Controllers
                 pMsg += "【客戶ID】不得為空！" + Environment.NewLine;
             }
 
+            if (string.IsNullOrEmpty(IV_SRTEAM))
+            {
+                pMsg += "【服務團隊ID】不得為空！" + Environment.NewLine;
+            }
+
             if (string.IsNullOrEmpty(IV_SALESNO))
             {
                 pMsg += "【銷售訂單號】不得為空！" + Environment.NewLine;
@@ -1704,6 +1709,11 @@ namespace TSTI_API.Controllers
             if (string.IsNullOrEmpty(IV_CUSTOMER))
             {
                 pMsg += "【客戶ID】不得為空！" + Environment.NewLine;
+            }
+
+            if (string.IsNullOrEmpty(IV_SRTEAM))
+            {
+                pMsg += "【服務團隊ID】不得為空！" + Environment.NewLine;
             }
 
             if (string.IsNullOrEmpty(IV_CONTRACTID))
