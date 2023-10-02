@@ -385,7 +385,7 @@ namespace TSTI_API.Controllers
                             }
                             else
                             {
-                                IV_REPAIRADDR = IV_REPAIRNAME;
+                                IV_REPAIRADDR = "N/A";
                             }
                         }                      
                         #endregion
