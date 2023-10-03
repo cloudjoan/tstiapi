@@ -4131,6 +4131,9 @@ namespace TSTI_API.Controllers
             string MAServiceType = string.Empty;
             string EV_CompanyName = string.Empty;
             string EV_Remark = string.Empty;
+            string EV_TeamMGREmail = string.Empty;
+
+            List<SRTEAMORGINFO> SRTeam_List = new List<SRTEAMORGINFO>();
 
             var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
 
@@ -4182,6 +4185,11 @@ namespace TSTI_API.Controllers
                 }
                 #endregion
 
+                #region 取得服務團隊主管Email
+                SRTeam_List = findSRTEAMORGINFO(beanM.cTeamID);
+                EV_TeamMGREmail = findSRTeamMGREmail(SRTeam_List).TrimEnd(';');                
+                #endregion
+
                 EV_WTYKIND = findSysParameterDescription(pOperationID_GenerallySR, "OTHER", EmpBean.BUKRS, "SRMATYPE", MAServiceType);
 
                 EV_CompanyName = findCompanyNameByTeamID(beanM.cTeamID);
@@ -4207,7 +4215,8 @@ namespace TSTI_API.Controllers
                 results.Add("EV_SLASRV", EV_SLASRV);               //SLA服務條件
                 results.Add("EV_WTYKIND", EV_WTYKIND);             //維護服務種類(Z01.保固內、Z02.保固外、Z03.合約、Z04.3rd Party)
                 results.Add("EV_CompanyName", EV_CompanyName);     //公司名稱
-                results.Add("EV_Remark", EV_Remark);               //備註
+                results.Add("EV_Remark", EV_Remark);              //備註
+                results.Add("EV_TeamMGREmail", EV_TeamMGREmail);   //服務團隊主管Email
             }
 
             if (!string.IsNullOrEmpty(IV_SRID))
@@ -6165,8 +6174,23 @@ namespace TSTI_API.Controllers
 
             pdfFileName = CompanyName + "客戶服務報告書[" + srId + "].pdf";
 
-            //一併發送給主要工程師及支援工程師
+            //一併發送給服務團隊主管、主要工程師及支援工程師
             List<string> ccs = new List<string>();
+
+            #region 服務團隊主管
+            if (srdetail["EV_TeamMGREmail"].ToString() != "")
+            {
+                string[] AryEmail = srdetail["EV_TeamMGREmail"].ToString().Split(';');
+
+                foreach (string tEmail in AryEmail)
+                {
+                    if (!ccs.Contains(tEmail))
+                    {
+                        ccs.Add(tEmail);
+                    }
+                }
+            }
+            #endregion
 
             #region 主要工程師
             if (srdetail["EV_MAINENGID"].ToString() != "")
