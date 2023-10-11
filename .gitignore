@@ -27,3 +27,5 @@
 /TSTI_API/TSTI_API.csproj.user
 .vs
 /TSTI_API/obj
+/TSTI_API/obj/Release
+/TSTI_API/obj/Debug
