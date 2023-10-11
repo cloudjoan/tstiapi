@@ -21,11 +21,12 @@ using SAP.Middleware.Connector;
 using System.Web.Mvc;
 using TSTI_API.Models;
 using System.Data.Entity.Validation;
+using System.Web.WebPages;
 
 namespace TSTI_API.Controllers
 {
     #region API Key，上【正式】再打開
-    [ApiFilter] 
+    [ApiFilter]
     #endregion
     public class APIController : Controller
     {
@@ -12353,11 +12354,23 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #endregion
-    }
+        #region 取得公務車輛清單
 
-    #region 取得系統位址參數相關資訊
-    public class SRSYSPARAINFO
+        [HttpPost]
+        public ActionResult GetCarInfos()
+        {
+            var beans = dbEIP.CarInfo.Where(x => x.CarType == "1" && x.ContractID != "");
+
+            return Json(beans, JsonRequestBehavior.AllowGet);
+        }
+
+		#endregion
+
+		#endregion
+	}
+
+	#region 取得系統位址參數相關資訊
+	public class SRSYSPARAINFO
     {
         /// <summary>呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)</summary>
         public bool IsFormal { get; set; }
