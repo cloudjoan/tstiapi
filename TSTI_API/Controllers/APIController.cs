@@ -11137,6 +11137,284 @@ namespace TSTI_API.Controllers
 
         #endregion -----↑↑↑↑↑更新ONE SERVICE 合約主數據接口 ↑↑↑↑↑-----
 
+        #region -----↓↓↓↓↓查詢合約主數據相關資料 ↓↓↓↓↓-----       
+
+        #region 查詢合約主數據相關資料        
+        [HttpPost]
+        public ActionResult API_CONTRACTINFO_GET(CONTRACTINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{            
+            //    "IV_CONTRACTID" : "11204075"
+            //}
+            #endregion
+
+            CONTRACTINFO_OUTPUT ListOUT = new CONTRACTINFO_OUTPUT();
+
+            ListOUT = CONTRACTINFO_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得合約主數據相關資料
+        private CONTRACTINFO_OUTPUT CONTRACTINFO_GET(CONTRACTINFO_INPUT beanIN)
+        {
+            CONTRACTINFO_OUTPUT OUTBean = new CONTRACTINFO_OUTPUT();
+
+            List<CONTACTINFO> CONTACT_LIST = new List<CONTACTINFO>();
+
+            string IV_CONTRACTID = string.IsNullOrEmpty(beanIN.IV_CONTRACTID) ? "" : beanIN.IV_CONTRACTID.Trim();
+
+            string Desc = string.Empty;
+            string StartDate = string.Empty;
+            string EndDate = string.Empty;
+            string ContractNotes = string.Empty;
+            string ContactName = string.Empty;
+            string ContactEmail = string.Empty;
+
+            try
+            {
+                var beanM = dbOne.TB_ONE_ContractMain.FirstOrDefault(x => x.Disabled == 0 && x.cContractID == IV_CONTRACTID);
+
+                if (beanM != null)
+                {
+                    Desc = string.IsNullOrEmpty(beanM.cDesc) ? "" : beanM.cDesc;
+                    StartDate = beanM.cStartDate == null ? "" : Convert.ToDateTime(beanM.cStartDate).ToString("yyyy-MM-dd");
+                    EndDate = beanM.cEndDate == null ? "" : Convert.ToDateTime(beanM.cEndDate).ToString("yyyy-MM-dd");
+                    ContractNotes = string.IsNullOrEmpty(beanM.cContractNotes) ? "" : beanM.cContractNotes;
+                    ContactName = string.IsNullOrEmpty(beanM.cContactName) ? "" : beanM.cContactName;
+                    ContactEmail = string.IsNullOrEmpty(beanM.cContactEmail) ? "" : beanM.cContactEmail;
+
+                    if (ContactName != "")
+                    {
+                        CONTACTINFO conInfo = new CONTACTINFO();
+
+                        conInfo.CONTNAME = ContactName;
+                        conInfo.CONTADDR = "";
+                        conInfo.CONTTEL = "";
+                        conInfo.CONTMOBILE = "";
+                        conInfo.CONTEMAIL = ContactEmail;
+
+                        CONTACT_LIST.Add(conInfo);
+                    }
+
+                    #region 新增【客戶聯絡人資訊】明細
+                    var beansBatch = dbOne.TB_ONE_SRBatchMaintainRecord.Where(x => x.cDisabled == 0 && x.cContractID == IV_CONTRACTID);
+
+                    foreach (var beanCon in beansBatch)
+                    {
+                        string IV_CONTNAME = string.IsNullOrEmpty(beanCon.cContactName) ? "" : beanCon.cContactName.Trim();
+                        string IV_CONTADDR = string.IsNullOrEmpty(beanCon.cContactAddress) ? "" : beanCon.cContactAddress.Trim();
+                        string IV_CONTTEL = string.IsNullOrEmpty(beanCon.cContactPhone) ? "" : beanCon.cContactPhone.Trim();
+                        string IV_CONTMOBILE = string.IsNullOrEmpty(beanCon.cContactMobile) ? "" : beanCon.cContactMobile.Trim();
+                        string IV_CONTEMAIL = string.IsNullOrEmpty(beanCon.cContactEmail) ? "" : beanCon.cContactEmail.Trim();
+
+                        CONTACTINFO conInfo = new CONTACTINFO();
+
+                        conInfo.CONTNAME = IV_CONTNAME;
+                        conInfo.CONTADDR = IV_CONTADDR;
+                        conInfo.CONTTEL = IV_CONTTEL;
+                        conInfo.CONTMOBILE = IV_CONTMOBILE;
+                        conInfo.CONTEMAIL = IV_CONTEMAIL;
+
+                        CONTACT_LIST.Add(conInfo);
+                    }
+                    #endregion
+
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+                    OUTBean.ContractID = IV_CONTRACTID;
+                    OUTBean.Desc = Desc;
+                    OUTBean.StartDate = StartDate;
+                    OUTBean.EndDate = EndDate;
+                    OUTBean.ContractNotes = ContractNotes;
+
+                    if (CONTACT_LIST.Count > 0)
+                    {
+                        OUTBean.CONTACT_LIST = CONTACT_LIST;
+                    }                   
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無該文件編號相關資訊，請重新查詢！";
+                }                
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "CONTRACTINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion       
+
+        #region 查詢合約主數據相關INPUT資訊
+        /// <summary>查詢合約主數據相關INPUT資訊</summary>
+        public struct CONTRACTINFO_INPUT
+        {            
+            /// <summary>文件編號</summary>
+            public string IV_CONTRACTID { get; set; }         
+        }
+        #endregion
+
+        #region 查詢合約主數據相關OUTPUT資訊
+        /// <summary>查詢合約主數據相關OUTPUT資訊</summary>
+        public struct CONTRACTINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+            /// <summary>文件編號</summary>
+            public string ContractID { get; set; }
+            /// <summary>訂單說明</summary>
+            public string Desc { get; set; }
+            /// <summary>維護日期(起)</summary>
+            public string StartDate { get; set; }
+            /// <summary>維護日期(迄)</summary>
+            public string EndDate { get; set; }
+            /// <summary>合約備註</summary>
+            public string ContractNotes { get; set; }
+
+            /// <summary>服務案件客戶聯絡人清單資訊</summary>
+            public List<CONTACTINFO> CONTACT_LIST { get; set; }
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑查詢合約主數據相關資料 ↑↑↑↑↑-----
+
+        #region -----↓↓↓↓↓查詢客戶聯絡人是否可觀看合約主數據權限 ↓↓↓↓↓-----        
+
+        #region 查詢客戶聯絡人是否可觀看合約主數據權限資料        
+        [HttpPost]
+        public ActionResult API_VIEWCONTRACTSINFO_GET(VIEWCONTRACTSINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //    "IV_CONTEMAIL": "kh3c091@kh3c.com.tw"
+            //}
+            #endregion
+
+            VIEWCONTRACTSINFO_OUTPUT ListOUT = new VIEWCONTRACTSINFO_OUTPUT();
+
+            ListOUT = VIEWCONTRACTSINFO_GET(beanIN);
+
+            return Json(ListOUT);
+        }
+        #endregion
+
+        #region 取得查詢客戶聯絡人是否可觀看合約主數據權限資料
+        private VIEWCONTRACTSINFO_OUTPUT VIEWCONTRACTSINFO_GET(VIEWCONTRACTSINFO_INPUT beanIN)
+        {
+            VIEWCONTRACTSINFO_OUTPUT OUTBean = new VIEWCONTRACTSINFO_OUTPUT();
+
+            string IV_CONTEMAIL = string.IsNullOrEmpty(beanIN.IV_CONTEMAIL) ? "" : beanIN.IV_CONTEMAIL.Trim();
+
+            List<CONTRACTIDInfo> CONTRACTID_List = new List<CONTRACTIDInfo>();
+            List<string> tListContractID = new List<string>();
+
+            try
+            {
+                #region 先查合約主數據
+                var beanM = dbOne.TB_ONE_ContractMain.FirstOrDefault(x => x.Disabled == 0 && x.cContactEmail == IV_CONTEMAIL);
+
+                if (beanM != null)
+                {
+                    if (!tListContractID.Contains(beanM.cContractID))
+                    {
+                        tListContractID.Add(beanM.cContractID);
+                    }
+                }
+                #endregion
+
+                #region 再查批次上傳定維派工紀錄主檔
+                var beansBatch = dbOne.TB_ONE_SRBatchMaintainRecord.Where(x => x.cDisabled == 0 && x.cContactEmail == IV_CONTEMAIL);
+
+                foreach (var beanCon in beansBatch)
+                {
+                    if (!tListContractID.Contains(beanCon.cContractID))
+                    {
+                        tListContractID.Add(beanCon.cContractID);
+                    }
+                }
+
+                foreach(string ContractID in tListContractID)
+                {
+                    CONTRACTIDInfo conInfo = new CONTRACTIDInfo();
+                    conInfo.ContractID = ContractID;
+                    CONTRACTID_List.Add(conInfo);
+                }
+                #endregion
+
+                if (CONTRACTID_List.Count > 0)
+                {
+                    OUTBean.EV_MSGT = "Y";
+                    OUTBean.EV_MSG = "";
+                    OUTBean.CONTRACTID_List = CONTRACTID_List;
+                }
+                else
+                {
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = "查無該客戶聯絡人信箱所對應的合約相關資訊，請重新確認！";
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "VIEWCONTRACTSINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;                
+            }
+
+            return OUTBean;
+        }
+        #endregion       
+
+        #region 查詢客戶聯絡人是否可觀看合約主數據資料INPUT資訊
+        /// <summary>查詢客戶聯絡人是否可觀看合約主數據INPUT資訊</summary>
+        public struct VIEWCONTRACTSINFO_INPUT
+        {            
+            /// <summary>客戶聯絡人信箱</summary>
+            public string IV_CONTEMAIL { get; set; }         
+        }
+        #endregion
+
+        #region 查詢客戶聯絡人是否可觀看合約主數據資料OUTPUT資訊
+        /// <summary>查詢客戶聯絡人是否可觀看合約主數據OUTPUT資訊</summary>
+        public struct VIEWCONTRACTSINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+            
+            /// <summary>文件編號清單資訊</summary>
+            public List<CONTRACTIDInfo> CONTRACTID_List { get; set; }
+        }
+
+        #region 文件編號清單資訊
+        /// <summary>文件編號清單資訊</summary>
+        public class CONTRACTIDInfo
+        {
+            /// <summary>文件編號</summary>
+            public string ContractID { get; set; }            
+        }
+        #endregion
+        #endregion
+
+        #endregion -----↑↑↑↑↑查詢客戶聯絡人是否可觀看合約主數據權限 ↑↑↑↑↑-----
+
         #endregion -----↑↑↑↑↑合約管理相關 ↑↑↑↑↑-----
 
         #region -----↓↓↓↓↓CALL RFC接口 ↓↓↓↓↓-----    
@@ -12901,6 +13179,24 @@ namespace TSTI_API.Controllers
     #region 建立客戶聯絡人資訊
     /// <summary>建立客戶聯絡人資訊</summary>
     public class CREATECONTACTINFO
+    {
+        /// <summary>聯絡人姓名</summary>
+        public string CONTNAME { get; set; }
+        /// <summary>聯絡人地址</summary>
+        public string CONTADDR { get; set; }
+        /// <summary>聯絡人電話</summary>
+        public string CONTTEL { get; set; }
+        /// <summary>聯絡人手機</summary>
+        public string CONTMOBILE { get; set; }
+        /// <summary>聯絡人信箱</summary>
+        public string CONTEMAIL { get; set; }
+
+    }
+    #endregion
+
+    #region 客戶聯絡人資訊
+    /// <summary>客戶聯絡人資訊</summary>
+    public class CONTACTINFO
     {
         /// <summary>聯絡人姓名</summary>
         public string CONTNAME { get; set; }

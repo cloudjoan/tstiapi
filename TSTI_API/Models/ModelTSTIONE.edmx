@@ -176,6 +176,30 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="TB_ONE_SRBatchMaintainRecord">
+          <Key>
+            <PropertyRef Name="cID" />
+          </Key>
+          <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cContractID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="cBUKRS" Type="nvarchar" MaxLength="4" />
+          <Property Name="cCustomerID" Type="nvarchar" MaxLength="10" />
+          <Property Name="cCustomerName" Type="nvarchar" MaxLength="35" />
+          <Property Name="cContactStoreName" Type="nvarchar" MaxLength="40" />
+          <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
+          <Property Name="cContactAddress" Type="nvarchar" MaxLength="110" />
+          <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContactMobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
+          <Property Name="cMainEngineerID" Type="nvarchar" MaxLength="20" />
+          <Property Name="cMainEngineerName" Type="nvarchar" MaxLength="40" />
+          <Property Name="cMACycle" Type="nvarchar" MaxLength="512" />
+          <Property Name="cDisabled" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="TB_ONE_SRCustomerEmailMapping">
           <Key>
             <PropertyRef Name="cID" />
@@ -534,6 +558,7 @@
           <EntitySet Name="TB_ONE_ReportFormat" EntityType="Self.TB_ONE_ReportFormat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_SRBatchInstallRecord" EntityType="Self.TB_ONE_SRBatchInstallRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_SRBatchInstallRecord_Detail" EntityType="Self.TB_ONE_SRBatchInstallRecord_Detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_ONE_SRBatchMaintainRecord" EntityType="Self.TB_ONE_SRBatchMaintainRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_SRCustomerEmailMapping" EntityType="Self.TB_ONE_SRCustomerEmailMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_SRDetail_Contact" EntityType="Self.TB_ONE_SRDetail_Contact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_ONE_SRDetail_MaterialInfo" EntityType="Self.TB_ONE_SRDetail_MaterialInfo" Schema="dbo" store:Type="Tables" />
@@ -584,6 +609,7 @@
           <EntitySet Name="TB_ONE_SRSatisfactionSurveyRemove" EntityType="Model.TB_ONE_SRSatisfactionSurveyRemove" />
           <EntitySet Name="TB_ONE_SRTeamChangTemp" EntityType="Model.TB_ONE_SRTeamChangTemp" />
           <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
+          <EntitySet Name="TB_ONE_SRBatchMaintainRecord" EntityType="Model.TB_ONE_SRBatchMaintainRecord" />
           </EntityContainer>
         <EntityType Name="TB_ONE_SRDetail_Contact">
           <Key>
@@ -1098,6 +1124,30 @@
           <Property Name="cPerCallSLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="cRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="cSystemGUID" Type="Guid" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_ONE_SRBatchMaintainRecord">
+          <Key>
+            <PropertyRef Name="cID" />
+          </Key>
+          <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cBUKRS" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="cCustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cCustomerName" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="cContactStoreName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cContactName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cContactAddress" Type="String" MaxLength="110" FixedLength="false" Unicode="true" />
+          <Property Name="cContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContactMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="cMainEngineerID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cMainEngineerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cMACycle" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="cDisabled" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
@@ -1645,6 +1695,31 @@
                 <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
                 <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
                 <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_ONE_SRBatchMaintainRecord">
+            <EntityTypeMapping TypeName="Model.TB_ONE_SRBatchMaintainRecord">
+              <MappingFragment StoreEntitySet="TB_ONE_SRBatchMaintainRecord">
+                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="cDisabled" ColumnName="cDisabled" />
+                <ScalarProperty Name="cMACycle" ColumnName="cMACycle" />
+                <ScalarProperty Name="cMainEngineerName" ColumnName="cMainEngineerName" />
+                <ScalarProperty Name="cMainEngineerID" ColumnName="cMainEngineerID" />
+                <ScalarProperty Name="cContactEmail" ColumnName="cContactEmail" />
+                <ScalarProperty Name="cContactMobile" ColumnName="cContactMobile" />
+                <ScalarProperty Name="cContactPhone" ColumnName="cContactPhone" />
+                <ScalarProperty Name="cContactAddress" ColumnName="cContactAddress" />
+                <ScalarProperty Name="cContactName" ColumnName="cContactName" />
+                <ScalarProperty Name="cContactStoreName" ColumnName="cContactStoreName" />
+                <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
+                <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
+                <ScalarProperty Name="cBUKRS" ColumnName="cBUKRS" />
+                <ScalarProperty Name="cContractID" ColumnName="cContractID" />
+                <ScalarProperty Name="cID" ColumnName="cID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
