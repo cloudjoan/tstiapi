@@ -156,5 +156,30 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="CarInfo">
+      <EntityTypeMapping TypeName="MCSWorkflowModel.CarInfo">
+        <MappingFragment StoreEntitySet="CarInfo">
+          <ScalarProperty Name="DATESTAMP" ColumnName="DATESTAMP" />
+          <ScalarProperty Name="USERSTAMP" ColumnName="USERSTAMP" />
+          <ScalarProperty Name="CR_DATE" ColumnName="CR_DATE" />
+          <ScalarProperty Name="CR_USER" ColumnName="CR_USER" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="LicenseTax" ColumnName="LicenseTax" />
+          <ScalarProperty Name="FuelUseTax" ColumnName="FuelUseTax" />
+          <ScalarProperty Name="EngineNO" ColumnName="EngineNO" />
+          <ScalarProperty Name="ContractDate" ColumnName="ContractDate" />
+          <ScalarProperty Name="ManufactureDate" ColumnName="ManufactureDate" />
+          <ScalarProperty Name="ContractID" ColumnName="ContractID" />
+          <ScalarProperty Name="PlateNO" ColumnName="PlateNO" />
+          <ScalarProperty Name="TradeMark" ColumnName="TradeMark" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="CarType" ColumnName="CarType" />
+          <ScalarProperty Name="NO" ColumnName="NO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

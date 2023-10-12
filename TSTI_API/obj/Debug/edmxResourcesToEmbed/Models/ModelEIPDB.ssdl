@@ -1,5 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="MCSWorkflowModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'MCSWorkflow.dbo.CarInfo' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+  <EntityType Name="CarInfo">
+    <Key>
+      <PropertyRef Name="NO" />
+    </Key>
+    <Property Name="NO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CarType" Type="nvarchar" MaxLength="50" />
+    <Property Name="EmployeeID" Type="nvarchar" MaxLength="50" />
+    <Property Name="ID" Type="nvarchar" MaxLength="10" />
+    <Property Name="ERP_ID" Type="nvarchar" MaxLength="10" />
+    <Property Name="Year" Type="nvarchar" MaxLength="4" />
+    <Property Name="TradeMark" Type="nvarchar" MaxLength="50" />
+    <Property Name="PlateNO" Type="nvarchar" MaxLength="50" />
+    <Property Name="ContractID" Type="nvarchar" MaxLength="50" />
+    <Property Name="ManufactureDate" Type="datetime" />
+    <Property Name="ContractDate" Type="datetime" />
+    <Property Name="EngineNO" Type="nvarchar" MaxLength="50" />
+    <Property Name="FuelUseTax" Type="int" />
+    <Property Name="LicenseTax" Type="int" />
+    <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+    <Property Name="CR_USER" Type="nvarchar" MaxLength="50" />
+    <Property Name="CR_DATE" Type="datetime" />
+    <Property Name="USERSTAMP" Type="nvarchar" MaxLength="50" />
+    <Property Name="DATESTAMP" Type="datetime" />
+  </EntityType>
   <EntityType Name="Department">
     <Key>
       <PropertyRef Name="ID" />
@@ -156,5 +182,28 @@
     <EntitySet Name="TB_SERVICES_APP_INSTALL" EntityType="Self.TB_SERVICES_APP_INSTALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_SERVICES_APP_INSTALLTEMP" EntityType="Self.TB_SERVICES_APP_INSTALLTEMP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_SERVICES_APP_STATE" EntityType="Self.TB_SERVICES_APP_STATE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CarInfo" EntityType="Self.CarInfo" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [CarInfo].[NO] AS [NO], 
+    [CarInfo].[CarType] AS [CarType], 
+    [CarInfo].[EmployeeID] AS [EmployeeID], 
+    [CarInfo].[ID] AS [ID], 
+    [CarInfo].[ERP_ID] AS [ERP_ID], 
+    [CarInfo].[Year] AS [Year], 
+    [CarInfo].[TradeMark] AS [TradeMark], 
+    [CarInfo].[PlateNO] AS [PlateNO], 
+    [CarInfo].[ContractID] AS [ContractID], 
+    [CarInfo].[ManufactureDate] AS [ManufactureDate], 
+    [CarInfo].[ContractDate] AS [ContractDate], 
+    [CarInfo].[EngineNO] AS [EngineNO], 
+    [CarInfo].[FuelUseTax] AS [FuelUseTax], 
+    [CarInfo].[LicenseTax] AS [LicenseTax], 
+    [CarInfo].[Remark] AS [Remark], 
+    [CarInfo].[CR_USER] AS [CR_USER], 
+    [CarInfo].[CR_DATE] AS [CR_DATE], 
+    [CarInfo].[USERSTAMP] AS [USERSTAMP], 
+    [CarInfo].[DATESTAMP] AS [DATESTAMP]
+    FROM [dbo].[CarInfo] AS [CarInfo]</DefiningQuery>
+    </EntitySet>
   </EntityContainer>
 </Schema>

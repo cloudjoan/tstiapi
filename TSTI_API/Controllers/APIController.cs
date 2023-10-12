@@ -1073,6 +1073,18 @@ namespace TSTI_API.Controllers
             //        "MATERIALID": "G-507283-001---",
             //            "QTY": "1"
             //        }                 
+            //    ],
+            //    "CREATEFEEDBACK_LIST": [
+            //        {
+            //        "SERIALID": "CTCX1Z3",
+            //            "MATERIALID": "G-DEL-R350-003-",
+            //            "MATERIALNAME": "R350/E-2388G/32G*1/600G*2/5Y"
+            //        },
+            //        {
+            //        "SERIALID": "5CG32900MY",
+            //            "MATERIALID": "",
+            //            "MATERIALNAME": "HP x360 Fortis11G9"
+            //        }                 
             //    ]
             //}
             #endregion
@@ -1438,14 +1450,21 @@ namespace TSTI_API.Controllers
                             foreach (var beanFB in bean.CREATEFEEDBACK_LIST)
                             {
                                 string SERIALID = string.IsNullOrEmpty(beanFB.SERIALID) ? "" : beanFB.SERIALID.Trim();
-                                string cMaterialID = string.Empty;
-                                string cMaterialName = string.Empty;
+                                string cMaterialID = string.IsNullOrEmpty(beanFB.MATERIALID) ? "" : beanFB.MATERIALID.Trim();
+                                string cMaterialName = string.IsNullOrEmpty(beanFB.MATERIALNAME) ? "" : beanFB.MATERIALNAME.Trim();
 
                                 var ProBean = CMF.findMaterialBySerial(SERIALID);
                                 if (ProBean.IV_SERIAL != null)
                                 {
-                                    cMaterialID = ProBean.ProdID;
-                                    cMaterialName = ProBean.Product;
+                                    if (cMaterialID == "")
+                                    {
+                                        cMaterialID = ProBean.ProdID;
+                                    }
+
+                                    if (cMaterialName == "")
+                                    {
+                                        cMaterialName = ProBean.Product;
+                                    }
                                 }
 
                                 TB_ONE_SRDetail_SerialFeedback beanD = new TB_ONE_SRDetail_SerialFeedback();
@@ -12915,7 +12934,11 @@ namespace TSTI_API.Controllers
     public class CREATEFEEDBACK
     {
         /// <summary>序號</summary>
-        public string SERIALID { get; set; }       
+        public string SERIALID { get; set; }
+        /// <summary>物料編號</summary>
+        public string MATERIALID { get; set; }
+        /// <summary>物料說明</summary>
+        public string MATERIALNAME { get; set; }
     }
     #endregion
 
