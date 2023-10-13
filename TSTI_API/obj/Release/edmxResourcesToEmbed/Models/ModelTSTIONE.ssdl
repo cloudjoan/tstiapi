@@ -171,6 +171,30 @@
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="TB_ONE_SRBatchMaintainRecord">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cContractID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="cBUKRS" Type="nvarchar" MaxLength="4" />
+    <Property Name="cCustomerID" Type="nvarchar" MaxLength="10" />
+    <Property Name="cCustomerName" Type="nvarchar" MaxLength="35" />
+    <Property Name="cContactStoreName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cContactName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cContactAddress" Type="nvarchar" MaxLength="110" />
+    <Property Name="cContactPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContactMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContactEmail" Type="nvarchar" MaxLength="200" />
+    <Property Name="cMainEngineerID" Type="nvarchar" MaxLength="20" />
+    <Property Name="cMainEngineerName" Type="nvarchar" MaxLength="40" />
+    <Property Name="cMACycle" Type="nvarchar" MaxLength="512" />
+    <Property Name="cDisabled" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="ModifiedUserName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="TB_ONE_SRCustomerEmailMapping">
     <Key>
       <PropertyRef Name="cID" />
@@ -529,6 +553,7 @@
     <EntitySet Name="TB_ONE_ReportFormat" EntityType="Self.TB_ONE_ReportFormat" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRBatchInstallRecord" EntityType="Self.TB_ONE_SRBatchInstallRecord" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRBatchInstallRecord_Detail" EntityType="Self.TB_ONE_SRBatchInstallRecord_Detail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_ONE_SRBatchMaintainRecord" EntityType="Self.TB_ONE_SRBatchMaintainRecord" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRCustomerEmailMapping" EntityType="Self.TB_ONE_SRCustomerEmailMapping" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRDetail_Contact" EntityType="Self.TB_ONE_SRDetail_Contact" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_ONE_SRDetail_MaterialInfo" EntityType="Self.TB_ONE_SRDetail_MaterialInfo" Schema="dbo" store:Type="Tables" />
