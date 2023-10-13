@@ -12666,10 +12666,42 @@ namespace TSTI_API.Controllers
         #region 預約車輛
 
         [HttpPost]
-        public ActionResult SaveCarBooking(TB_CAR_BOOKING bean)
+        public ActionResult BookingCar(TB_CAR_BOOKING bean)
         {
             appDB.TB_CAR_BOOKING.Add(bean);
             appDB.SaveChanges();
+            string bookingId = "0000" + appDB.TB_CAR_BOOKING.Max(x => x.ID);
+            bean.BOOKING_ID = bookingId.Substring(bookingId.Length - 4);
+            appDB.SaveChanges();
+            return Json(bean);
+        }
+
+        #endregion
+
+        #region 取消預約
+
+        [HttpPost]
+        public ActionResult CancelBooking(string bookingId)
+        {
+            var bean = appDB.TB_CAR_BOOKING.FirstOrDefault(x => x.BOOKING_ID == bookingId);
+            bean.DISABLED = "1";
+            appDB.SaveChanges();
+
+            return Json("FINISH");
+        }
+
+		#endregion
+
+		#region 更新預約資訊
+
+		[HttpPost]
+        public ActionResult UpdateCarBooking(string bookingId, string engineStartTime, string engineStopTime)
+        {
+            var bean = appDB.TB_CAR_BOOKING.FirstOrDefault(x => x.BOOKING_ID == bookingId);
+            if(engineStartTime != null)  bean.ENGINE_START_TIME = engineStartTime;
+            if(engineStopTime != null) bean.ENGINE_STOP_TIME = engineStopTime;
+            appDB.SaveChanges();
+
             return Json(bean);
         }
 
@@ -12677,7 +12709,7 @@ namespace TSTI_API.Controllers
 
 		#region 依車號查詢預約情形
 
-        public ActionResult FindCarBookingByLPN(string LPN)
+		public ActionResult FindCarBookingByLPN(string LPN)
         {
             var beans = appDB.TB_CAR_BOOKING.Where(x => x.LPN == LPN && x.DISABLED != "1");
             return Json(beans);
