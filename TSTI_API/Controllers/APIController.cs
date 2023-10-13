@@ -12364,6 +12364,28 @@ namespace TSTI_API.Controllers
             return Json(beans, JsonRequestBehavior.AllowGet);
         }
 
+        #endregion
+
+        #region 預約車輛
+
+        [HttpPost]
+        public ActionResult SaveCarBooking(TB_CAR_BOOKING bean)
+        {
+            appDB.TB_CAR_BOOKING.Add(bean);
+            appDB.SaveChanges();
+            return Json(bean);
+        }
+
+		#endregion
+
+		#region 依車號查詢預約情形
+
+        public ActionResult FindCarBookingByLPN(string LPN)
+        {
+            var beans = appDB.TB_CAR_BOOKING.Where(x => x.LPN == LPN && x.DISABLED != "1");
+            return Json(beans);
+        }
+
 		#endregion
 
 		#endregion

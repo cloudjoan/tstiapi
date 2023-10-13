@@ -16,7 +16,6 @@ namespace TSTI_API.Models
     {
         public int ID { get; set; }
         public string BOOKING_ID { get; set; }
-        public string CAR_NO { get; set; }
         public string RENT_DATE { get; set; }
         public string START_TIME { get; set; }
         public string END_TIME { get; set; }
@@ -31,5 +30,6 @@ namespace TSTI_API.Models
         public string ENGINE_START_TIME { get; set; }
         public string ENGINE_STOP_TIME { get; set; }
         public string INSERT_TIME { get; set; }
+        public string LPN { get; set; }
     }
 }

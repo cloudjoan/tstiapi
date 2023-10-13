@@ -11,7 +11,7 @@
         <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_DATA" Width="1.5" PointX="3.125" PointY="1.75" IsExpanded="false" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_OWNER" Width="1.5" PointX="3.125" PointY="2.375" IsExpanded="false" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_PHOTOS" Width="1.5" PointX="3.125" PointY="3" IsExpanded="false" />
-        <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_BOOKING" Width="1.5" PointX="3.125" PointY="0.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_BOOKING" Width="1.5" PointX="3.125" PointY="0.5" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
