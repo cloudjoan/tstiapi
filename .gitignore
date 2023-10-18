@@ -4,6 +4,9 @@
 
 /.vs/TSTI_API/FileContentIndex
 /.vs/TSTI_API/v17
+TSTI_API/obj
+TSTI_API/bin
+.vs
 /TSTI_API/bin/TSTI_API.dll
 /TSTI_API/bin/TSTI_API.pdb
 /TSTI_API/obj/Debug/edmxResourcesToEmbed/Models/ModelTSTIONE.csdl
@@ -25,7 +28,3 @@
 /TSTI_API/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
 /TSTI_API/obj/Release/TSTI_API.csproj.AssemblyReference.cache
 /TSTI_API/TSTI_API.csproj.user
-.vs
-/TSTI_API/obj
-/TSTI_API/obj/Release
-/TSTI_API/obj/Debug

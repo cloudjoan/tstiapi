@@ -181,6 +181,31 @@
           <Property Name="STATE" Type="nvarchar(max)" />
           <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
         </EntityType>
+        <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'MCSWorkflow.dbo.VIEW_DEPT_MGR' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <EntityType Name="VIEW_DEPT_MGR">
+          <Key>
+            <PropertyRef Name="DEPT_CODE" />
+            <PropertyRef Name="DEPT_LEVEL" />
+            <PropertyRef Name="DISABLED" />
+          </Key>
+          <Property Name="DEPT_CODE" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="DEPT_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="ERP_ID" Type="nvarchar" MaxLength="10" />
+          <Property Name="DEPT_LEVEL" Type="int" Nullable="false" />
+          <Property Name="DISABLED" Type="int" Nullable="false" />
+          <Property Name="COMP_CODE" Type="char" MaxLength="10" />
+          <Property Name="UP1_DEPT_ID" Type="varchar" MaxLength="36" />
+          <Property Name="UP1_DEPT_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="UP1_DEPT_MG_ERP_ID" Type="nvarchar" MaxLength="10" />
+          <Property Name="UP1_LEVEL" Type="int" />
+          <Property Name="UP1_Status" Type="int" />
+          <Property Name="UP2_DPET_ID" Type="varchar" MaxLength="36" />
+          <Property Name="UP2_DEPT_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="UP2_DEPT_MG_ERP_ID" Type="nvarchar" MaxLength="10" />
+          <Property Name="UP2_LEVEL" Type="int" />
+          <Property Name="UP2_Status" Type="int" />
+        </EntityType>
         <EntityContainer Name="MCSWorkflowModelStoreContainer">
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
@@ -209,6 +234,26 @@
     [CarInfo].[USERSTAMP] AS [USERSTAMP], 
     [CarInfo].[DATESTAMP] AS [DATESTAMP]
     FROM [dbo].[CarInfo] AS [CarInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VIEW_DEPT_MGR" EntityType="Self.VIEW_DEPT_MGR" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VIEW_DEPT_MGR].[DEPT_CODE] AS [DEPT_CODE], 
+    [VIEW_DEPT_MGR].[DEPT_NAME] AS [DEPT_NAME], 
+    [VIEW_DEPT_MGR].[ERP_ID] AS [ERP_ID], 
+    [VIEW_DEPT_MGR].[DEPT_LEVEL] AS [DEPT_LEVEL], 
+    [VIEW_DEPT_MGR].[DISABLED] AS [DISABLED], 
+    [VIEW_DEPT_MGR].[COMP_CODE] AS [COMP_CODE], 
+    [VIEW_DEPT_MGR].[UP1_DEPT_ID] AS [UP1_DEPT_ID], 
+    [VIEW_DEPT_MGR].[UP1_DEPT_NAME] AS [UP1_DEPT_NAME], 
+    [VIEW_DEPT_MGR].[UP1_DEPT_MG_ERP_ID] AS [UP1_DEPT_MG_ERP_ID], 
+    [VIEW_DEPT_MGR].[UP1_LEVEL] AS [UP1_LEVEL], 
+    [VIEW_DEPT_MGR].[UP1_Status] AS [UP1_Status], 
+    [VIEW_DEPT_MGR].[UP2_DPET_ID] AS [UP2_DPET_ID], 
+    [VIEW_DEPT_MGR].[UP2_DEPT_NAME] AS [UP2_DEPT_NAME], 
+    [VIEW_DEPT_MGR].[UP2_DEPT_MG_ERP_ID] AS [UP2_DEPT_MG_ERP_ID], 
+    [VIEW_DEPT_MGR].[UP2_LEVEL] AS [UP2_LEVEL], 
+    [VIEW_DEPT_MGR].[UP2_Status] AS [UP2_Status]
+    FROM [dbo].[VIEW_DEPT_MGR] AS [VIEW_DEPT_MGR]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -322,6 +367,7 @@
           <EntitySet Name="TB_SERVICES_APP_INSTALL" EntityType="MCSWorkflowModel.TB_SERVICES_APP_INSTALL" />
           <EntitySet Name="TB_SERVICES_APP_INSTALLTEMP" EntityType="MCSWorkflowModel.TB_SERVICES_APP_INSTALLTEMP" />
           <EntitySet Name="CarInfo" EntityType="MCSWorkflowModel.CarInfo" />
+          <EntitySet Name="VIEW_DEPT_MGR" EntityType="MCSWorkflowModel.VIEW_DEPT_MGR" />
         </EntityContainer>
         <EntityType Name="TB_SERVICES_APP_STATE">
           <Key>
@@ -396,6 +442,29 @@
           <Property Name="CR_DATE" Type="DateTime" Precision="3" />
           <Property Name="USERSTAMP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DATESTAMP" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="VIEW_DEPT_MGR">
+          <Key>
+            <PropertyRef Name="DEPT_CODE" />
+            <PropertyRef Name="DEPT_LEVEL" />
+            <PropertyRef Name="DISABLED" />
+          </Key>
+          <Property Name="DEPT_CODE" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="DEPT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ERP_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DEPT_LEVEL" Type="Int32" Nullable="false" />
+          <Property Name="DISABLED" Type="Int32" Nullable="false" />
+          <Property Name="COMP_CODE" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="UP1_DEPT_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="UP1_DEPT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UP1_DEPT_MG_ERP_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UP1_LEVEL" Type="Int32" />
+          <Property Name="UP1_Status" Type="Int32" />
+          <Property Name="UP2_DPET_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="UP2_DEPT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UP2_DEPT_MG_ERP_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UP2_LEVEL" Type="Int32" />
+          <Property Name="UP2_Status" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -580,6 +649,28 @@
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="CarType" ColumnName="CarType" />
                 <ScalarProperty Name="NO" ColumnName="NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VIEW_DEPT_MGR">
+            <EntityTypeMapping TypeName="MCSWorkflowModel.VIEW_DEPT_MGR">
+              <MappingFragment StoreEntitySet="VIEW_DEPT_MGR">
+                <ScalarProperty Name="UP2_Status" ColumnName="UP2_Status" />
+                <ScalarProperty Name="UP2_LEVEL" ColumnName="UP2_LEVEL" />
+                <ScalarProperty Name="UP2_DEPT_MG_ERP_ID" ColumnName="UP2_DEPT_MG_ERP_ID" />
+                <ScalarProperty Name="UP2_DEPT_NAME" ColumnName="UP2_DEPT_NAME" />
+                <ScalarProperty Name="UP2_DPET_ID" ColumnName="UP2_DPET_ID" />
+                <ScalarProperty Name="UP1_Status" ColumnName="UP1_Status" />
+                <ScalarProperty Name="UP1_LEVEL" ColumnName="UP1_LEVEL" />
+                <ScalarProperty Name="UP1_DEPT_MG_ERP_ID" ColumnName="UP1_DEPT_MG_ERP_ID" />
+                <ScalarProperty Name="UP1_DEPT_NAME" ColumnName="UP1_DEPT_NAME" />
+                <ScalarProperty Name="UP1_DEPT_ID" ColumnName="UP1_DEPT_ID" />
+                <ScalarProperty Name="COMP_CODE" ColumnName="COMP_CODE" />
+                <ScalarProperty Name="DISABLED" ColumnName="DISABLED" />
+                <ScalarProperty Name="DEPT_LEVEL" ColumnName="DEPT_LEVEL" />
+                <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+                <ScalarProperty Name="DEPT_NAME" ColumnName="DEPT_NAME" />
+                <ScalarProperty Name="DEPT_CODE" ColumnName="DEPT_CODE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

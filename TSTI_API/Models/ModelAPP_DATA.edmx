@@ -21,6 +21,7 @@
           <Property Name="FILL_USER_ERPID" Type="varchar" MaxLength="20" />
           <Property Name="RENT_REASON" Type="nvarchar" MaxLength="200" />
           <Property Name="RENT_DESC" Type="nvarchar" MaxLength="2000" />
+          <Property Name="RENT_STATUS" Type="nvarchar" MaxLength="20" />
           <Property Name="DISABLED" Type="varchar" MaxLength="2" />
           <Property Name="OVER_TIME" Type="varchar" MaxLength="2" />
           <Property Name="ENGINE_START_TIME" Type="varchar" MaxLength="22" />
@@ -47,6 +48,7 @@
           <Property Name="ITEM12" Type="nvarchar" MaxLength="2" />
           <Property Name="INSERT_USER" Type="nvarchar" MaxLength="22" />
           <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+          <Property Name="Memo" Type="nvarchar" MaxLength="300" />
         </EntityType>
         <EntityType Name="TB_CAR_DATA">
           <Key>
@@ -390,6 +392,7 @@
           <Property Name="ITEM12" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
           <Property Name="INSERT_USER" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
           <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="Memo" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TB_CAR_DATA">
           <Key>
@@ -444,6 +447,7 @@
           <Property Name="ENGINE_STOP_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
           <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
           <Property Name="LPN" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RENT_STATUS" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -590,6 +594,7 @@
           <EntitySetMapping Name="TB_CAR_CHECKLIST">
             <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_CHECKLIST">
               <MappingFragment StoreEntitySet="TB_CAR_CHECKLIST">
+                <ScalarProperty Name="Memo" ColumnName="Memo" />
                 <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
                 <ScalarProperty Name="INSERT_USER" ColumnName="INSERT_USER" />
                 <ScalarProperty Name="ITEM12" ColumnName="ITEM12" />
@@ -647,6 +652,7 @@
           <EntitySetMapping Name="TB_CAR_BOOKING">
             <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_BOOKING">
               <MappingFragment StoreEntitySet="TB_CAR_BOOKING">
+                <ScalarProperty Name="RENT_STATUS" ColumnName="RENT_STATUS" />
                 <ScalarProperty Name="LPN" ColumnName="LPN" />
                 <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
                 <ScalarProperty Name="ENGINE_STOP_TIME" ColumnName="ENGINE_STOP_TIME" />

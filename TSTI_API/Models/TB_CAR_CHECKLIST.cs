@@ -30,5 +30,6 @@ namespace TSTI_API.Models
         public string ITEM12 { get; set; }
         public string INSERT_USER { get; set; }
         public string INSERT_TIME { get; set; }
+        public string Memo { get; set; }
     }
 }

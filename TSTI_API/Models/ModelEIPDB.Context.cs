@@ -31,5 +31,6 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_SERVICES_APP_INSTALL> TB_SERVICES_APP_INSTALL { get; set; }
         public virtual DbSet<TB_SERVICES_APP_INSTALLTEMP> TB_SERVICES_APP_INSTALLTEMP { get; set; }
         public virtual DbSet<CarInfo> CarInfo { get; set; }
+        public virtual DbSet<VIEW_DEPT_MGR> VIEW_DEPT_MGR { get; set; }
     }
 }

@@ -11,6 +11,7 @@
         <EntityTypeShape EntityType="MCSWorkflowModel.TB_SERVICES_APP_INSTALL" Width="2.375" PointX="0.5" PointY="2" IsExpanded="false" />
         <EntityTypeShape EntityType="MCSWorkflowModel.TB_SERVICES_APP_INSTALLTEMP" Width="2.625" PointX="0.5" PointY="2.5" IsExpanded="false" />
         <EntityTypeShape EntityType="MCSWorkflowModel.CarInfo" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="MCSWorkflowModel.VIEW_DEPT_MGR" Width="1.5" PointX="3.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

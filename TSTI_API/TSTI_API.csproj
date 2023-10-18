@@ -521,6 +521,9 @@
     <Compile Include="Models\VIEW_CUSTOMER_WithAddress.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VIEW_DEPT_MGR.cs">
+      <DependentUpon>ModelEIPDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\VIEW_MATERIAL_ByComp.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>

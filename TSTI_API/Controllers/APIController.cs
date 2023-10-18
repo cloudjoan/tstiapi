@@ -12636,18 +12636,139 @@ namespace TSTI_API.Controllers
         [HttpPost]
         public ActionResult SaveCarCheckList(TB_CAR_CHECKLIST bean)
         {
-            appDB.TB_CAR_CHECKLIST.Add(bean);
-            var result = appDB.SaveChanges();
+            var     result          = 0;
+            bool    MailMark        = false;
+            bool    DepartMark      = true;
+            string  AbnormalList    = "";
+            string  MailContent     = "";
+            string  MailList        = "";
 
-            if (result > 0)
+            var CarBookingInfo = appDB.TB_CAR_BOOKING.Where(x => x.BOOKING_ID == bean.BOOKING_ID).FirstOrDefault();
+
+            if (bean.ITEM1 == "N")
+            { AbnormalList += "D檔功能<br />"; }
+            if (bean.ITEM2 == "N")
+            { AbnormalList += "R檔功能<br />"; }
+            if (bean.ITEM3 == "N")
+            { AbnormalList += "電瓶狀態、水箱溫度(儀錶板無異常顯示)<br />"; }
+            if (bean.ITEM4 == "N")
+            { AbnormalList += "前後燈具<br />"; }
+            if (bean.ITEM5 == "N")
+            { AbnormalList += "門窗擋風玻璃<br />"; }
+            if (bean.ITEM6 == "N")
+            { AbnormalList += "雨刷功能<br />"; }
+            if (bean.ITEM7 == "N")
+            { AbnormalList += "車門開關<br />"; }
+            if (bean.ITEM8 == "N")
+            { AbnormalList += "胎壓、胎紋深度<br />"; }
+            if (bean.ITEM9 == "N")
+            { AbnormalList += "煞車踏板功能<br />"; }
+            if (bean.ITEM10 == "N")
+            { AbnormalList += "手煞車功能<br />"; }
+            if (bean.ITEM11 == "N")
+            { AbnormalList += "儀表板顯示功能<br />"; }
+            if (bean.ITEM12 == "N")
+            { AbnormalList += "安全帶功能<br />"; }
+
+            // 有異常都發通知
+            if (bean.ITEM1 == "N" || bean.ITEM2 == "N" || bean.ITEM3 == "N" || bean.ITEM4 == "N"
+                || bean.ITEM5 == "N" || bean.ITEM6 == "N" || bean.ITEM7 == "N" || bean.ITEM8 == "N"
+                || bean.ITEM9 == "N" || bean.ITEM10 == "N" || bean.ITEM11 == "N" || bean.ITEM12 == "N")
+            { MailMark = true; }
+
+            // 制動功能或其他功能有項目異常，不可借用
+            if (bean.ITEM1 == "N" || bean.ITEM2 == "N" || bean.ITEM3 == "N" || bean.ITEM9 == "N"
+                || bean.ITEM10 == "N" || bean.ITEM11 == "N" || bean.ITEM12 == "N")
+            { DepartMark = false; }
+
+            if (CarBookingInfo != null)
             {
-                return Json("Finsih");
+                appDB.TB_CAR_CHECKLIST.Add(bean);
+                result = appDB.SaveChanges();
+
+                var CarInfo = dbEIP.CarInfo.Where(x => x.PlateNO == CarBookingInfo.LPN).FirstOrDefault();
+
+                if (CarInfo != null)
+                {
+                    if (!string.IsNullOrEmpty(CarInfo.ERP_ID))
+                    {
+                        var EmpInfo = dbEIP.Person.Where(x => x.ERP_ID == CarInfo.ERP_ID).FirstOrDefault();
+                        var DeptMGInfo = dbEIP.VIEW_DEPT_MGR.Where(x => x.DEPT_CODE == EmpInfo.DeptID).FirstOrDefault();
+
+                        // 通知公務車管理者及單位主管
+                        MailList += EmpInfo.Email + ";";
+
+                        if (EmpInfo.ERP_ID != DeptMGInfo.ERP_ID)
+                        {
+                            var EmpMGInfo = dbEIP.Person.Where(x => x.ERP_ID == DeptMGInfo.ERP_ID).FirstOrDefault();
+
+                            MailList += EmpMGInfo.Email + ";";
+                        }
+                    }
+                    else
+                    {
+                        MailContent += "<span style='font-family:Microsoft JhengHei; font-size: 16px;'>公務車:" + CarBookingInfo.LPN + " 尚未指派管理者，請確認<br /><br />";
+                        MailContent += "指派管理者後，請通知管理者以下異常通知，謝謝<br /><br /></span>";
+
+                        // 通知阿賢姊該公務車尚未指派管理者
+                        MailList += "Theresa.Hsu@etatung.com;";
+                    }
+                }
+                else
+                {
+                    MailContent += "<span style='font-family:Microsoft JhengHei; font-size: 16px;'>車號:" + CarBookingInfo.LPN + " 公務車尚未建檔，請確認<br /><br />";
+                    MailContent += "" + "建檔並指派管理者後，請通知管理者以下異常通知，謝謝<br /><br /></span>";
+
+                    // 通知阿賢姊該公務車尚未建檔
+                    MailList += "Theresa.Hsu@etatung.com;";
+                }
+
+                // 發送異常通知車輛管理員
+                if (MailMark == true)
+                {
+                    var EmpInfo = dbEIP.Person.Where(x => x.ERP_ID == bean.INSERT_USER).FirstOrDefault();
+
+                    MailContent += "<span style='font-family:Microsoft JhengHei; font-size: 16px;'>公務車管理者 您好<br /><br />";
+                    MailContent += "此為APP公務車借用 - 車輛" + CarBookingInfo.LPN + "異常通知<br />";
+                    MailContent += "公務車檢點表填寫人：" + EmpInfo.Name2 + "<br /><br />";
+                    MailContent += "以下為異常項目：<br />" + AbnormalList + "<br />";
+                    MailContent += "請確認，謝謝<br /><br />";
+                    MailContent += "<p style='font-family:Microsoft JhengHei; font-size: 16px;'>------- 此信件由系統發出，請勿回覆此信件 -------</p>";
+                    MailContent += MailList;
+                    MailContent += "</span>";
+
+                    CMF.SendMailByAPI("SaveCarCheckList_API", null, "Joy.Chi@etatung.com;Leon.Huang@etatung.com", "", "Joy.Chi@etatung.com", "APP公務車借用 - 車輛" + CarBookingInfo.LPN + "異常通知", MailContent, null, null);
+                }
+
+                
+
+                if (result > 0)
+                {
+                    if (MailMark == false)
+                    { return Json("Finish"); }
+                    else
+                    {
+                        if (DepartMark == false)
+                        {
+                            CarBookingInfo.RENT_STATUS = "DAMAGE";
+                            appDB.SaveChanges();
+
+                            return Json("AbnormalMailN");
+                        }
+                        else
+                        { return Json("AbnormalMailY"); }
+                    }
+                }
+                else
+                {
+                    return Json("Fail");
+                }
             }
             else
             {
+                CMF.SendMailByAPI("SaveCarCheckList_API", null, "Joy.Chi@etatung.com;Leon.Huang@etatung.com", "", "", "APP公務車借用 - 查無BOOKING_ID:" + bean.BOOKING_ID, "", null, null);
                 return Json("Fail");
             }
-
         }
         #endregion
 

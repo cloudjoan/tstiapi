@@ -31,5 +31,6 @@ namespace TSTI_API.Models
         public string ENGINE_STOP_TIME { get; set; }
         public string INSERT_TIME { get; set; }
         public string LPN { get; set; }
+        public string RENT_STATUS { get; set; }
     }
 }
