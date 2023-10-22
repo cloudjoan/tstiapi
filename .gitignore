@@ -4,8 +4,8 @@
 
 /.vs/TSTI_API/FileContentIndex
 /.vs/TSTI_API/v17
-TSTI_API/obj
-TSTI_API/bin
+/TSTI_API/obj
+/TSTI_API/bin
 .vs
 /TSTI_API/bin/TSTI_API.dll
 /TSTI_API/bin/TSTI_API.pdb

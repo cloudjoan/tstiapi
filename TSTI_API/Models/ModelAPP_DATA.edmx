@@ -65,7 +65,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CAR_NO" Type="nvarchar" MaxLength="20" />
+          <Property Name="LPN" Type="nvarchar" MaxLength="20" />
           <Property Name="OWNER" Type="varchar" MaxLength="20" />
           <Property Name="OWNER_NAME" Type="nvarchar" MaxLength="20" />
         </EntityType>
@@ -409,9 +409,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CAR_NO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="OWNER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="OWNER_NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LPN" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TB_CAR_PHOTOS">
           <Key>
@@ -628,9 +628,9 @@
           <EntitySetMapping Name="TB_CAR_OWNER">
             <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_OWNER">
               <MappingFragment StoreEntitySet="TB_CAR_OWNER">
+                <ScalarProperty Name="LPN" ColumnName="LPN" />
                 <ScalarProperty Name="OWNER_NAME" ColumnName="OWNER_NAME" />
                 <ScalarProperty Name="OWNER" ColumnName="OWNER" />
-                <ScalarProperty Name="CAR_NO" ColumnName="CAR_NO" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

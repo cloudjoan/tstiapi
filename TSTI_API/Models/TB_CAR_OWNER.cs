@@ -15,8 +15,8 @@ namespace TSTI_API.Models
     public partial class TB_CAR_OWNER
     {
         public int ID { get; set; }
-        public string CAR_NO { get; set; }
         public string OWNER { get; set; }
         public string OWNER_NAME { get; set; }
+        public string LPN { get; set; }
     }
 }

@@ -12770,71 +12770,93 @@ namespace TSTI_API.Controllers
                 return Json("Fail");
             }
         }
-        #endregion
+		#endregion
 
-        #region 取得公務車輛清單
+		#region 取得公務車輛清單
 
-        [HttpPost]
-        public ActionResult GetCarInfos()
-        {
-            var beans = dbEIP.CarInfo.Where(x => x.CarType == "1" && x.ContractID != "");
+		[HttpPost]
+		public ActionResult GetCarInfos()
+		{
+			var beans = dbEIP.CarInfo.Where(x => x.CarType == "1" && x.ContractID != "");
 
-            return Json(beans, JsonRequestBehavior.AllowGet);
-        }
+			return Json(beans, JsonRequestBehavior.AllowGet);
+		}
 
-        #endregion
+		#endregion
 
-        #region 預約車輛
+		#region 預約車輛
 
-        [HttpPost]
-        public ActionResult BookingCar(TB_CAR_BOOKING bean)
-        {
-            appDB.TB_CAR_BOOKING.Add(bean);
-            appDB.SaveChanges();
-            string bookingId = "0000" + appDB.TB_CAR_BOOKING.Max(x => x.ID);
-            bean.BOOKING_ID = bookingId.Substring(bookingId.Length - 4);
-            appDB.SaveChanges();
-            return Json(bean);
-        }
+		[HttpPost]
+		public ActionResult BookingCar(TB_CAR_BOOKING bean)
+		{
+			appDB.TB_CAR_BOOKING.Add(bean);
+			var result = appDB.SaveChanges();
+			string bookingId = "0000" + appDB.TB_CAR_BOOKING.Max(x => x.ID);
+			bean.BOOKING_ID = bookingId.Substring(bookingId.Length - 4);
+			appDB.SaveChanges();
+			return Json(bean);
+		}
 
-        #endregion
+		#endregion
 
-        #region 取消預約
+		#region 取消預約
 
-        [HttpPost]
-        public ActionResult CancelBooking(string bookingId)
-        {
-            var bean = appDB.TB_CAR_BOOKING.FirstOrDefault(x => x.BOOKING_ID == bookingId);
-            bean.DISABLED = "1";
-            appDB.SaveChanges();
+		[HttpPost]
+		public ActionResult CancelBooking(string BOOKING_ID)
+		{
+			var bean = appDB.TB_CAR_BOOKING.FirstOrDefault(x => x.BOOKING_ID == BOOKING_ID);
+			bean.DISABLED = "1";
+			appDB.SaveChanges();
 
-            return Json("FINISH");
-        }
+			return Json("FINISH");
+		}
 
 		#endregion
 
 		#region 更新預約資訊
 
 		[HttpPost]
-        public ActionResult UpdateCarBooking(string bookingId, string engineStartTime, string engineStopTime)
-        {
-            var bean = appDB.TB_CAR_BOOKING.FirstOrDefault(x => x.BOOKING_ID == bookingId);
-            if(engineStartTime != null)  bean.ENGINE_START_TIME = engineStartTime;
-            if(engineStopTime != null) bean.ENGINE_STOP_TIME = engineStopTime;
-            appDB.SaveChanges();
+		public ActionResult UpdateCarBooking(string BOOKING_ID, string ENGINE_START_TIME, string ENGINE_STOP_TIME)
+		{
+			var bean = appDB.TB_CAR_BOOKING.FirstOrDefault(x => x.BOOKING_ID == BOOKING_ID);
+			if (ENGINE_START_TIME != null) bean.ENGINE_START_TIME = ENGINE_START_TIME;
+			if (ENGINE_STOP_TIME != null) bean.ENGINE_STOP_TIME = ENGINE_STOP_TIME;
+			appDB.SaveChanges();
 
-            return Json(bean);
-        }
+			return Json(bean);
+		}
+
+		#endregion
+
+		#region 依員編查詢預約情形
+
+		public ActionResult FindBookingByErpId(string USER_ERPID)
+		{
+			var beans = appDB.TB_CAR_BOOKING.Where(x => (x.USER_ERPID == USER_ERPID || x.FILL_USER_ERPID == USER_ERPID) && x.DISABLED != "1").OrderByDescending(x => x.START_TIME);
+			return Json(beans);
+		}
 
 		#endregion
 
 		#region 依車號查詢預約情形
 
+		[HttpPost]
 		public ActionResult FindCarBookingByLPN(string LPN)
-        {
-            var beans = appDB.TB_CAR_BOOKING.Where(x => x.LPN == LPN && x.DISABLED != "1");
-            return Json(beans);
-        }
+		{
+			var beans = appDB.TB_CAR_BOOKING.Where(x => x.LPN == LPN && x.DISABLED != "1");
+			return Json(beans);
+		}
+
+		#endregion
+
+
+		#region 依Booking ID 查詢預約資訊
+
+		[HttpPost]
+		public ActionResult FindCarBookingById(string BOOKING_ID)
+		{
+			return Json(appDB.TB_CAR_BOOKING.FirstOrDefault(x => x.BOOKING_ID == BOOKING_ID));
+		}
 
 		#endregion
 
