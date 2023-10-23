@@ -12695,15 +12695,40 @@ namespace TSTI_API.Controllers
                         var EmpInfo = dbEIP.Person.Where(x => x.ERP_ID == CarInfo.ERP_ID).FirstOrDefault();
                         var DeptMGInfo = dbEIP.VIEW_DEPT_MGR.Where(x => x.DEPT_CODE == EmpInfo.DeptID).FirstOrDefault();
 
-                        // 通知公務車管理者及單位主管
-                        MailList += EmpInfo.Email + ";";
-
-                        if (EmpInfo.ERP_ID != DeptMGInfo.ERP_ID)
+                        if (EmpInfo == null)
                         {
-                            var EmpMGInfo = dbEIP.Person.Where(x => x.ERP_ID == DeptMGInfo.ERP_ID).FirstOrDefault();
+                            MailContent += "<span style='font-family:Microsoft JhengHei; font-size: 16px;'>公務車:" + CarBookingInfo.LPN + " 管理者ERPID" + CarInfo.ERP_ID + " 有誤，請確認<br /><br />";
+                            MailContent += "指派管理者後，請通知管理者以下異常通知，謝謝<br /><br /></span>";
 
-                            MailList += EmpMGInfo.Email + ";";
+                            // 通知阿賢姊該公務車尚未指派管理者
+                            MailList += "Theresa.Hsu@etatung.com;";
                         }
+                        else
+                        {
+                            if (DeptMGInfo == null)
+                            {
+                                MailContent += "<span style='font-family:Microsoft JhengHei; font-size: 16px;'>公務車:" + CarBookingInfo.LPN + " 管理者ERPID" + CarInfo.ERP_ID + "，部門代碼有誤，請確認<br /><br />";
+                                MailContent += "指派管理者後，請通知管理者以下異常通知，謝謝<br /><br /></span>";
+
+                                // 通知阿賢姊該公務車尚未指派管理者
+                                MailList += "Theresa.Hsu@etatung.com;";
+                            }
+                            else
+                            {
+                                // 通知公務車管理者及單位主管
+                                MailList += EmpInfo.Email + ";";
+
+                                if (EmpInfo.ERP_ID != DeptMGInfo.ERP_ID)
+                                {
+                                    var EmpMGInfo = dbEIP.Person.Where(x => x.ERP_ID == DeptMGInfo.ERP_ID).FirstOrDefault();
+
+                                    if (EmpMGInfo != null && !string.IsNullOrEmpty(EmpMGInfo.Email))
+                                    { MailList += EmpMGInfo.Email + ";"; }
+                                }
+                            }
+                        }
+
+                        
                     }
                     else
                     {
