@@ -12751,6 +12751,9 @@ namespace TSTI_API.Controllers
                 // 發送異常通知車輛管理員
                 if (MailMark == true)
                 {
+                    // 20231024 Jerry需求增加通知總務
+                    MailList += "Eway.Lu@etatung.com";
+
                     var EmpInfo = dbEIP.Person.Where(x => x.ERP_ID == bean.INSERT_USER).FirstOrDefault();
 
                     MailContent += "<span style='font-family:Microsoft JhengHei; font-size: 16px;'>公務車管理者 您好<br /><br />";
