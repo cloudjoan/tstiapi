@@ -22,11 +22,12 @@ using System.Web.Mvc;
 using TSTI_API.Models;
 using System.Data.Entity.Validation;
 using System.Web.WebPages;
+using System.Net.NetworkInformation;
 
 namespace TSTI_API.Controllers
 {
     #region API Key，上【正式】再打開
-    [ApiFilter]
+    //[ApiFilter]
     #endregion
     public class APIController : Controller
     {
@@ -12858,6 +12859,51 @@ namespace TSTI_API.Controllers
 			return Json(appDB.TB_CAR_BOOKING.FirstOrDefault(x => x.BOOKING_ID == BOOKING_ID));
 		}
 
+        #endregion
+
+        #region 上傳哩程數照片
+
+        [HttpPost]
+        public ActionResult UploadMileageImg(HttpPostedFileBase Img, string ImgType, string BookingId)
+        {
+			try
+			{
+				Guid fileGuid = Guid.NewGuid();
+
+				#region 存照片到主機
+				string fileId = fileGuid.ToString();
+				string fileOrgName = Img.FileName;
+				string fileName = fileId + Path.GetExtension(Img.FileName);
+				string path = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+				Img.SaveAs(path);
+				#endregion
+
+				#region 存照片對應資訊到Table
+				TB_ONE_DOCUMENT bean = new TB_ONE_DOCUMENT();
+
+				bean.ID = fileGuid;
+				bean.FILE_ORG_NAME = fileOrgName;
+				bean.FILE_NAME = fileName;
+				bean.FILE_EXT = Path.GetExtension(Img.FileName);
+				bean.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+				dbOne.TB_ONE_DOCUMENT.Add(bean);
+				dbOne.SaveChanges();
+                #endregion
+
+                TB_CAR_BOOKING bookingBean = appDB.TB_CAR_BOOKING.FirstOrDefault(x => x.BOOKING_ID == BookingId);
+                if (ImgType == "START") bookingBean.MILEAGE_START_IMG = fileId;
+                else if (ImgType == "END") bookingBean.MILEAGE_END_IMG = fileId;
+
+                appDB.SaveChanges();
+			}
+			catch (Exception e)
+			{
+				
+			}
+			return Json("SUCCESS");
+        }
+         
 		#endregion
 
 		#endregion

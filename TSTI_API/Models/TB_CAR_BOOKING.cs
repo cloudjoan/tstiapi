@@ -32,5 +32,9 @@ namespace TSTI_API.Models
         public string INSERT_TIME { get; set; }
         public string LPN { get; set; }
         public string RENT_STATUS { get; set; }
+        public Nullable<decimal> MILEAGE_START { get; set; }
+        public string MILEAGE_START_IMG { get; set; }
+        public Nullable<decimal> MILEAGE_END { get; set; }
+        public string MILEAGE_END_IMG { get; set; }
     }
 }
