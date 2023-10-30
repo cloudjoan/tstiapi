@@ -26,6 +26,10 @@
           <Property Name="OVER_TIME" Type="varchar" MaxLength="2" />
           <Property Name="ENGINE_START_TIME" Type="varchar" MaxLength="22" />
           <Property Name="ENGINE_STOP_TIME" Type="varchar" MaxLength="22" />
+          <Property Name="MILEAGE_START" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="MILEAGE_START_IMG" Type="varchar" MaxLength="50" />
+          <Property Name="MILEAGE_END" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="MILEAGE_END_IMG" Type="varchar" MaxLength="50" />
           <Property Name="INSERT_TIME" Type="varchar" MaxLength="22" />
         </EntityType>
         <EntityType Name="TB_CAR_CHECKLIST">
@@ -448,6 +452,10 @@
           <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
           <Property Name="LPN" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="RENT_STATUS" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MILEAGE_START" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MILEAGE_START_IMG" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MILEAGE_END" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MILEAGE_END_IMG" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -652,6 +660,10 @@
           <EntitySetMapping Name="TB_CAR_BOOKING">
             <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_BOOKING">
               <MappingFragment StoreEntitySet="TB_CAR_BOOKING">
+                <ScalarProperty Name="MILEAGE_END_IMG" ColumnName="MILEAGE_END_IMG" />
+                <ScalarProperty Name="MILEAGE_END" ColumnName="MILEAGE_END" />
+                <ScalarProperty Name="MILEAGE_START_IMG" ColumnName="MILEAGE_START_IMG" />
+                <ScalarProperty Name="MILEAGE_START" ColumnName="MILEAGE_START" />
                 <ScalarProperty Name="RENT_STATUS" ColumnName="RENT_STATUS" />
                 <ScalarProperty Name="LPN" ColumnName="LPN" />
                 <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
