@@ -59,9 +59,11 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CAR_NO" Type="nvarchar" MaxLength="100" />
+          <Property Name="LPN" Type="nvarchar" MaxLength="100" />
+          <Property Name="CAR_LOCATION" Type="nvarchar" MaxLength="20" />
           <Property Name="CAR_STYLE" Type="nvarchar" MaxLength="100" />
           <Property Name="PHOTO_URLS" Type="nvarchar" MaxLength="300" />
+          <Property Name="DISABLED" Type="int" />
           <Property Name="INSERT_TIME" Type="varchar" MaxLength="22" />
         </EntityType>
         <EntityType Name="TB_CAR_OWNER">
@@ -237,10 +239,10 @@
           <EntitySet Name="TB_SURVEY_ANS_MAINTAIN" EntityType="APP_DATAModel.TB_SURVEY_ANS_MAINTAIN" />
           <EntitySet Name="TB_SURVEY_QUS_MAINTAIN" EntityType="APP_DATAModel.TB_SURVEY_QUS_MAINTAIN" />
           <EntitySet Name="TB_CAR_CHECKLIST" EntityType="APP_DATAModel.TB_CAR_CHECKLIST" />
-          <EntitySet Name="TB_CAR_DATA" EntityType="APP_DATAModel.TB_CAR_DATA" />
           <EntitySet Name="TB_CAR_OWNER" EntityType="APP_DATAModel.TB_CAR_OWNER" />
           <EntitySet Name="TB_CAR_PHOTOS" EntityType="APP_DATAModel.TB_CAR_PHOTOS" />
           <EntitySet Name="TB_CAR_BOOKING" EntityType="APP_DATAModel.TB_CAR_BOOKING" />
+          <EntitySet Name="TB_CAR_DATA" EntityType="APP_DATAModel.TB_CAR_DATA" />
         </EntityContainer>
         <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
           <Key>
@@ -398,16 +400,6 @@
           <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
           <Property Name="Memo" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="TB_CAR_DATA">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CAR_NO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CAR_STYLE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PHOTO_URLS" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="TB_CAR_OWNER">
           <Key>
             <PropertyRef Name="ID" />
@@ -456,6 +448,18 @@
           <Property Name="MILEAGE_START_IMG" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MILEAGE_END" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="MILEAGE_END_IMG" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TB_CAR_DATA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LPN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CAR_LOCATION" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CAR_STYLE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PHOTO_URLS" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="DISABLED" Type="Int32" />
+          <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -622,17 +626,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TB_CAR_DATA">
-            <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_DATA">
-              <MappingFragment StoreEntitySet="TB_CAR_DATA">
-                <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
-                <ScalarProperty Name="PHOTO_URLS" ColumnName="PHOTO_URLS" />
-                <ScalarProperty Name="CAR_STYLE" ColumnName="CAR_STYLE" />
-                <ScalarProperty Name="CAR_NO" ColumnName="CAR_NO" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TB_CAR_OWNER">
             <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_OWNER">
               <MappingFragment StoreEntitySet="TB_CAR_OWNER">
@@ -681,6 +674,19 @@
                 <ScalarProperty Name="START_TIME" ColumnName="START_TIME" />
                 <ScalarProperty Name="RENT_DATE" ColumnName="RENT_DATE" />
                 <ScalarProperty Name="BOOKING_ID" ColumnName="BOOKING_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_CAR_DATA">
+            <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_DATA">
+              <MappingFragment StoreEntitySet="TB_CAR_DATA">
+                <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+                <ScalarProperty Name="DISABLED" ColumnName="DISABLED" />
+                <ScalarProperty Name="PHOTO_URLS" ColumnName="PHOTO_URLS" />
+                <ScalarProperty Name="CAR_STYLE" ColumnName="CAR_STYLE" />
+                <ScalarProperty Name="CAR_LOCATION" ColumnName="CAR_LOCATION" />
+                <ScalarProperty Name="LPN" ColumnName="LPN" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

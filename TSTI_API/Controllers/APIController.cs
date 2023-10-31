@@ -12806,7 +12806,7 @@ namespace TSTI_API.Controllers
 		[HttpPost]
 		public ActionResult GetCarInfos()
 		{
-			var beans = dbEIP.CarInfo.Where(x => x.CarType == "1" && x.ContractID != "");
+            var beans = appDB.TB_CAR_DATA.Where(x => x.DISABLED != -1).OrderBy(x => x.LPN);
 
 			return Json(beans, JsonRequestBehavior.AllowGet);
 		}

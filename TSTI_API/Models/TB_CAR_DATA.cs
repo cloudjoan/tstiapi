@@ -15,9 +15,11 @@ namespace TSTI_API.Models
     public partial class TB_CAR_DATA
     {
         public int ID { get; set; }
-        public string CAR_NO { get; set; }
+        public string LPN { get; set; }
+        public string CAR_LOCATION { get; set; }
         public string CAR_STYLE { get; set; }
         public string PHOTO_URLS { get; set; }
+        public Nullable<int> DISABLED { get; set; }
         public string INSERT_TIME { get; set; }
     }
 }
