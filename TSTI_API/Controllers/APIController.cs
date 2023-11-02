@@ -27,7 +27,7 @@ using System.Net.NetworkInformation;
 namespace TSTI_API.Controllers
 {
     #region API Key，上【正式】再打開
-    [ApiFilter]
+    //[ApiFilter]
     #endregion
     public class APIController : Controller
     {
@@ -12845,9 +12845,12 @@ namespace TSTI_API.Controllers
 		#region 更新預約資訊
 
 		[HttpPost]
-		public ActionResult UpdateCarBooking(string BOOKING_ID, string ENGINE_START_TIME, string ENGINE_STOP_TIME)
+		public ActionResult UpdateCarBooking(string BOOKING_ID, string RENT_STATUS, int? MILEAGE_START, int? MILEAGE_END, string ENGINE_START_TIME, string ENGINE_STOP_TIME)
 		{
 			var bean = appDB.TB_CAR_BOOKING.FirstOrDefault(x => x.BOOKING_ID == BOOKING_ID);
+            if (RENT_STATUS != null) bean.RENT_STATUS = RENT_STATUS;
+            if (MILEAGE_START != null) bean.MILEAGE_START = MILEAGE_START;
+			if (MILEAGE_END != null) bean.MILEAGE_END = MILEAGE_END;
 			if (ENGINE_START_TIME != null) bean.ENGINE_START_TIME = ENGINE_START_TIME;
 			if (ENGINE_STOP_TIME != null) bean.ENGINE_STOP_TIME = ENGINE_STOP_TIME;
 			appDB.SaveChanges();
