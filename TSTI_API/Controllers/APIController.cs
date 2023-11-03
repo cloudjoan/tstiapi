@@ -27,7 +27,7 @@ using System.Net.NetworkInformation;
 namespace TSTI_API.Controllers
 {
     #region API Key，上【正式】再打開
-    [ApiFilter]
+    //[ApiFilter]
     #endregion
     public class APIController : Controller
     {
@@ -12824,7 +12824,15 @@ namespace TSTI_API.Controllers
 		[HttpPost]
 		public ActionResult BookingCar(TB_CAR_BOOKING bean)
 		{
-			appDB.TB_CAR_BOOKING.Add(bean);
+            //如果預約時間與現有資料的開始時間相同、結束時間相同或起訖時間有重疊，則不可預約
+            var _beans = appDB.TB_CAR_BOOKING.Where(x => x.LPN == bean.LPN && x.DISABLED != "1" && x.RENT_STATUS != "END")
+                                                    .ToList().Where(x => (x.START_TIME == bean.START_TIME) || (x.END_TIME == bean.END_TIME)
+                                                    || (Convert.ToDateTime(x.START_TIME) < Convert.ToDateTime(bean.START_TIME) && Convert.ToDateTime(x.END_TIME) > Convert.ToDateTime(bean.START_TIME))
+                                                    || (Convert.ToDateTime(x.START_TIME) < Convert.ToDateTime(bean.END_TIME) && Convert.ToDateTime(x.END_TIME) > Convert.ToDateTime(bean.END_TIME)));
+
+            if (_beans.Count() > 0) return Json("CONFLICT");
+
+            appDB.TB_CAR_BOOKING.Add(bean);
 			var result = appDB.SaveChanges();
 			string bookingId = "0000" + appDB.TB_CAR_BOOKING.Max(x => x.ID);
 			bean.BOOKING_ID = bookingId.Substring(bookingId.Length - 4);
