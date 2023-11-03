@@ -401,7 +401,8 @@
     <Property Name="cAttachementStockNo" Type="nvarchar(max)" />
     <Property Name="cStatus" Type="nvarchar" MaxLength="5" />
     <Property Name="cMAServiceType" Type="nvarchar" MaxLength="3" />
-    <Property Name="cDelayReason" Type="nvarchar" MaxLength="255" />
+    <Property Name="cDelayReason" Type="nvarchar" MaxLength="1000" />
+    <Property Name="cScheduleDate" Type="datetime" />
     <Property Name="cSRTypeOne" Type="nvarchar" MaxLength="20" />
     <Property Name="cSRTypeSec" Type="nvarchar" MaxLength="20" />
     <Property Name="cSRTypeThr" Type="nvarchar" MaxLength="20" />

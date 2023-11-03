@@ -24,6 +24,7 @@ namespace TSTI_API.Models
         public string cStatus { get; set; }
         public string cMAServiceType { get; set; }
         public string cDelayReason { get; set; }
+        public Nullable<System.DateTime> cScheduleDate { get; set; }
         public string cSRTypeOne { get; set; }
         public string cSRTypeSec { get; set; }
         public string cSRTypeThr { get; set; }

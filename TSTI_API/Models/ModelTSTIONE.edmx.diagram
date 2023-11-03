@@ -31,8 +31,8 @@
         <EntityTypeShape EntityType="Model.TB_ONE_ContractMain" Width="2.375" PointX="6.25" PointY="0.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRSatisfactionSurveyRemove" Width="2.75" PointX="3.75" PointY="6" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRTeamChangTemp" Width="2.5" PointX="8.875" PointY="0.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="Model.TB_ONE_SRMain" Width="2.5" PointX="0.875" PointY="0.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRBatchMaintainRecord" Width="2.75" PointX="3.75" PointY="6.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="Model.TB_ONE_SRMain" Width="2.5" PointX="0.875" PointY="0.5" IsExpanded="false" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

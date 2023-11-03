@@ -181,5 +181,27 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="VIEW_DEPT_MGR">
+      <EntityTypeMapping TypeName="MCSWorkflowModel.VIEW_DEPT_MGR">
+        <MappingFragment StoreEntitySet="VIEW_DEPT_MGR">
+          <ScalarProperty Name="UP2_Status" ColumnName="UP2_Status" />
+          <ScalarProperty Name="UP2_LEVEL" ColumnName="UP2_LEVEL" />
+          <ScalarProperty Name="UP2_DEPT_MG_ERP_ID" ColumnName="UP2_DEPT_MG_ERP_ID" />
+          <ScalarProperty Name="UP2_DEPT_NAME" ColumnName="UP2_DEPT_NAME" />
+          <ScalarProperty Name="UP2_DPET_ID" ColumnName="UP2_DPET_ID" />
+          <ScalarProperty Name="UP1_Status" ColumnName="UP1_Status" />
+          <ScalarProperty Name="UP1_LEVEL" ColumnName="UP1_LEVEL" />
+          <ScalarProperty Name="UP1_DEPT_MG_ERP_ID" ColumnName="UP1_DEPT_MG_ERP_ID" />
+          <ScalarProperty Name="UP1_DEPT_NAME" ColumnName="UP1_DEPT_NAME" />
+          <ScalarProperty Name="UP1_DEPT_ID" ColumnName="UP1_DEPT_ID" />
+          <ScalarProperty Name="COMP_CODE" ColumnName="COMP_CODE" />
+          <ScalarProperty Name="DISABLED" ColumnName="DISABLED" />
+          <ScalarProperty Name="DEPT_LEVEL" ColumnName="DEPT_LEVEL" />
+          <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+          <ScalarProperty Name="DEPT_NAME" ColumnName="DEPT_NAME" />
+          <ScalarProperty Name="DEPT_CODE" ColumnName="DEPT_CODE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

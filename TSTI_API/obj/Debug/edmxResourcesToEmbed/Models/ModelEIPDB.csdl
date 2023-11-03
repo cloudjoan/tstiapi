@@ -107,6 +107,7 @@
     <EntitySet Name="TB_SERVICES_APP_INSTALL" EntityType="MCSWorkflowModel.TB_SERVICES_APP_INSTALL" />
     <EntitySet Name="TB_SERVICES_APP_INSTALLTEMP" EntityType="MCSWorkflowModel.TB_SERVICES_APP_INSTALLTEMP" />
     <EntitySet Name="CarInfo" EntityType="MCSWorkflowModel.CarInfo" />
+    <EntitySet Name="VIEW_DEPT_MGR" EntityType="MCSWorkflowModel.VIEW_DEPT_MGR" />
   </EntityContainer>
   <EntityType Name="TB_SERVICES_APP_STATE">
     <Key>
@@ -181,5 +182,28 @@
     <Property Name="CR_DATE" Type="DateTime" Precision="3" />
     <Property Name="USERSTAMP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="DATESTAMP" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="VIEW_DEPT_MGR">
+    <Key>
+      <PropertyRef Name="DEPT_CODE" />
+      <PropertyRef Name="DEPT_LEVEL" />
+      <PropertyRef Name="DISABLED" />
+    </Key>
+    <Property Name="DEPT_CODE" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="DEPT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ERP_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="DEPT_LEVEL" Type="Int32" Nullable="false" />
+    <Property Name="DISABLED" Type="Int32" Nullable="false" />
+    <Property Name="COMP_CODE" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="UP1_DEPT_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="UP1_DEPT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UP1_DEPT_MG_ERP_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="UP1_LEVEL" Type="Int32" />
+    <Property Name="UP1_Status" Type="Int32" />
+    <Property Name="UP2_DPET_ID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <Property Name="UP2_DEPT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UP2_DEPT_MG_ERP_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="UP2_LEVEL" Type="Int32" />
+    <Property Name="UP2_Status" Type="Int32" />
   </EntityType>
 </Schema>

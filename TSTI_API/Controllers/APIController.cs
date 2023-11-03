@@ -27,7 +27,7 @@ using System.Net.NetworkInformation;
 namespace TSTI_API.Controllers
 {
     #region API Key，上【正式】再打開
-    //[ApiFilter]
+    [ApiFilter]
     #endregion
     public class APIController : Controller
     {
@@ -268,6 +268,8 @@ namespace TSTI_API.Controllers
             string IV_INTERNALWORK = string.IsNullOrEmpty(bean.IV_INTERNALWORK) ? "N" : bean.IV_INTERNALWORK.Trim();
             string IV_REPAIRLEVEL = string.IsNullOrEmpty(bean.IV_REPAIRLEVEL) ? "Z03" : bean.IV_REPAIRLEVEL.Trim();            
             string IV_DELAYREASON = string.IsNullOrEmpty(bean.IV_DELAYREASON) ? "" : bean.IV_DELAYREASON.Trim();
+            string IV_PerCallSLARESP = string.IsNullOrEmpty(bean.IV_PerCallSLARESP) ? "" : bean.IV_PerCallSLARESP.Trim();
+            string IV_PerCallSLASRV = string.IsNullOrEmpty(bean.IV_PerCallSLASRV) ? "" : bean.IV_PerCallSLASRV.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -432,8 +434,8 @@ namespace TSTI_API.Controllers
                         beanM.cIsInternalWork = IV_INTERNALWORK;
                         beanM.cSRRepairLevel = IV_REPAIRLEVEL;
                         beanM.cDelayReason = IV_DELAYREASON;
-                        beanM.cPerCallSLARESP = "";
-                        beanM.cPerCallSLASRV = "";
+                        beanM.cPerCallSLARESP = IV_PerCallSLARESP;
+                        beanM.cPerCallSLASRV = IV_PerCallSLASRV;
                         beanM.cRemark = "";
 
                         if (AttachFiles != null)
@@ -908,7 +910,11 @@ namespace TSTI_API.Controllers
             /// <summary>故障報修等級</summary>
             public string IV_REPAIRLEVEL { get; set; }
             /// <summary>延遲結案原因</summary>
-            public string IV_DELAYREASON { get; set; }            
+            public string IV_DELAYREASON { get; set; }
+            /// <summary>SLA回應條件(單筆per call)</summary>
+            public string IV_PerCallSLARESP { get; set; }
+            /// <summary>SLA服務條件(單筆per call)</summary>
+            public string IV_PerCallSLASRV { get; set; }
             /// <summary>檢附文件</summary>
             public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 

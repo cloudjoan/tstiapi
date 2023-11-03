@@ -472,6 +472,31 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_SRBatchMaintainRecord">
+      <EntityTypeMapping TypeName="Model.TB_ONE_SRBatchMaintainRecord">
+        <MappingFragment StoreEntitySet="TB_ONE_SRBatchMaintainRecord">
+          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="cDisabled" ColumnName="cDisabled" />
+          <ScalarProperty Name="cMACycle" ColumnName="cMACycle" />
+          <ScalarProperty Name="cMainEngineerName" ColumnName="cMainEngineerName" />
+          <ScalarProperty Name="cMainEngineerID" ColumnName="cMainEngineerID" />
+          <ScalarProperty Name="cContactEmail" ColumnName="cContactEmail" />
+          <ScalarProperty Name="cContactMobile" ColumnName="cContactMobile" />
+          <ScalarProperty Name="cContactPhone" ColumnName="cContactPhone" />
+          <ScalarProperty Name="cContactAddress" ColumnName="cContactAddress" />
+          <ScalarProperty Name="cContactName" ColumnName="cContactName" />
+          <ScalarProperty Name="cContactStoreName" ColumnName="cContactStoreName" />
+          <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
+          <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
+          <ScalarProperty Name="cBUKRS" ColumnName="cBUKRS" />
+          <ScalarProperty Name="cContractID" ColumnName="cContractID" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="TB_ONE_SRMain">
       <EntityTypeMapping TypeName="Model.TB_ONE_SRMain">
         <MappingFragment StoreEntitySet="TB_ONE_SRMain">
@@ -527,6 +552,7 @@
           <ScalarProperty Name="cSRTypeThr" ColumnName="cSRTypeThr" />
           <ScalarProperty Name="cSRTypeSec" ColumnName="cSRTypeSec" />
           <ScalarProperty Name="cSRTypeOne" ColumnName="cSRTypeOne" />
+          <ScalarProperty Name="cScheduleDate" ColumnName="cScheduleDate" />
           <ScalarProperty Name="cDelayReason" ColumnName="cDelayReason" />
           <ScalarProperty Name="cMAServiceType" ColumnName="cMAServiceType" />
           <ScalarProperty Name="cStatus" ColumnName="cStatus" />
@@ -537,31 +563,6 @@
           <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
           <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
           <ScalarProperty Name="cSRID" ColumnName="cSRID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="TB_ONE_SRBatchMaintainRecord">
-      <EntityTypeMapping TypeName="Model.TB_ONE_SRBatchMaintainRecord">
-        <MappingFragment StoreEntitySet="TB_ONE_SRBatchMaintainRecord">
-          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="cDisabled" ColumnName="cDisabled" />
-          <ScalarProperty Name="cMACycle" ColumnName="cMACycle" />
-          <ScalarProperty Name="cMainEngineerName" ColumnName="cMainEngineerName" />
-          <ScalarProperty Name="cMainEngineerID" ColumnName="cMainEngineerID" />
-          <ScalarProperty Name="cContactEmail" ColumnName="cContactEmail" />
-          <ScalarProperty Name="cContactMobile" ColumnName="cContactMobile" />
-          <ScalarProperty Name="cContactPhone" ColumnName="cContactPhone" />
-          <ScalarProperty Name="cContactAddress" ColumnName="cContactAddress" />
-          <ScalarProperty Name="cContactName" ColumnName="cContactName" />
-          <ScalarProperty Name="cContactStoreName" ColumnName="cContactStoreName" />
-          <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
-          <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
-          <ScalarProperty Name="cBUKRS" ColumnName="cBUKRS" />
-          <ScalarProperty Name="cContractID" ColumnName="cContractID" />
-          <ScalarProperty Name="cID" ColumnName="cID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -6,7 +6,7 @@
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="BOOKING_ID" Type="varchar" MaxLength="10" />
-    <Property Name="CAR_NO" Type="nvarchar" MaxLength="20" />
+    <Property Name="LPN" Type="nvarchar" MaxLength="20" />
     <Property Name="RENT_DATE" Type="varchar" MaxLength="22" />
     <Property Name="START_TIME" Type="varchar" MaxLength="22" />
     <Property Name="END_TIME" Type="varchar" MaxLength="22" />
@@ -16,10 +16,15 @@
     <Property Name="FILL_USER_ERPID" Type="varchar" MaxLength="20" />
     <Property Name="RENT_REASON" Type="nvarchar" MaxLength="200" />
     <Property Name="RENT_DESC" Type="nvarchar" MaxLength="2000" />
+    <Property Name="RENT_STATUS" Type="nvarchar" MaxLength="20" />
     <Property Name="DISABLED" Type="varchar" MaxLength="2" />
     <Property Name="OVER_TIME" Type="varchar" MaxLength="2" />
     <Property Name="ENGINE_START_TIME" Type="varchar" MaxLength="22" />
     <Property Name="ENGINE_STOP_TIME" Type="varchar" MaxLength="22" />
+    <Property Name="MILEAGE_START" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="MILEAGE_START_IMG" Type="varchar" MaxLength="50" />
+    <Property Name="MILEAGE_END" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="MILEAGE_END_IMG" Type="varchar" MaxLength="50" />
     <Property Name="INSERT_TIME" Type="varchar" MaxLength="22" />
   </EntityType>
   <EntityType Name="TB_CAR_CHECKLIST">
@@ -42,15 +47,18 @@
     <Property Name="ITEM12" Type="nvarchar" MaxLength="2" />
     <Property Name="INSERT_USER" Type="nvarchar" MaxLength="22" />
     <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+    <Property Name="Memo" Type="nvarchar" MaxLength="300" />
   </EntityType>
   <EntityType Name="TB_CAR_DATA">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CAR_NO" Type="nvarchar" MaxLength="100" />
+    <Property Name="LPN" Type="nvarchar" MaxLength="100" />
+    <Property Name="CAR_LOCATION" Type="nvarchar" MaxLength="20" />
     <Property Name="CAR_STYLE" Type="nvarchar" MaxLength="100" />
     <Property Name="PHOTO_URLS" Type="nvarchar" MaxLength="300" />
+    <Property Name="DISABLED" Type="int" />
     <Property Name="INSERT_TIME" Type="varchar" MaxLength="22" />
   </EntityType>
   <EntityType Name="TB_CAR_OWNER">
@@ -58,7 +66,7 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CAR_NO" Type="nvarchar" MaxLength="20" />
+    <Property Name="LPN" Type="nvarchar" MaxLength="20" />
     <Property Name="OWNER" Type="varchar" MaxLength="20" />
     <Property Name="OWNER_NAME" Type="nvarchar" MaxLength="20" />
   </EntityType>
