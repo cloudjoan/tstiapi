@@ -19,9 +19,9 @@ namespace TSTI_API.Models
         public string CAR_LOCATION { get; set; }
         public string CAR_STYLE { get; set; }
         public string PHOTO_URLS { get; set; }
-        public Nullable<int> DISABLED { get; set; }
-        public string INSERT_TIME { get; set; }
         public string CAR_MANAGER { get; set; }
         public string CAR_DEPT { get; set; }
+        public Nullable<int> DISABLED { get; set; }
+        public string INSERT_TIME { get; set; }
     }
 }

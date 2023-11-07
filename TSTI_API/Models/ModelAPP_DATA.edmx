@@ -460,10 +460,10 @@
           <Property Name="CAR_LOCATION" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="CAR_STYLE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PHOTO_URLS" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="DISABLED" Type="Int32" />
-          <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
           <Property Name="CAR_MANAGER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="CAR_DEPT" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DISABLED" Type="Int32" />
+          <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -685,10 +685,10 @@
           <EntitySetMapping Name="TB_CAR_DATA">
             <EntityTypeMapping TypeName="APP_DATAModel.TB_CAR_DATA">
               <MappingFragment StoreEntitySet="TB_CAR_DATA">
-                <ScalarProperty Name="CAR_DEPT" ColumnName="CAR_DEPT" />
-                <ScalarProperty Name="CAR_MANAGER" ColumnName="CAR_MANAGER" />
                 <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
                 <ScalarProperty Name="DISABLED" ColumnName="DISABLED" />
+                <ScalarProperty Name="CAR_DEPT" ColumnName="CAR_DEPT" />
+                <ScalarProperty Name="CAR_MANAGER" ColumnName="CAR_MANAGER" />
                 <ScalarProperty Name="PHOTO_URLS" ColumnName="PHOTO_URLS" />
                 <ScalarProperty Name="CAR_STYLE" ColumnName="CAR_STYLE" />
                 <ScalarProperty Name="CAR_LOCATION" ColumnName="CAR_LOCATION" />
