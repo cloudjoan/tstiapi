@@ -12828,9 +12828,13 @@ namespace TSTI_API.Controllers
             var _beans = appDB.TB_CAR_BOOKING.Where(x => x.LPN == bean.LPN && x.DISABLED != "1" && x.RENT_STATUS != "END")
                                                     .ToList().Where(x => (x.START_TIME == bean.START_TIME) || (x.END_TIME == bean.END_TIME)
                                                     || (Convert.ToDateTime(x.START_TIME) < Convert.ToDateTime(bean.START_TIME) && Convert.ToDateTime(x.END_TIME) > Convert.ToDateTime(bean.START_TIME))
-                                                    || (Convert.ToDateTime(x.START_TIME) < Convert.ToDateTime(bean.END_TIME) && Convert.ToDateTime(x.END_TIME) > Convert.ToDateTime(bean.END_TIME)));
+                                                    || (Convert.ToDateTime(x.START_TIME) < Convert.ToDateTime(bean.END_TIME) && Convert.ToDateTime(x.END_TIME) > Convert.ToDateTime(bean.END_TIME))
+                                                    || (Convert.ToDateTime(bean.START_TIME) < Convert.ToDateTime(x.START_TIME) && Convert.ToDateTime(bean.END_TIME) > Convert.ToDateTime(x.START_TIME))
+                                                    || (Convert.ToDateTime(bean.START_TIME) < Convert.ToDateTime(x.END_TIME) && Convert.ToDateTime(bean.END_TIME) > Convert.ToDateTime(x.END_TIME)));
 
             if (_beans.Count() > 0) return Json("CONFLICT");
+
+            bean.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             appDB.TB_CAR_BOOKING.Add(bean);
 			var result = appDB.SaveChanges();
