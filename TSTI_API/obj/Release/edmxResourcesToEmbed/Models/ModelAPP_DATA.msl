@@ -217,6 +217,8 @@
         <MappingFragment StoreEntitySet="TB_CAR_DATA">
           <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
           <ScalarProperty Name="DISABLED" ColumnName="DISABLED" />
+          <ScalarProperty Name="CAR_DEPT" ColumnName="CAR_DEPT" />
+          <ScalarProperty Name="CAR_MANAGER" ColumnName="CAR_MANAGER" />
           <ScalarProperty Name="PHOTO_URLS" ColumnName="PHOTO_URLS" />
           <ScalarProperty Name="CAR_STYLE" ColumnName="CAR_STYLE" />
           <ScalarProperty Name="CAR_LOCATION" ColumnName="CAR_LOCATION" />

@@ -223,6 +223,8 @@
     <Property Name="CAR_LOCATION" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="CAR_STYLE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="PHOTO_URLS" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="CAR_MANAGER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CAR_DEPT" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="DISABLED" Type="Int32" />
     <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
   </EntityType>

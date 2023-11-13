@@ -8919,6 +8919,8 @@ namespace TSTI_API.Controllers
 
             int cID = 0;
 
+            bool IsExist = false; //判斷資料是否已存在
+
             string IV_LOGINEMPNO = string.Empty;
             string IV_LOGINEMPName = string.Empty;
             string IV_SRID = string.Empty;
@@ -9000,6 +9002,10 @@ namespace TSTI_API.Controllers
 
                         dbOne.TB_ONE_SRDetail_SerialFeedback.Add(SFB);
                     }
+                    else
+                    {
+                        IsExist = true;
+                    }
                     #endregion
                 }
                 else //刪除
@@ -9023,14 +9029,20 @@ namespace TSTI_API.Controllers
                 {
                     if (cID == 0) //新增
                     {
-                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新增失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
+                        if (!IsExist)
+                        {
+                            pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "新增失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
+                        }
                     }
                     else
                     {
                         pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "刪除失敗！請確認輸入的資料是否有誤！" + Environment.NewLine;
                     }
 
-                    CMF.writeToLog(IV_SRID, "SaveSRSERIALFEEDBACKINFO_API", pMsg, IV_LOGINEMPName);
+                    if (pMsg != "")
+                    {
+                        CMF.writeToLog(IV_SRID, "", pMsg, IV_LOGINEMPName);
+                    }
 
                     OUTBean.EV_MSGT = "E";
                     OUTBean.EV_MSG = pMsg;

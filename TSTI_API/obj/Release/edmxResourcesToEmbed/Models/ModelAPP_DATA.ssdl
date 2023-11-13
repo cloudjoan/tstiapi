@@ -58,6 +58,8 @@
     <Property Name="CAR_LOCATION" Type="nvarchar" MaxLength="20" />
     <Property Name="CAR_STYLE" Type="nvarchar" MaxLength="100" />
     <Property Name="PHOTO_URLS" Type="nvarchar" MaxLength="300" />
+    <Property Name="CAR_MANAGER" Type="varchar" MaxLength="20" />
+    <Property Name="CAR_DEPT" Type="varchar" MaxLength="20" />
     <Property Name="DISABLED" Type="int" />
     <Property Name="INSERT_TIME" Type="varchar" MaxLength="22" />
   </EntityType>
