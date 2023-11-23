@@ -6278,7 +6278,7 @@ namespace TSTI_API.Controllers
                 }
                 #endregion
 
-                tMailSubject = strTest + "[大同世界科技 服務ID：" + SRID + " 已完修通知]";
+                tMailSubject = strTest + "[大同世界科技 服務ID：" + SRID + " 已完成通知]";
 
                 tMailBody = GetMailBody("ONESendReport_MAIL");
                 tMailBody = tMailBody.Replace("【<SRID>】", SRID).Replace("【<CUSTOMER>】", CUSTOMER);
