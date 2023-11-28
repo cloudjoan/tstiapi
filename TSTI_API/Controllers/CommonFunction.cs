@@ -6252,13 +6252,12 @@ namespace TSTI_API.Controllers
         {
             #region 範例內容
             //<body style="font-family:微軟正黑體; ">親愛的用戶您好，<br/>" +
-            //    <br/>您此次的服務已完修，提供服務報告書如附件，謝謝!!<br/>" +
+            //    <br/>此次的服務報告書如附件，謝謝!!<br/>" +
             //    <br/>[服務明細]" +
             //    <br/>服務ID：【<SRID>】" +
             //    <br/>客戶名稱：【<CUSTOMER>】" +
             //    <br/>負責工程師：【<ENGINEER>】" +
-            //    <br/>需求事項：【<DESC>】" +
-            //    <br/>狀態：已完修<br/>" +
+            //    <br/>需求事項：【<DESC>】" +            
             //<body>
             #endregion
 
@@ -6278,7 +6277,7 @@ namespace TSTI_API.Controllers
                 }
                 #endregion
 
-                tMailSubject = strTest + "[大同世界科技 服務ID：" + SRID + " 已完成通知]";
+                tMailSubject = strTest + "[大同世界科技 服務ID：" + SRID + "]";
 
                 tMailBody = GetMailBody("ONESendReport_MAIL");
                 tMailBody = tMailBody.Replace("【<SRID>】", SRID).Replace("【<CUSTOMER>】", CUSTOMER);
