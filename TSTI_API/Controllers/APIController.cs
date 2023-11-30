@@ -268,6 +268,7 @@ namespace TSTI_API.Controllers
             string IV_INTERNALWORK = string.IsNullOrEmpty(bean.IV_INTERNALWORK) ? "N" : bean.IV_INTERNALWORK.Trim();
             string IV_REPAIRLEVEL = string.IsNullOrEmpty(bean.IV_REPAIRLEVEL) ? "Z03" : bean.IV_REPAIRLEVEL.Trim();            
             string IV_DELAYREASON = string.IsNullOrEmpty(bean.IV_DELAYREASON) ? "" : bean.IV_DELAYREASON.Trim();
+            string IV_ScheduleDate = string.IsNullOrEmpty(bean.IV_ScheduleDate) ? "" : bean.IV_ScheduleDate.Trim();
             string IV_PerCallSLARESP = string.IsNullOrEmpty(bean.IV_PerCallSLARESP) ? "" : bean.IV_PerCallSLARESP.Trim();
             string IV_PerCallSLASRV = string.IsNullOrEmpty(bean.IV_PerCallSLASRV) ? "" : bean.IV_PerCallSLASRV.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
@@ -437,6 +438,11 @@ namespace TSTI_API.Controllers
                         beanM.cPerCallSLARESP = IV_PerCallSLARESP;
                         beanM.cPerCallSLASRV = IV_PerCallSLASRV;
                         beanM.cRemark = "";
+
+                        if (!string.IsNullOrEmpty(IV_ScheduleDate))
+                        {
+                            beanM.cScheduleDate = Convert.ToDateTime(IV_ScheduleDate);
+                        }
 
                         if (AttachFiles != null)
                         {
@@ -911,6 +917,8 @@ namespace TSTI_API.Controllers
             public string IV_REPAIRLEVEL { get; set; }
             /// <summary>延遲結案原因</summary>
             public string IV_DELAYREASON { get; set; }
+            /// <summary>預排日期</summary>
+            public string IV_ScheduleDate { get; set; }
             /// <summary>SLA回應條件(單筆per call)</summary>
             public string IV_PerCallSLARESP { get; set; }
             /// <summary>SLA服務條件(單筆per call)</summary>
@@ -1145,6 +1153,7 @@ namespace TSTI_API.Controllers
             string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
             string IV_PATHWAY = string.IsNullOrEmpty(bean.IV_PATHWAY) ? "" : bean.IV_PATHWAY.Trim();
             string IV_DELAYREASON = string.IsNullOrEmpty(bean.IV_DELAYREASON) ? "" : bean.IV_DELAYREASON.Trim();
+            string IV_ScheduleDate = string.IsNullOrEmpty(bean.IV_ScheduleDate) ? "" : bean.IV_ScheduleDate.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -1302,6 +1311,11 @@ namespace TSTI_API.Controllers
                         beanM.cSystemGUID = Guid.NewGuid();
                         beanM.CreatedDate = DateTime.Now;
                         beanM.CreatedUserName = pLoginName;
+
+                        if (!string.IsNullOrEmpty(IV_ScheduleDate))
+                        {
+                            beanM.cScheduleDate = Convert.ToDateTime(IV_ScheduleDate);
+                        }
 
                         if (AttachFiles != null)
                         {
@@ -1594,6 +1608,8 @@ namespace TSTI_API.Controllers
             public string IV_SECRETARYEMPNO { get; set; }
             /// <summary>延遲結案原因</summary>
             public string IV_DELAYREASON { get; set; }
+            /// <summary>預排日期</summary>
+            public string IV_ScheduleDate { get; set; }
             /// <summary>檢附文件</summary>
             public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 
@@ -1705,7 +1721,8 @@ namespace TSTI_API.Controllers
             string IV_SECRETARYEMPNO = string.IsNullOrEmpty(bean.IV_SECRETARYEMPNO) ? "" : bean.IV_SECRETARYEMPNO.Trim();
             string IV_EMPNO = string.IsNullOrEmpty(bean.IV_EMPNO) ? "" : bean.IV_EMPNO.Trim();
             string IV_ASSEMPNO = string.IsNullOrEmpty(bean.IV_ASSEMPNO) ? "" : bean.IV_ASSEMPNO.Trim();
-            string IV_DELAYREASON = string.IsNullOrEmpty(bean.IV_DELAYREASON) ? "" : bean.IV_DELAYREASON.Trim();            
+            string IV_DELAYREASON = string.IsNullOrEmpty(bean.IV_DELAYREASON) ? "" : bean.IV_DELAYREASON.Trim();
+            string IV_ScheduleDate = string.IsNullOrEmpty(bean.IV_ScheduleDate) ? "" : bean.IV_ScheduleDate.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -1837,6 +1854,11 @@ namespace TSTI_API.Controllers
                         beanM.cSystemGUID = Guid.NewGuid();
                         beanM.CreatedDate = DateTime.Now;
                         beanM.CreatedUserName = pLoginName;
+
+                        if (!string.IsNullOrEmpty(IV_ScheduleDate))
+                        {
+                            beanM.cScheduleDate = Convert.ToDateTime(IV_ScheduleDate);
+                        }
 
                         if (AttachFiles != null)
                         {
@@ -2028,7 +2050,9 @@ namespace TSTI_API.Controllers
             /// <summary>業務祕書員工編號</summary>
             public string IV_SECRETARYEMPNO { get; set; }
             /// <summary>延遲結案原因</summary>
-            public string IV_DELAYREASON { get; set; }            
+            public string IV_DELAYREASON { get; set; }
+            /// <summary>預排日期</summary>
+            public string IV_ScheduleDate { get; set; }
             /// <summary>檢附文件</summary>
             public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 
