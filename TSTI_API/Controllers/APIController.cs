@@ -2,6 +2,7 @@
 /*
 注意：若要更新正式區，請將搜尋「【測試】」，將它註解，並反註解「【正式】」，webconfig記得也要調整
 
+2023/12/04:elvis:Jordan請MIS調整把report的電話去掉，只留0800就好
 
 */
 #endregion
@@ -5751,7 +5752,8 @@ namespace TSTI_API.Controllers
                         hcell8.Border = PdfPCell.NO_BORDER;
                         hTable.AddCell(hcell8);
 
-                        PdfPCell hcell9 = new PdfPCell(new iTextSharp.text.Phrase("(02)2598-5738", ChFont8Blue));
+                        //PdfPCell hcell9 = new PdfPCell(new iTextSharp.text.Phrase("(02)2598-5738", ChFont8Blue)); //edit by elvis 2023/12/04
+                        PdfPCell hcell9 = new PdfPCell(new iTextSharp.text.Phrase("     ", ChFont8Blue));
                         hcell9.Border = PdfPCell.NO_BORDER;
                         hTable.AddCell(hcell9);
 
