@@ -12990,14 +12990,74 @@ namespace TSTI_API.Controllers
 			}
 			return Json("SUCCESS");
         }
-         
-		#endregion
 
-		#endregion
-	}
+        #endregion
 
-	#region 取得系統位址參數相關資訊
-	public class SRSYSPARAINFO
+        #endregion
+
+        #region 尾牙專區
+
+
+        #region 依活動ID取得獎品資訊
+
+        [HttpPost]
+        public ActionResult FindPrizesByDrawId(int drawId)
+        {
+            var beans = appDB.TB_LUCKYDRAW_PRIZE.Where(x => x.Draw_ID == drawId && x.Disabled_Mark == false);
+            return Json(beans);
+           
+        }
+
+
+        #endregion
+
+        #region 更新獎品資訊
+
+        [HttpPost]
+        public ActionResult UpdateLuckyDrawPrize(int prizeId, int drawAmount)
+        {
+            var bean = appDB.TB_LUCKYDRAW_PRIZE.FirstOrDefault(x => x.Prize_ID == prizeId);
+            bean.Draw_Amount = drawAmount;
+            appDB.SaveChanges();
+
+            return Json(bean);
+        }
+
+        #endregion
+
+        #region 寫入獎品資訊
+
+        [HttpPost]
+        public ActionResult SaveLuckyDrawPrize(TB_LUCKYDRAW_PRIZE bean)
+        {
+            bean.Insert_Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            appDB.TB_LUCKYDRAW_PRIZE.Add(bean);
+            appDB.SaveChanges();
+
+            return Json(bean);
+        }
+
+        #endregion
+
+        #region 寫入即時訊息
+
+        [HttpPost]
+        public ActionResult SaveLiveMessage(TB_LIVE_MESSAGE bean)
+        {
+            bean.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            appDB.TB_LIVE_MESSAGE.Add(bean);
+            appDB.SaveChanges();
+            return Json(bean);
+        }
+
+
+        #endregion
+
+        #endregion
+    }
+
+    #region 取得系統位址參數相關資訊
+    public class SRSYSPARAINFO
     {
         /// <summary>呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)</summary>
         public bool IsFormal { get; set; }
@@ -14089,4 +14149,6 @@ namespace TSTI_API.Controllers
         public string IV_ContactEmail { get; set; }        
     }
     #endregion
+
+
 }
