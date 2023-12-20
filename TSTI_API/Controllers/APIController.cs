@@ -403,7 +403,7 @@ namespace TSTI_API.Controllers
 
                         //主表資料
                         beanM.cSRID = pSRID;
-                        beanM.cStatus = IV_EMPNO != "" ? IV_ASSIGN : "E0001";    //新增時若有主要工程師，則預設為(L2或L3.處理中)，反之則預設為新建
+                        beanM.cStatus = IV_EMPNO != "" ? IV_ASSIGN : "E0001";    //新增時若有主要工程師，則預設為(L2或L1.處理中)，反之則預設為新建
                         beanM.cCustomerName = CCustomerName;
                         beanM.cCustomerID = IV_CUSTOMER;
                         beanM.cDesc = IV_DESC;
@@ -894,7 +894,7 @@ namespace TSTI_API.Controllers
             public string IV_REPAIRADDR { get; set; }
             /// <summary>報修人Email</summary>
             public string IV_REPAIREMAIL { get; set; }
-            /// <summary>指派L2/L3工程師</summary>
+            /// <summary>指派L2/L1工程師</summary>
             public string IV_ASSIGN { get; set; }
             /// <summary>主要工程師員工編號</summary>
             public string IV_EMPNO { get; set; }
@@ -2512,7 +2512,7 @@ namespace TSTI_API.Controllers
                     {
                         case "E0002": //L2處理中(一般)
                         case "E0003": //報價中(一般)
-                        case "E0005": //L3處理中(一般)
+                        case "E0005": //L1處理中(一般)
                         case "E0008": //裝機中(裝機)
                             tCondition = SRCondition.SAVE;
                             break;
@@ -13236,7 +13236,7 @@ namespace TSTI_API.Controllers
         public string SRID { get; set; }
         /// <summary>狀態ID</summary>
         public string Status { get; set; }
-        /// <summary>狀態說明(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )</summary>
+        /// <summary>狀態說明(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L1處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )</summary>
         public string StatusDesc { get; set; }
         /// <summary>服務案件種類</summary>
         public string SRCase { get; set; }

@@ -5493,7 +5493,7 @@ namespace TSTI_API.Controllers
             string tMailBCc = string.Empty;             //密件副本
             string tHypeLink = string.Empty;            //超連結            
 
-            string tStatus = string.Empty;              //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
+            string tStatus = string.Empty;              //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L1處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
             string tContractID = string.Empty;          //合約文件編號
             string tSecFix = string.Empty;              //是否為二修
             string EndString = string.Empty;            //結案要寫的字串
@@ -5675,7 +5675,7 @@ namespace TSTI_API.Controllers
                 //服務案件種類:	一般服務
                 //服務團隊:	L2電腦系統(含PS)-北區
                 //服務團隊主管:	L2MGR
-                //主要工程師:	L3MGR
+                //主要工程師:	L1MGR
                 //協助工程師:	ASSEngineer
                 //技術主管:	TechMGR
                 //狀態:	處理中
@@ -5841,7 +5841,7 @@ namespace TSTI_API.Controllers
             string tHypeLink = string.Empty;        //超連結            
 
             string tCompanyName = string.Empty;     //公司名稱
-            string tStatus = string.Empty;          //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L3處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
+            string tStatus = string.Empty;          //狀態(E0001.新建、E0002.L2處理中、E0003.報價中、E0004.3rd Party處理中、E0005.L1處理中、E0006.完修、E0012.HPGCSN 申請、E0013.HPGCSN 完成、E0014.駁回、E0015.取消 )
             string tContractID = string.Empty;      //合約文件編號
             string tSecFix = string.Empty;          //是否為二修
             string ProductString = string.Empty;    //產品序號相關字串

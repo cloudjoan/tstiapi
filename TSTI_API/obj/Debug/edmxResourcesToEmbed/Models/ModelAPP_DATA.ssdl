@@ -85,6 +85,49 @@
     <Property Name="IMG_RB" Type="nvarchar" MaxLength="50" />
     <Property Name="INSERT_TIME" Type="varchar" MaxLength="22" />
   </EntityType>
+  <EntityType Name="TB_LIVE_MESSAGE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DRAW_ID" Type="int" />
+    <Property Name="CONTENT" Type="nvarchar" MaxLength="1000" />
+    <Property Name="USER_NAME" Type="nvarchar" MaxLength="100" />
+    <Property Name="ERP_ID" Type="varchar" MaxLength="30" />
+    <Property Name="INSERT_TIME" Type="varchar" MaxLength="22" />
+  </EntityType>
+  <EntityType Name="TB_LUCKYDRAW">
+    <Key>
+      <PropertyRef Name="Draw_ID" />
+    </Key>
+    <Property Name="Draw_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Draw_Year" Type="nvarchar" MaxLength="10" />
+    <Property Name="Draw_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Insert_User" Type="nvarchar" MaxLength="22" />
+    <Property Name="Insert_Time" Type="nvarchar" MaxLength="22" />
+    <Property Name="Modify_User" Type="nvarchar" MaxLength="22" />
+    <Property Name="Modify_Time" Type="nvarchar" MaxLength="22" />
+    <Property Name="Disabled_Mark" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TB_LUCKYDRAW_PRIZE">
+    <Key>
+      <PropertyRef Name="Prize_ID" />
+    </Key>
+    <Property Name="Prize_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Draw_ID" Type="int" />
+    <Property Name="Sort_No" Type="int" />
+    <Property Name="Prize_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Prize_Pic" Type="nvarchar" MaxLength="2000" />
+    <Property Name="Prize_Amount" Type="int" />
+    <Property Name="OverAYear_Mark" Type="bit" Nullable="false" />
+    <Property Name="Draw_Amount" Type="int" />
+    <Property Name="Prize_Price" Type="int" />
+    <Property Name="Insert_User" Type="nvarchar" MaxLength="22" />
+    <Property Name="Insert_Time" Type="nvarchar" MaxLength="22" />
+    <Property Name="Modify_User" Type="nvarchar" MaxLength="22" />
+    <Property Name="Modify_Time" Type="nvarchar" MaxLength="22" />
+    <Property Name="Disabled_Mark" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
     <Key>
       <PropertyRef Name="hash" />
@@ -225,6 +268,9 @@
     <EntitySet Name="TB_CAR_DATA" EntityType="Self.TB_CAR_DATA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_CAR_OWNER" EntityType="Self.TB_CAR_OWNER" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_CAR_PHOTOS" EntityType="Self.TB_CAR_PHOTOS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_LIVE_MESSAGE" EntityType="Self.TB_LIVE_MESSAGE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_LUCKYDRAW" EntityType="Self.TB_LUCKYDRAW" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_LUCKYDRAW_PRIZE" EntityType="Self.TB_LUCKYDRAW_PRIZE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_SURVEY_ANS_MAINTAIN" EntityType="Self.TB_SURVEY_ANS_MAINTAIN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_SURVEY_QUS_MAINTAIN" EntityType="Self.TB_SURVEY_QUS_MAINTAIN" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
