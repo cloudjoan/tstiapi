@@ -32,5 +32,8 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_CAR_PHOTOS> TB_CAR_PHOTOS { get; set; }
         public virtual DbSet<TB_CAR_BOOKING> TB_CAR_BOOKING { get; set; }
         public virtual DbSet<TB_CAR_DATA> TB_CAR_DATA { get; set; }
+        public virtual DbSet<TB_LIVE_MESSAGE> TB_LIVE_MESSAGE { get; set; }
+        public virtual DbSet<TB_LUCKYDRAW> TB_LUCKYDRAW { get; set; }
+        public virtual DbSet<TB_LUCKYDRAW_PRIZE> TB_LUCKYDRAW_PRIZE { get; set; }
     }
 }
