@@ -12807,10 +12807,10 @@ namespace TSTI_API.Controllers
                     MailContent += "以下為異常項目：<br />" + AbnormalList + "<br />";
                     MailContent += "請確認，謝謝<br /><br />";
                     MailContent += "<p style='font-family:Microsoft JhengHei; font-size: 16px;'>------- 此信件由系統發出，請勿回覆此信件 -------</p>";
-                    MailContent += MailList;
+                    //MailContent += MailList;
                     MailContent += "</span>";
 
-                    CMF.SendMailByAPI("SaveCarCheckList_API", null, "Joy.Chi@etatung.com;Leon.Huang@etatung.com", "", "Joy.Chi@etatung.com", "APP公務車借用 - 車輛" + CarBookingInfo.LPN + "異常通知", MailContent, null, null);
+                    CMF.SendMailByAPI("SaveCarCheckList_API", null, MailList, "", "Joy.Chi@etatung.com;Leon.Huang@etatung.com", "APP公務車借用 - 車輛" + CarBookingInfo.LPN + "異常通知", MailContent, null, null);
                 }
 
                 
