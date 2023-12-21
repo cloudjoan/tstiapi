@@ -505,6 +505,7 @@
           <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="cSystemGUID" ColumnName="cSystemGUID" />
+          <ScalarProperty Name="cCustomerUnitType" ColumnName="cCustomerUnitType" />
           <ScalarProperty Name="cRemark" ColumnName="cRemark" />
           <ScalarProperty Name="cPerCallSLASRV" ColumnName="cPerCallSLASRV" />
           <ScalarProperty Name="cPerCallSLARESP" ColumnName="cPerCallSLARESP" />

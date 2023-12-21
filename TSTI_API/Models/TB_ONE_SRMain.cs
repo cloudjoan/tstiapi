@@ -72,6 +72,7 @@ namespace TSTI_API.Models
         public string cPerCallSLARESP { get; set; }
         public string cPerCallSLASRV { get; set; }
         public string cRemark { get; set; }
+        public string cCustomerUnitType { get; set; }
         public Nullable<System.Guid> cSystemGUID { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUserName { get; set; }

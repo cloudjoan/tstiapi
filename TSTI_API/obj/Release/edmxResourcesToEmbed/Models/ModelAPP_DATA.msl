@@ -227,5 +227,51 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_LIVE_MESSAGE">
+      <EntityTypeMapping TypeName="APP_DATAModel.TB_LIVE_MESSAGE">
+        <MappingFragment StoreEntitySet="TB_LIVE_MESSAGE">
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+          <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
+          <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
+          <ScalarProperty Name="DRAW_ID" ColumnName="DRAW_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_LUCKYDRAW">
+      <EntityTypeMapping TypeName="APP_DATAModel.TB_LUCKYDRAW">
+        <MappingFragment StoreEntitySet="TB_LUCKYDRAW">
+          <ScalarProperty Name="Disabled_Mark" ColumnName="Disabled_Mark" />
+          <ScalarProperty Name="Modify_Time" ColumnName="Modify_Time" />
+          <ScalarProperty Name="Modify_User" ColumnName="Modify_User" />
+          <ScalarProperty Name="Insert_Time" ColumnName="Insert_Time" />
+          <ScalarProperty Name="Insert_User" ColumnName="Insert_User" />
+          <ScalarProperty Name="Draw_Name" ColumnName="Draw_Name" />
+          <ScalarProperty Name="Draw_Year" ColumnName="Draw_Year" />
+          <ScalarProperty Name="Draw_ID" ColumnName="Draw_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_LUCKYDRAW_PRIZE">
+      <EntityTypeMapping TypeName="APP_DATAModel.TB_LUCKYDRAW_PRIZE">
+        <MappingFragment StoreEntitySet="TB_LUCKYDRAW_PRIZE">
+          <ScalarProperty Name="Disabled_Mark" ColumnName="Disabled_Mark" />
+          <ScalarProperty Name="Modify_Time" ColumnName="Modify_Time" />
+          <ScalarProperty Name="Modify_User" ColumnName="Modify_User" />
+          <ScalarProperty Name="Insert_Time" ColumnName="Insert_Time" />
+          <ScalarProperty Name="Insert_User" ColumnName="Insert_User" />
+          <ScalarProperty Name="Prize_Price" ColumnName="Prize_Price" />
+          <ScalarProperty Name="Draw_Amount" ColumnName="Draw_Amount" />
+          <ScalarProperty Name="OverAYear_Mark" ColumnName="OverAYear_Mark" />
+          <ScalarProperty Name="Prize_Amount" ColumnName="Prize_Amount" />
+          <ScalarProperty Name="Prize_Pic" ColumnName="Prize_Pic" />
+          <ScalarProperty Name="Prize_Name" ColumnName="Prize_Name" />
+          <ScalarProperty Name="Sort_No" ColumnName="Sort_No" />
+          <ScalarProperty Name="Draw_ID" ColumnName="Draw_ID" />
+          <ScalarProperty Name="Prize_ID" ColumnName="Prize_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

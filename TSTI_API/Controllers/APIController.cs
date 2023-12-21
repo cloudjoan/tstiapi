@@ -272,6 +272,7 @@ namespace TSTI_API.Controllers
             string IV_ScheduleDate = string.IsNullOrEmpty(bean.IV_ScheduleDate) ? "" : bean.IV_ScheduleDate.Trim();
             string IV_PerCallSLARESP = string.IsNullOrEmpty(bean.IV_PerCallSLARESP) ? "" : bean.IV_PerCallSLARESP.Trim();
             string IV_PerCallSLASRV = string.IsNullOrEmpty(bean.IV_PerCallSLASRV) ? "" : bean.IV_PerCallSLASRV.Trim();
+            string IV_CUSTOMERUNITTYPE = string.IsNullOrEmpty(bean.IV_CUSTOMERUNITTYPE) ? "" : bean.IV_CUSTOMERUNITTYPE.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -439,6 +440,7 @@ namespace TSTI_API.Controllers
                         beanM.cPerCallSLARESP = IV_PerCallSLARESP;
                         beanM.cPerCallSLASRV = IV_PerCallSLASRV;
                         beanM.cRemark = "";
+                        beanM.cCustomerUnitType = IV_CUSTOMERUNITTYPE;
 
                         if (!string.IsNullOrEmpty(IV_ScheduleDate))
                         {
@@ -924,6 +926,8 @@ namespace TSTI_API.Controllers
             public string IV_PerCallSLARESP { get; set; }
             /// <summary>SLA服務條件(單筆per call)</summary>
             public string IV_PerCallSLASRV { get; set; }
+            /// <summary>客戶單位類別</summary>
+            public string IV_CUSTOMERUNITTYPE { get; set; }
             /// <summary>檢附文件</summary>
             public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 
@@ -1155,6 +1159,7 @@ namespace TSTI_API.Controllers
             string IV_PATHWAY = string.IsNullOrEmpty(bean.IV_PATHWAY) ? "" : bean.IV_PATHWAY.Trim();
             string IV_DELAYREASON = string.IsNullOrEmpty(bean.IV_DELAYREASON) ? "" : bean.IV_DELAYREASON.Trim();
             string IV_ScheduleDate = string.IsNullOrEmpty(bean.IV_ScheduleDate) ? "" : bean.IV_ScheduleDate.Trim();
+            string IV_CUSTOMERUNITTYPE = string.IsNullOrEmpty(bean.IV_CUSTOMERUNITTYPE) ? "" : bean.IV_CUSTOMERUNITTYPE.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -1300,6 +1305,7 @@ namespace TSTI_API.Controllers
                         beanM.cShipmentNo = IV_SHIPMENTNO;
                         beanM.cSRPathWay = IV_PATHWAY;
                         beanM.cDelayReason = IV_DELAYREASON;
+                        beanM.cCustomerUnitType = IV_CUSTOMERUNITTYPE;
 
                         beanM.cTeamID = IV_SRTEAM;
                         beanM.cMainEngineerName = CMainEngineerName;
@@ -1611,6 +1617,8 @@ namespace TSTI_API.Controllers
             public string IV_DELAYREASON { get; set; }
             /// <summary>預排日期</summary>
             public string IV_ScheduleDate { get; set; }
+            /// <summary>客戶單位類別</summary>
+            public string IV_CUSTOMERUNITTYPE { get; set; }
             /// <summary>檢附文件</summary>
             public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 
@@ -1724,6 +1732,7 @@ namespace TSTI_API.Controllers
             string IV_ASSEMPNO = string.IsNullOrEmpty(bean.IV_ASSEMPNO) ? "" : bean.IV_ASSEMPNO.Trim();
             string IV_DELAYREASON = string.IsNullOrEmpty(bean.IV_DELAYREASON) ? "" : bean.IV_DELAYREASON.Trim();
             string IV_ScheduleDate = string.IsNullOrEmpty(bean.IV_ScheduleDate) ? "" : bean.IV_ScheduleDate.Trim();
+            string IV_CUSTOMERUNITTYPE = string.IsNullOrEmpty(bean.IV_CUSTOMERUNITTYPE) ? "" : bean.IV_CUSTOMERUNITTYPE.Trim();
             HttpPostedFileBase[] AttachFiles = bean.IV_ATTACHFiles;
 
             string CCustomerName = CMF.findCustName(IV_CUSTOMER);
@@ -1842,6 +1851,7 @@ namespace TSTI_API.Controllers
                         beanM.cSRTypeSec = IV_MKIND2;
                         beanM.cSRTypeThr = IV_MKIND3;
                         beanM.cDelayReason = IV_DELAYREASON;
+                        beanM.cCustomerUnitType = IV_CUSTOMERUNITTYPE;
 
                         beanM.cTeamID = IV_SRTEAM;
                         beanM.cMainEngineerName = CMainEngineerName;
@@ -2054,6 +2064,8 @@ namespace TSTI_API.Controllers
             public string IV_DELAYREASON { get; set; }
             /// <summary>預排日期</summary>
             public string IV_ScheduleDate { get; set; }
+            /// <summary>客戶單位類別</summary>
+            public string IV_CUSTOMERUNITTYPE { get; set; }
             /// <summary>檢附文件</summary>
             public HttpPostedFileBase[] IV_ATTACHFiles { get; set; }
 

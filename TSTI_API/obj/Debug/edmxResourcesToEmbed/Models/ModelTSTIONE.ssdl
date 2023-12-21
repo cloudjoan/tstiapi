@@ -34,7 +34,7 @@
     <Property Name="cSLARESP" Type="nvarchar" MaxLength="10" />
     <Property Name="cSLASRV" Type="nvarchar" MaxLength="10" />
     <Property Name="cNotes" Type="nvarchar" MaxLength="255" />
-    <Property Name="cSubContractID" Type="nvarchar" MaxLength="10" />
+    <Property Name="cSubContractID" Type="nvarchar" MaxLength="50" />
     <Property Name="Disabled" Type="int" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
@@ -450,6 +450,7 @@
     <Property Name="cPerCallSLARESP" Type="nvarchar" MaxLength="10" />
     <Property Name="cPerCallSLASRV" Type="nvarchar" MaxLength="10" />
     <Property Name="cRemark" Type="nvarchar(max)" />
+    <Property Name="cCustomerUnitType" Type="nvarchar" MaxLength="3" />
     <Property Name="cSystemGUID" Type="uniqueidentifier" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />

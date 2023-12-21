@@ -309,7 +309,7 @@
     <Property Name="cSLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="cSLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="cNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cSubContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cSubContractID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Disabled" Type="Int32" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -567,6 +567,7 @@
     <Property Name="cPerCallSLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="cPerCallSLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="cRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cCustomerUnitType" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
     <Property Name="cSystemGUID" Type="Guid" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
