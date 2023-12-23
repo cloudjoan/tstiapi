@@ -13020,8 +13020,20 @@ namespace TSTI_API.Controllers
            
         }
 
+        #endregion
+
+
+        #region 依prizeId取得獎品資訊
+
+        [HttpPost]
+        public ActionResult FindPrizeById(int prizeId)
+        {
+            var bean = appDB.TB_LUCKYDRAW_PRIZE.FirstOrDefault(x => x.Prize_ID == prizeId);
+            return Json(bean);
+        }
 
         #endregion
+
 
         #region 更新獎品資訊
 
