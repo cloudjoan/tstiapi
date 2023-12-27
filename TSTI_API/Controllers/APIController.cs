@@ -13123,7 +13123,7 @@ namespace TSTI_API.Controllers
 		#region 依erpId取得中獎資訊
 
 		[HttpPost]
-        public ActionResult GetPrizeWinnderByErpId(string erpId)
+        public ActionResult FindPrizeWinnderByErpId(string erpId)
         {
             var bean = appDB.TB_LUCKYDRAW_PRIZEWINNING.FirstOrDefault(x => x.User_ERPID == erpId && x.Disabled_Mark == false);
             return Json(bean);
