@@ -2287,12 +2287,15 @@ namespace TSTI_API.Controllers
             if (cNewStatus != cOldStatus)
             {
                 switch (cNewStatus)
-                {
-                    case "E0002": //L2處理中(一般)
+                {                    
                     case "E0003": //報價中(一般)
                     case "E0005": //L1處理中(一般)
                     case "E0008": //裝機中(裝機)
                     case "E0016": //定保處理中(定維)
+                        tCondition = SRCondition.SAVE;
+                        break;
+
+                    case "E0002": //L2處理中(一般)                   
                         tCondition = SRCondition.SAVE;
                         break;
 
@@ -13889,6 +13892,11 @@ namespace TSTI_API.Controllers
         /// 保存
         /// </summary>
         SAVE,
+
+        /// <summary>
+        /// L2處理
+        /// </summary>
+        L2PROCESS,
 
         /// <summary>
         /// 技術支援升級
