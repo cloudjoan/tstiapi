@@ -13009,6 +13009,19 @@ namespace TSTI_API.Controllers
 
         #region 尾牙專區
 
+        #region 依檔案Id取得檔案資訊
+
+        [HttpPost]
+        public ActionResult GetDocumentInfo(string tAttach)
+        {
+            string Attach = tAttach.TrimEnd(',');
+
+            var bean = dbOne.TB_ONE_DOCUMENT.FirstOrDefault(x => x.ID.ToString() == Attach);
+
+            return Json(bean);
+        }
+
+        #endregion
 
         #region 依活動ID取得獎品資訊
 
@@ -13034,6 +13047,200 @@ namespace TSTI_API.Controllers
 
         #endregion
 
+        #region 新增/修改獎品
+
+        [HttpPost]
+        public ActionResult SavePrizeInfo(int DrawId, int PrizeId, string PrizeName, int PrizeAmount, int PrizePrice, bool OverAYearMark, string ErpId, HttpPostedFileBase PrizePic)
+        {
+            int result      = 0;
+            int Prize_Id    = 0;
+
+            Guid fileGuid = Guid.NewGuid();
+
+            if (PrizeId == 0)
+            {
+                int MaxSort = appDB.TB_LUCKYDRAW_PRIZE.Where(x => x.Draw_ID == DrawId && x.Disabled_Mark == false).ToList().Max(x => x.Sort_No);
+
+                TB_LUCKYDRAW_PRIZE bean = new TB_LUCKYDRAW_PRIZE();
+
+                bean.Sort_No        = MaxSort + 1;
+                bean.Draw_ID        = DrawId;
+                bean.Prize_Name     = PrizeName;
+                bean.Prize_Amount   = PrizeAmount;
+                bean.Prize_Price    = PrizePrice;
+                bean.OverAYear_Mark = OverAYearMark;
+                bean.Prize_Pic      = PrizePic != null ? fileGuid.ToString() + "," : "";
+                bean.Draw_Amount    = 0;
+                bean.Insert_User    = ErpId;
+                bean.Insert_Time    = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
+
+                appDB.TB_LUCKYDRAW_PRIZE.Add(bean);
+                result      = appDB.SaveChanges();
+                Prize_Id    = bean.Prize_ID;
+
+                CMF.writeToLog("PrizeID: " + Prize_Id, "LuckyDrawLog", "SavePrizeInfo - 新增獎品", ErpId);
+            }
+            else
+            {
+                var PrizeInfo = appDB.TB_LUCKYDRAW_PRIZE.Where(x => x.Prize_ID == PrizeId).FirstOrDefault();
+
+                if (PrizeInfo != null)
+                {
+                    PrizeInfo.Prize_Name        = PrizeName;
+                    PrizeInfo.Prize_Amount      = PrizeAmount;
+                    PrizeInfo.Prize_Price       = PrizePrice;
+                    PrizeInfo.OverAYear_Mark    = OverAYearMark;
+
+                    if (PrizePic != null)
+                    { PrizeInfo.Prize_Pic = fileGuid.ToString() + ","; }
+
+                    PrizeInfo.Modify_User = ErpId;
+                    PrizeInfo.Modify_Time = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
+
+                    result = appDB.SaveChanges();
+                }
+
+                Prize_Id = PrizeId;
+                CMF.writeToLog("PrizeID: " + Prize_Id, "LuckyDrawLog", "SavePrizeInfo - 修改獎品", ErpId);
+            }
+
+            if (PrizePic != null)
+            {
+                string path         = "";
+                string fileId       = string.Empty;
+                string fileOrgName  = string.Empty;
+                string fileName     = string.Empty;
+                string fileALLName  = string.Empty;
+                try
+                {
+                    #region 存照片到主機
+                    fileId      = fileGuid.ToString();
+                    fileOrgName = "PrizePic_" + Prize_Id + ".jpg";
+                    fileName    = fileId + Path.GetExtension(PrizePic.FileName);
+                    path        = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+                    PrizePic.SaveAs(path);
+                    #endregion
+
+                    #region 存照片對應資訊到Table
+                    TB_ONE_DOCUMENT bean = new TB_ONE_DOCUMENT();
+
+                    bean.ID             = fileGuid;
+                    bean.FILE_ORG_NAME  = fileOrgName;
+                    bean.FILE_NAME      = fileName;
+                    bean.FILE_EXT       = Path.GetExtension(PrizePic.FileName);
+                    bean.INSERT_TIME    = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    dbOne.TB_ONE_DOCUMENT.Add(bean);
+                    dbOne.SaveChanges();
+                    #endregion
+                }
+                catch (Exception ex)
+                {
+                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "【ATTACH】獎品照片上傳失敗原因:" + ex.Message + Environment.NewLine;
+                    pMsg += " 失敗行數：" + ex.ToString() + Environment.NewLine;
+
+                    CMF.writeToLog("DrawID: " + DrawId + "PrizeID: " + Prize_Id, "LuckyDrawLog - SavePrizeInfo_Pic失敗", pMsg, ErpId);
+                    CMF.SendMailByAPI("SavePrizeInfo_Pic_ATTACH_API", null, "Joy.Chi@etatung.com", "", "", "SavePrizeInfo_Pic_ATTACH_API錯誤 - DrawID: " + DrawId + "PrizeID: " + Prize_Id, pMsg, null, null);
+                }
+            }
+
+            if (result > 0)
+            {
+                return Json("Finish");
+            }
+            else
+            { return Json("Fail"); }
+        }
+
+        #endregion
+
+        #region 刪除獎品
+
+        [HttpPost]
+        public ActionResult DeletePrize(int prizeId, string ErpId)
+        {
+            int result = 0;
+
+            var bean = appDB.TB_LUCKYDRAW_PRIZE.FirstOrDefault(x => x.Prize_ID == prizeId);
+
+            if (bean != null)
+            {
+                bean.Disabled_Mark  = true;
+                bean.Modify_User    = ErpId;
+                bean.Modify_Time    = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
+
+                result = appDB.SaveChanges();
+            }
+
+            if (result > 0)
+            {
+                CMF.writeToLog("PrizeID: " + prizeId, "LuckyDrawLog", "DeletePrize - 刪除獎品", ErpId);
+                return Json("Finish");
+            }
+            else
+            { return Json("Fail"); }
+        }
+
+        #endregion
+
+        #region 獎品數量+1
+
+        [HttpPost]
+        public ActionResult AddPrizeAmount(int prizeId, string ErpId)
+        {
+            int result = 0;
+
+            var bean = appDB.TB_LUCKYDRAW_PRIZE.FirstOrDefault(x => x.Prize_ID == prizeId);
+
+            if (bean != null)
+            {
+                bean.Prize_Amount   = bean.Prize_Amount + 1;
+                bean.Modify_User    = ErpId;
+                bean.Modify_Time    = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
+
+                result = appDB.SaveChanges();
+            }
+
+            if (result > 0)
+            {
+                CMF.writeToLog("PrizeID: " + prizeId, "LuckyDrawLog", "AddPrizeAmount - 獎品數量+1", ErpId);
+                return Json("Finish");
+            }
+            else
+            { return Json("Fail"); }
+        }
+
+        #endregion
+
+        #region 更新獎品順序
+
+        [HttpPost]
+        public ActionResult UpdatePrizeSortNo(int prizeId, string ErpId)
+        {
+            int result = 0;
+            int DrawId = 0;
+
+            var bean = appDB.TB_LUCKYDRAW_PRIZE.FirstOrDefault(x => x.Prize_ID == prizeId);
+
+            if (bean != null)
+            {
+                bean.Disabled_Mark  = true;
+                bean.Modify_User    = ErpId;
+                bean.Modify_Time    = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
+
+                result = appDB.SaveChanges();
+            }
+
+            if (result > 0)
+            {
+                CMF.writeToLog("DrawID: " + DrawId, "LuckyDrawLog", "UpdatePrizeSortNo - 更新獎品順序", ErpId);
+                return Json("Finish");
+            }
+            else
+            { return Json("Fail"); }
+        }
+
+        #endregion
 
         #region 更新獎品資訊
 
