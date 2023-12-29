@@ -13018,13 +13018,25 @@ namespace TSTI_API.Controllers
         [HttpPost]
         public ActionResult FindPrizesByDrawId(int drawId)
         {
-            var beans = appDB.TB_LUCKYDRAW_PRIZE.Where(x => x.Draw_ID == drawId && x.Disabled_Mark == false);
+            var beans = appDB.TB_LUCKYDRAW_PRIZE.Where(x => x.Draw_ID == drawId && x.Disabled_Mark == false).OrderBy(x => x.Sort_No);
             return Json(beans);
            
         }
 
+        #endregion
+
+
+        #region 依prizeId取得獎品資訊
+
+        [HttpPost]
+        public ActionResult FindPrizeById(int prizeId)
+        {
+            var bean = appDB.TB_LUCKYDRAW_PRIZE.FirstOrDefault(x => x.Prize_ID == prizeId);
+            return Json(bean);
+        }
 
         #endregion
+
 
         #region 更新獎品資訊
 
@@ -13068,11 +13080,65 @@ namespace TSTI_API.Controllers
 
         #endregion
 
-        #endregion
-    }
+        #region 人員簽到
 
-    #region 取得系統位址參數相關資訊
-    public class SRSYSPARAINFO
+        [HttpPost]
+        public ActionResult SaveAnniversaryCheckIn(TB_ANNIVERSARY_CHECK_IN bean)
+        {
+            bean.INSERT_TIME = string.Format("{0:yyyy-MM-dd HH:mm:ss}", DateTime.Now);
+            appDB.TB_ANNIVERSARY_CHECK_IN.Add(bean);
+            appDB.SaveChanges();
+
+            return Json(bean);
+        }
+
+        #endregion
+
+        #region 儲存中獎資訊
+        [HttpPost]
+        public ActionResult SavePrizeWinner(TB_LUCKYDRAW_PRIZEWINNING bean)
+        {
+            bean.Insert_Time = string.Format("{0:yyyy-MM-dd HH:mm:ss}", DateTime.Now);
+            appDB.TB_LUCKYDRAW_PRIZEWINNING.Add(bean);
+            appDB.SaveChanges();
+
+            return Json(bean);
+		}
+
+        #endregion
+
+
+        #region 儲存領獎資訊
+
+        [HttpPost]
+        public ActionResult UpdatePrizeWinner(int winningId)
+        {
+            var bean = appDB.TB_LUCKYDRAW_PRIZEWINNING.FirstOrDefault(x => x.Winning_ID == winningId);
+            bean.Redeem_Mark = true;
+            bean.Redeem_Time = string.Format("{0:yyyy-MM-dd HH:mm:ss}", DateTime.Now);
+            appDB.SaveChanges();
+
+            return Json(bean);
+        }
+
+		#endregion
+
+		#region 依erpId取得中獎資訊
+
+		[HttpPost]
+        public ActionResult FindPrizeWinnerByErpId(string erpId)
+        {
+            var bean = appDB.TB_LUCKYDRAW_PRIZEWINNING.FirstOrDefault(x => x.User_ERPID == erpId && x.Disabled_Mark == false);
+            return Json(bean);
+        }
+
+		#endregion
+
+		#endregion
+	}
+
+	#region 取得系統位址參數相關資訊
+	public class SRSYSPARAINFO
     {
         /// <summary>呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)</summary>
         public bool IsFormal { get; set; }

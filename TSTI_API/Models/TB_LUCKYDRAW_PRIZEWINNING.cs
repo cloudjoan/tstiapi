@@ -12,21 +12,18 @@ namespace TSTI_API.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TB_LUCKYDRAW_PRIZE
+    public partial class TB_LUCKYDRAW_PRIZEWINNING
     {
-        public int Prize_ID { get; set; }
-        public Nullable<int> Draw_ID { get; set; }
-        public int Sort_No { get; set; }
-        public string Prize_Name { get; set; }
-        public string Prize_Pic { get; set; }
-        public Nullable<int> Prize_Amount { get; set; }
-        public bool OverAYear_Mark { get; set; }
-        public Nullable<int> Draw_Amount { get; set; }
-        public Nullable<int> Prize_Price { get; set; }
+        public int Winning_ID { get; set; }
+        public Nullable<int> Prize_ID { get; set; }
+        public string User_Name { get; set; }
+        public string User_ERPID { get; set; }
         public string Insert_User { get; set; }
         public string Insert_Time { get; set; }
         public string Modify_User { get; set; }
         public string Modify_Time { get; set; }
         public bool Disabled_Mark { get; set; }
+        public bool Redeem_Mark { get; set; }
+        public string Redeem_Time { get; set; }
     }
 }

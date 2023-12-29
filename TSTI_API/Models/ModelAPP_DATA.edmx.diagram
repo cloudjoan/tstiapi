@@ -13,8 +13,10 @@
         <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_BOOKING" Width="1.5" PointX="5.75" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_DATA" Width="1.5" PointX="3.125" PointY="1.75" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_LIVE_MESSAGE" Width="1.5" PointX="5.375" PointY="7.75" />
-        <EntityTypeShape EntityType="APP_DATAModel.TB_LUCKYDRAW" Width="1.5" PointX="7.375" PointY="7.75" />
-        <EntityTypeShape EntityType="APP_DATAModel.TB_LUCKYDRAW_PRIZE" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="APP_DATAModel.TB_LUCKYDRAW" Width="1.875" PointX="7.375" PointY="7.75" />
+        <EntityTypeShape EntityType="APP_DATAModel.TB_LUCKYDRAW_PRIZE" Width="2.625" PointX="8.125" PointY="0.75" />
+        <EntityTypeShape EntityType="APP_DATAModel.TB_ANNIVERSARY_CHECK_IN" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="APP_DATAModel.TB_LUCKYDRAW_PRIZEWINNING" Width="1.5" PointX="2.75" PointY="9.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

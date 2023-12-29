@@ -386,6 +386,9 @@
     <Compile Include="Models\tblForm_SubContractSeals.cs">
       <DependentUpon>ModelBPMDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_ANNIVERSARY_CHECK_IN.cs">
+      <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_CAR_BOOKING.cs">
       <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
     </Compile>
@@ -408,6 +411,9 @@
       <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TB_LUCKYDRAW_PRIZE.cs">
+      <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_LUCKYDRAW_PRIZEWINNING.cs">
       <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TB_MAIL_CONTENT.cs">
