@@ -13015,7 +13015,7 @@ namespace TSTI_API.Controllers
         [HttpPost]
         public ActionResult FindPrizesByDrawId(int drawId)
         {
-            var beans = appDB.TB_LUCKYDRAW_PRIZE.Where(x => x.Draw_ID == drawId && x.Disabled_Mark == false);
+            var beans = appDB.TB_LUCKYDRAW_PRIZE.Where(x => x.Draw_ID == drawId && x.Disabled_Mark == false).OrderBy(x => x.Sort_No);
             return Json(beans);
            
         }
