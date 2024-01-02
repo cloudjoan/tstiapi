@@ -25,5 +25,6 @@ namespace TSTI_API.Models
         public bool Disabled_Mark { get; set; }
         public bool Redeem_Mark { get; set; }
         public string Redeem_Time { get; set; }
+        public Nullable<int> Draw_ID { get; set; }
     }
 }

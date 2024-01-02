@@ -13284,11 +13284,12 @@ namespace TSTI_API.Controllers
             return Json(bean);
         }
 
-        #endregion
+		#endregion
 
-        #region 寫入即時訊息
 
-        [HttpPost]
+		#region 寫入即時訊息
+
+		[HttpPost]
         public ActionResult SaveLiveMessage(TB_LIVE_MESSAGE bean)
         {
             bean.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -13351,6 +13352,18 @@ namespace TSTI_API.Controllers
             var bean = appDB.TB_LUCKYDRAW_PRIZEWINNING.FirstOrDefault(x => x.User_ERPID == erpId && x.Disabled_Mark == false);
             return Json(bean);
         }
+
+        #endregion
+
+
+        #region 取得所有中獎資訊
+
+        [HttpPost]
+        public ActionResult FindPrizeWinnerByAll ()
+		{
+			var beans = appDB.TB_LUCKYDRAW_PRIZEWINNING;
+			return Json(beans);
+		}
 
 		#endregion
 
