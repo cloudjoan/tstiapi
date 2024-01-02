@@ -13215,30 +13215,46 @@ namespace TSTI_API.Controllers
         #region 更新獎品順序
 
         [HttpPost]
-        public ActionResult UpdatePrizeSortNo(int prizeId, string ErpId)
+        public ActionResult UpdatePrizeSortNo(string PrizeIds, string ErpId)
         {
-            int result = 0;
-            int DrawId = 0;
+            int     result      = 0;
+            int?    DrawId      = 0;
+            bool    isChange    = false;
+            PrizeIds = PrizeIds.TrimEnd(',');
 
-            var bean = appDB.TB_LUCKYDRAW_PRIZE.FirstOrDefault(x => x.Prize_ID == prizeId);
-
-            if (bean != null)
+            for (int i = 0; i < PrizeIds.Split(',').Count(); i++)
             {
-                bean.Disabled_Mark  = true;
-                bean.Modify_User    = ErpId;
-                bean.Modify_Time    = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
+                int OrgSortNo   = 0;
+                int PrizeId     = int.Parse(PrizeIds.Split(',')[i]);
+                var bean        = appDB.TB_LUCKYDRAW_PRIZE.FirstOrDefault(x => x.Prize_ID == PrizeId);
+                if (bean != null)
+                {
+                    OrgSortNo   = bean.Sort_No;
+                    DrawId      = bean.Draw_ID;
+                    if (OrgSortNo != i + 1)
+                    {
+                        bean.Sort_No        = i + 1;
+                        bean.Modify_User    = ErpId;
+                        bean.Modify_Time    = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
+                    }
 
-                result = appDB.SaveChanges();
+                    result = appDB.SaveChanges();
+                }
+
+                if (result > 0)
+                {
+                    isChange = true;
+                    CMF.writeToLog("DrawID: " + DrawId, "LuckyDrawLog", "UpdatePrizeSortNo - 更新獎品順序 PrizeID:" + bean.Prize_ID + "," + OrgSortNo + " -> " + bean.Sort_No, ErpId);
+                }
             }
 
-            if (result > 0)
+            if (isChange == true)
             {
-                CMF.writeToLog("DrawID: " + DrawId, "LuckyDrawLog", "UpdatePrizeSortNo - 更新獎品順序", ErpId);
                 return Json("Finish");
             }
             else
             { return Json("Fail"); }
-        }
+        }    
 
         #endregion
 
