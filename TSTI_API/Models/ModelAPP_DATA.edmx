@@ -159,6 +159,7 @@
           <Property Name="Disabled_Mark" Type="bit" Nullable="false" />
           <Property Name="Redeem_Mark" Type="bit" Nullable="false" />
           <Property Name="Redeem_Time" Type="nvarchar" MaxLength="22" />
+          <Property Name="Draw_ID" Type="int" />
         </EntityType>
         <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
           <Key>
@@ -614,6 +615,7 @@
           <Property Name="Disabled_Mark" Type="Boolean" Nullable="false" />
           <Property Name="Redeem_Mark" Type="Boolean" Nullable="false" />
           <Property Name="Redeem_Time" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="Draw_ID" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -908,6 +910,7 @@
           <EntitySetMapping Name="TB_LUCKYDRAW_PRIZEWINNING">
             <EntityTypeMapping TypeName="APP_DATAModel.TB_LUCKYDRAW_PRIZEWINNING">
               <MappingFragment StoreEntitySet="TB_LUCKYDRAW_PRIZEWINNING">
+                <ScalarProperty Name="Draw_ID" ColumnName="Draw_ID" />
                 <ScalarProperty Name="Redeem_Time" ColumnName="Redeem_Time" />
                 <ScalarProperty Name="Redeem_Mark" ColumnName="Redeem_Mark" />
                 <ScalarProperty Name="Disabled_Mark" ColumnName="Disabled_Mark" />
