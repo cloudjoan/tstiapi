@@ -4480,7 +4480,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【共用】案件種類的郵件主旨
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、L2PROCESS.L2處理、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
         /// <param name="SRID">服務ID</param>
         /// <param name="CusName">客戶名稱</param>
         /// <param name="TeamNAME">服務團隊</param>
@@ -4527,6 +4527,11 @@ namespace TSTI_API.Controllers
                 case SRCondition.SECFIX:
                     //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類> 二修通知[<服務ID>]
                     reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + " 二修通知[" + SRID + "]";
+                    break;
+
+                case SRCondition.L2PROCESS:
+                    //[<報修管道>] [<客戶名稱>] <服務團隊>_<服務案件種類> L2處理通知[<服務ID>]
+                    reValue = SRPathWay + "[" + CusName + "] " + TeamNAME + "_" + SRCase + " L2處理通知[" + SRID + "]";
                     break;
 
                 case SRCondition.SUPPORT:
@@ -4578,7 +4583,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 取得【一般服務】案件種類的郵件主旨(for客戶)
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、L2PROCESS.L2處理、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
         /// <param name="SRID">服務ID</param>
         /// <param name="CusName">客戶名稱</param>  
         /// <param name="SRPathWay">報修管道</param>
@@ -5089,7 +5094,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 組服務案件Mail相關資訊
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、L2PROCESS.L2處理、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
         /// <param name="cOperationID_GenerallySR">程式作業編號檔系統ID(一般服務)</param>
         /// <param name="cOperationID_InstallSR">程式作業編號檔系統ID(裝機服務)</param>
         /// <param name="cOperationID_MaintainSR">程式作業編號檔系統ID(定維服務)</param>
@@ -5128,6 +5133,9 @@ namespace TSTI_API.Controllers
             string cMainENGEmail = string.Empty;        //主要工程師Email
             string cAssENG = string.Empty;              //協助工程師
             string cAssENGEmail = string.Empty;         //協助工程師Email
+            string cTechTeamName = string.Empty;        //技術支援升級團隊
+            string cTechTeamMGR = string.Empty;         //技術支援升級團隊主管
+            string cTechTeamMGREmail = string.Empty;    //技術支援升級團隊主管Email
             string cTechMGR = string.Empty;             //技術主管
             string cTechMGREmail = string.Empty;        //技術主管Email
             string cSalesEMP = string.Empty;            //業務人員
@@ -5159,6 +5167,7 @@ namespace TSTI_API.Controllers
             try
             {   
                 List<SRTEAMORGINFO> SRTeam_List = new List<SRTEAMORGINFO>();
+                List<SRTEAMORGINFO> SRTechTeam_List = new List<SRTEAMORGINFO>();
                 List<SREMPINFO> SRCreateUser_List = new List<SREMPINFO>();
                 List<SREMPINFO> SRModifiedUser_List = new List<SREMPINFO>();
                 List<SREMPINFO> SRMainENG_List = new List<SREMPINFO>();
@@ -5240,18 +5249,25 @@ namespace TSTI_API.Controllers
                     cTeamMGREmail = findSRTeamMGREmail(SRTeam_List);
                     #endregion
 
-                    #region 主要工程師/協助工程師/技術主管相關
+                    #region 技術支援升級/技術主管團隊相關                    
+                    SRTechTeam_List = findSRTEAMORGINFO(beanM.cTechTeamID);                    
+                    cTechTeamName = findSRTeamName(SRTechTeam_List);
+                    cTechTeamMGR = findSRTeamMGRName(SRTechTeam_List);
+                    cTechTeamMGREmail = findSRTeamMGREmail(SRTechTeam_List);
+
+                    SRTechMGR_List = findSREMPINFO(beanM.cTechManagerID);
+                    cTechMGR = findSREMPName(SRTechMGR_List);
+                    cTechMGREmail = findSREMPEmail(SRTechMGR_List);
+                    #endregion
+
+                    #region 主要工程師/協助工程師相關
                     SRMainENG_List = findSREMPINFO(beanM.cMainEngineerID);
                     cMainENG = findSREMPName(SRMainENG_List);
                     cMainENGEmail = findSREMPEmail(SRMainENG_List);
 
                     SRAssENG_List = findSREMPINFO(beanM.cAssEngineerID);
                     cAssENG = findSREMPName(SRAssENG_List);
-                    cAssENGEmail = findSREMPEmail(SRAssENG_List);
-
-                    SRTechMGR_List = findSREMPINFO(beanM.cTechManagerID);
-                    cTechMGR = findSREMPName(SRTechMGR_List);
-                    cTechMGREmail = findSREMPEmail(SRTechMGR_List);
+                    cAssENGEmail = findSREMPEmail(SRAssENG_List);                   
                     #endregion
 
                     #region 業務人員/業務祕書相關
@@ -5316,8 +5332,10 @@ namespace TSTI_API.Controllers
                     SRMain.ModifiedUser = cModifiedUser;
                     SRMain.TeamNAME = cTeamName;
                     SRMain.TeamMGR = cTeamMGR;
+                    SRMain.TechTeamNAME = cTechTeamName;
+                    SRMain.TechTeamMGR = cTechTeamMGR;
                     SRMain.MainENG = cMainENG;
-                    SRMain.AssENG = cAssENG;
+                    SRMain.AssENG = cAssENG;                    
                     SRMain.TechMGR = cTechMGR;
                     SRMain.SalesEMP = cSalesEMP;
                     SRMain.SecretaryEMP = cSecretaryEMP;
@@ -5343,6 +5361,7 @@ namespace TSTI_API.Controllers
                     SRMain.CreateUserEmail = cCreateUserEmail;
                     SRMain.ModifiedUserEmail = cModifiedUserEmail;
                     SRMain.TeamMGREmail = cTeamMGREmail;
+                    SRMain.TechTeamMGREmail = cTechTeamMGREmail;
                     SRMain.MainENGEmail = cMainENGEmail;
                     SRMain.AssENGEmail = cAssENGEmail;
                     SRMain.TechMGREmail = cTechMGREmail;
@@ -5434,6 +5453,7 @@ namespace TSTI_API.Controllers
                         case SRCondition.TRANS:
                         case SRCondition.HPGCSN:
                         case SRCondition.HPGCSNDONE:
+                        case SRCondition.L2PROCESS:
                         case SRCondition.SUPPORT:
                         case SRCondition.DONE:
                         case SRCondition.INSTALLDONE:
@@ -5460,7 +5480,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 發送服務案件Mail相關資訊
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、L2PROCESS.L2處理、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
         /// <param name="cSRID">SRID</param>
         /// <param name="tONEURLName">One Service站台名稱</param>
         /// <param name="cLoginName">登入人員姓名</param>
@@ -5527,15 +5547,31 @@ namespace TSTI_API.Controllers
                     }
                     #endregion
                 }
+                else if (cCondition == SRCondition.L2PROCESS) //L2處理
+                {
+                    tMailToTemp = SRMain.TeamMGREmail;
+                }
+                else if (cCondition == SRCondition.SUPPORT) //技術支援升級
+                {
+                    //技術主管若有填，待辦清單直接給技術主管，反之則給整個團隊人員
+                    if (SRMain.TechMGREmail != "")
+                    {
+                        tMailToTemp = SRMain.TechMGREmail;
+                    }
+                    else
+                    {
+                        tMailToTemp = SRMain.TechTeamMGREmail;
+                    }
+                }
                 else
                 {
                     if (SRMain.MainENGEmail != "") //有指派主要工程師
                     {
-                        tMailToTemp = SRMain.MainENGEmail + SRMain.AssENGEmail + SRMain.TechMGREmail;
+                        tMailToTemp = SRMain.MainENGEmail + SRMain.AssENGEmail;
                     }
                     else //未指派主要工程師
                     {
-                        tMailToTemp = SRMain.TeamMGREmail + SRMain.MainENGEmail + SRMain.AssENGEmail + SRMain.TechMGREmail;
+                        tMailToTemp = SRMain.TeamMGREmail + SRMain.MainENGEmail + SRMain.AssENGEmail;
                     }
                 }               
 
@@ -5603,6 +5639,11 @@ namespace TSTI_API.Controllers
                     {
                         tMailCcTemp += SRMain.CreateUserEmail;
                     }
+
+                    if (cCondition == SRCondition.L2PROCESS || cCondition == SRCondition.SUPPORT) //L2處理/技術支援升級
+                    {
+                        tMailCcTemp += SRMain.MainENGEmail + SRMain.AssENGEmail;
+                    }                    
                 }
 
                 //異動人員(非新建才塞入)
@@ -5813,7 +5854,7 @@ namespace TSTI_API.Controllers
         /// <summary>
         /// 發送服務案件Mail相關資訊(for客戶)
         /// </summary>
-        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
+        /// <param name="cCondition">服務案件執行條件(ADD.新建、TRANS.轉派主要工程師、REJECT.駁回、HPGCSN.HPGCSN申請、HPGCSNDONE.HPGCSN完成、SECFIX.二修、SAVE.保存、L2PROCESS.L2處理、SUPPORT.技術支援升級、THRPARTY.3Party、CANCEL.取消、DONE.完修 DOA.維修/DOA INSTALLING.裝機中 INSTALLDONE.裝機完成 MAINTAINDONE.定保完成)</param>
         /// <param name="cSRID">SRID</param>      
         /// <param name="cCustomerID">客戶ID</param>
         /// <param name="cLoginName">登入人員姓名</param>

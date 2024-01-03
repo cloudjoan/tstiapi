@@ -426,6 +426,7 @@
           <Property Name="cMainEngineerID" Type="nvarchar" MaxLength="20" />
           <Property Name="cMainEngineerName" Type="nvarchar" MaxLength="40" />
           <Property Name="cAssEngineerID" Type="nvarchar" MaxLength="255" />
+          <Property Name="cTechTeamID" Type="varchar" MaxLength="255" />
           <Property Name="cTechManagerID" Type="nvarchar" MaxLength="255" />
           <Property Name="cSQPersonID" Type="nvarchar" MaxLength="6" />
           <Property Name="cSQPersonName" Type="nvarchar" MaxLength="100" />
@@ -1121,6 +1122,7 @@
           <Property Name="cMainEngineerID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="cMainEngineerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="cAssEngineerID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cTechTeamID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="cTechManagerID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="cSQPersonID" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
           <Property Name="cSQPersonName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -1697,6 +1699,7 @@
                 <ScalarProperty Name="cSQPersonName" ColumnName="cSQPersonName" />
                 <ScalarProperty Name="cSQPersonID" ColumnName="cSQPersonID" />
                 <ScalarProperty Name="cTechManagerID" ColumnName="cTechManagerID" />
+                <ScalarProperty Name="cTechTeamID" ColumnName="cTechTeamID" />
                 <ScalarProperty Name="cAssEngineerID" ColumnName="cAssEngineerID" />
                 <ScalarProperty Name="cMainEngineerName" ColumnName="cMainEngineerName" />
                 <ScalarProperty Name="cMainEngineerID" ColumnName="cMainEngineerID" />

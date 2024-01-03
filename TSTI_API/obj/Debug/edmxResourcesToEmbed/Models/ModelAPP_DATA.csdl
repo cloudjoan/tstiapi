@@ -11,6 +11,8 @@
     <EntitySet Name="TB_LIVE_MESSAGE" EntityType="APP_DATAModel.TB_LIVE_MESSAGE" />
     <EntitySet Name="TB_LUCKYDRAW" EntityType="APP_DATAModel.TB_LUCKYDRAW" />
     <EntitySet Name="TB_LUCKYDRAW_PRIZE" EntityType="APP_DATAModel.TB_LUCKYDRAW_PRIZE" />
+    <EntitySet Name="TB_ANNIVERSARY_CHECK_IN" EntityType="APP_DATAModel.TB_ANNIVERSARY_CHECK_IN" />
+    <EntitySet Name="TB_LUCKYDRAW_PRIZEWINNING" EntityType="APP_DATAModel.TB_LUCKYDRAW_PRIZEWINNING" />
   </EntityContainer>
   <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
     <Key>
@@ -261,7 +263,7 @@
     </Key>
     <Property Name="Prize_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Draw_ID" Type="Int32" />
-    <Property Name="Sort_No" Type="Int32" />
+    <Property Name="Sort_No" Type="Int32" Nullable="false" />
     <Property Name="Prize_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Prize_Pic" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
     <Property Name="Prize_Amount" Type="Int32" />
@@ -273,5 +275,32 @@
     <Property Name="Modify_User" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
     <Property Name="Modify_Time" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
     <Property Name="Disabled_Mark" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TB_ANNIVERSARY_CHECK_IN">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DRAW_ID" Type="Int32" />
+    <Property Name="ERP_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="LOCATION" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CHECK_MAN_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="TB_LUCKYDRAW_PRIZEWINNING">
+    <Key>
+      <PropertyRef Name="Winning_ID" />
+    </Key>
+    <Property Name="Winning_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Prize_ID" Type="Int32" />
+    <Property Name="User_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="User_ERPID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Insert_User" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+    <Property Name="Insert_Time" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+    <Property Name="Modify_User" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+    <Property Name="Modify_Time" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+    <Property Name="Disabled_Mark" Type="Boolean" Nullable="false" />
+    <Property Name="Redeem_Mark" Type="Boolean" Nullable="false" />
+    <Property Name="Redeem_Time" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

@@ -2296,7 +2296,7 @@ namespace TSTI_API.Controllers
                         break;
 
                     case "E0002": //L2處理中(一般)                   
-                        tCondition = SRCondition.SAVE;
+                        tCondition = SRCondition.L2PROCESS;
                         break;
 
                     case "E0004": //3rd Party處理中(一般)                            
@@ -13327,6 +13327,10 @@ namespace TSTI_API.Controllers
         public string TeamNAME { get; set; }
         /// <summary>服務團隊主管</summary>
         public string TeamMGR { get; set; }
+        /// <summary>技術支援升級團隊</summary>
+        public string TechTeamNAME { get; set; }
+        /// <summary>技術支援升級團隊主管</summary>
+        public string TechTeamMGR { get; set; }
         /// <summary>派單人員</summary>
         public string CreateUser { get; set; }
         /// <summary>派單時間</summary>
@@ -13382,6 +13386,8 @@ namespace TSTI_API.Controllers
         public string ModifiedUserEmail { get; set; }
         /// <summary>服務團隊主管Email</summary>
         public string TeamMGREmail { get; set; }
+        /// <summary>技術支援升級團隊主管Email</summary>
+        public string TechTeamMGREmail { get; set; }
         /// <summary>主要工程師Email</summary>
         public string MainENGEmail { get; set; }
         /// <summary>協助工程師Email</summary>

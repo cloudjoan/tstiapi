@@ -43,6 +43,7 @@ namespace TSTI_API.Models
         public string cMainEngineerID { get; set; }
         public string cMainEngineerName { get; set; }
         public string cAssEngineerID { get; set; }
+        public string cTechTeamID { get; set; }
         public string cTechManagerID { get; set; }
         public string cSQPersonID { get; set; }
         public string cSQPersonName { get; set; }
