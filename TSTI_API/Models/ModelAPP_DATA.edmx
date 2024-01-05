@@ -143,6 +143,7 @@
           <Property Name="Modify_User" Type="nvarchar" MaxLength="22" />
           <Property Name="Modify_Time" Type="nvarchar" MaxLength="22" />
           <Property Name="Disabled_Mark" Type="bit" Nullable="false" />
+          <Property Name="Prize_Memo" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="TB_LUCKYDRAW_PRIZEWINNING">
           <Key>
@@ -160,6 +161,7 @@
           <Property Name="Redeem_Mark" Type="bit" Nullable="false" />
           <Property Name="Redeem_Time" Type="nvarchar" MaxLength="22" />
           <Property Name="Draw_ID" Type="int" />
+          <Property Name="Donate_Mark" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
           <Key>
@@ -588,6 +590,7 @@
           <Property Name="Modify_User" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
           <Property Name="Modify_Time" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
           <Property Name="Disabled_Mark" Type="Boolean" Nullable="false" />
+          <Property Name="Prize_Memo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TB_ANNIVERSARY_CHECK_IN">
           <Key>
@@ -616,6 +619,7 @@
           <Property Name="Redeem_Mark" Type="Boolean" Nullable="false" />
           <Property Name="Redeem_Time" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
           <Property Name="Draw_ID" Type="Int32" />
+          <Property Name="Donate_Mark" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -878,6 +882,7 @@
           <EntitySetMapping Name="TB_LUCKYDRAW_PRIZE">
             <EntityTypeMapping TypeName="APP_DATAModel.TB_LUCKYDRAW_PRIZE">
               <MappingFragment StoreEntitySet="TB_LUCKYDRAW_PRIZE">
+                <ScalarProperty Name="Prize_Memo" ColumnName="Prize_Memo" />
                 <ScalarProperty Name="Disabled_Mark" ColumnName="Disabled_Mark" />
                 <ScalarProperty Name="Modify_Time" ColumnName="Modify_Time" />
                 <ScalarProperty Name="Modify_User" ColumnName="Modify_User" />
@@ -910,6 +915,7 @@
           <EntitySetMapping Name="TB_LUCKYDRAW_PRIZEWINNING">
             <EntityTypeMapping TypeName="APP_DATAModel.TB_LUCKYDRAW_PRIZEWINNING">
               <MappingFragment StoreEntitySet="TB_LUCKYDRAW_PRIZEWINNING">
+                <ScalarProperty Name="Donate_Mark" ColumnName="Donate_Mark" />
                 <ScalarProperty Name="Draw_ID" ColumnName="Draw_ID" />
                 <ScalarProperty Name="Redeem_Time" ColumnName="Redeem_Time" />
                 <ScalarProperty Name="Redeem_Mark" ColumnName="Redeem_Mark" />

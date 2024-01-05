@@ -28,5 +28,6 @@ namespace TSTI_API.Models
         public string Modify_User { get; set; }
         public string Modify_Time { get; set; }
         public bool Disabled_Mark { get; set; }
+        public string Prize_Memo { get; set; }
     }
 }
