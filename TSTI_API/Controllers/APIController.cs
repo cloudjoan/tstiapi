@@ -24,6 +24,10 @@ using TSTI_API.Models;
 using System.Data.Entity.Validation;
 using System.Web.WebPages;
 using System.Net.NetworkInformation;
+using FirebaseAdmin.Messaging;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using System.Threading;
 
 namespace TSTI_API.Controllers
 {
@@ -13323,6 +13327,13 @@ namespace TSTI_API.Controllers
             appDB.TB_LUCKYDRAW_PRIZEWINNING.Add(bean);
             appDB.SaveChanges();
 
+            //發送推播
+            var prizeBean = appDB.TB_LUCKYDRAW_PRIZE.FirstOrDefault(x => x.Prize_ID == bean.Prize_ID);
+            String contenet = "獎品：" + prizeBean.Prize_Name;
+            //PushNoticeMessage("TSTI_EIP", "ANNIVERSARY", "恭禧您尾牙抽中獎品！！！", contenet, bean.User_ERPID, null);
+            PushNoticeMessage("TSTI_EIP", "ANNIVERSARY", "恭禧您尾牙抽中獎品！！！", contenet, "99120859", null);
+
+
             return Json(bean);
 		}
 
@@ -13365,13 +13376,203 @@ namespace TSTI_API.Controllers
 			return Json(beans);
 		}
 
-		#endregion
+        #endregion
 
-		#endregion
-	}
+        #endregion
 
-	#region 取得系統位址參數相關資訊
-	public class SRSYSPARAINFO
+        #region 發送推播
+
+        /// <summary>
+        /// 手機APP推播API
+        /// </summary>
+        /// <param name="appId">行動辦公APP:TSTI_EIP</param>
+        /// <param name="msgType"></param>
+        /// <param name="msgTitle"></param>
+        /// <param name="msgContent"></param>
+        /// <param name="msgTarget"></param>
+        /// <param name="msgLink"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult PushNoticeMessage(string appId, string msgType, string msgTitle, string msgContent, string msgTarget, string msgLink)
+        {
+
+            TB_APP_PUSH_NOTICE_MESSAGES bean = new TB_APP_PUSH_NOTICE_MESSAGES();
+            bean.APP_ID = appId;
+            bean.MSG_TYPE = msgType == null ? "API" : msgType;
+            bean.MSG_TITLE = msgTitle;
+            bean.MSG_CONTENT = msgContent;
+            bean.MSG_TARGET = msgTarget;
+            bean.MSG_TARGET_NAME = msgTarget;
+            bean.MSG_LINK = msgLink;
+            bean.INSERT_TIME = string.Format("{0:yyyy-MM-dd HH:mm:ss}", DateTime.Now);
+
+            var empBeans = dbEIP.VIEW_EMP_INFO;
+
+            //取得帳號的device token
+            var targets = msgTarget.Split(',');
+            var registrationTokens = new List<string>();
+
+            foreach (var target in targets)
+            {
+                //先把erp id換成中文
+                var empBean = empBeans.FirstOrDefault(x => x.ERP_ID == target);
+                if (empBean != null)
+                {
+                    bean.MSG_TARGET_NAME = bean.MSG_TARGET_NAME.Replace(target, empBean.EMP_NAME);
+                }
+
+                //看對象是否為單位
+                var deptBean = dbEIP.Department.FirstOrDefault(x => x.ID == target);
+                //如果是單位的話，就看單位底下有那些人員
+                if (deptBean != null)
+                {
+                    var deptList = getAllChildDept(target);
+                    bean.MSG_TARGET_NAME = bean.MSG_TARGET_NAME.Replace(target, deptBean.Name);
+
+                    foreach (var deptCode in deptList)
+                    {
+                        var deptEmpBeans = empBeans.Where(x => x.DEPT_ID == deptCode);
+                        foreach (var deptEmpBean in deptEmpBeans)
+                        {
+                            var tokenBean = dbEIP.TB_APP_DEVICE_TOKEN.FirstOrDefault(x => x.ERP_ID == deptEmpBean.ERP_ID);
+                            if (tokenBean != null && !string.IsNullOrEmpty(tokenBean.DEVICE_TOKENS))
+                            {
+                                string[] tokenIds = tokenBean.DEVICE_TOKENS.Split(';');
+                                foreach (var tokenId in tokenIds)
+                                {
+                                    if (tokenId.Length > 30) registrationTokens.Add(tokenId);
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+                else
+                {
+                    var tokenBean = dbEIP.TB_APP_DEVICE_TOKEN.FirstOrDefault(x => x.ERP_ID == target);
+                    if (!string.IsNullOrEmpty(tokenBean.DEVICE_TOKENS))
+                    {
+                        string[] tokenIds = tokenBean.DEVICE_TOKENS.Split(';');
+                        foreach (var tokenId in tokenIds)
+                        {
+                            if (tokenId.Length > 30) registrationTokens.Add(tokenId);
+                        }
+                    }
+                }
+
+            }
+
+            // the easist way to create an instance without giving appName, it will be signed a [Default] name.
+            //驗證firebase
+            var app = FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromFile(Path.Combine(Server.MapPath("~"), "tsti-eip-firebase-adminsdk-vrp7i-c86691a832.json"))
+
+            });
+
+            //一次只能吃一百筆…所以要拆開送
+            int baseCount = 100;
+            //看是100的幾倍
+            var times = Math.Truncate((double)registrationTokens.Count() / baseCount);
+            //取餘數
+            var remainder = registrationTokens.Count() % baseCount;
+
+            for (int i = 0; i <= times; i++)
+            {
+                ///System.Diagnostics.Debug.WriteLine(registrationTokens.GetRange(i * baseCount, (i == times)? remainder : baseCount));
+                var message = new MulticastMessage
+                {
+                    Data = new Dictionary<string, string>
+                {
+                    { "additional_data", "a string" },
+                    { "another_data", "another string" },
+                    { "click_action", "FLUTTER_NOTIFICATION_CLICK"} //必須要加上這一行，andoird上才能觸發onResume的事件。
+
+                },
+                    Notification = new Notification
+                    {
+                        Title = msgTitle,
+                        Body = msgContent
+                    },
+                    Tokens = registrationTokens.GetRange(i * baseCount, (i == times) ? remainder : baseCount),
+                };
+
+                var firebaseMessagingInstance = FirebaseMessaging.GetMessaging(app);
+                var result = firebaseMessagingInstance.SendMulticastAsync(message).ConfigureAwait(false);
+                System.Diagnostics.Debug.WriteLine(result);
+            }
+
+
+
+            //CommonFunction commonFunction = new CommonFunction();
+            //commonFunction.saveLog("PUSH_NOTICE", result.ToString());
+
+            //目前先讓它停個三秒後再刪掉app instance
+            Thread.Sleep(3000);
+            app.Delete();
+
+            dbEIP.TB_APP_PUSH_NOTICE_MESSAGES.Add(bean);
+            dbEIP.SaveChanges();
+
+            return Json("Finish", JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 取得所有的子單位代碼清單
+        /// </summary>
+        /// <param name="parentDeptId"></param>
+        /// <returns></returns>
+        public List<string> getAllChildDept(string parentDeptId)
+        {
+            List<string> deptIds = new List<string>();
+            Dictionary<string, string> parentDict = new Dictionary<string, string>();
+
+            parentDict.Add(parentDeptId, parentDeptId);
+
+            bool noneChildAnyMore = true;
+
+            while (noneChildAnyMore)
+            {
+                if (parentDict.Keys.Count() == 0)
+                {
+                    noneChildAnyMore = false;
+                    break;
+                }
+                else
+                {
+                    var parentIds = new List<string>(parentDict.Keys);
+
+                    foreach (var parentId in parentIds)
+                    {
+
+                        var deptBeans = dbEIP.Department.Where(x => x.ParentID == parentId);
+
+                        //加入單位id後，就從parentDict移除
+                        deptIds.Add(parentId);
+                        parentDict.Remove(parentId);
+
+                        if (deptBeans.Count() > 0)
+                        {
+                            foreach (var deptBean in deptBeans)
+                            {
+                                parentDict.Add(deptBean.ID, deptBean.ID);
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+            return deptIds;
+        }
+    }
+
+    #region 取得系統位址參數相關資訊
+    public class SRSYSPARAINFO
     {
         /// <summary>呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)</summary>
         public bool IsFormal { get; set; }
