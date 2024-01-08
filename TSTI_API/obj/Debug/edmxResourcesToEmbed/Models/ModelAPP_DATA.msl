@@ -256,6 +256,7 @@
     <EntitySetMapping Name="TB_LUCKYDRAW_PRIZE">
       <EntityTypeMapping TypeName="APP_DATAModel.TB_LUCKYDRAW_PRIZE">
         <MappingFragment StoreEntitySet="TB_LUCKYDRAW_PRIZE">
+          <ScalarProperty Name="Prize_Memo" ColumnName="Prize_Memo" />
           <ScalarProperty Name="Disabled_Mark" ColumnName="Disabled_Mark" />
           <ScalarProperty Name="Modify_Time" ColumnName="Modify_Time" />
           <ScalarProperty Name="Modify_User" ColumnName="Modify_User" />
@@ -288,6 +289,8 @@
     <EntitySetMapping Name="TB_LUCKYDRAW_PRIZEWINNING">
       <EntityTypeMapping TypeName="APP_DATAModel.TB_LUCKYDRAW_PRIZEWINNING">
         <MappingFragment StoreEntitySet="TB_LUCKYDRAW_PRIZEWINNING">
+          <ScalarProperty Name="Donate_Mark" ColumnName="Donate_Mark" />
+          <ScalarProperty Name="Draw_ID" ColumnName="Draw_ID" />
           <ScalarProperty Name="Redeem_Time" ColumnName="Redeem_Time" />
           <ScalarProperty Name="Redeem_Mark" ColumnName="Redeem_Mark" />
           <ScalarProperty Name="Disabled_Mark" ColumnName="Disabled_Mark" />

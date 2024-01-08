@@ -138,6 +138,7 @@
     <Property Name="Modify_User" Type="nvarchar" MaxLength="22" />
     <Property Name="Modify_Time" Type="nvarchar" MaxLength="22" />
     <Property Name="Disabled_Mark" Type="bit" Nullable="false" />
+    <Property Name="Prize_Memo" Type="nvarchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="TB_LUCKYDRAW_PRIZEWINNING">
     <Key>
@@ -154,6 +155,8 @@
     <Property Name="Disabled_Mark" Type="bit" Nullable="false" />
     <Property Name="Redeem_Mark" Type="bit" Nullable="false" />
     <Property Name="Redeem_Time" Type="nvarchar" MaxLength="22" />
+    <Property Name="Draw_ID" Type="int" />
+    <Property Name="Donate_Mark" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
     <Key>

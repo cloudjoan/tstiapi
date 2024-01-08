@@ -275,6 +275,7 @@
     <Property Name="Modify_User" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
     <Property Name="Modify_Time" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
     <Property Name="Disabled_Mark" Type="Boolean" Nullable="false" />
+    <Property Name="Prize_Memo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="TB_ANNIVERSARY_CHECK_IN">
     <Key>
@@ -302,5 +303,7 @@
     <Property Name="Disabled_Mark" Type="Boolean" Nullable="false" />
     <Property Name="Redeem_Mark" Type="Boolean" Nullable="false" />
     <Property Name="Redeem_Time" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+    <Property Name="Draw_ID" Type="Int32" />
+    <Property Name="Donate_Mark" Type="Boolean" Nullable="false" />
   </EntityType>
 </Schema>

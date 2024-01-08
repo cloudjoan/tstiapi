@@ -535,6 +535,7 @@
           <ScalarProperty Name="cSQPersonName" ColumnName="cSQPersonName" />
           <ScalarProperty Name="cSQPersonID" ColumnName="cSQPersonID" />
           <ScalarProperty Name="cTechManagerID" ColumnName="cTechManagerID" />
+          <ScalarProperty Name="cTechTeamID" ColumnName="cTechTeamID" />
           <ScalarProperty Name="cAssEngineerID" ColumnName="cAssEngineerID" />
           <ScalarProperty Name="cMainEngineerName" ColumnName="cMainEngineerName" />
           <ScalarProperty Name="cMainEngineerID" ColumnName="cMainEngineerID" />

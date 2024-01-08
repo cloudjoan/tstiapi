@@ -273,5 +273,35 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_ANNIVERSARY_CHECK_IN">
+      <EntityTypeMapping TypeName="APP_DATAModel.TB_ANNIVERSARY_CHECK_IN">
+        <MappingFragment StoreEntitySet="TB_ANNIVERSARY_CHECK_IN">
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="CHECK_MAN_ID" ColumnName="CHECK_MAN_ID" />
+          <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+          <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+          <ScalarProperty Name="DRAW_ID" ColumnName="DRAW_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_LUCKYDRAW_PRIZEWINNING">
+      <EntityTypeMapping TypeName="APP_DATAModel.TB_LUCKYDRAW_PRIZEWINNING">
+        <MappingFragment StoreEntitySet="TB_LUCKYDRAW_PRIZEWINNING">
+          <ScalarProperty Name="Draw_ID" ColumnName="Draw_ID" />
+          <ScalarProperty Name="Redeem_Time" ColumnName="Redeem_Time" />
+          <ScalarProperty Name="Redeem_Mark" ColumnName="Redeem_Mark" />
+          <ScalarProperty Name="Disabled_Mark" ColumnName="Disabled_Mark" />
+          <ScalarProperty Name="Modify_Time" ColumnName="Modify_Time" />
+          <ScalarProperty Name="Modify_User" ColumnName="Modify_User" />
+          <ScalarProperty Name="Insert_Time" ColumnName="Insert_Time" />
+          <ScalarProperty Name="Insert_User" ColumnName="Insert_User" />
+          <ScalarProperty Name="User_ERPID" ColumnName="User_ERPID" />
+          <ScalarProperty Name="User_Name" ColumnName="User_Name" />
+          <ScalarProperty Name="Prize_ID" ColumnName="Prize_ID" />
+          <ScalarProperty Name="Winning_ID" ColumnName="Winning_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

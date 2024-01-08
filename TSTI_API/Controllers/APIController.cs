@@ -432,6 +432,7 @@ namespace TSTI_API.Controllers
                         beanM.cMainEngineerID = IV_EMPNO;
                         beanM.cAssEngineerID = "";
                         beanM.cTechManagerID = "";
+                        beanM.cTechTeamID = "";
                         beanM.cSystemGUID = Guid.NewGuid();
                         beanM.cIsAPPClose = "";
                         beanM.cIsInternalWork = IV_INTERNALWORK;
@@ -1389,6 +1390,7 @@ namespace TSTI_API.Controllers
                         beanM.cIsSecondFix = "";
                         beanM.cAssEngineerID = "";
                         beanM.cTechManagerID = "";
+                        beanM.cTechTeamID = "";
                         beanM.cSQPersonID = "";
                         beanM.cSQPersonName = "";
                         beanM.cIsAPPClose = "";
@@ -1936,6 +1938,7 @@ namespace TSTI_API.Controllers
                         beanM.cSRProcessWay = "";
                         beanM.cIsSecondFix = "";
                         beanM.cTechManagerID = "";
+                        beanM.cTechTeamID = "";
                         beanM.cSalesNo = "";
                         beanM.cShipmentNo = "";
                         beanM.cSQPersonID = "";
@@ -4749,8 +4752,11 @@ namespace TSTI_API.Controllers
                 //取得登入人員所負責的服務團隊
                 List<string> tSRTeamList = CMF.findSRTeamMappingList(EmpBean.CostCenterID, EmpBean.DepartmentNO);
 
+                //取得登入人員所負責的技術支援升級團隊
+                List<string> tSRTechTeamList = CMF.findSRTechTeamMappingList(EmpBean.CostCenterID, EmpBean.DepartmentNO);
+
                 //取得登入人員所有要負責的SRID                
-                List<string[]> tList = CMF.findSRIDList(pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, EmpBean.BUKRS, EmpBean.IsManager, EmpBean.EmployeeERPID, tSRTeamList);
+                List<string[]> tList = CMF.findSRIDList(pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, EmpBean.BUKRS, EmpBean.IsManager, EmpBean.EmployeeERPID, EmpBean.CostCenterID, EmpBean.DepartmentNO, tSRTeamList, tSRTechTeamList);
                 #endregion
 
                 if (tList.Count == 0)
@@ -4778,36 +4784,60 @@ namespace TSTI_API.Controllers
                             else if (tERPID == tAry[13]) //業務祕書
                             {
                                 continue;
-                            }
+                            }                            
 
-                            if (tAry[10] != "")
+                            if (EmpBean.IsManager) //若是主管時
                             {
-                                if (tAry[17] == "E0007") //若狀態【E0007.技術支援升級】
+                                if (tAry[17] == "E0002") //若狀態為【E0002.L2處理中】
                                 {
-                                    if (tAry[10].IndexOf(tERPID) == -1) //【不為技術主管】才跳過
-                                    {
-                                        continue;
-                                    }
+                                    //不跳過
                                 }
-                                else
+                                else if (tAry[17] == "E0007") //若狀態為【E0007.技術支援升級】
                                 {
-                                    if (tAry[10].IndexOf(tERPID) >= 0) //【為技術主管但非E0007(技術支援升級)】才跳過
+                                    if (tAry[10] != "") //判斷是否有指派技術主管
                                     {
-                                        if (tAry[7] != tERPID) //非【主要工程師】才跳過
+                                        if (tAry[10].IndexOf(tERPID) == -1) //【不為技術主管】才跳過
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (tAry[20] == "N")//【不為技術支援升級團隊人員】才跳過
                                         {
                                             continue;
                                         }
                                     }
                                 }
-                            }
-
-                            if (EmpBean.IsManager) //若是主管時
-                            {
-                                if (tAry[17] != "E0007") //若狀態非【E0007.技術支援升級】
+                                else
                                 {
-                                    if (tERPID != tAry[7]) //非【主要工程師】才跳過
+                                    if (tAry[7] != tERPID) //非【主要工程師】才跳過
                                     {
                                         continue;
+                                    }
+                                }
+                            }
+                            else //非主管
+                            {
+                                if (tAry[17] == "E0002") //若狀態為【E0002.L2處理中】才跳過
+                                {
+                                    continue;
+                                }
+                                else if (tAry[17] == "E0007") //若狀態為【E0007.技術支援升級】
+                                {
+                                    if (tAry[10] != "") //判斷是否有指派技術主管
+                                    {
+                                        if (tAry[10].IndexOf(tERPID) == -1) //【不為技術主管】才跳過
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (tAry[20] == "N") //【不為技術支援升級團隊人員】才跳過
+                                        {
+                                            continue;
+                                        }
                                     }
                                 }
                             }
@@ -4829,6 +4859,7 @@ namespace TSTI_API.Controllers
                         beanTODO.SLASRV = tAry[15];
                         beanTODO.MODIFDATE = tAry[16];
                         beanTODO.STATUSDESC = tAry[18];
+                        beanTODO.TECHTEAMNAME = tAry[19];
 
                         tTODOList.Add(beanTODO);
                     }
@@ -13466,6 +13497,8 @@ namespace TSTI_API.Controllers
         public string ASSENGNAME { get; set; }
         /// <summary>技術主管</summary>
         public string TECHMANAGER { get; set; }
+        /// <summary>技術支援升級團隊</summary>
+        public string TECHTEAMNAME { get; set; }
         /// <summary>回應條件</summary>
         public string SLARESP { get; set; }
         /// <summary>服務條件</summary>

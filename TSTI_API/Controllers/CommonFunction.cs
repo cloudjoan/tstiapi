@@ -1189,6 +1189,45 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 取得技術升級支援團隊對照組織相關資訊(抓團隊所有人員)
+        /// <summary>
+        /// 取得技術升級支援團隊對照組織相關資訊(抓團隊所有人員)
+        /// </summary>
+        /// <param name="cTeamID">服務團隊ID(多筆以;號隔開)</param>
+        /// <returns></returns>        
+        public List<SRTEAMORGINFO> findSRTECHTEAMORGINFO(string cTeamID)
+        {
+            List<SRTEAMORGINFO> tList = new List<SRTEAMORGINFO>();
+
+            string[] AryTeamID = cTeamID.TrimEnd(';').Split(';');
+
+            var beans = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && AryTeamID.Contains(x.cTeamOldID));
+
+            foreach (var bean in beans)
+            {
+                List<string[]> ListInfo = findDeptAllEmpInfo(bean.cTeamNewID);
+
+                foreach (var Info in ListInfo)
+                {
+                    SRTEAMORGINFO SRTeam = new SRTEAMORGINFO();
+
+                    SRTeam.TEAMID = bean.cTeamOldID;
+                    SRTeam.TEAMNAME = bean.cTeamOldName;
+                    SRTeam.DEPTID = bean.cTeamNewID;
+                    SRTeam.DEPTNAME = bean.cTeamNewName;
+                    SRTeam.DEPTMGRERPID = Info[0];
+                    SRTeam.DEPTMGRACCOUNT = Info[1];
+                    SRTeam.DEPTMGRNAME = Info[2];
+                    SRTeam.DEPTMGREMAIL = Info[3];
+
+                    tList.Add(SRTeam);
+                }
+            }
+
+            return tList;
+        }
+        #endregion
+
         #region 取得服務團隊名稱
         /// <summary>
         /// 取得服務團隊名稱
@@ -1491,6 +1530,34 @@ namespace TSTI_API.Controllers
             }
 
             return reValue;
+        }
+        #endregion
+
+        #region 取得該部門所有人員相關資訊
+        /// <summary>
+        /// 取得該部門所有人員相關資訊
+        /// </summary>
+        /// <param name="DEPTID">部門ID</param>        
+        /// <returns></returns>
+        public List<string[]> findDeptAllEmpInfo(string DEPTID)
+        {
+            List<string[]> tList = new List<string[]>();            
+
+            var beansP = dbEIP.Person.Where(x => (x.Leave_Date == null && x.Leave_Reason == null) && x.DeptID == DEPTID);
+
+            foreach(var beanP in beansP)
+            {
+                string[] reValue = new string[4];
+
+                reValue[0] = beanP.ERP_ID;                      //人員ERPID
+                reValue[1] = beanP.Account;                     //人員帳號
+                reValue[2] = beanP.Name2 + " " + beanP.Name;     //人員姓名
+                reValue[3] = beanP.Email;                       //人員Email
+
+                tList.Add(reValue);
+            }
+
+            return tList;
         }
         #endregion
 
@@ -3527,15 +3594,18 @@ namespace TSTI_API.Controllers
         /// <param name="cCompanyID">公司別</param>
         /// <param name="IsManager">true.管理員 false.非管理員</param>
         /// <param name="tERPID">登入人員ERPID</param>
-        /// <param name="tTeamList">可觀看服務團隊清單</param>        
+        /// <param name="tCostCenterID">登入人員部門成本中心ID</param>
+        /// <param name="tDeptID">登入人員部門ID</param>
+        /// <param name="tTeamList">可觀看服務團隊清單</param>
+        /// <param name="tTechTeamList">可觀看技術支援升級團隊清單</param>
         /// <returns></returns>
         public List<string[]> findSRIDList(string cOperationID_GenerallySR, string cOperationID_InstallSR, string cOperationID_MaintainSR, 
-                                         string cCompanyID, bool IsManager, string tERPID, List<string> tTeamList)
+                                         string cCompanyID, bool IsManager, string tERPID, string tCostCenterID, string tDeptID, List<string> tTeamList, List<string> tTechTeamList)
         {
 
             List<string[]> SRIDUserToList = new List<string[]>();   //組SRID清單
 
-            SRIDUserToList = getSRIDToDoList(cOperationID_GenerallySR, cOperationID_InstallSR, cOperationID_MaintainSR, cCompanyID, IsManager, tERPID, tTeamList);
+            SRIDUserToList = getSRIDToDoList(cOperationID_GenerallySR, cOperationID_InstallSR, cOperationID_MaintainSR, cCompanyID, IsManager, tERPID, tCostCenterID, tDeptID, tTeamList, tTechTeamList);
 
             return SRIDUserToList;
         }
@@ -3551,10 +3621,13 @@ namespace TSTI_API.Controllers
         /// <param name="cCompanyID">公司別</param>
         /// <param name="IsManager">true.管理員 false.非管理員</param>
         /// <param name="tERPID">登入人員ERPID</param>
-        /// <param name="tTeamList">可觀看服務團隊清單</param>        
+        /// <param name="tCostCenterID">登入人員部門成本中心ID</param>
+        /// <param name="tDeptID">登入人員部門ID</param>
+        /// <param name="tTeamList">可觀看服務團隊清單</param>
+        /// <param name="tTechTeamList">可觀看技術支援升級團隊清單</param>
         /// <returns></returns>
         private List<string[]> getSRIDToDoList(string cOperationID_GenerallySR, string cOperationID_InstallSR, string cOperationID_MaintainSR, 
-                                            string cCompanyID, bool IsManager, string tERPID, List<string> tTeamList)
+                                            string cCompanyID, bool IsManager, string tERPID, string tCostCenterID, string tDeptID, List<string> tTeamList, List<string> tTechTeamList)
         {
             List<string[]> SRIDUserToList = new List<string[]>();   //組SRID清單
 
@@ -3573,12 +3646,15 @@ namespace TSTI_API.Controllers
             string tModifiedDate = string.Empty;        //最後編輯日期
             string tSTATUSDESC = string.Empty;          //狀態說明
             string tSLARESP = string.Empty;             //回應條件
-            string tSLASRV = string.Empty;              //服務條件           
+            string tSLASRV = string.Empty;              //服務條件
+            string tSRTechTeam = string.Empty;          //技術支援升級團隊
+            string tIsSRTechTeam = "N";                //判斷是否為技術支援升級團隊人員(Y.是 N.否)
 
             List<string> tListAssAndTech = new List<string>();                          //記錄所有協助工程師和所有技術主管的ERPID
             Dictionary<string, string> tDicAssAndTech = new Dictionary<string, string>();  //記錄所有協助工程師和所有技術主管的<ERPID,中、英文姓名>
 
             var tSRContact_List = findSRDetailContactList();
+            var tSRTechTeam_List = findSRTechTeamIDList(cCompanyID, false);
 
             List<TB_ONE_SRMain> beans = new List<TB_ONE_SRMain>();            
 
@@ -3587,6 +3663,7 @@ namespace TSTI_API.Controllers
             if (IsManager)
             {
                 string tWhere = TrnasTeamListToWhere(tTeamList);
+                tWhere += TrnasTechTeamListToWhere(tTechTeamList);
 
                 string tSQL = @"select * from TB_ONE_SRMain
                                    where 
@@ -3636,9 +3713,11 @@ namespace TSTI_API.Controllers
                     tArySLA = findSRSLACondition(dr["cSRID"].ToString());
                     tSLARESP = tArySLA[0];
                     tSLASRV = tArySLA[1];
+                    tSRTechTeam = TransSRTeam(tSRTechTeam_List, dr["cTechTeamID"].ToString());
+                    tIsSRTechTeam = checkIsSRTechTeam(dr["cTechTeamID"].ToString(), tCostCenterID, tDeptID);
 
                     #region 組待處理服務
-                    string[] ProcessInfo = new string[19];
+                    string[] ProcessInfo = new string[21];
 
                     ProcessInfo[0] = dr["cSRID"].ToString();             //SRID
                     ProcessInfo[1] = dr["cCustomerName"].ToString();      //客戶
@@ -3658,7 +3737,9 @@ namespace TSTI_API.Controllers
                     ProcessInfo[15] = tSLASRV;                          //服務條件
                     ProcessInfo[16] = tModifiedDate;                    //最後編輯日期                    
                     ProcessInfo[17] = dr["cStatus"].ToString();           //狀態
-                    ProcessInfo[18] = tSTATUSDESC;                      //狀態+狀態說明                    
+                    ProcessInfo[18] = tSTATUSDESC;                      //狀態+狀態說明
+                    ProcessInfo[19] = tSRTechTeam;                      //技術支援升級團隊                    
+                    ProcessInfo[20] = tIsSRTechTeam;                    //是否為技術支援升級團隊人員(Y.是 N.否)
 
                     SRIDUserToList.Add(ProcessInfo);
                     #endregion
@@ -3666,9 +3747,18 @@ namespace TSTI_API.Controllers
             }
             else
             {
-                beans = dbOne.TB_ONE_SRMain.Where(x => (x.cStatus != "E0015" && x.cStatus != "E0006" && x.cStatus != "E0010" && x.cStatus != "E0017") && 
+                if (tTechTeamList.Count > 0)
+                {
+                    beans = dbOne.TB_ONE_SRMain.Where(x => (x.cStatus != "E0015" && x.cStatus != "E0006" && x.cStatus != "E0010" && x.cStatus != "E0017") &&
+                                                    (x.cMainEngineerID == tERPID || x.cSalesID == tERPID || x.cSecretaryID == tERPID || x.cTechManagerID.Contains(tERPID) || x.cAssEngineerID.Contains(tERPID) || tTechTeamList.Contains(x.cTechTeamID))
+                                                ).ToList();
+                }
+                else
+                {
+                    beans = dbOne.TB_ONE_SRMain.Where(x => (x.cStatus != "E0015" && x.cStatus != "E0006" && x.cStatus != "E0010" && x.cStatus != "E0017") &&
                                                     (x.cMainEngineerID == tERPID || x.cSalesID == tERPID || x.cSecretaryID == tERPID || x.cTechManagerID.Contains(tERPID) || x.cAssEngineerID.Contains(tERPID))
                                                 ).ToList();
+                }
 
                 #region 先取得所有協助工程師和技術主管的ERPID
                 foreach (var bean in beans)
@@ -3704,9 +3794,11 @@ namespace TSTI_API.Controllers
                     tArySLA = findSRSLACondition(bean.cSRID);
                     tSLARESP = tArySLA[0];
                     tSLASRV = tArySLA[1];
+                    tSRTechTeam = TransSRTeam(tSRTechTeam_List, bean.cTechTeamID);
+                    tIsSRTechTeam = checkIsSRTechTeam(bean.cTechTeamID, tCostCenterID, tDeptID);
 
                     #region 組待處理服務
-                    string[] ProcessInfo = new string[19];
+                    string[] ProcessInfo = new string[21];
 
                     ProcessInfo[0] = bean.cSRID;            //SRID
                     ProcessInfo[1] = bean.cCustomerName;     //客戶
@@ -3727,6 +3819,8 @@ namespace TSTI_API.Controllers
                     ProcessInfo[16] = tModifiedDate;       //最後編輯日期
                     ProcessInfo[17] = bean.cStatus;         //狀態
                     ProcessInfo[18] = tSTATUSDESC;         //狀態+狀態說明                    
+                    ProcessInfo[19] = tSRTechTeam;         //技術支援升級團隊                    
+                    ProcessInfo[20] = tIsSRTechTeam;       //是否為技術支援升級團隊人員(Y.是 N.否)
 
                     SRIDUserToList.Add(ProcessInfo);
                     #endregion
@@ -3915,6 +4009,37 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 將技術支援升級團隊清單轉成where條件
+        private string TrnasTechTeamListToWhere(List<string> tTeamList)
+        {
+            string reValue = string.Empty;
+
+            int count = tTeamList.Count;
+            int i = 0;
+
+            foreach (var tTeam in tTeamList)
+            {
+                if (i == count - 1)
+                {
+                    reValue += "cTechTeamID like '%" + tTeam + "%'";
+                }
+                else
+                {
+                    reValue += "cTechTeamID like '%" + tTeam + "%' or ";
+                }
+
+                i++;
+            }
+
+            if (reValue != "")
+            {
+                reValue = " or (" + reValue + ")";
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得登入人員所負責的服務團隊
         /// <summary>
         /// 取得登入人員所負責的服務團隊
@@ -3926,7 +4051,7 @@ namespace TSTI_API.Controllers
         {
             List<string> tList = new List<string>();
 
-            var beans = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && (x.cTeamNewID == tCostCenterID || x.cTeamNewID == tDeptID));
+            var beans = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && !x.cTeamOldID.Contains("SRV.124") && (x.cTeamNewID == tCostCenterID || x.cTeamNewID == tDeptID));
 
             foreach (var beansItem in beans)
             {
@@ -3937,6 +4062,103 @@ namespace TSTI_API.Controllers
             }
 
             return tList;
+        }
+        #endregion
+
+        #region 取得登入人員所負責的技術支援升級團隊
+        /// <summary>
+        /// 取得登入人員所負責的技術支援升級團隊
+        /// </summary>
+        /// <param name="tCostCenterID">登入人員部門成本中心ID</param>
+        /// <param name="tDeptID">登入人員部門ID</param>
+        /// <returns></returns>
+        public List<string> findSRTechTeamMappingList(string tCostCenterID, string tDeptID)
+        {
+            List<string> tList = new List<string>();
+
+            var beans = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && x.cTeamOldID.Contains("SRV.124") && (x.cTeamNewID == tCostCenterID || x.cTeamNewID == tDeptID));
+
+            foreach (var beansItem in beans)
+            {
+                if (!tList.Contains(beansItem.cTeamOldID))
+                {
+                    tList.Add(beansItem.cTeamOldID);
+                }
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 取得技術支援升級團隊清單
+        /// <summary>
+        /// 取得服務團隊清單
+        /// </summary>
+        /// <param name="pCompanyCode">公司別(T012、T016、C069、T022)</param>
+        /// <param name="cEmptyOption">是否要產生「請選擇」選項(True.要 false.不要)</param>        
+        /// <returns></returns>
+        public List<SelectListItem> findSRTechTeamIDList(string pCompanyCode, bool cEmptyOption)
+        {
+            List<string> tTempList = new List<string>();
+
+            string tKEY = string.Empty;
+            string tNAME = string.Empty;
+            string tSRVID = string.Empty;
+
+            List<TB_ONE_SRTeamMapping> TeamList = new List<TB_ONE_SRTeamMapping>();
+
+            tSRVID = "SRV." + pCompanyCode.Substring(2, 2) + "4";
+            TeamList = dbOne.TB_ONE_SRTeamMapping.OrderBy(x => x.cTeamOldID).Where(x => x.Disabled == 0 && (x.cTeamOldID.Contains(tSRVID))).ToList();
+
+            var tList = new List<SelectListItem>();
+
+            if (cEmptyOption)
+            {
+                tList.Add(new SelectListItem { Text = "請選擇", Value = "" });
+            }
+
+            foreach (var bean in TeamList)
+            {
+                if (!tTempList.Contains(bean.cTeamOldID))
+                {
+                    tNAME = bean.cTeamOldID + "_" + bean.cTeamOldName;
+
+                    tList.Add(new SelectListItem { Text = tNAME, Value = bean.cTeamOldID });
+                    tTempList.Add(bean.cTeamOldID);
+                }
+            }
+
+            return tList;
+        }
+        #endregion
+
+        #region 判斷登入者是否為技術支援升級團隊人員(Y.是 N.否)
+        /// <summary>
+        /// 判斷登入者是否為技術支援升級團隊人員(Y.是 N.否)
+        /// </summary>
+        /// <param name="tTechTeamID">技術支援升級團隊ID</param>
+        /// <param name="tCostCenterID">登入人員部門成本中心ID</param>
+        /// <param name="tDeptID">登入人員部門ID</param>
+        /// <returns></returns>
+        public string checkIsSRTechTeam(string tTechTeamID, string tCostCenterID, string tDeptID)
+        {
+            string reValue = "N";
+
+            if (!string.IsNullOrEmpty(tTechTeamID))
+            {
+                List<string> tList = new List<string>();
+
+                tList = tTechTeamID.Split(';').ToList();
+
+                var beans = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && tList.Contains(x.cTeamOldID) && (x.cTeamNewID == tCostCenterID || x.cTeamNewID == tDeptID)).ToList();
+
+                if (beans.Count > 0)
+                {
+                    reValue = "Y";
+                }
+            }
+
+            return reValue;
         }
         #endregion
 
@@ -4052,6 +4274,38 @@ namespace TSTI_API.Controllers
             }
 
             return tValue;
+        }
+        #endregion
+
+        #region 取得服務團隊說明By List
+        /// <summary>
+        /// 取得服務團隊說明By List
+        /// </summary>
+        /// <param name="tList">服務團隊清單</param>
+        /// <param name="tValue">參數值</param>
+        /// <returns></returns>
+        public string TransSRTeam(List<SelectListItem> tList, string tValue)
+        {
+            string reValue = string.Empty;
+
+            if (!string.IsNullOrEmpty(tValue))
+            {
+                string[] tAryValue = tValue.Split(';');
+
+                foreach (string tStr in tAryValue)
+                {
+                    foreach (var bean in tList)
+                    {
+                        if (bean.Value == tStr)
+                        {
+                            reValue += bean.Text + "<br/>";
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return reValue;
         }
         #endregion
 
@@ -5250,7 +5504,7 @@ namespace TSTI_API.Controllers
                     #endregion
 
                     #region 技術支援升級/技術主管團隊相關                    
-                    SRTechTeam_List = findSRTEAMORGINFO(beanM.cTechTeamID);                    
+                    SRTechTeam_List = findSRTECHTEAMORGINFO(beanM.cTechTeamID);                    
                     cTechTeamName = findSRTeamName(SRTechTeam_List);
                     cTechTeamMGR = findSRTeamMGRName(SRTechTeam_List);
                     cTechTeamMGREmail = findSRTeamMGREmail(SRTechTeam_List);
@@ -5825,8 +6079,9 @@ namespace TSTI_API.Controllers
 
                 tMailBody = tMailBody.Replace("【<SRID>】", cSRID).Replace("【<SRCase>】", SRMain.SRCase).Replace("【<TeamNAME>】", SRMain.TeamNAME);
                 tMailBody = tMailBody.Replace("【<TeamMGR>】", SRMain.TeamMGR).Replace("【<MainENG>】", SRMain.MainENG).Replace("【<AssENG>】", SRMain.AssENG);                
-                tMailBody = tMailBody.Replace("【<TechMGR>】", SRMain.TechMGR).Replace("【<StatusDesc>】", SRMain.StatusDesc).Replace("【<CreatedUser>】", SRMain.CreateUser).Replace("【<CreatedDate>】", SRMain.CreatedDate);
-                tMailBody = tMailBody.Replace("【<ModifiedUserString>】", ModifiedUserString).Replace("【<SalesNo>】", SRMain.SalesNo).Replace("【<ShipmentNo>】", SRMain.ShipmentNo);                
+                tMailBody = tMailBody.Replace("【<TechMGR>】", SRMain.TechMGR).Replace("【<TechTeamNAME>】", SRMain.TechTeamNAME).Replace("【<StatusDesc>】", SRMain.StatusDesc);
+                tMailBody = tMailBody.Replace("【<CreatedUser>】", SRMain.CreateUser).Replace("【<CreatedDate>】", SRMain.CreatedDate).Replace("【<ModifiedUserString>】", ModifiedUserString);
+                tMailBody = tMailBody.Replace("【<SalesNo>】", SRMain.SalesNo).Replace("【<ShipmentNo>】", SRMain.ShipmentNo);
 
                 tMailBody = tMailBody.Replace("<ContractID>", tContractID).Replace("【<MAServiceType>】", SRMain.MAServiceType).Replace("<SecFix>", tSecFix);
                 tMailBody = tMailBody.Replace("【<Desc>】", SRMain.Desc).Replace("【<Notes>】", SRMain.Notes).Replace("【<SalesName>】", SRMain.SalesEMP);                

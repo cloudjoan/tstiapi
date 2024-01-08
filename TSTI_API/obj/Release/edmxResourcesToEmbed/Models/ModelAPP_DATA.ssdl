@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="APP_DATAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="TB_ANNIVERSARY_CHECK_IN">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DRAW_ID" Type="int" />
+    <Property Name="ERP_ID" Type="varchar" MaxLength="20" />
+    <Property Name="LOCATION" Type="nvarchar" MaxLength="100" />
+    <Property Name="CHECK_MAN_ID" Type="varchar" MaxLength="20" />
+    <Property Name="INSERT_TIME" Type="varchar" MaxLength="22" />
+  </EntityType>
   <EntityType Name="TB_CAR_BOOKING">
     <Key>
       <PropertyRef Name="ID" />
@@ -115,7 +126,7 @@
     </Key>
     <Property Name="Prize_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Draw_ID" Type="int" />
-    <Property Name="Sort_No" Type="int" />
+    <Property Name="Sort_No" Type="int" Nullable="false" />
     <Property Name="Prize_Name" Type="nvarchar" MaxLength="50" />
     <Property Name="Prize_Pic" Type="nvarchar" MaxLength="2000" />
     <Property Name="Prize_Amount" Type="int" />
@@ -127,6 +138,23 @@
     <Property Name="Modify_User" Type="nvarchar" MaxLength="22" />
     <Property Name="Modify_Time" Type="nvarchar" MaxLength="22" />
     <Property Name="Disabled_Mark" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TB_LUCKYDRAW_PRIZEWINNING">
+    <Key>
+      <PropertyRef Name="Winning_ID" />
+    </Key>
+    <Property Name="Winning_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Prize_ID" Type="int" />
+    <Property Name="User_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="User_ERPID" Type="varchar" MaxLength="20" />
+    <Property Name="Insert_User" Type="nvarchar" MaxLength="22" />
+    <Property Name="Insert_Time" Type="nvarchar" MaxLength="22" />
+    <Property Name="Modify_User" Type="nvarchar" MaxLength="22" />
+    <Property Name="Modify_Time" Type="nvarchar" MaxLength="22" />
+    <Property Name="Disabled_Mark" Type="bit" Nullable="false" />
+    <Property Name="Redeem_Mark" Type="bit" Nullable="false" />
+    <Property Name="Redeem_Time" Type="nvarchar" MaxLength="22" />
+    <Property Name="Draw_ID" Type="int" />
   </EntityType>
   <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
     <Key>
@@ -263,6 +291,7 @@
     <Property Name="UPDATE_TIME" Type="nvarchar" MaxLength="22" />
   </EntityType>
   <EntityContainer Name="APP_DATAModelStoreContainer">
+    <EntitySet Name="TB_ANNIVERSARY_CHECK_IN" EntityType="Self.TB_ANNIVERSARY_CHECK_IN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_CAR_BOOKING" EntityType="Self.TB_CAR_BOOKING" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_CAR_CHECKLIST" EntityType="Self.TB_CAR_CHECKLIST" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_CAR_DATA" EntityType="Self.TB_CAR_DATA" Schema="dbo" store:Type="Tables" />
@@ -271,6 +300,7 @@
     <EntitySet Name="TB_LIVE_MESSAGE" EntityType="Self.TB_LIVE_MESSAGE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_LUCKYDRAW" EntityType="Self.TB_LUCKYDRAW" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_LUCKYDRAW_PRIZE" EntityType="Self.TB_LUCKYDRAW_PRIZE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_LUCKYDRAW_PRIZEWINNING" EntityType="Self.TB_LUCKYDRAW_PRIZEWINNING" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_SURVEY_ANS_MAINTAIN" EntityType="Self.TB_SURVEY_ANS_MAINTAIN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_SURVEY_QUS_MAINTAIN" EntityType="Self.TB_SURVEY_QUS_MAINTAIN" Schema="dbo" store:Type="Tables" />
   </EntityContainer>

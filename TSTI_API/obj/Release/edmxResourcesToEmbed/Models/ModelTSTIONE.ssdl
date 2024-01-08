@@ -421,6 +421,7 @@
     <Property Name="cMainEngineerID" Type="nvarchar" MaxLength="20" />
     <Property Name="cMainEngineerName" Type="nvarchar" MaxLength="40" />
     <Property Name="cAssEngineerID" Type="nvarchar" MaxLength="255" />
+    <Property Name="cTechTeamID" Type="varchar" MaxLength="255" />
     <Property Name="cTechManagerID" Type="nvarchar" MaxLength="255" />
     <Property Name="cSQPersonID" Type="nvarchar" MaxLength="6" />
     <Property Name="cSQPersonName" Type="nvarchar" MaxLength="100" />
