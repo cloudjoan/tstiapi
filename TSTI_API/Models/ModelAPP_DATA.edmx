@@ -132,7 +132,7 @@
           <Property Name="Prize_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Draw_ID" Type="int" />
           <Property Name="Sort_No" Type="int" Nullable="false" />
-          <Property Name="Prize_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Prize_Name" Type="nvarchar" MaxLength="300" />
           <Property Name="Prize_Pic" Type="nvarchar" MaxLength="2000" />
           <Property Name="Prize_Amount" Type="int" />
           <Property Name="OverAYear_Mark" Type="bit" Nullable="false" />
@@ -579,7 +579,7 @@
           <Property Name="Prize_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Draw_ID" Type="Int32" />
           <Property Name="Sort_No" Type="Int32" Nullable="false" />
-          <Property Name="Prize_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Prize_Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="Prize_Pic" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="Prize_Amount" Type="Int32" />
           <Property Name="OverAYear_Mark" Type="Boolean" Nullable="false" />

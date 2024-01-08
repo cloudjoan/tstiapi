@@ -13328,10 +13328,10 @@ namespace TSTI_API.Controllers
             appDB.SaveChanges();
 
             //發送推播
-            var prizeBean = appDB.TB_LUCKYDRAW_PRIZE.FirstOrDefault(x => x.Prize_ID == bean.Prize_ID);
-            String contenet = "獎品：" + prizeBean.Prize_Name;
-            //PushNoticeMessage("TSTI_EIP", "ANNIVERSARY", "恭禧您尾牙抽中獎品！！！", contenet, bean.User_ERPID, null);
-            PushNoticeMessage("TSTI_EIP", "ANNIVERSARY", "恭禧您尾牙抽中獎品！！！", contenet, "99120859", null);
+            //var prizeBean = appDB.TB_LUCKYDRAW_PRIZE.FirstOrDefault(x => x.Prize_ID == bean.Prize_ID);
+            //String contenet = "獎品：" + prizeBean.Prize_Name;
+            ////PushNoticeMessage("TSTI_EIP", "ANNIVERSARY", "恭禧您尾牙抽中獎品！！！", contenet, bean.User_ERPID, null);
+            //PushNoticeMessage("TSTI_EIP", "ANNIVERSARY", "恭禧您尾牙抽中獎品！！！", contenet, "99120859", null);
 
 
             return Json(bean);
