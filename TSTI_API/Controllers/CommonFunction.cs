@@ -1189,9 +1189,9 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
-        #region 取得技術升級支援團隊對照組織相關資訊(抓團隊所有人員)
+        #region 取得技術支援升級團隊對照組織相關資訊(抓團隊所有人員)
         /// <summary>
-        /// 取得技術升級支援團隊對照組織相關資訊(抓團隊所有人員)
+        /// 取得技術支援升級團隊對照組織相關資訊(抓團隊所有人員)
         /// </summary>
         /// <param name="cTeamID">服務團隊ID(多筆以;號隔開)</param>
         /// <returns></returns>        
