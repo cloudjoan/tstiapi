@@ -131,6 +131,35 @@
           <Property Name="Center" Type="char" MaxLength="20" />
           <Property Name="Account" Type="nvarchar" MaxLength="108" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
+        <EntityType Name="TB_APP_DEVICE_TOKEN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="APP_ID" Type="nvarchar" MaxLength="50" />
+          <Property Name="EMP_NAME" Type="nvarchar" MaxLength="30" />
+          <Property Name="ERP_ID" Type="nvarchar" MaxLength="20" />
+          <Property Name="DEVICE_TOKENS" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TB_APP_PUSH_NOTICE_MESSAGES">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="APP_ID" Type="nvarchar" MaxLength="50" />
+          <Property Name="MSG_TYPE" Type="nvarchar" MaxLength="15" />
+          <Property Name="MSG_TARGET" Type="nvarchar(max)" />
+          <Property Name="MSG_TARGET_NAME" Type="nvarchar(max)" />
+          <Property Name="MSG_TITLE" Type="nvarchar" MaxLength="300" />
+          <Property Name="MSG_CONTENT" Type="nvarchar" MaxLength="2000" />
+          <Property Name="IMG_URL" Type="nvarchar" MaxLength="500" />
+          <Property Name="MSG_LINK" Type="nvarchar" MaxLength="500" />
+          <Property Name="MSG_LEVEL" Type="nvarchar" MaxLength="10" />
+          <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+          <Property Name="START_TIME" Type="nvarchar" MaxLength="22" />
+          <Property Name="END_TIME" Type="nvarchar" MaxLength="22" />
+          <Property Name="DISABLED" Type="varchar" MaxLength="2" />
+        </EntityType>
         <EntityType Name="TB_SERVICES_APP_INSTALL">
           <Key>
             <PropertyRef Name="ID" />
@@ -206,9 +235,30 @@
           <Property Name="UP2_LEVEL" Type="int" />
           <Property Name="UP2_Status" Type="int" />
         </EntityType>
+        <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'MCSWorkflow.dbo.VIEW_EMP_INFO' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <EntityType Name="VIEW_EMP_INFO">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ACCOUNT" />
+            <PropertyRef Name="COMP_NAME" />
+            <PropertyRef Name="DEPT_NAME" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ERP_ID" Type="nvarchar" MaxLength="10" />
+          <Property Name="ACCOUNT" Type="nvarchar" MaxLength="108" Nullable="false" />
+          <Property Name="COMP_NAME" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="EMP_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="DEPT_ID" Type="varchar" MaxLength="100" />
+          <Property Name="DEPT_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CONSTELLATION" Type="varchar" MaxLength="12" />
+          <Property Name="REGIST_DATE" Type="datetime" />
+        </EntityType>
         <EntityContainer Name="MCSWorkflowModelStoreContainer">
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_APP_DEVICE_TOKEN" EntityType="Self.TB_APP_DEVICE_TOKEN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_APP_PUSH_NOTICE_MESSAGES" EntityType="Self.TB_APP_PUSH_NOTICE_MESSAGES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_SERVICES_APP_INSTALL" EntityType="Self.TB_SERVICES_APP_INSTALL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_SERVICES_APP_INSTALLTEMP" EntityType="Self.TB_SERVICES_APP_INSTALLTEMP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_SERVICES_APP_STATE" EntityType="Self.TB_SERVICES_APP_STATE" Schema="dbo" store:Type="Tables" />
@@ -254,6 +304,19 @@
     [VIEW_DEPT_MGR].[UP2_LEVEL] AS [UP2_LEVEL], 
     [VIEW_DEPT_MGR].[UP2_Status] AS [UP2_Status]
     FROM [dbo].[VIEW_DEPT_MGR] AS [VIEW_DEPT_MGR]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VIEW_EMP_INFO" EntityType="Self.VIEW_EMP_INFO" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VIEW_EMP_INFO].[ID] AS [ID], 
+    [VIEW_EMP_INFO].[ERP_ID] AS [ERP_ID], 
+    [VIEW_EMP_INFO].[ACCOUNT] AS [ACCOUNT], 
+    [VIEW_EMP_INFO].[COMP_NAME] AS [COMP_NAME], 
+    [VIEW_EMP_INFO].[EMP_NAME] AS [EMP_NAME], 
+    [VIEW_EMP_INFO].[DEPT_ID] AS [DEPT_ID], 
+    [VIEW_EMP_INFO].[DEPT_NAME] AS [DEPT_NAME], 
+    [VIEW_EMP_INFO].[CONSTELLATION] AS [CONSTELLATION], 
+    [VIEW_EMP_INFO].[REGIST_DATE] AS [REGIST_DATE]
+    FROM [dbo].[VIEW_EMP_INFO] AS [VIEW_EMP_INFO]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -368,6 +431,9 @@
           <EntitySet Name="TB_SERVICES_APP_INSTALLTEMP" EntityType="MCSWorkflowModel.TB_SERVICES_APP_INSTALLTEMP" />
           <EntitySet Name="CarInfo" EntityType="MCSWorkflowModel.CarInfo" />
           <EntitySet Name="VIEW_DEPT_MGR" EntityType="MCSWorkflowModel.VIEW_DEPT_MGR" />
+          <EntitySet Name="TB_APP_DEVICE_TOKEN" EntityType="MCSWorkflowModel.TB_APP_DEVICE_TOKEN" />
+          <EntitySet Name="TB_APP_PUSH_NOTICE_MESSAGES" EntityType="MCSWorkflowModel.TB_APP_PUSH_NOTICE_MESSAGES" />
+          <EntitySet Name="VIEW_EMP_INFO" EntityType="MCSWorkflowModel.VIEW_EMP_INFO" />
         </EntityContainer>
         <EntityType Name="TB_SERVICES_APP_STATE">
           <Key>
@@ -465,6 +531,52 @@
           <Property Name="UP2_DEPT_MG_ERP_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="UP2_LEVEL" Type="Int32" />
           <Property Name="UP2_Status" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TB_APP_DEVICE_TOKEN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="APP_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMP_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ERP_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DEVICE_TOKENS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_APP_PUSH_NOTICE_MESSAGES">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="APP_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MSG_TYPE" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="MSG_TARGET" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MSG_TARGET_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MSG_TITLE" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="MSG_CONTENT" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="IMG_URL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MSG_LINK" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MSG_LEVEL" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="START_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="END_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+          <Property Name="DISABLED" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VIEW_EMP_INFO">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ACCOUNT" />
+            <PropertyRef Name="COMP_NAME" />
+            <PropertyRef Name="DEPT_NAME" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ERP_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ACCOUNT" Type="String" Nullable="false" MaxLength="108" FixedLength="false" Unicode="true" />
+          <Property Name="COMP_NAME" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DEPT_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DEPT_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CONSTELLATION" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="REGIST_DATE" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -671,6 +783,52 @@
                 <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
                 <ScalarProperty Name="DEPT_NAME" ColumnName="DEPT_NAME" />
                 <ScalarProperty Name="DEPT_CODE" ColumnName="DEPT_CODE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_APP_DEVICE_TOKEN">
+            <EntityTypeMapping TypeName="MCSWorkflowModel.TB_APP_DEVICE_TOKEN">
+              <MappingFragment StoreEntitySet="TB_APP_DEVICE_TOKEN">
+                <ScalarProperty Name="DEVICE_TOKENS" ColumnName="DEVICE_TOKENS" />
+                <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+                <ScalarProperty Name="EMP_NAME" ColumnName="EMP_NAME" />
+                <ScalarProperty Name="APP_ID" ColumnName="APP_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_APP_PUSH_NOTICE_MESSAGES">
+            <EntityTypeMapping TypeName="MCSWorkflowModel.TB_APP_PUSH_NOTICE_MESSAGES">
+              <MappingFragment StoreEntitySet="TB_APP_PUSH_NOTICE_MESSAGES">
+                <ScalarProperty Name="DISABLED" ColumnName="DISABLED" />
+                <ScalarProperty Name="END_TIME" ColumnName="END_TIME" />
+                <ScalarProperty Name="START_TIME" ColumnName="START_TIME" />
+                <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+                <ScalarProperty Name="MSG_LEVEL" ColumnName="MSG_LEVEL" />
+                <ScalarProperty Name="MSG_LINK" ColumnName="MSG_LINK" />
+                <ScalarProperty Name="IMG_URL" ColumnName="IMG_URL" />
+                <ScalarProperty Name="MSG_CONTENT" ColumnName="MSG_CONTENT" />
+                <ScalarProperty Name="MSG_TITLE" ColumnName="MSG_TITLE" />
+                <ScalarProperty Name="MSG_TARGET_NAME" ColumnName="MSG_TARGET_NAME" />
+                <ScalarProperty Name="MSG_TARGET" ColumnName="MSG_TARGET" />
+                <ScalarProperty Name="MSG_TYPE" ColumnName="MSG_TYPE" />
+                <ScalarProperty Name="APP_ID" ColumnName="APP_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VIEW_EMP_INFO">
+            <EntityTypeMapping TypeName="MCSWorkflowModel.VIEW_EMP_INFO">
+              <MappingFragment StoreEntitySet="VIEW_EMP_INFO">
+                <ScalarProperty Name="REGIST_DATE" ColumnName="REGIST_DATE" />
+                <ScalarProperty Name="CONSTELLATION" ColumnName="CONSTELLATION" />
+                <ScalarProperty Name="DEPT_NAME" ColumnName="DEPT_NAME" />
+                <ScalarProperty Name="DEPT_ID" ColumnName="DEPT_ID" />
+                <ScalarProperty Name="EMP_NAME" ColumnName="EMP_NAME" />
+                <ScalarProperty Name="COMP_NAME" ColumnName="COMP_NAME" />
+                <ScalarProperty Name="ACCOUNT" ColumnName="ACCOUNT" />
+                <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
