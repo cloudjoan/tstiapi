@@ -108,6 +108,9 @@
     <EntitySet Name="TB_SERVICES_APP_INSTALLTEMP" EntityType="MCSWorkflowModel.TB_SERVICES_APP_INSTALLTEMP" />
     <EntitySet Name="CarInfo" EntityType="MCSWorkflowModel.CarInfo" />
     <EntitySet Name="VIEW_DEPT_MGR" EntityType="MCSWorkflowModel.VIEW_DEPT_MGR" />
+    <EntitySet Name="TB_APP_DEVICE_TOKEN" EntityType="MCSWorkflowModel.TB_APP_DEVICE_TOKEN" />
+    <EntitySet Name="TB_APP_PUSH_NOTICE_MESSAGES" EntityType="MCSWorkflowModel.TB_APP_PUSH_NOTICE_MESSAGES" />
+    <EntitySet Name="VIEW_EMP_INFO" EntityType="MCSWorkflowModel.VIEW_EMP_INFO" />
   </EntityContainer>
   <EntityType Name="TB_SERVICES_APP_STATE">
     <Key>
@@ -205,5 +208,51 @@
     <Property Name="UP2_DEPT_MG_ERP_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="UP2_LEVEL" Type="Int32" />
     <Property Name="UP2_Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="TB_APP_DEVICE_TOKEN">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="APP_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="EMP_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="ERP_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="DEVICE_TOKENS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_APP_PUSH_NOTICE_MESSAGES">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="APP_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MSG_TYPE" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="MSG_TARGET" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MSG_TARGET_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MSG_TITLE" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="MSG_CONTENT" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="IMG_URL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="MSG_LINK" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="MSG_LEVEL" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+    <Property Name="START_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+    <Property Name="END_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
+    <Property Name="DISABLED" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="VIEW_EMP_INFO">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="ACCOUNT" />
+      <PropertyRef Name="COMP_NAME" />
+      <PropertyRef Name="DEPT_NAME" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="ERP_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="ACCOUNT" Type="String" Nullable="false" MaxLength="108" FixedLength="false" Unicode="true" />
+    <Property Name="COMP_NAME" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="EMP_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="DEPT_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="DEPT_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CONSTELLATION" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <Property Name="REGIST_DATE" Type="DateTime" Precision="3" />
   </EntityType>
 </Schema>

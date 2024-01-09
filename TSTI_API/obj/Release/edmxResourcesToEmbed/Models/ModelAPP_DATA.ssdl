@@ -127,7 +127,7 @@
     <Property Name="Prize_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Draw_ID" Type="int" />
     <Property Name="Sort_No" Type="int" Nullable="false" />
-    <Property Name="Prize_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Prize_Name" Type="nvarchar" MaxLength="300" />
     <Property Name="Prize_Pic" Type="nvarchar" MaxLength="2000" />
     <Property Name="Prize_Amount" Type="int" />
     <Property Name="OverAYear_Mark" Type="bit" Nullable="false" />
@@ -138,6 +138,7 @@
     <Property Name="Modify_User" Type="nvarchar" MaxLength="22" />
     <Property Name="Modify_Time" Type="nvarchar" MaxLength="22" />
     <Property Name="Disabled_Mark" Type="bit" Nullable="false" />
+    <Property Name="Prize_Memo" Type="nvarchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="TB_LUCKYDRAW_PRIZEWINNING">
     <Key>
@@ -155,6 +156,7 @@
     <Property Name="Redeem_Mark" Type="bit" Nullable="false" />
     <Property Name="Redeem_Time" Type="nvarchar" MaxLength="22" />
     <Property Name="Draw_ID" Type="int" />
+    <Property Name="Donate_Mark" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
     <Key>

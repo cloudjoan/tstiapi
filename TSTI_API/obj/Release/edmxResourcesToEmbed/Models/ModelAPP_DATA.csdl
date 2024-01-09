@@ -264,7 +264,7 @@
     <Property Name="Prize_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Draw_ID" Type="Int32" />
     <Property Name="Sort_No" Type="Int32" Nullable="false" />
-    <Property Name="Prize_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Prize_Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
     <Property Name="Prize_Pic" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
     <Property Name="Prize_Amount" Type="Int32" />
     <Property Name="OverAYear_Mark" Type="Boolean" Nullable="false" />
@@ -275,6 +275,7 @@
     <Property Name="Modify_User" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
     <Property Name="Modify_Time" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
     <Property Name="Disabled_Mark" Type="Boolean" Nullable="false" />
+    <Property Name="Prize_Memo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="TB_ANNIVERSARY_CHECK_IN">
     <Key>
@@ -303,5 +304,6 @@
     <Property Name="Redeem_Mark" Type="Boolean" Nullable="false" />
     <Property Name="Redeem_Time" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
     <Property Name="Draw_ID" Type="Int32" />
+    <Property Name="Donate_Mark" Type="Boolean" Nullable="false" />
   </EntityType>
 </Schema>
