@@ -203,5 +203,51 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_APP_DEVICE_TOKEN">
+      <EntityTypeMapping TypeName="MCSWorkflowModel.TB_APP_DEVICE_TOKEN">
+        <MappingFragment StoreEntitySet="TB_APP_DEVICE_TOKEN">
+          <ScalarProperty Name="DEVICE_TOKENS" ColumnName="DEVICE_TOKENS" />
+          <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+          <ScalarProperty Name="EMP_NAME" ColumnName="EMP_NAME" />
+          <ScalarProperty Name="APP_ID" ColumnName="APP_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_APP_PUSH_NOTICE_MESSAGES">
+      <EntityTypeMapping TypeName="MCSWorkflowModel.TB_APP_PUSH_NOTICE_MESSAGES">
+        <MappingFragment StoreEntitySet="TB_APP_PUSH_NOTICE_MESSAGES">
+          <ScalarProperty Name="DISABLED" ColumnName="DISABLED" />
+          <ScalarProperty Name="END_TIME" ColumnName="END_TIME" />
+          <ScalarProperty Name="START_TIME" ColumnName="START_TIME" />
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="MSG_LEVEL" ColumnName="MSG_LEVEL" />
+          <ScalarProperty Name="MSG_LINK" ColumnName="MSG_LINK" />
+          <ScalarProperty Name="IMG_URL" ColumnName="IMG_URL" />
+          <ScalarProperty Name="MSG_CONTENT" ColumnName="MSG_CONTENT" />
+          <ScalarProperty Name="MSG_TITLE" ColumnName="MSG_TITLE" />
+          <ScalarProperty Name="MSG_TARGET_NAME" ColumnName="MSG_TARGET_NAME" />
+          <ScalarProperty Name="MSG_TARGET" ColumnName="MSG_TARGET" />
+          <ScalarProperty Name="MSG_TYPE" ColumnName="MSG_TYPE" />
+          <ScalarProperty Name="APP_ID" ColumnName="APP_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VIEW_EMP_INFO">
+      <EntityTypeMapping TypeName="MCSWorkflowModel.VIEW_EMP_INFO">
+        <MappingFragment StoreEntitySet="VIEW_EMP_INFO">
+          <ScalarProperty Name="REGIST_DATE" ColumnName="REGIST_DATE" />
+          <ScalarProperty Name="CONSTELLATION" ColumnName="CONSTELLATION" />
+          <ScalarProperty Name="DEPT_NAME" ColumnName="DEPT_NAME" />
+          <ScalarProperty Name="DEPT_ID" ColumnName="DEPT_ID" />
+          <ScalarProperty Name="EMP_NAME" ColumnName="EMP_NAME" />
+          <ScalarProperty Name="COMP_NAME" ColumnName="COMP_NAME" />
+          <ScalarProperty Name="ACCOUNT" ColumnName="ACCOUNT" />
+          <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -13793,13 +13793,13 @@ namespace TSTI_API.Controllers
         public string SRCase { get; set; }
         /// <summary>公司名稱</summary>
         public string CompanyName { get; set; }
-        /// <summary>服務團隊</summary>
+        /// <summary>服務團隊名稱</summary>
         public string TeamNAME { get; set; }
         /// <summary>服務團隊主管</summary>
         public string TeamMGR { get; set; }
-        /// <summary>技術支援升級團隊</summary>
+        /// <summary>技術支援升級團隊名稱</summary>
         public string TechTeamNAME { get; set; }
-        /// <summary>技術支援升級團隊主管</summary>
+        /// <summary>技術支援升級團隊人員</summary>
         public string TechTeamMGR { get; set; }
         /// <summary>派單人員</summary>
         public string CreateUser { get; set; }
@@ -13856,7 +13856,7 @@ namespace TSTI_API.Controllers
         public string ModifiedUserEmail { get; set; }
         /// <summary>服務團隊主管Email</summary>
         public string TeamMGREmail { get; set; }
-        /// <summary>技術支援升級團隊主管Email</summary>
+        /// <summary>技術支援升級團隊人員Email</summary>
         public string TechTeamMGREmail { get; set; }
         /// <summary>主要工程師Email</summary>
         public string MainENGEmail { get; set; }

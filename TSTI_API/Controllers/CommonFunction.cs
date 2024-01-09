@@ -5387,9 +5387,9 @@ namespace TSTI_API.Controllers
             string cMainENGEmail = string.Empty;        //主要工程師Email
             string cAssENG = string.Empty;              //協助工程師
             string cAssENGEmail = string.Empty;         //協助工程師Email
-            string cTechTeamName = string.Empty;        //技術支援升級團隊
-            string cTechTeamMGR = string.Empty;         //技術支援升級團隊主管
-            string cTechTeamMGREmail = string.Empty;    //技術支援升級團隊主管Email
+            string cTechTeamName = string.Empty;        //技術支援升級團隊名稱
+            string cTechTeamMGR = string.Empty;         //技術支援升級團隊人員
+            string cTechTeamMGREmail = string.Empty;    //技術支援升級團隊人員Email
             string cTechMGR = string.Empty;             //技術主管
             string cTechMGREmail = string.Empty;        //技術主管Email
             string cSalesEMP = string.Empty;            //業務人員
