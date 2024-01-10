@@ -23,6 +23,7 @@ namespace TSTI_API.Models
         public string INSERT_TIME { get; set; }
         public string USER_NAME { get; set; }
         public string DEPT_ID { get; set; }
-        public Nullable<System.DateTime> REGEST_DATE { get; set; }
+        public string REGEST_DATE { get; set; }
+        public string AT_DESC { get; set; }
     }
 }

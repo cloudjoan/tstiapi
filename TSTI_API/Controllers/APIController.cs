@@ -13371,7 +13371,7 @@ namespace TSTI_API.Controllers
                 OverAYearMark   = PrizeInfo.OverAYear_Mark;
             }
            
-            var bean = appDB.VIEW_ANNIVERSARY_CHECK_IN.Where(x => x.DRAW_ID == DrawId && (OverAYearMark == false || AYearAgo > x.REGEST_DATE));
+            var bean = appDB.VIEW_ANNIVERSARY_CHECK_IN.ToList().Where(x => x.DRAW_ID == DrawId && (OverAYearMark == false || AYearAgo > Convert.ToDateTime(x.REGEST_DATE)));
 
             return Json(bean);
         }
