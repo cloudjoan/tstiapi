@@ -37,5 +37,6 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_LUCKYDRAW_PRIZE> TB_LUCKYDRAW_PRIZE { get; set; }
         public virtual DbSet<TB_ANNIVERSARY_CHECK_IN> TB_ANNIVERSARY_CHECK_IN { get; set; }
         public virtual DbSet<TB_LUCKYDRAW_PRIZEWINNING> TB_LUCKYDRAW_PRIZEWINNING { get; set; }
+        public virtual DbSet<VIEW_ANNIVERSARY_CHECK_IN> VIEW_ANNIVERSARY_CHECK_IN { get; set; }
     }
 }

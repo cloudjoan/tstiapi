@@ -13353,6 +13353,30 @@ namespace TSTI_API.Controllers
 
         #endregion
 
+        #region 抽獎者清單
+
+        [HttpPost]
+        public ActionResult ListDrawer(int PrizeId)
+        {
+            int?        DrawId          = 0;
+            bool        OverAYearMark   = false;
+            DateTime    AYearAgo        = DateTime.Today.AddYears(-1);
+
+            var     PrizeInfo       = appDB.TB_LUCKYDRAW_PRIZE.Where(x => x.Prize_ID == PrizeId).FirstOrDefault();
+
+            if(PrizeInfo != null) 
+            {
+                DrawId          = PrizeInfo.Draw_ID;
+                OverAYearMark   = PrizeInfo.OverAYear_Mark;
+            }
+           
+            var bean = appDB.VIEW_ANNIVERSARY_CHECK_IN.Where(x => x.DRAW_ID == DrawId && (OverAYearMark == false || AYearAgo > x.REGEST_DATE));
+
+            return Json(bean);
+        }
+
+        #endregion
+
         #region 儲存中獎資訊
         [HttpPost]
         public ActionResult SavePrizeWinner(TB_LUCKYDRAW_PRIZEWINNING bean)
@@ -13404,9 +13428,9 @@ namespace TSTI_API.Controllers
         #region 取得所有中獎資訊
 
         [HttpPost]
-        public ActionResult FindPrizeWinnerByAll ()
+        public ActionResult FindPrizeWinnerByAll(int drawId)
 		{
-			var beans = appDB.TB_LUCKYDRAW_PRIZEWINNING;
+			var beans = appDB.TB_LUCKYDRAW_PRIZEWINNING.Where(x => x.Draw_ID == drawId);
 			return Json(beans);
 		}
 

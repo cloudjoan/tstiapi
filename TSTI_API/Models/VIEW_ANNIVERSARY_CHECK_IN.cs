@@ -12,14 +12,17 @@ namespace TSTI_API.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TB_ANNIVERSARY_CHECK_IN
+    public partial class VIEW_ANNIVERSARY_CHECK_IN
     {
         public int ID { get; set; }
         public Nullable<int> DRAW_ID { get; set; }
         public string ERP_ID { get; set; }
         public string LOCATION { get; set; }
         public string CHECK_MAN_ID { get; set; }
-        public string INSERT_TIME { get; set; }
         public string CHECK_TYPE { get; set; }
+        public string INSERT_TIME { get; set; }
+        public string USER_NAME { get; set; }
+        public string DEPT_ID { get; set; }
+        public Nullable<System.DateTime> REGEST_DATE { get; set; }
     }
 }

@@ -563,6 +563,9 @@
     <Compile Include="Models\TB_SURVEY_QUS_MAINTAIN.cs">
       <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VIEW_ANNIVERSARY_CHECK_IN.cs">
+      <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\VIEW_CUSTOMER_2.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
