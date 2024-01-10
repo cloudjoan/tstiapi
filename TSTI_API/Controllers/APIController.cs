@@ -290,6 +290,7 @@ namespace TSTI_API.Controllers
             {
                 pLoginName = IV_LOGINEMPNO;
                 pBUKRS = "T012";
+                pMsg += "【登入者員工編號】不存在！請重新確認此員工是否已離職或編號輸入錯誤？" + Environment.NewLine;
             }
             else
             {
@@ -4757,10 +4758,10 @@ namespace TSTI_API.Controllers
                 List<string> tSRTeamList = CMF.findSRTeamMappingList(EmpBean.CostCenterID, EmpBean.DepartmentNO);
 
                 //取得登入人員所負責的技術支援升級團隊
-                List<string> tSRTechTeamList = CMF.findSRTechTeamMappingList(EmpBean.CostCenterID, EmpBean.DepartmentNO);
+                List<string> tSRTechTeamList = CMF.findSRTechTeamMappingList(EmpBean.CostCenterID, EmpBean.DepartmentNO, EmpBean.IsCSManager);
 
                 //取得登入人員所有要負責的SRID                
-                List<string[]> tList = CMF.findSRIDList(pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, EmpBean.BUKRS, EmpBean.IsManager, EmpBean.EmployeeERPID, EmpBean.CostCenterID, EmpBean.DepartmentNO, tSRTeamList, tSRTechTeamList);
+                List<string[]> tList = CMF.findSRIDList(pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, EmpBean.BUKRS, EmpBean.IsManager, EmpBean.IsCSManager, EmpBean.EmployeeERPID, EmpBean.CostCenterID, EmpBean.DepartmentNO, tSRTeamList, tSRTechTeamList);
                 #endregion
 
                 if (tList.Count == 0)
@@ -13696,6 +13697,8 @@ namespace TSTI_API.Controllers
         public string EmployeePersonID { get; set; }
         /// <summary>是否為主管(true.是 false.否)</summary>
         public bool IsManager { get; set; }
+        /// <summary>是否為客服主管(true.是 false.否)</summary>
+        public bool IsCSManager { get; set; }
     }
     #endregion
 
