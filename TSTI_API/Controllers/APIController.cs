@@ -13371,7 +13371,7 @@ namespace TSTI_API.Controllers
                 OverAYearMark   = PrizeInfo.OverAYear_Mark;
             }
            
-            var bean = appDB.VIEW_ANNIVERSARY_CHECK_IN.ToList().Where(x => x.DRAW_ID == DrawId && (OverAYearMark == false || AYearAgo >= Convert.ToDateTime(x.REGEST_DATE)) && !x.AT_DESC.Contains("約聘"));
+            var bean = appDB.VIEW_ANNIVERSARY_CHECK_IN.ToList().Where(x => x.DRAW_ID == DrawId && (OverAYearMark == false || AYearAgo >= Convert.ToDateTime(x.REGEST_DATE)) && !x.AT_DESC.Contains("約聘") && !x.AT_DESC.Contains("工讀生"));
 
             return Json(bean);
         }
