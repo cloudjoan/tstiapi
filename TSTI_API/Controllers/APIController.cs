@@ -1,6 +1,6 @@
 ﻿#region 更新歷程
 /*
-注意：若要更新正式區，請將搜尋「【測試】」，將它註解，並反註解「【正式】」，webconfig記得也要調整
+注意：若要更新正式區，webconfig要調整
 
 2023/12/04:elvis:Jordan請MIS調整把report的電話去掉，只留0800就好
 
@@ -1539,7 +1539,7 @@ namespace TSTI_API.Controllers
                             string InstallDate = string.Empty;
                             string ExpectedDate = string.Empty;
 
-                            string returnMsg = CMF.SaveTB_SERVICES_APP_INSTALL(EmpBean.EmployeeNO, pLoginName, EmpBean.EmployeeERPID, cID, pSRID, TotalQuantity, InstallQuantity, InstallDate, ExpectedDate, tIsFormAPP);
+                            string returnMsg = CMF.SaveTB_SERVICES_APP_INSTALL(pOperationID_GenerallySR, EmpBean.EmployeeNO, pLoginName, EmpBean.EmployeeERPID, cID, pSRID, TotalQuantity, InstallQuantity, InstallDate, ExpectedDate, tIsFormAPP);
 
                             if (returnMsg != "SUCCESS")
                             {
@@ -9223,30 +9223,64 @@ namespace TSTI_API.Controllers
 
             try
             {
-                var bean = dbEIP.TB_SERVICES_APP_INSTALL.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());      //【正式】
-                //var bean = dbEIP.TB_SERVICES_APP_INSTALLTEMP.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());  //【測試】
+                #region 取得系統位址參數相關資訊(判斷現在是抓正式區還是測試區)
+                SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
 
-                if (bean == null)
+                bool tIsFormal = ParaBean.IsFormal;
+                #endregion
+
+                if (tIsFormal)
                 {
-                    OUTBean.EV_MSGT = "E";
-                    OUTBean.EV_MSG = "查無裝機現況清單，請重新查詢！";
+                    var bean = dbEIP.TB_SERVICES_APP_INSTALL.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());      //【正式】
+
+                    if (bean == null)
+                    {
+                        OUTBean.EV_MSGT = "E";
+                        OUTBean.EV_MSG = "查無裝機現況清單，請重新查詢！";
+                    }
+                    else
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+
+                        OUTBean.CID = bean.ID.ToString();
+                        OUTBean.SRID = bean.SRID;
+                        OUTBean.ACCOUNT = bean.ACCOUNT;
+                        OUTBean.ERP_ID = bean.ERP_ID;
+                        OUTBean.EMP_NAME = bean.EMP_NAME;
+                        OUTBean.InstallDate = bean.InstallDate;
+                        OUTBean.ExpectedDate = bean.ExpectedDate;
+                        OUTBean.TotalQuantity = bean.TotalQuantity.ToString();
+                        OUTBean.InstallQuantity = bean.InstallQuantity.ToString();
+                        OUTBean.INSERT_TIME = bean.INSERT_TIME;
+                    }
                 }
                 else
                 {
-                    OUTBean.EV_MSGT = "Y";
-                    OUTBean.EV_MSG = "";
+                    var bean = dbEIP.TB_SERVICES_APP_INSTALLTEMP.FirstOrDefault(x => x.SRID == beanIN.IV_SRID.Trim());  //【測試】
 
-                    OUTBean.CID = bean.ID.ToString();
-                    OUTBean.SRID = bean.SRID;
-                    OUTBean.ACCOUNT = bean.ACCOUNT;
-                    OUTBean.ERP_ID = bean.ERP_ID;
-                    OUTBean.EMP_NAME = bean.EMP_NAME;
-                    OUTBean.InstallDate = bean.InstallDate;
-                    OUTBean.ExpectedDate = bean.ExpectedDate;
-                    OUTBean.TotalQuantity = bean.TotalQuantity.ToString();
-                    OUTBean.InstallQuantity = bean.InstallQuantity.ToString();
-                    OUTBean.INSERT_TIME = bean.INSERT_TIME;
-                }
+                    if (bean == null)
+                    {
+                        OUTBean.EV_MSGT = "E";
+                        OUTBean.EV_MSG = "查無裝機現況清單，請重新查詢！";
+                    }
+                    else
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+
+                        OUTBean.CID = bean.ID.ToString();
+                        OUTBean.SRID = bean.SRID;
+                        OUTBean.ACCOUNT = bean.ACCOUNT;
+                        OUTBean.ERP_ID = bean.ERP_ID;
+                        OUTBean.EMP_NAME = bean.EMP_NAME;
+                        OUTBean.InstallDate = bean.InstallDate;
+                        OUTBean.ExpectedDate = bean.ExpectedDate;
+                        OUTBean.TotalQuantity = bean.TotalQuantity.ToString();
+                        OUTBean.InstallQuantity = bean.InstallQuantity.ToString();
+                        OUTBean.INSERT_TIME = bean.INSERT_TIME;
+                    }
+                }                
             }
             catch (Exception ex)
             {
@@ -9363,8 +9397,7 @@ namespace TSTI_API.Controllers
                 #endregion
 
                 #region 批次儲存APP_INSTALL檔
-                string returnMsg = CMF.SaveTB_SERVICES_APP_INSTALL(EmpBean.EmployeeNO, IV_LOGINEMPName, EmpBean.EmployeeERPID, cID, IV_SRID,
-                                                                     IV_TotalQuantity.ToString(), IV_InstallQuantity.ToString(), IV_InstallDate, IV_ExpectedDate, IV_IsFromAPP);
+                string returnMsg = CMF.SaveTB_SERVICES_APP_INSTALL(pOperationID_GenerallySR, EmpBean.EmployeeNO, IV_LOGINEMPName, EmpBean.EmployeeERPID, cID, IV_SRID, IV_TotalQuantity.ToString(), IV_InstallQuantity.ToString(), IV_InstallDate, IV_ExpectedDate, IV_IsFromAPP);
 
                 if (returnMsg != "SUCCESS")
                 {
