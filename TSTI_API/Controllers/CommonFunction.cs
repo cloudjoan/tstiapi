@@ -1253,28 +1253,31 @@ namespace TSTI_API.Controllers
         {
             List<SRTEAMORGINFO> tList = new List<SRTEAMORGINFO>();
 
-            string[] AryTeamID = cTeamID.TrimEnd(';').Split(';');
-
-            var beans = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && AryTeamID.Contains(x.cTeamOldID));
-
-            foreach (var bean in beans)
+            if (!string.IsNullOrEmpty(cTeamID))
             {
-                List<string[]> ListInfo = findDeptAllEmpInfo(bean.cTeamNewID);
+                string[] AryTeamID = cTeamID.TrimEnd(';').Split(';');
 
-                foreach (var Info in ListInfo)
+                var beans = dbOne.TB_ONE_SRTeamMapping.Where(x => x.Disabled == 0 && AryTeamID.Contains(x.cTeamOldID));
+
+                foreach (var bean in beans)
                 {
-                    SRTEAMORGINFO SRTeam = new SRTEAMORGINFO();
+                    List<string[]> ListInfo = findDeptAllEmpInfo(bean.cTeamNewID);
 
-                    SRTeam.TEAMID = bean.cTeamOldID;
-                    SRTeam.TEAMNAME = bean.cTeamOldName;
-                    SRTeam.DEPTID = bean.cTeamNewID;
-                    SRTeam.DEPTNAME = bean.cTeamNewName;
-                    SRTeam.DEPTMGRERPID = Info[0];
-                    SRTeam.DEPTMGRACCOUNT = Info[1];
-                    SRTeam.DEPTMGRNAME = Info[2];
-                    SRTeam.DEPTMGREMAIL = Info[3];
+                    foreach (var Info in ListInfo)
+                    {
+                        SRTEAMORGINFO SRTeam = new SRTEAMORGINFO();
 
-                    tList.Add(SRTeam);
+                        SRTeam.TEAMID = bean.cTeamOldID;
+                        SRTeam.TEAMNAME = bean.cTeamOldName;
+                        SRTeam.DEPTID = bean.cTeamNewID;
+                        SRTeam.DEPTNAME = bean.cTeamNewName;
+                        SRTeam.DEPTMGRERPID = Info[0];
+                        SRTeam.DEPTMGRACCOUNT = Info[1];
+                        SRTeam.DEPTMGRNAME = Info[2];
+                        SRTeam.DEPTMGREMAIL = Info[3];
+
+                        tList.Add(SRTeam);
+                    }
                 }
             }
 

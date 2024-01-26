@@ -17,6 +17,7 @@
         <EntityTypeShape EntityType="APP_DATAModel.TB_LUCKYDRAW_PRIZE" Width="2.625" PointX="8.125" PointY="0.75" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_ANNIVERSARY_CHECK_IN" Width="1.5" PointX="0.75" PointY="9.75" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_LUCKYDRAW_PRIZEWINNING" Width="1.5" PointX="3.375" PointY="10.75" />
+        <EntityTypeShape EntityType="APP_DATAModel.VIEW_ANNIVERSARY_CHECK_IN" Width="1.5" PointX="10.125" PointY="6.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

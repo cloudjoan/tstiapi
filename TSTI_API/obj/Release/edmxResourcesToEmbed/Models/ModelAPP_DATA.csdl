@@ -13,6 +13,7 @@
     <EntitySet Name="TB_LUCKYDRAW_PRIZE" EntityType="APP_DATAModel.TB_LUCKYDRAW_PRIZE" />
     <EntitySet Name="TB_ANNIVERSARY_CHECK_IN" EntityType="APP_DATAModel.TB_ANNIVERSARY_CHECK_IN" />
     <EntitySet Name="TB_LUCKYDRAW_PRIZEWINNING" EntityType="APP_DATAModel.TB_LUCKYDRAW_PRIZEWINNING" />
+    <EntitySet Name="VIEW_ANNIVERSARY_CHECK_IN" EntityType="APP_DATAModel.VIEW_ANNIVERSARY_CHECK_IN" />
   </EntityContainer>
   <EntityType Name="TB_SURVEY_ANS_MAINTAIN">
     <Key>
@@ -287,6 +288,7 @@
     <Property Name="LOCATION" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="CHECK_MAN_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+    <Property Name="CHECK_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="TB_LUCKYDRAW_PRIZEWINNING">
     <Key>
@@ -305,5 +307,22 @@
     <Property Name="Redeem_Time" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
     <Property Name="Draw_ID" Type="Int32" />
     <Property Name="Donate_Mark" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VIEW_ANNIVERSARY_CHECK_IN">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="AT_DESC" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="DRAW_ID" Type="Int32" />
+    <Property Name="ERP_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="LOCATION" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CHECK_MAN_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CHECK_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+    <Property Name="USER_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="DEPT_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="REGEST_DATE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="AT_DESC" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

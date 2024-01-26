@@ -277,6 +277,7 @@
     <EntitySetMapping Name="TB_ANNIVERSARY_CHECK_IN">
       <EntityTypeMapping TypeName="APP_DATAModel.TB_ANNIVERSARY_CHECK_IN">
         <MappingFragment StoreEntitySet="TB_ANNIVERSARY_CHECK_IN">
+          <ScalarProperty Name="CHECK_TYPE" ColumnName="CHECK_TYPE" />
           <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
           <ScalarProperty Name="CHECK_MAN_ID" ColumnName="CHECK_MAN_ID" />
           <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
@@ -302,6 +303,23 @@
           <ScalarProperty Name="User_Name" ColumnName="User_Name" />
           <ScalarProperty Name="Prize_ID" ColumnName="Prize_ID" />
           <ScalarProperty Name="Winning_ID" ColumnName="Winning_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VIEW_ANNIVERSARY_CHECK_IN">
+      <EntityTypeMapping TypeName="APP_DATAModel.VIEW_ANNIVERSARY_CHECK_IN">
+        <MappingFragment StoreEntitySet="VIEW_ANNIVERSARY_CHECK_IN">
+          <ScalarProperty Name="AT_DESC" ColumnName="AT_DESC" />
+          <ScalarProperty Name="REGEST_DATE" ColumnName="REGEST_DATE" />
+          <ScalarProperty Name="DEPT_ID" ColumnName="DEPT_ID" />
+          <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="CHECK_TYPE" ColumnName="CHECK_TYPE" />
+          <ScalarProperty Name="CHECK_MAN_ID" ColumnName="CHECK_MAN_ID" />
+          <ScalarProperty Name="LOCATION" ColumnName="LOCATION" />
+          <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+          <ScalarProperty Name="DRAW_ID" ColumnName="DRAW_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
