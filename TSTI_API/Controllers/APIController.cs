@@ -13803,6 +13803,8 @@ namespace TSTI_API.Controllers
         public string ADVICE { get; set; }
         /// <summary>本次使用</summary>
         public string USED { get; set; }
+        /// <summary>備註</summary>
+        public string NOTES { get; set; }
         /// <summary>tr背景顏色Class</summary>
         public string BGColor { get; set; }
     }

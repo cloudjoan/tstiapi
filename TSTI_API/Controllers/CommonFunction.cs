@@ -2770,7 +2770,8 @@ namespace TSTI_API.Controllers
             string cWTYEDATE = string.Empty;
             string cSLARESP = string.Empty;
             string cSLASRV = string.Empty;
-            string cContractID = string.Empty;            
+            string cContractID = string.Empty;
+            string cNotes = string.Empty;
             string tBPMNO = string.Empty;            
             string tAdvice = string.Empty;
             string tBGColor = "table-success";
@@ -2909,10 +2910,11 @@ namespace TSTI_API.Controllers
                                 cSLARESP = bean.IV_SLARESP;                                             //回應條件
                                 cSLASRV = bean.IV_SLASRV;                                               //服務條件
                                 cContractID = "";                                                      //合約編號
+                                cNotes = bean.NOTE;                                                     //備註
                                 tBPMNO = string.IsNullOrEmpty(bean.BPM_NO) ? "" : bean.BPM_NO;              //BPM表單編號
                                 tAdvice = string.IsNullOrEmpty(bean.ADVICE) ? "" : bean.ADVICE;             //客服主管建議
 
-                                var QueryInfo = setSRWarranty(IV_SERIAL, cWTYID, cWTYName, cWTYSDATE, cWTYEDATE, cSLARESP, cSLASRV, cContractID, tBPMNO,
+                                var QueryInfo = setSRWarranty(IV_SERIAL, cWTYID, cWTYName, cWTYSDATE, cWTYEDATE, cSLARESP, cSLASRV, cContractID, cNotes, tBPMNO,
                                                               tAdvice, tBGColor, tAPIURLName, tBPMURLName, tONEURLName);
                                 QueryToList.Add(QueryInfo);
                             }
@@ -2933,10 +2935,11 @@ namespace TSTI_API.Controllers
                                 cWTYEDATE = AryValue[1];       //保固結束日期
                                 cSLARESP = bean.cSLARESP;       //回應條件
                                 cSLASRV = bean.cSLASRV;         //服務條件
-                                cContractID = bean.cContractID; //合約編號                            
+                                cContractID = bean.cContractID; //合約編號
+                                cNotes = bean.cNotes;          //備註
                                 tAdvice = "";                  //客服主管建議
 
-                                var QueryInfo = setSRWarranty(IV_SERIAL, cWTYID, cWTYName, cWTYSDATE, cWTYEDATE, cSLARESP, cSLASRV, cContractID, tBPMNO,
+                                var QueryInfo = setSRWarranty(IV_SERIAL, cWTYID, cWTYName, cWTYSDATE, cWTYEDATE, cSLARESP, cSLASRV, cContractID, cNotes, tBPMNO,
                                                               tAdvice, tBGColor, tAPIURLName, tBPMURLName, tONEURLName);
                                 QueryToList.Add(QueryInfo);
                             }
@@ -2966,6 +2969,7 @@ namespace TSTI_API.Controllers
         /// <param name="cSLARESP">回應條件</param>
         /// <param name="cSLASRV">服務條件</param>
         /// <param name="cContractID">合約編號</param>
+        /// <param name="tNotes">備註</param>
         /// <param name="tBPMNO">BPM表單編號</param>
         /// <param name="tAdvice">本次使用</param>
         /// <param name="tBGColor">tr背景顏色Class</param>
@@ -2974,7 +2978,7 @@ namespace TSTI_API.Controllers
         /// <param name="tONEURLName">OneService站台名稱</param>
         /// <returns></returns>
         public SRWarranty setSRWarranty(string IV_SERIAL, string cWTYID, string cWTYName, string cWTYSDATE, string cWTYEDATE, string cSLARESP, string cSLASRV, 
-                                      string cContractID, string tBPMNO, string tAdvice, string tBGColor, string tAPIURLName, string tBPMURLName, string tONEURLName)
+                                      string cContractID, string tNotes, string tBPMNO, string tAdvice, string tBGColor, string tAPIURLName, string tBPMURLName, string tONEURLName)
         {
             string cContractIDURL = string.Empty;   //合約編號Url
             string cSUB_CONTRACTID = string.Empty;  //下包文件編號             
@@ -3044,6 +3048,7 @@ namespace TSTI_API.Controllers
             QueryInfo.BPMFormNoUrl = tURL;             //BPM URL
             QueryInfo.ADVICE = tAdvice;               //客服主管建議                                          
             QueryInfo.USED = "N";                     //本次使用
+            QueryInfo.NOTES = tNotes;                 //備註
             QueryInfo.BGColor = tBGColor;             //tr背景顏色Class
 
             return QueryInfo;
