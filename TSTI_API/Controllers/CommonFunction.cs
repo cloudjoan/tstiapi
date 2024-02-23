@@ -7372,8 +7372,8 @@ namespace TSTI_API.Controllers
                     cSecretaryEMPEmail = findSREMPEmail(SecretaryEMP_List);
 
                     MASalesEMP_List = findSREMPINFO(beanM.cMASales);
-                    cMASalesEMP = findSREMPName(SalesEMP_List);
-                    cMASalesEMPEmail = findSREMPEmail(SalesEMP_List);
+                    cMASalesEMP = findSREMPName(MASalesEMP_List);
+                    cMASalesEMPEmail = findSREMPEmail(MASalesEMP_List);
                     #endregion                   
 
                     #region 其他主檔相關  
