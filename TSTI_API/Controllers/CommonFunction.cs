@@ -7637,6 +7637,9 @@ namespace TSTI_API.Controllers
             BPMCONTRACTINFO beanM = new BPMCONTRACTINFO();
 
             bool tIsA2Form = false; //判斷是否為用印申請單
+            string cApplyUserERPID = string.Empty;
+            string IV_SDATE = string.Empty;
+            string IV_EDATE = string.Empty;
 
             if (BPMNO.Substring(0,2) == "A2")
             {
@@ -7650,10 +7653,33 @@ namespace TSTI_API.Controllers
 
                 if (bean != null)
                 {
+                    //edit by elvis 2024/03/01 調整新版BPM用印要抓的欄位判斷 Start
+                    cApplyUserERPID = string.IsNullOrEmpty(bean.cApplyUser_EmployeeNO) ? bean.cApplyUser_ERPID : findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO);
+                    
+                    if (bean.cContent_ContractStrDate.IndexOf("-") != -1)
+                    {
+                        IV_SDATE = bean.cContent_ContractStrDate;
+                    }
+                    else
+                    {
+                        IV_SDATE = bean.cContent_ContractStrDate.Substring(0, 4) + "-" + bean.cContent_ContractStrDate.Substring(4, 2) + "-" + bean.cContent_ContractStrDate.Substring(6, 2);
+                    }
+
+                    if (bean.cContent_ContractEndDate.IndexOf("-") != -1)
+                    {
+                        IV_EDATE = bean.cContent_ContractEndDate;
+                    }
+                    else
+                    {
+                        IV_EDATE = bean.cContent_ContractEndDate.Substring(0, 4) + "-" + bean.cContent_ContractEndDate.Substring(4, 2) + "-" + bean.cContent_ContractEndDate.Substring(6, 2);
+                    }
+                    //edit by elvis 2024/03/01 調整新版BPM用印要抓的欄位判斷 End
+
+
                     beanM.IV_CONTACT = bean.cContent_ContractID;
                     beanM.IV_SUBCONTACT = "";
                     beanM.IV_SONO = "";                    
-                    beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO);
+                    beanM.IV_SALES = cApplyUserERPID;
                     beanM.IV_ASSITANCE = bean.cContent_Secretary;
 
                     beanM.IV_ContractVendor = bean.cContent_ContractVendor.ToString();
@@ -7678,8 +7704,8 @@ namespace TSTI_API.Controllers
                         beanM.IV_SODESC = bean.cContent_ContractDesc;
                     }
 
-                    beanM.IV_SDATE = Convert.ToDateTime(bean.cContent_ContractStrDate);
-                    beanM.IV_EDATE = Convert.ToDateTime(bean.cContent_ContractEndDate);
+                    beanM.IV_SDATE = Convert.ToDateTime(IV_SDATE);
+                    beanM.IV_EDATE = Convert.ToDateTime(IV_EDATE);
                     beanM.IV_REQPAY = bean.cContent_ContractInfo_MakeMoney;
                     beanM.IV_CYCLE = bean.cContent_ContractInfo_Maintain;
                     beanM.IV_NOTES = bean.cContent_ContractInfo_Note;

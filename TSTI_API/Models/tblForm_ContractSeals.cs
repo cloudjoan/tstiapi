@@ -210,5 +210,26 @@ namespace TSTI_API.Models
         public string cContent_PaymentRemarks { get; set; }
         public string cContent_SAPPaymentCondition { get; set; }
         public Nullable<System.Guid> cSystemGUID { get; set; }
+        public string cApplyUser_ERPID { get; set; }
+        public string cFillUser_ERPID { get; set; }
+        public string cContent_FormSecretary_ERPID { get; set; }
+        public string cInheritUser_ERPID { get; set; }
+        public string SIGN1 { get; set; }
+        public string SIGN2 { get; set; }
+        public string SIGN3 { get; set; }
+        public string SIGN4 { get; set; }
+        public string SIGN5 { get; set; }
+        public string SIGN6 { get; set; }
+        public string SIGN7 { get; set; }
+        public string SIGN8 { get; set; }
+        public string SIGN9 { get; set; }
+        public string SIGN10 { get; set; }
+        public string SIGN11 { get; set; }
+        public string SIGN12 { get; set; }
+        public string SIGN13 { get; set; }
+        public string SIGN14 { get; set; }
+        public string SIGN15 { get; set; }
+        public string SIGN16 { get; set; }
+        public string cSystem_FlexSigner { get; set; }
     }
 }

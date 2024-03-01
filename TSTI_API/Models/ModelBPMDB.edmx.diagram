@@ -5,9 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="4585d2b05d744c069875b8881e17296d" Name="Diagram1" ZoomLevel="111">
-        <EntityTypeShape EntityType="TAIFModel.tblForm_ContractSeals" Width="2.125" PointX="0.5" PointY="1.125" IsExpanded="false" />
         <EntityTypeShape EntityType="TAIFModel.tblForm_SubContractSeals" Width="2.125" PointX="0.5" PointY="1.625" IsExpanded="false" />
         <EntityTypeShape EntityType="TAIFModel.tblEmployee" Width="1.5" PointX="2.75" PointY="1.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="TAIFModel.tblForm_ContractSeals" Width="2.125" PointX="0.5" PointY="1.125" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

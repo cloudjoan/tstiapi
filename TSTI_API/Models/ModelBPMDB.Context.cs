@@ -25,8 +25,8 @@ namespace TSTI_API.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<tblForm_ContractSeals> tblForm_ContractSeals { get; set; }
         public virtual DbSet<tblForm_SubContractSeals> tblForm_SubContractSeals { get; set; }
         public virtual DbSet<tblEmployee> tblEmployee { get; set; }
+        public virtual DbSet<tblForm_ContractSeals> tblForm_ContractSeals { get; set; }
     }
 }
