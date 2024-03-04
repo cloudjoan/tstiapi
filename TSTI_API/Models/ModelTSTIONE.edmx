@@ -55,7 +55,7 @@
           <Property Name="cSubContractID" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="cSubSupplierID" Type="nvarchar" MaxLength="15" />
           <Property Name="cSubSupplierName" Type="nvarchar" MaxLength="40" />
-          <Property Name="cSubNotes" Type="nvarchar" MaxLength="255" />
+          <Property Name="cSubNotes" Type="nvarchar" MaxLength="1000" />
           <Property Name="Disabled" Type="int" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
@@ -602,7 +602,6 @@
           <EntitySet Name="TB_ONE_SRSatisfy_Survey" EntityType="Model.TB_ONE_SRSatisfy_Survey" />
           <EntitySet Name="TB_ONE_ContractDetail_ENG" EntityType="Model.TB_ONE_ContractDetail_ENG" />
           <EntitySet Name="TB_ONE_ContractDetail_OBJ" EntityType="Model.TB_ONE_ContractDetail_OBJ" />
-          <EntitySet Name="TB_ONE_ContractDetail_SUB" EntityType="Model.TB_ONE_ContractDetail_SUB" />
           <EntitySet Name="TB_ONE_ContractIDTemp" EntityType="Model.TB_ONE_ContractIDTemp" />
           <EntitySet Name="TB_ONE_SRBatchInstallRecord" EntityType="Model.TB_ONE_SRBatchInstallRecord" />
           <EntitySet Name="TB_ONE_SRBatchInstallRecord_Detail" EntityType="Model.TB_ONE_SRBatchInstallRecord_Detail" />
@@ -613,6 +612,7 @@
           <EntitySet Name="TB_ONE_SRTeamChangTemp" EntityType="Model.TB_ONE_SRTeamChangTemp" />
           <EntitySet Name="TB_ONE_SRBatchMaintainRecord" EntityType="Model.TB_ONE_SRBatchMaintainRecord" />
           <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
+          <EntitySet Name="TB_ONE_ContractDetail_SUB" EntityType="Model.TB_ONE_ContractDetail_SUB" />
           </EntityContainer>
         <EntityType Name="TB_ONE_SRDetail_Contact">
           <Key>
@@ -900,22 +900,6 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="TB_ONE_ContractDetail_SUB">
-          <Key>
-            <PropertyRef Name="cID" />
-          </Key>
-          <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="cContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="cSubContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="cSubSupplierID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="cSubSupplierName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="cSubNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Disabled" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="TB_ONE_ContractIDTemp">
           <Key>
             <PropertyRef Name="cContractID" />
@@ -1154,6 +1138,22 @@
           <Property Name="cRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="cCustomerUnitType" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="cSystemGUID" Type="Guid" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_ONE_ContractDetail_SUB">
+          <Key>
+            <PropertyRef Name="cID" />
+          </Key>
+          <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cSubContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="cSubSupplierID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="cSubSupplierName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="cSubNotes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Disabled" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
@@ -1463,23 +1463,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TB_ONE_ContractDetail_SUB">
-            <EntityTypeMapping TypeName="Model.TB_ONE_ContractDetail_SUB">
-              <MappingFragment StoreEntitySet="TB_ONE_ContractDetail_SUB">
-                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
-                <ScalarProperty Name="cSubNotes" ColumnName="cSubNotes" />
-                <ScalarProperty Name="cSubSupplierName" ColumnName="cSubSupplierName" />
-                <ScalarProperty Name="cSubSupplierID" ColumnName="cSubSupplierID" />
-                <ScalarProperty Name="cSubContractID" ColumnName="cSubContractID" />
-                <ScalarProperty Name="cContractID" ColumnName="cContractID" />
-                <ScalarProperty Name="cID" ColumnName="cID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TB_ONE_ContractIDTemp">
             <EntityTypeMapping TypeName="Model.TB_ONE_ContractIDTemp">
               <MappingFragment StoreEntitySet="TB_ONE_ContractIDTemp">
@@ -1729,6 +1712,23 @@
                 <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
                 <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
                 <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_ONE_ContractDetail_SUB">
+            <EntityTypeMapping TypeName="Model.TB_ONE_ContractDetail_SUB">
+              <MappingFragment StoreEntitySet="TB_ONE_ContractDetail_SUB">
+                <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="cSubNotes" ColumnName="cSubNotes" />
+                <ScalarProperty Name="cSubSupplierName" ColumnName="cSubSupplierName" />
+                <ScalarProperty Name="cSubSupplierID" ColumnName="cSubSupplierID" />
+                <ScalarProperty Name="cSubContractID" ColumnName="cSubContractID" />
+                <ScalarProperty Name="cContractID" ColumnName="cContractID" />
+                <ScalarProperty Name="cID" ColumnName="cID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

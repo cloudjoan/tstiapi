@@ -50,7 +50,7 @@
     <Property Name="cSubContractID" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="cSubSupplierID" Type="nvarchar" MaxLength="15" />
     <Property Name="cSubSupplierName" Type="nvarchar" MaxLength="40" />
-    <Property Name="cSubNotes" Type="nvarchar" MaxLength="255" />
+    <Property Name="cSubNotes" Type="nvarchar" MaxLength="1000" />
     <Property Name="Disabled" Type="int" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />

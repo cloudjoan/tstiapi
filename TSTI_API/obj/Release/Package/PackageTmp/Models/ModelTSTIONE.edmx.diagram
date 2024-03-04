@@ -22,7 +22,6 @@
         <EntityTypeShape EntityType="Model.TB_ONE_SRSatisfy_Survey" Width="2.5" PointX="0.875" PointY="4.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_ContractDetail_ENG" Width="2.375" PointX="6.25" PointY="1.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_ContractDetail_OBJ" Width="2.375" PointX="6.25" PointY="2" IsExpanded="false" />
-        <EntityTypeShape EntityType="Model.TB_ONE_ContractDetail_SUB" Width="2.375" PointX="6.25" PointY="1" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_ContractIDTemp" Width="2.375" PointX="6.25" PointY="2.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRBatchInstallRecord" Width="2.75" PointX="3.75" PointY="5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRBatchInstallRecord_Detail" Width="2.75" PointX="3.75" PointY="5.5" IsExpanded="false" />
@@ -33,6 +32,7 @@
         <EntityTypeShape EntityType="Model.TB_ONE_SRTeamChangTemp" Width="2.5" PointX="8.875" PointY="0.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRBatchMaintainRecord" Width="2.75" PointX="3.75" PointY="6.5" IsExpanded="false" />
         <EntityTypeShape EntityType="Model.TB_ONE_SRMain" Width="2.5" PointX="0.875" PointY="0.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="Model.TB_ONE_ContractDetail_SUB" Width="2.375" PointX="6.25" PointY="1" IsExpanded="false" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -42,7 +42,6 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_ONE_SRSatisfy_Survey> TB_ONE_SRSatisfy_Survey { get; set; }
         public virtual DbSet<TB_ONE_ContractDetail_ENG> TB_ONE_ContractDetail_ENG { get; set; }
         public virtual DbSet<TB_ONE_ContractDetail_OBJ> TB_ONE_ContractDetail_OBJ { get; set; }
-        public virtual DbSet<TB_ONE_ContractDetail_SUB> TB_ONE_ContractDetail_SUB { get; set; }
         public virtual DbSet<TB_ONE_ContractIDTemp> TB_ONE_ContractIDTemp { get; set; }
         public virtual DbSet<TB_ONE_SRBatchInstallRecord> TB_ONE_SRBatchInstallRecord { get; set; }
         public virtual DbSet<TB_ONE_SRBatchInstallRecord_Detail> TB_ONE_SRBatchInstallRecord_Detail { get; set; }
@@ -53,5 +52,6 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_ONE_SRTeamChangTemp> TB_ONE_SRTeamChangTemp { get; set; }
         public virtual DbSet<TB_ONE_SRBatchMaintainRecord> TB_ONE_SRBatchMaintainRecord { get; set; }
         public virtual DbSet<TB_ONE_SRMain> TB_ONE_SRMain { get; set; }
+        public virtual DbSet<TB_ONE_ContractDetail_SUB> TB_ONE_ContractDetail_SUB { get; set; }
     }
 }

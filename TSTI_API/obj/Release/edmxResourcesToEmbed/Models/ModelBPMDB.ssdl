@@ -255,7 +255,7 @@
     <Property Name="cContent_ContactPersonAddCity" Type="nvarchar" MaxLength="20" />
     <Property Name="cContent_ContactPersonAddTownship" Type="nvarchar" MaxLength="20" />
     <Property Name="cContent_ContactPersonAddRoad" Type="nvarchar" MaxLength="50" />
-    <Property Name="cContent_ContactPersonAddNo" Type="nvarchar" MaxLength="100" />
+    <Property Name="cContent_ContactPersonAddNo" Type="nvarchar" MaxLength="200" />
     <Property Name="cContent_ContactPersonPhone" Type="nvarchar" MaxLength="100" />
     <Property Name="cContent_ContactPersonEmail" Type="nvarchar" MaxLength="100" />
     <Property Name="cContent_HandlingDate" Type="nvarchar" MaxLength="20" />
@@ -270,6 +270,27 @@
     <Property Name="cContent_PaymentRemarks" Type="nvarchar(max)" />
     <Property Name="cContent_SAPPaymentCondition" Type="nvarchar" MaxLength="50" />
     <Property Name="cSystemGUID" Type="uniqueidentifier" />
+    <Property Name="cApplyUser_ERPID" Type="nvarchar" MaxLength="50" />
+    <Property Name="cFillUser_ERPID" Type="nvarchar" MaxLength="50" />
+    <Property Name="cContent_FormSecretary_ERPID" Type="nvarchar" MaxLength="50" />
+    <Property Name="cInheritUser_ERPID" Type="nvarchar" MaxLength="50" />
+    <Property Name="SIGN1" Type="nvarchar" MaxLength="1" />
+    <Property Name="SIGN2" Type="nvarchar" MaxLength="1" />
+    <Property Name="SIGN3" Type="nvarchar" MaxLength="1" />
+    <Property Name="SIGN4" Type="nvarchar" MaxLength="1" />
+    <Property Name="SIGN5" Type="nvarchar" MaxLength="1" />
+    <Property Name="SIGN6" Type="nvarchar" MaxLength="1" />
+    <Property Name="SIGN7" Type="nvarchar" MaxLength="1" />
+    <Property Name="SIGN8" Type="nvarchar" MaxLength="1" />
+    <Property Name="SIGN9" Type="nvarchar" MaxLength="1" />
+    <Property Name="SIGN10" Type="nvarchar" MaxLength="1" />
+    <Property Name="SIGN11" Type="nvarchar" MaxLength="20" />
+    <Property Name="SIGN12" Type="nvarchar" MaxLength="20" />
+    <Property Name="SIGN13" Type="nvarchar" MaxLength="20" />
+    <Property Name="SIGN14" Type="nvarchar" MaxLength="20" />
+    <Property Name="SIGN15" Type="nvarchar" MaxLength="20" />
+    <Property Name="SIGN16" Type="nvarchar" MaxLength="20" />
+    <Property Name="cSystem_FlexSigner" Type="nvarchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="tblForm_SubContractSeals">
     <Key>

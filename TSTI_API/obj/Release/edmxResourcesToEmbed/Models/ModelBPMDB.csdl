@@ -1,211 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="TAIFModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="TAIFEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="tblForm_ContractSeals" EntityType="TAIFModel.tblForm_ContractSeals" />
     <EntitySet Name="tblForm_SubContractSeals" EntityType="TAIFModel.tblForm_SubContractSeals" />
     <EntitySet Name="tblEmployee" EntityType="TAIFModel.tblEmployee" />
+    <EntitySet Name="tblForm_ContractSeals" EntityType="TAIFModel.tblForm_ContractSeals" />
   </EntityContainer>
-  <EntityType Name="tblForm_ContractSeals">
-    <Key>
-      <PropertyRef Name="cSystem_FormNo" />
-    </Key>
-    <Property Name="cSystem_FormNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="cSystem_ApplyDate" Type="DateTime" Precision="3" />
-    <Property Name="cSystem_FinishDate" Type="DateTime" Precision="3" />
-    <Property Name="cSystem_MainStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="cSystem_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="cSystem_StatusDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cSystem_IsBatchApproval" Type="Boolean" />
-    <Property Name="cSystem_HasSubmitted" Type="Boolean" />
-    <Property Name="cSystem_TerminateReason" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-    <Property Name="cSystem_ErrorMessage" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-    <Property Name="cApplyUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="cApplyUser_EmployeeID" Type="Guid" />
-    <Property Name="cApplyUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cApplyUser_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cApplyUser_DepartmentID" Type="Guid" />
-    <Property Name="cApplyUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cApplyUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cApplyUser_PhoneExt" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="cApplyUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cFillUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="cFillUser_EmployeeID" Type="Guid" />
-    <Property Name="cFillUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cFillUser_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cFillUser_DepartmentID" Type="Guid" />
-    <Property Name="cFillUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cFillUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cFillUser_PhoneExt" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="cFillUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cAgentUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="cAgentUser_EmployeeID" Type="Guid" />
-    <Property Name="cAgentUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cAgentUser_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cAgentUser_DepartmentID" Type="Guid" />
-    <Property Name="cAgentUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cAgentUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cAgentUser_PhoneExt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="cAgentUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_FormSecretary" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_FormSecretaryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_FormSecretaryID" Type="Guid" />
-    <Property Name="cContent_ContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_OldContractID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_IsRenew" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-    <Property Name="cContent_ContractReferenceNo" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractType" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractType_0" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractType_1" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractTypeOther1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractType_2" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractTypeOther2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_Maintain" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_MakeMoney" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_Note" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_Responses" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_Service" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_Team" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_MainNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_MainNoCName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_Memo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_Secretary" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_SecretaryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_SecretaryID" Type="Guid" />
-    <Property Name="cContent_MaintainSales" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_MaintainSalesName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractFirst" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_CrmOppNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_CostFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractVendor" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractUser" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractUserID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractStrDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractEndDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractYear" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractExtendDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractPGYear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractPGMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractPGOther" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_AttatchementId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractECSApplyNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractPaper" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractSeal1" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractSeal2" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractSeal3" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractSeal4" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractSeal5" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractSeal6" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractSeal7a" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractSeal7b" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo1" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="cContent_ContractInfo1_IN" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="cContent_ContractInfo2" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="cContent_ContractInfo3" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo4" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo5" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo6" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractInfo6Other" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo6Place" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractDept1" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractDept2" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractDept3" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractDept4" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractDept5" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractDept6" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractDept7" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractDept8" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractDept9" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractDept10" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractDept11" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractDept12" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ContractDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_HandlingSecret" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_ClassifiedLevel" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-    <Property Name="cContent_HandlingTax" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="cContent_HandlingTotalTax" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="cContent_AttatchementId_1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_AttatchementId_2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_AttatchementId_3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_AttatchementId_4" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_IsSaved" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_IsHandlinged" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_IsHandlingChange" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_FlowStage" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-    <Property Name="cSystem_CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="cSystem_CreatedUserID" Type="Guid" Nullable="false" />
-    <Property Name="cSystem_CreatedUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cSystem_ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="cSystem_ModifiedUserID" Type="Guid" />
-    <Property Name="cSystem_ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cApplyUser_FullDepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-    <Property Name="cFillUser_FullDepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-    <Property Name="cAgentUser_FullDepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-    <Property Name="cSystem_TaskStartDate" Type="DateTime" Precision="3" />
-    <Property Name="cSystem_TaskUserAccounts" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-    <Property Name="cSystem_TaskUserNames" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo3_0" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_PayNote" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_MakeMoney2" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo_PayNote2" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_Secretary2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_SecretaryName2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_SecretaryID2" Type="Guid" />
-    <Property Name="cContent_ContractTypeOther0" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_SealsFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="cContent_OrigCurrency" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_OrigAmount" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="cContent_ExchangeRate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_IsCFOBeforeFlow" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ReturnContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractInfo3Note" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractSeal8" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractSeal9" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractSeal10" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractSeal11" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractSeal12" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractSeal13" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractSeal14" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractSeal15" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractSeal16" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_PreSaleNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContractSealOther" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ChairmanApprove" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_CurrentType" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="cInheritUser_EmployeeNO" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="cInheritUser_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cInheritUser_EmployeeID" Type="Guid" />
-    <Property Name="cInheritUser_DepartmentID" Type="Guid" />
-    <Property Name="cInheritUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cInheritUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cInheritUser_PhoneExt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="cInheritUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContactType" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-    <Property Name="cContent_ContactPersonName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContactPersonTitle" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-    <Property Name="cContent_ContactPersonAddCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContactPersonAddCity" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContactPersonAddTownship" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContactPersonAddRoad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContactPersonAddNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContactPersonPhone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ContactPersonEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_HandlingDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_HandlingFee" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="cContent_HandlingDelayMemo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ReceiveCondition" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ReceiveOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_ReceiveRemarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_SAPReceiveCondition" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_PaymentCondition" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_PaymentOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_PaymentRemarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cContent_SAPPaymentCondition" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cSystemGUID" Type="Guid" />
-  </EntityType>
   <EntityType Name="tblForm_SubContractSeals">
     <Key>
       <PropertyRef Name="cSystem_FormNo" />
@@ -396,5 +195,227 @@
     <Property Name="cEmployee_ProfitcenterID" Type="Guid" />
     <Property Name="cEmployee_CostCenterID" Type="Guid" />
     <Property Name="pk" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tblForm_ContractSeals">
+    <Key>
+      <PropertyRef Name="cSystem_FormNo" />
+    </Key>
+    <Property Name="cSystem_FormNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cSystem_ApplyDate" Type="DateTime" Precision="3" />
+    <Property Name="cSystem_FinishDate" Type="DateTime" Precision="3" />
+    <Property Name="cSystem_MainStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="cSystem_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cSystem_StatusDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cSystem_IsBatchApproval" Type="Boolean" />
+    <Property Name="cSystem_HasSubmitted" Type="Boolean" />
+    <Property Name="cSystem_TerminateReason" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="cSystem_ErrorMessage" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="cApplyUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cApplyUser_EmployeeID" Type="Guid" />
+    <Property Name="cApplyUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cApplyUser_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cApplyUser_DepartmentID" Type="Guid" />
+    <Property Name="cApplyUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cApplyUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cApplyUser_PhoneExt" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="cApplyUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cFillUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cFillUser_EmployeeID" Type="Guid" />
+    <Property Name="cFillUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cFillUser_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cFillUser_DepartmentID" Type="Guid" />
+    <Property Name="cFillUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cFillUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cFillUser_PhoneExt" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="cFillUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cAgentUser_EmployeeNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cAgentUser_EmployeeID" Type="Guid" />
+    <Property Name="cAgentUser_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cAgentUser_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cAgentUser_DepartmentID" Type="Guid" />
+    <Property Name="cAgentUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cAgentUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cAgentUser_PhoneExt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="cAgentUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_FormSecretary" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_FormSecretaryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_FormSecretaryID" Type="Guid" />
+    <Property Name="cContent_ContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_OldContractID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_IsRenew" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cContent_ContractReferenceNo" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractType" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractType_0" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractType_1" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractTypeOther1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractType_2" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractTypeOther2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_Maintain" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_MakeMoney" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_Note" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_Responses" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_Service" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_Team" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_MainNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_MainNoCName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_Memo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_Secretary" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_SecretaryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_SecretaryID" Type="Guid" />
+    <Property Name="cContent_MaintainSales" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_MaintainSalesName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractFirst" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_CrmOppNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_CostFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractVendor" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractUser" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractUserID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractStrDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractEndDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractYear" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractExtendDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractPGYear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractPGMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractPGOther" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_AttatchementId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractECSApplyNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractPaper" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractSeal1" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractSeal2" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractSeal3" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractSeal4" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractSeal5" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractSeal6" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractSeal7a" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractSeal7b" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo1" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="cContent_ContractInfo1_IN" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="cContent_ContractInfo2" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="cContent_ContractInfo3" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo4" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo5" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo6" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractInfo6Other" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo6Place" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractDept1" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractDept2" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractDept3" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractDept4" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractDept5" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractDept6" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractDept7" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractDept8" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractDept9" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractDept10" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractDept11" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractDept12" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ContractDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_HandlingSecret" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_ClassifiedLevel" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="cContent_HandlingTax" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="cContent_HandlingTotalTax" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="cContent_AttatchementId_1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_AttatchementId_2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_AttatchementId_3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_AttatchementId_4" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_IsSaved" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_IsHandlinged" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_IsHandlingChange" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_FlowStage" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="cSystem_CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="cSystem_CreatedUserID" Type="Guid" Nullable="false" />
+    <Property Name="cSystem_CreatedUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cSystem_ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="cSystem_ModifiedUserID" Type="Guid" />
+    <Property Name="cSystem_ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cApplyUser_FullDepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="cFillUser_FullDepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="cAgentUser_FullDepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="cSystem_TaskStartDate" Type="DateTime" Precision="3" />
+    <Property Name="cSystem_TaskUserAccounts" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="cSystem_TaskUserNames" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo3_0" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_PayNote" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_MakeMoney2" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo_PayNote2" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_Secretary2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_SecretaryName2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_SecretaryID2" Type="Guid" />
+    <Property Name="cContent_ContractTypeOther0" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_SealsFormNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cContent_OrigCurrency" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_OrigAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="cContent_ExchangeRate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_IsCFOBeforeFlow" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ReturnContractID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractInfo3Note" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractSeal8" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractSeal9" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractSeal10" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractSeal11" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractSeal12" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractSeal13" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractSeal14" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractSeal15" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractSeal16" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_PreSaleNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContractSealOther" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ChairmanApprove" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_CurrentType" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="cInheritUser_EmployeeNO" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="cInheritUser_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cInheritUser_EmployeeID" Type="Guid" />
+    <Property Name="cInheritUser_DepartmentID" Type="Guid" />
+    <Property Name="cInheritUser_DepartmentNO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cInheritUser_DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cInheritUser_PhoneExt" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="cInheritUser_WorkPlace" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContactType" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cContent_ContactPersonName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContactPersonTitle" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cContent_ContactPersonAddCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContactPersonAddCity" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContactPersonAddTownship" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContactPersonAddRoad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContactPersonAddNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContactPersonPhone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ContactPersonEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_HandlingDate" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_HandlingFee" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="cContent_HandlingDelayMemo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ReceiveCondition" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ReceiveOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_ReceiveRemarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_SAPReceiveCondition" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_PaymentCondition" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_PaymentOther" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_PaymentRemarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_SAPPaymentCondition" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cSystemGUID" Type="Guid" />
+    <Property Name="cApplyUser_ERPID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cFillUser_ERPID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cContent_FormSecretary_ERPID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cInheritUser_ERPID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN1" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN2" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN3" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN4" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN5" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN6" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN7" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN8" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN9" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN10" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN11" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN12" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN13" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN14" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN15" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="SIGN16" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cSystem_FlexSigner" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>
