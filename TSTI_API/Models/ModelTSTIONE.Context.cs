@@ -47,11 +47,11 @@ namespace TSTI_API.Models
         public virtual DbSet<TB_ONE_SRBatchInstallRecord_Detail> TB_ONE_SRBatchInstallRecord_Detail { get; set; }
         public virtual DbSet<TB_ONE_SRDetail_Warranty> TB_ONE_SRDetail_Warranty { get; set; }
         public virtual DbSet<TB_ONE_SRFixRecord> TB_ONE_SRFixRecord { get; set; }
-        public virtual DbSet<TB_ONE_ContractMain> TB_ONE_ContractMain { get; set; }
         public virtual DbSet<TB_ONE_SRSatisfactionSurveyRemove> TB_ONE_SRSatisfactionSurveyRemove { get; set; }
         public virtual DbSet<TB_ONE_SRTeamChangTemp> TB_ONE_SRTeamChangTemp { get; set; }
         public virtual DbSet<TB_ONE_SRBatchMaintainRecord> TB_ONE_SRBatchMaintainRecord { get; set; }
         public virtual DbSet<TB_ONE_SRMain> TB_ONE_SRMain { get; set; }
         public virtual DbSet<TB_ONE_ContractDetail_SUB> TB_ONE_ContractDetail_SUB { get; set; }
+        public virtual DbSet<TB_ONE_ContractMain> TB_ONE_ContractMain { get; set; }
     }
 }

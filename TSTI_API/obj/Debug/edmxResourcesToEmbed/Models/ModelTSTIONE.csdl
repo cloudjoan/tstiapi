@@ -18,17 +18,17 @@
     <EntitySet Name="TB_ONE_SRSatisfy_Survey" EntityType="Model.TB_ONE_SRSatisfy_Survey" />
     <EntitySet Name="TB_ONE_ContractDetail_ENG" EntityType="Model.TB_ONE_ContractDetail_ENG" />
     <EntitySet Name="TB_ONE_ContractDetail_OBJ" EntityType="Model.TB_ONE_ContractDetail_OBJ" />
-    <EntitySet Name="TB_ONE_ContractDetail_SUB" EntityType="Model.TB_ONE_ContractDetail_SUB" />
     <EntitySet Name="TB_ONE_ContractIDTemp" EntityType="Model.TB_ONE_ContractIDTemp" />
     <EntitySet Name="TB_ONE_SRBatchInstallRecord" EntityType="Model.TB_ONE_SRBatchInstallRecord" />
     <EntitySet Name="TB_ONE_SRBatchInstallRecord_Detail" EntityType="Model.TB_ONE_SRBatchInstallRecord_Detail" />
     <EntitySet Name="TB_ONE_SRDetail_Warranty" EntityType="Model.TB_ONE_SRDetail_Warranty" />
     <EntitySet Name="TB_ONE_SRFixRecord" EntityType="Model.TB_ONE_SRFixRecord" />
-    <EntitySet Name="TB_ONE_ContractMain" EntityType="Model.TB_ONE_ContractMain" />
     <EntitySet Name="TB_ONE_SRSatisfactionSurveyRemove" EntityType="Model.TB_ONE_SRSatisfactionSurveyRemove" />
     <EntitySet Name="TB_ONE_SRTeamChangTemp" EntityType="Model.TB_ONE_SRTeamChangTemp" />
     <EntitySet Name="TB_ONE_SRBatchMaintainRecord" EntityType="Model.TB_ONE_SRBatchMaintainRecord" />
     <EntitySet Name="TB_ONE_SRMain" EntityType="Model.TB_ONE_SRMain" />
+    <EntitySet Name="TB_ONE_ContractDetail_SUB" EntityType="Model.TB_ONE_ContractDetail_SUB" />
+    <EntitySet Name="TB_ONE_ContractMain" EntityType="Model.TB_ONE_ContractMain" />
   </EntityContainer>
   <EntityType Name="TB_ONE_SRDetail_Contact">
     <Key>
@@ -316,22 +316,6 @@
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
-  <EntityType Name="TB_ONE_ContractDetail_SUB">
-    <Key>
-      <PropertyRef Name="cID" />
-    </Key>
-    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="cContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cSubContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cSubSupplierID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="cSubSupplierName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="cSubNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="Disabled" Type="Int32" />
-    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-  </EntityType>
   <EntityType Name="TB_ONE_ContractIDTemp">
     <Key>
       <PropertyRef Name="cContractID" />
@@ -415,44 +399,6 @@
     <Property Name="cDeleteTime" Type="DateTime" Precision="3" />
     <Property Name="cLocationS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="cLocationA" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="TB_ONE_ContractMain">
-    <Key>
-      <PropertyRef Name="cContractID" />
-    </Key>
-    <Property Name="cContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cSoNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cSoSales" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cSoSalesName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="cSoSalesASS" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cSoSalesASSName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="cMASales" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="cMASalesName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="cCustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cCustomerName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cDesc" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-    <Property Name="cStartDate" Type="DateTime" Precision="3" />
-    <Property Name="cEndDate" Type="DateTime" Precision="3" />
-    <Property Name="cMACycle" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-    <Property Name="cMANotes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-    <Property Name="cMAAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cSLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cSLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="cContractNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cContractReport" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="cTeamID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="cIsSubContract" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-    <Property Name="cBillCycle" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-    <Property Name="cBillNotes" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-    <Property Name="cInvalidReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="cContactName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-    <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="cContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Disabled" Type="Int32" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
@@ -570,6 +516,60 @@
     <Property Name="cRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="cCustomerUnitType" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
     <Property Name="cSystemGUID" Type="Guid" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_ONE_ContractDetail_SUB">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cSubContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cSubSupplierID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="cSubSupplierName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cSubNotes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Disabled" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_ONE_ContractMain">
+    <Key>
+      <PropertyRef Name="cContractID" />
+    </Key>
+    <Property Name="cContractID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cSoNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cSoSales" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cSoSalesName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cSoSalesASS" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cSoSalesASSName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cMASales" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="cMASalesName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cCustomerID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cCustomerName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cDesc" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+    <Property Name="cStartDate" Type="DateTime" Precision="3" />
+    <Property Name="cEndDate" Type="DateTime" Precision="3" />
+    <Property Name="cMACycle" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="cMANotes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="cMAAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cSLARESP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cSLASRV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="cContractNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cContractReport" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="cTeamID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="cIsSubContract" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="cBillCycle" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="cBillNotes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="cInvalidReason" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="cContactName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="cContactEmail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="cContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Disabled" Type="Int32" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
