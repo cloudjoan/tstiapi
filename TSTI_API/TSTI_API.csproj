@@ -422,6 +422,12 @@
     <Compile Include="Models\TB_APP_PUSH_NOTICE_MESSAGES.cs">
       <DependentUpon>ModelEIPDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_BULLETIN_FN_TYPE.cs">
+      <DependentUpon>ModelPSIP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TB_BULLETIN_TYPE.cs">
+      <DependentUpon>ModelPSIP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_CAR_BOOKING.cs">
       <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
     </Compile>
@@ -565,6 +571,9 @@
     </Compile>
     <Compile Include="Models\VIEW_ANNIVERSARY_CHECK_IN.cs">
       <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VIEW_BULLETINForEip.cs">
+      <DependentUpon>ModelPSIP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VIEW_CUSTOMER_2.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>

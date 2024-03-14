@@ -41,6 +41,7 @@ namespace TSTI_API.Controllers
         ERP_PROXY_DBEntities dbProxy = new ERP_PROXY_DBEntities();
         APP_DATAEntities appDB = new APP_DATAEntities();
         MCSWorkflowEntities dbEIP = new MCSWorkflowEntities();
+        PSIPEntities psipDB = new PSIPEntities();
 
         CommonFunction CMF = new CommonFunction();
 
@@ -13661,10 +13662,71 @@ namespace TSTI_API.Controllers
 
             return deptIds;
         }
-    }
 
-    #region 取得系統位址參數相關資訊
-    public class SRSYSPARAINFO
+
+
+        #region 公告
+
+        [HttpPost]
+		public ActionResult GetBulletinByErpId(string erpId, string Year = "")
+		{
+
+            var personBean = dbEIP.Person.FirstOrDefault(x => x.ERP_ID == erpId);
+            
+			var bulletinList = psipDB.VIEW_BULLETINForEip.Where(x => x.cancelMark == false
+																		 && DateTime.Today >= x.startDate
+																		 && DateTime.Today <= x.endDate
+																		 && x.currentType == "2"
+																		 // 年分
+																		 && (Year == "" || x.startDate.Year.ToString() == Year)
+																		 // 瀏覽權限
+																		 && (x.createUserID == erpId || x.Dept.Contains(personBean.DeptID) || x.ErpID.Contains(erpId) || x.bulletinTarget.Contains(personBean.Email) || x.MailDept.Contains(personBean.DeptID) || x.MailErpID.Contains(erpId) || x.MailTarget.Contains(personBean.Email))).ToList();
+
+
+			var bulletinTypeData = psipDB.TB_BULLETIN_TYPE.Where(x => x.bulletinParentTypeID == 0 && x.isEnabled == true).Select(x => new SelectListItem { Value = x.bulletinTypeID.ToString(), Text = x.bulletinType + "." + x.bulletinTypeName }).ToList();
+
+
+			var bulletinTypeList = new List<SelectListItem>();
+			bulletinTypeList.Add(new SelectListItem { Text = "全部", Value = "0" });
+
+			foreach (var bulletinType in bulletinTypeData)
+			{
+				bulletinTypeList.Add(bulletinType);
+			}
+			bulletinTypeList.First().Selected = true;       // 預設第一筆
+
+			#region 公告單位下拉選單
+
+			//var bulletinUnitList = new List<SelectListItem>();
+			//bulletinUnitList.Add(new SelectListItem { Text = "全部", Value = "0" });
+
+			//foreach (var bulletinUnit in bulletinService.GetBulletinUnitList())
+			//{
+			//    bulletinUnitList.Add(bulletinUnit);
+			//}
+
+			#endregion
+
+			#region 公告類別
+
+			var FnTypeList = psipDB.TB_BULLETIN_FN_TYPE.Where(x => x.isEnabled == true).ToList();
+
+			#endregion
+
+			ViewBag.Year = (Year == "") ? DateTime.Now.Year.ToString() : Year;   // 年分
+			ViewBag.bulletinList = bulletinList;                                         // 公告清單
+			ViewBag.bulletinTypeList = bulletinTypeList;                                     // 訊息類型下拉選單
+			ViewBag.FnTypeList = FnTypeList;
+
+            return Json(ViewBag, JsonRequestBehavior.AllowGet);// 公告類別
+
+		}
+
+		#endregion
+	}
+
+	#region 取得系統位址參數相關資訊
+	public class SRSYSPARAINFO
     {
         /// <summary>呼叫SAPERP參數是正式區或測試區(true.正式區 false.測試區)</summary>
         public bool IsFormal { get; set; }
@@ -14772,7 +14834,7 @@ namespace TSTI_API.Controllers
         /// <summary>客戶聯絡人E-Mail</summary>
         public string IV_ContactEmail { get; set; }        
     }
-    #endregion
+	#endregion
 
 
 }
