@@ -762,7 +762,7 @@ namespace TSTI_API.Controllers
                 bean.SRID = dr["cSRID"].ToString();
                 bean.CUSTOMERNAME = dr["cCustomerName"].ToString();
                 bean.REPAIRNAME = dr["cRepairName"].ToString();
-                bean.SRDATE = Convert.ToDateTime(dr["CreatedDate"].ToString()).ToString("yyyy-MM-dd");                
+                bean.SRDATE = Convert.ToDateTime(dr["CreatedDate"].ToString()).ToString("yyyy-MM-dd HH:mm");                
                 bean.PRODUCT = dr["Products"].ToString().Replace("＃＃", "_").TrimEnd('_');
                 bean.DESC = dr["cDesc"].ToString();
                 bean.STATUS = dr["cStatus"].ToString() == "E0006" ? "完修" : "處理中";

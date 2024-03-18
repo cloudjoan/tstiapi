@@ -14,6 +14,9 @@
     <EntitySet Name="TB_PIS_INSTALLMaterial" EntityType="Self.TB_PIS_INSTALLMaterial" />
     <EntitySet Name="TB_ONE_SysParameter" EntityType="PSIPModel.TB_ONE_SysParameter" />
     <EntitySet Name="TB_ONE_RoleParameter" EntityType="PSIPModel.TB_ONE_RoleParameter" />
+    <EntitySet Name="VIEW_BULLETINForEip" EntityType="PSIPModel.VIEW_BULLETINForEip" />
+    <EntitySet Name="TB_BULLETIN_TYPE" EntityType="PSIPModel.TB_BULLETIN_TYPE" />
+    <EntitySet Name="TB_BULLETIN_FN_TYPE" EntityType="PSIPModel.TB_BULLETIN_FN_TYPE" />
   </EntityContainer>
   <EntityType Name="TB_ONE_SysParameter">
     <Key>
@@ -24,7 +27,7 @@
     <Property Name="cFunctionID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="cCompanyID" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
     <Property Name="cNo" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-    <Property Name="cValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="cDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="Disabled" Type="Int32" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
@@ -53,5 +56,89 @@
     <Property Name="CreatedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="VIEW_BULLETINForEip">
+    <Key>
+      <PropertyRef Name="bulletinID" />
+      <PropertyRef Name="bulletinTypeID" />
+      <PropertyRef Name="bulletinItem" />
+      <PropertyRef Name="bulletinTarget" />
+      <PropertyRef Name="bulletinTargetName" />
+      <PropertyRef Name="bulletinSubject" />
+      <PropertyRef Name="bulletinContent" />
+      <PropertyRef Name="startDate" />
+      <PropertyRef Name="endDate" />
+      <PropertyRef Name="currentType" />
+      <PropertyRef Name="status" />
+      <PropertyRef Name="createTime" />
+      <PropertyRef Name="createUserAccount" />
+      <PropertyRef Name="createUserID" />
+      <PropertyRef Name="createUserName" />
+      <PropertyRef Name="cancelMark" />
+      <PropertyRef Name="MailMark" />
+      <PropertyRef Name="FN_Name" />
+    </Key>
+    <Property Name="bulletinID" Type="Int32" Nullable="false" />
+    <Property Name="bulletinTypeID" Type="Int32" Nullable="false" />
+    <Property Name="bulletinItem" Type="Int32" Nullable="false" />
+    <Property Name="bulletinTarget" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="bulletinTargetName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="bulletinSubject" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="bulletinContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="templateID" Type="Int32" />
+    <Property Name="startDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="endDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="currentType" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="status" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="createTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="createUserAccount" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="createUserID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="createUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="rejectReason" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="approveUser" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="approveAgentUser" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="cancelMark" Type="Boolean" Nullable="false" />
+    <Property Name="modifyUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="modifyTime" Type="DateTime" Precision="3" />
+    <Property Name="cancelTime" Type="DateTime" Precision="3" />
+    <Property Name="createUserMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="approveUserMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="approveAgentUserMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cancelUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Attachment" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="bulletinParentTypeID" Type="Int32" />
+    <Property Name="bulletinParentTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="bulletinUnitName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="bulletinUnitCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="MailMark" Type="Boolean" Nullable="false" />
+    <Property Name="MailTarget" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MailTargetName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="FN_No" Type="Int32" />
+    <Property Name="FN_Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Dept" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ErpID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MailDept" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MailErpID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_BULLETIN_TYPE">
+    <Key>
+      <PropertyRef Name="bulletinTypeID" />
+    </Key>
+    <Property Name="bulletinTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="bulletinType" Type="Int32" Nullable="false" />
+    <Property Name="bulletinTypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="bulletinParentTypeID" Type="Int32" Nullable="false" />
+    <Property Name="isEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="visibleDept" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ParamName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_BULLETIN_FN_TYPE">
+    <Key>
+      <PropertyRef Name="Seq_No" />
+    </Key>
+    <Property Name="Seq_No" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FN_No" Type="Int32" Nullable="false" />
+    <Property Name="FN_Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="isEnabled" Type="Boolean" Nullable="false" />
   </EntityType>
 </Schema>
