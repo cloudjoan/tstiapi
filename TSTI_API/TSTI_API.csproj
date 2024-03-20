@@ -575,6 +575,9 @@
     <Compile Include="Models\VIEW_BULLETINForEip.cs">
       <DependentUpon>ModelPSIP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VIEW_BULLETINForEip_SIMPLE.cs">
+      <DependentUpon>ModelPSIP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\VIEW_CUSTOMER_2.cs">
       <DependentUpon>ModelProxy.tt</DependentUpon>
     </Compile>
