@@ -12935,7 +12935,7 @@ namespace TSTI_API.Controllers
 		[HttpPost]
 		public ActionResult GetCarInfos()
 		{
-            var beans = appDB.TB_CAR_DATA.Where(x => x.DISABLED != -1).OrderBy(x => x.LPN);
+            var beans = appDB.TB_CAR_DATA.Where(x => x.DISABLED != 1).OrderBy(x => x.LPN);
 
 			return Json(beans, JsonRequestBehavior.AllowGet);
 		}
@@ -13671,9 +13671,9 @@ namespace TSTI_API.Controllers
 		public ActionResult GetBulletinByErpId(string erpId, string Year = "")
 		{
 
-            var personBean = dbEIP.Person.FirstOrDefault(x => x.ERP_ID == erpId);
-            
-			var bulletinList = psipDB.VIEW_BULLETINForEip.Where(x => x.cancelMark == false
+			var personBean = dbEIP.Person.FirstOrDefault(x => x.ERP_ID == erpId);
+
+			var bulletinList = psipDB.VIEW_BULLETINForEip_SIMPLE.Where(x => x.cancelMark == false
 																		 && DateTime.Today >= x.startDate
 																		 && DateTime.Today <= x.endDate
 																		 && x.currentType == "2"
@@ -13713,13 +13713,18 @@ namespace TSTI_API.Controllers
 
 			#endregion
 
-			ViewBag.Year = (Year == "") ? DateTime.Now.Year.ToString() : Year;   // 年分
-			ViewBag.bulletinList = bulletinList;                                         // 公告清單
-			ViewBag.bulletinTypeList = bulletinTypeList;                                     // 訊息類型下拉選單
-			ViewBag.FnTypeList = FnTypeList;
 
-            return Json(ViewBag, JsonRequestBehavior.AllowGet);// 公告類別
+			Dictionary<string, object> items = new Dictionary<string, object>();
+			items.Add("Year", (Year == "") ? DateTime.Now.Year.ToString() : Year);  // 年分
+			items.Add("bulletinList", bulletinList);                                // 公告清單
+			items.Add("bulletinTypeList", bulletinTypeList);                        // 訊息類型下拉選單
+			items.Add("FnTypeList", FnTypeList);
 
+			//內容太多，所以要先轉換
+			var jsonResult = Json(items);
+			jsonResult.MaxJsonLength = int.MaxValue;
+
+			return jsonResult;
 		}
 
 		#endregion

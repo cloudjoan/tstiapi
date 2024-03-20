@@ -31,5 +31,6 @@ namespace TSTI_API.Models
         public virtual DbSet<VIEW_BULLETINForEip> VIEW_BULLETINForEip { get; set; }
         public virtual DbSet<TB_BULLETIN_TYPE> TB_BULLETIN_TYPE { get; set; }
         public virtual DbSet<TB_BULLETIN_FN_TYPE> TB_BULLETIN_FN_TYPE { get; set; }
+        public virtual DbSet<VIEW_BULLETINForEip_SIMPLE> VIEW_BULLETINForEip_SIMPLE { get; set; }
     }
 }

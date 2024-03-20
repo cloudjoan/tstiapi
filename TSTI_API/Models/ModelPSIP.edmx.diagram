@@ -11,6 +11,7 @@
         <EntityTypeShape EntityType="PSIPModel.VIEW_BULLETINForEip" Width="1.5" PointX="0.75" PointY="2.75" />
         <EntityTypeShape EntityType="PSIPModel.TB_BULLETIN_TYPE" Width="1.5" PointX="3.375" PointY="2.75" />
         <EntityTypeShape EntityType="PSIPModel.TB_BULLETIN_FN_TYPE" Width="1.5" PointX="5.375" PointY="2.75" />
+        <EntityTypeShape EntityType="PSIPModel.VIEW_BULLETINForEip_SIMPLE" Width="1.5" PointX="5.375" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
