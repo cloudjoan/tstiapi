@@ -135,6 +135,69 @@
     <Property Name="MailDept" Type="nvarchar(max)" />
     <Property Name="MailErpID" Type="nvarchar(max)" />
   </EntityType>
+  <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'PSIP.dbo.VIEW_BULLETINForEip_SIMPLE' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+  <EntityType Name="VIEW_BULLETINForEip_SIMPLE">
+    <Key>
+      <PropertyRef Name="bulletinID" />
+      <PropertyRef Name="bulletinTypeID" />
+      <PropertyRef Name="bulletinItem" />
+      <PropertyRef Name="bulletinTarget" />
+      <PropertyRef Name="bulletinTargetName" />
+      <PropertyRef Name="bulletinSubject" />
+      <PropertyRef Name="startDate" />
+      <PropertyRef Name="endDate" />
+      <PropertyRef Name="currentType" />
+      <PropertyRef Name="status" />
+      <PropertyRef Name="createTime" />
+      <PropertyRef Name="createUserAccount" />
+      <PropertyRef Name="createUserID" />
+      <PropertyRef Name="createUserName" />
+      <PropertyRef Name="cancelMark" />
+      <PropertyRef Name="MailMark" />
+      <PropertyRef Name="FN_Name" />
+    </Key>
+    <Property Name="bulletinID" Type="int" Nullable="false" />
+    <Property Name="bulletinTypeID" Type="int" Nullable="false" />
+    <Property Name="bulletinItem" Type="int" Nullable="false" />
+    <Property Name="bulletinTarget" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="bulletinTargetName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="bulletinSubject" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="templateID" Type="int" />
+    <Property Name="startDate" Type="datetime" Nullable="false" />
+    <Property Name="endDate" Type="datetime" Nullable="false" />
+    <Property Name="currentType" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="createTime" Type="datetime" Nullable="false" />
+    <Property Name="createUserAccount" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="createUserID" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="createUserName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="rejectReason" Type="nvarchar" MaxLength="100" />
+    <Property Name="approveUser" Type="varchar" MaxLength="20" />
+    <Property Name="approveAgentUser" Type="varchar" MaxLength="20" />
+    <Property Name="cancelMark" Type="bit" Nullable="false" />
+    <Property Name="modifyUser" Type="nvarchar" MaxLength="20" />
+    <Property Name="modifyTime" Type="datetime" />
+    <Property Name="cancelTime" Type="datetime" />
+    <Property Name="createUserMail" Type="nvarchar" MaxLength="50" />
+    <Property Name="approveUserMail" Type="nvarchar" MaxLength="50" />
+    <Property Name="approveAgentUserMail" Type="nvarchar" MaxLength="50" />
+    <Property Name="cancelUser" Type="nvarchar" MaxLength="20" />
+    <Property Name="Attachment" Type="nvarchar" MaxLength="2000" />
+    <Property Name="bulletinParentTypeID" Type="int" />
+    <Property Name="bulletinParentTypeName" Type="nvarchar" MaxLength="50" />
+    <Property Name="bulletinUnitName" Type="nvarchar" MaxLength="20" />
+    <Property Name="bulletinUnitCode" Type="nvarchar" MaxLength="20" />
+    <Property Name="MailMark" Type="bit" Nullable="false" />
+    <Property Name="MailTarget" Type="nvarchar(max)" />
+    <Property Name="MailTargetName" Type="nvarchar(max)" />
+    <Property Name="FN_No" Type="int" />
+    <Property Name="FN_Name" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Dept" Type="nvarchar(max)" />
+    <Property Name="ErpID" Type="nvarchar(max)" />
+    <Property Name="MailDept" Type="nvarchar(max)" />
+    <Property Name="MailErpID" Type="nvarchar(max)" />
+  </EntityType>
   <EntityContainer Name="PSIPModelStoreContainer">
     <EntitySet Name="TB_BULLETIN_FN_TYPE" EntityType="Self.TB_BULLETIN_FN_TYPE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_BULLETIN_TYPE" EntityType="Self.TB_BULLETIN_TYPE" Schema="dbo" store:Type="Tables" />
@@ -185,6 +248,50 @@
     [VIEW_BULLETINForEip].[MailDept] AS [MailDept], 
     [VIEW_BULLETINForEip].[MailErpID] AS [MailErpID]
     FROM [dbo].[VIEW_BULLETINForEip] AS [VIEW_BULLETINForEip]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="VIEW_BULLETINForEip_SIMPLE" EntityType="Self.VIEW_BULLETINForEip_SIMPLE" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VIEW_BULLETINForEip_SIMPLE].[bulletinID] AS [bulletinID], 
+    [VIEW_BULLETINForEip_SIMPLE].[bulletinTypeID] AS [bulletinTypeID], 
+    [VIEW_BULLETINForEip_SIMPLE].[bulletinItem] AS [bulletinItem], 
+    [VIEW_BULLETINForEip_SIMPLE].[bulletinTarget] AS [bulletinTarget], 
+    [VIEW_BULLETINForEip_SIMPLE].[bulletinTargetName] AS [bulletinTargetName], 
+    [VIEW_BULLETINForEip_SIMPLE].[bulletinSubject] AS [bulletinSubject], 
+    [VIEW_BULLETINForEip_SIMPLE].[templateID] AS [templateID], 
+    [VIEW_BULLETINForEip_SIMPLE].[startDate] AS [startDate], 
+    [VIEW_BULLETINForEip_SIMPLE].[endDate] AS [endDate], 
+    [VIEW_BULLETINForEip_SIMPLE].[currentType] AS [currentType], 
+    [VIEW_BULLETINForEip_SIMPLE].[status] AS [status], 
+    [VIEW_BULLETINForEip_SIMPLE].[createTime] AS [createTime], 
+    [VIEW_BULLETINForEip_SIMPLE].[createUserAccount] AS [createUserAccount], 
+    [VIEW_BULLETINForEip_SIMPLE].[createUserID] AS [createUserID], 
+    [VIEW_BULLETINForEip_SIMPLE].[createUserName] AS [createUserName], 
+    [VIEW_BULLETINForEip_SIMPLE].[rejectReason] AS [rejectReason], 
+    [VIEW_BULLETINForEip_SIMPLE].[approveUser] AS [approveUser], 
+    [VIEW_BULLETINForEip_SIMPLE].[approveAgentUser] AS [approveAgentUser], 
+    [VIEW_BULLETINForEip_SIMPLE].[cancelMark] AS [cancelMark], 
+    [VIEW_BULLETINForEip_SIMPLE].[modifyUser] AS [modifyUser], 
+    [VIEW_BULLETINForEip_SIMPLE].[modifyTime] AS [modifyTime], 
+    [VIEW_BULLETINForEip_SIMPLE].[cancelTime] AS [cancelTime], 
+    [VIEW_BULLETINForEip_SIMPLE].[createUserMail] AS [createUserMail], 
+    [VIEW_BULLETINForEip_SIMPLE].[approveUserMail] AS [approveUserMail], 
+    [VIEW_BULLETINForEip_SIMPLE].[approveAgentUserMail] AS [approveAgentUserMail], 
+    [VIEW_BULLETINForEip_SIMPLE].[cancelUser] AS [cancelUser], 
+    [VIEW_BULLETINForEip_SIMPLE].[Attachment] AS [Attachment], 
+    [VIEW_BULLETINForEip_SIMPLE].[bulletinParentTypeID] AS [bulletinParentTypeID], 
+    [VIEW_BULLETINForEip_SIMPLE].[bulletinParentTypeName] AS [bulletinParentTypeName], 
+    [VIEW_BULLETINForEip_SIMPLE].[bulletinUnitName] AS [bulletinUnitName], 
+    [VIEW_BULLETINForEip_SIMPLE].[bulletinUnitCode] AS [bulletinUnitCode], 
+    [VIEW_BULLETINForEip_SIMPLE].[MailMark] AS [MailMark], 
+    [VIEW_BULLETINForEip_SIMPLE].[MailTarget] AS [MailTarget], 
+    [VIEW_BULLETINForEip_SIMPLE].[MailTargetName] AS [MailTargetName], 
+    [VIEW_BULLETINForEip_SIMPLE].[FN_No] AS [FN_No], 
+    [VIEW_BULLETINForEip_SIMPLE].[FN_Name] AS [FN_Name], 
+    [VIEW_BULLETINForEip_SIMPLE].[Dept] AS [Dept], 
+    [VIEW_BULLETINForEip_SIMPLE].[ErpID] AS [ErpID], 
+    [VIEW_BULLETINForEip_SIMPLE].[MailDept] AS [MailDept], 
+    [VIEW_BULLETINForEip_SIMPLE].[MailErpID] AS [MailErpID]
+    FROM [dbo].[VIEW_BULLETINForEip_SIMPLE] AS [VIEW_BULLETINForEip_SIMPLE]</DefiningQuery>
     </EntitySet>
   </EntityContainer>
 </Schema>

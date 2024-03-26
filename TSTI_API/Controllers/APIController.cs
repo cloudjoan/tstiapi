@@ -13901,6 +13901,8 @@ namespace TSTI_API.Controllers
         public string MAINENGID { get; set; }
         /// <summary>主要工程師姓名</summary>
         public string MAINENGNAME { get; set; }
+        /// <summary>主要工程師聯絡電話</summary>
+        public string MAINENGPHONE { get; set; }
         /// <summary>協助工程師姓名</summary>
         public string ASSENGNAME { get; set; }
         /// <summary>技術主管姓名</summary>
@@ -14096,6 +14098,8 @@ namespace TSTI_API.Controllers
         public string ENGID { get; set; }
         /// <summary>服務工程師姓名/技術主管姓名</summary>
         public string ENGNAME { get; set; }
+        /// <summary>服務工程師聯絡電話/技術主管聯絡電話</summary>
+        public string ENGPHONE { get; set; }
         /// <summary>接單時間</summary>
         public string ReceiveTime { get; set; }
         /// <summary>出發時間</summary>

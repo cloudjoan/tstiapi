@@ -1816,6 +1816,7 @@ namespace TSTI_API.Controllers
             string cFinishTime = string.Empty;
             string cURLName = string.Empty;
             string cSRReportURL = string.Empty;
+            string cENGPHONE = string.Empty;
           
             var beans = dbOne.TB_ONE_SRDetail_Record.Where(x => x.Disabled == 0 && x.cSRID == cSRID);
 
@@ -1828,11 +1829,13 @@ namespace TSTI_API.Controllers
                 cArriveTime = bean.cArriveTime == null ? "" : Convert.ToDateTime(bean.cArriveTime).ToString("yyyy-MM-dd HH:mm");
                 cFinishTime = bean.cFinishTime == null ? "" : Convert.ToDateTime(bean.cFinishTime).ToString("yyyy-MM-dd HH:mm");
                 cSRReportURL = findAttachUrl(bean.cSRReport, tAttachURLName);
+                cENGPHONE = findEmployeeMoblieByERPID(bean.cEngineerID);
 
                 SRRecord.CID = bean.cID.ToString();
                 SRRecord.SRID = bean.cSRID;
                 SRRecord.ENGID = bean.cEngineerID;
                 SRRecord.ENGNAME = bean.cEngineerName;
+                SRRecord.ENGPHONE = cENGPHONE;
                 SRRecord.ReceiveTime = cReceiveTime;
                 SRRecord.StartTime = cStartTime;
                 SRRecord.ArriveTime = cArriveTime;
@@ -3112,6 +3115,49 @@ namespace TSTI_API.Controllers
         }
         #endregion
 
+        #region 傳入ERPID並回傳「員工手機號碼」，若有多筆以分號隔開
+        /// <summary>
+        /// 傳入ERPID並回傳「中文姓名+英文姓名」，若有多筆以分號隔開
+        /// </summary>
+        /// <param name="tERPIDList"></param>
+        /// <returns></returns>
+        public string findEmployeeMoblieByERPID(string tERPIDList)
+        {
+            string reValue = string.Empty;
+            string Moblie = string.Empty;
+
+            tERPIDList = string.IsNullOrEmpty(tERPIDList) ? "" : tERPIDList;
+
+            if (tERPIDList != "")
+            {
+                string[] AryERPID = tERPIDList.Split(';');
+
+                foreach (string tERPID in AryERPID)
+                {
+                    var bean = dbEIP.Person.FirstOrDefault(x => x.ERP_ID == tERPID);
+
+                    if (bean != null)
+                    {
+                        if (string.IsNullOrEmpty(bean.Mobile))
+                        {
+                            Moblie = "(02)55624722";
+                        }
+                        else
+                        {
+                            Moblie = bean.Mobile.Substring(0, 4) + "***" + bean.Mobile.Substring(7, 3);
+                        }
+
+                        reValue += Moblie + ";";
+                    }
+                }
+
+                reValue = reValue.TrimEnd(';');
+            }
+
+            return reValue;
+        }
+        #endregion
+
         #region 取得服務案件主檔資訊清單
         /// <summary>
         /// 取得服務案件主檔資訊清單
@@ -3129,8 +3175,9 @@ namespace TSTI_API.Controllers
             string tSRTDESC = string.Empty;
             string tSTATUSDESC = string.Empty;
             string tSRREPORTUrl = string.Empty;
-            string tASSENGNAME = string.Empty;
+            string tASSENGNAME = string.Empty;            
             string tTECHMAGNAME = string.Empty;
+            string tMAINENGPHONE = string.Empty;
 
             var beansP = dbOne.TB_ONE_SRDetail_Product.Where(x => x.Disabled == 0 & x.cSerialID == IV_SERIAL);
 
@@ -3176,6 +3223,7 @@ namespace TSTI_API.Controllers
                     tSRREPORTUrl = findSRReportURL(tSRID);
                     tASSENGNAME = findEmployeeCENameByERPID(bean.cAssEngineerID);
                     tTECHMAGNAME = findEmployeeCENameByERPID(bean.cTechManagerID);
+                    tMAINENGPHONE = findEmployeeMoblieByERPID(bean.cMainEngineerID);
 
                     SRinfo.SRID = tSRID;
                     SRinfo.SRDESC = bean.cDesc;
@@ -3187,6 +3235,7 @@ namespace TSTI_API.Controllers
                     SRinfo.SRREPORTUrl = tSRREPORTUrl;
                     SRinfo.MAINENGID = bean.cMainEngineerID;
                     SRinfo.MAINENGNAME = bean.cMainEngineerName;
+                    SRinfo.MAINENGPHONE = tMAINENGPHONE;
                     SRinfo.ASSENGNAME = tASSENGNAME;
                     SRinfo.TECHMAGNAME = tTECHMAGNAME;
 

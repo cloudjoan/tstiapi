@@ -122,5 +122,51 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="VIEW_BULLETINForEip_SIMPLE">
+      <EntityTypeMapping TypeName="PSIPModel.VIEW_BULLETINForEip_SIMPLE">
+        <MappingFragment StoreEntitySet="VIEW_BULLETINForEip_SIMPLE">
+          <ScalarProperty Name="MailErpID" ColumnName="MailErpID" />
+          <ScalarProperty Name="MailDept" ColumnName="MailDept" />
+          <ScalarProperty Name="ErpID" ColumnName="ErpID" />
+          <ScalarProperty Name="Dept" ColumnName="Dept" />
+          <ScalarProperty Name="FN_Name" ColumnName="FN_Name" />
+          <ScalarProperty Name="FN_No" ColumnName="FN_No" />
+          <ScalarProperty Name="MailTargetName" ColumnName="MailTargetName" />
+          <ScalarProperty Name="MailTarget" ColumnName="MailTarget" />
+          <ScalarProperty Name="MailMark" ColumnName="MailMark" />
+          <ScalarProperty Name="bulletinUnitCode" ColumnName="bulletinUnitCode" />
+          <ScalarProperty Name="bulletinUnitName" ColumnName="bulletinUnitName" />
+          <ScalarProperty Name="bulletinParentTypeName" ColumnName="bulletinParentTypeName" />
+          <ScalarProperty Name="bulletinParentTypeID" ColumnName="bulletinParentTypeID" />
+          <ScalarProperty Name="Attachment" ColumnName="Attachment" />
+          <ScalarProperty Name="cancelUser" ColumnName="cancelUser" />
+          <ScalarProperty Name="approveAgentUserMail" ColumnName="approveAgentUserMail" />
+          <ScalarProperty Name="approveUserMail" ColumnName="approveUserMail" />
+          <ScalarProperty Name="createUserMail" ColumnName="createUserMail" />
+          <ScalarProperty Name="cancelTime" ColumnName="cancelTime" />
+          <ScalarProperty Name="modifyTime" ColumnName="modifyTime" />
+          <ScalarProperty Name="modifyUser" ColumnName="modifyUser" />
+          <ScalarProperty Name="cancelMark" ColumnName="cancelMark" />
+          <ScalarProperty Name="approveAgentUser" ColumnName="approveAgentUser" />
+          <ScalarProperty Name="approveUser" ColumnName="approveUser" />
+          <ScalarProperty Name="rejectReason" ColumnName="rejectReason" />
+          <ScalarProperty Name="createUserName" ColumnName="createUserName" />
+          <ScalarProperty Name="createUserID" ColumnName="createUserID" />
+          <ScalarProperty Name="createUserAccount" ColumnName="createUserAccount" />
+          <ScalarProperty Name="createTime" ColumnName="createTime" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="currentType" ColumnName="currentType" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
+          <ScalarProperty Name="templateID" ColumnName="templateID" />
+          <ScalarProperty Name="bulletinSubject" ColumnName="bulletinSubject" />
+          <ScalarProperty Name="bulletinTargetName" ColumnName="bulletinTargetName" />
+          <ScalarProperty Name="bulletinTarget" ColumnName="bulletinTarget" />
+          <ScalarProperty Name="bulletinItem" ColumnName="bulletinItem" />
+          <ScalarProperty Name="bulletinTypeID" ColumnName="bulletinTypeID" />
+          <ScalarProperty Name="bulletinID" ColumnName="bulletinID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
