@@ -2593,6 +2593,7 @@ namespace TSTI_API.Controllers
                         {
                             beanM.cMainEngineerID = IV_TRANSEMPNO;
                             beanM.cMainEngineerName = CMF.findEmployeeName(IV_TRANSEMPNO);
+                            tCondition = SRCondition.TRANS; //轉派主要工程師
                         }
                         else if (IV_TRANSTYPE == "ASS")
                         {
