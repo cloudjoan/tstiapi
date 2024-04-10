@@ -2484,6 +2484,9 @@ namespace TSTI_API.Controllers
             SRMain_SREMPCHANGE_OUTPUT SROUT = new SRMain_SREMPCHANGE_OUTPUT();
 
             bool tIsFormal = false;
+            
+            string tLog = string.Empty;
+            string tEventname = string.Empty;
             string tExcType = string.Empty;
             string pLoginName = string.Empty;
             string tAPIURLName = string.Empty;
@@ -2492,6 +2495,8 @@ namespace TSTI_API.Controllers
             string tPSIPURLName = string.Empty;
             string tAttachURLName = string.Empty;
             string tAttachPath = string.Empty;
+            string tOldValue = string.Empty;
+
             string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
             string IV_TRANSTYPE = string.IsNullOrEmpty(bean.IV_TRANSTYPE) ? "" : bean.IV_TRANSTYPE.Trim();
             string IV_TRANSEMPNO = string.IsNullOrEmpty(bean.IV_TRANSEMPNO) ? "" : bean.IV_TRANSEMPNO.TrimEnd(';');
@@ -2587,17 +2592,27 @@ namespace TSTI_API.Controllers
                     {
                         if (IV_TRANSTYPE == "TECH")
                         {
+                            tOldValue = beanM.cTechManagerID;
                             beanM.cTechManagerID = IV_TRANSEMPNO;
+
+                            tLog = CMF.getNewAndOldLog("技術主管", tOldValue, beanM.cTechManagerID);
                         }
                         else if (IV_TRANSTYPE == "MAIN")
                         {
+                            tOldValue = beanM.cMainEngineerName;
+
                             beanM.cMainEngineerID = IV_TRANSEMPNO;
                             beanM.cMainEngineerName = CMF.findEmployeeName(IV_TRANSEMPNO);
                             tCondition = SRCondition.TRANS; //轉派主要工程師
+
+                            tLog = CMF.getNewAndOldLog("主要工程師", tOldValue, beanM.cMainEngineerName);
                         }
                         else if (IV_TRANSTYPE == "ASS")
                         {
+                            tOldValue = beanM.cAssEngineerID;
                             beanM.cAssEngineerID = IV_TRANSEMPNO;
+
+                            tLog = CMF.getNewAndOldLog("協助工程師", tOldValue, beanM.cAssEngineerID);
                         }
                     }
 
@@ -2623,6 +2638,24 @@ namespace TSTI_API.Controllers
                     {
                         SROUT.EV_MSGT = "Y";
                         SROUT.EV_MSG = "";
+
+                        if (!string.IsNullOrEmpty(tLog))
+                        {
+                            if (IV_SRID.Substring(0, 2) == "61")
+                            {
+                                tEventname = "SaveGenerallySR";
+                            }
+                            else if (IV_SRID.Substring(0, 2) == "63")
+                            {
+                                tEventname = "SaveInstallSR";
+                            }
+                            else if (IV_SRID.Substring(0, 2) == "65")
+                            {
+                                tEventname = "SaveMaintainSR";
+                            }
+
+                            CMF.writeToLog(IV_SRID, tEventname, tLog, pLoginName);
+                        }
 
                         #region 寄送Mail通知
                         CMF.SetSRMailContent(tCondition, pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, EmpBean.BUKRS, IV_SRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
