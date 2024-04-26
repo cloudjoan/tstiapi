@@ -13697,8 +13697,6 @@ namespace TSTI_API.Controllers
             return deptIds;
         }
 
-
-
         #region 公告
 
         [HttpPost]
@@ -13759,6 +13757,16 @@ namespace TSTI_API.Controllers
 			jsonResult.MaxJsonLength = int.MaxValue;
 
 			return jsonResult;
+		}
+
+		#endregion
+
+		#region 取得全體業務（不包含主管）
+		public ActionResult GetAllSalesExcludeManager()
+		{
+			var beans = dbProxy.VIEW_DW_Emp.Where(x => x.JobPost == "業務" && x.EmpPostseries == "業務" && x.Comp == "大同世界科技" && (x.EmpTitleDesc == "業務代表" || x.EmpTitleDesc.Contains("專案")));
+
+			return Json(beans, JsonRequestBehavior.AllowGet);
 		}
 
 		#endregion

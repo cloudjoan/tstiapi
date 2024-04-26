@@ -364,6 +364,55 @@
           <Property Name="TEL" Type="nvarchar" MaxLength="30" />
         </EntityType>
         <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'ERP_PROXY_DB.dbo.VIEW_DW_Emp' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <EntityType Name="VIEW_DW_Emp">
+          <Key>
+            <PropertyRef Name="EmpAtDesc" />
+            <PropertyRef Name="InsertTime" />
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Employee" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmpBirthday" Type="varchar" MaxLength="30" />
+          <Property Name="EmpSex" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="EmpSexDesc" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="EmpADAccount" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmpEmail" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmpRegestDate" Type="varchar" MaxLength="30" />
+          <Property Name="DeptID" Type="varchar" MaxLength="100" />
+          <Property Name="DeptDesc" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmpTitleDesc" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmpWorkPlace" Type="nchar" MaxLength="100" />
+          <Property Name="EmpConstellation" Type="varchar" MaxLength="12" />
+          <Property Name="EmpNation" Type="char" MaxLength="10" />
+          <Property Name="EmpBloodType" Type="char" MaxLength="2" />
+          <Property Name="EmpLeaveDate" Type="varchar" MaxLength="30" />
+          <Property Name="EmpLeaveReason" Type="nvarchar" MaxLength="100" />
+          <Property Name="CompID" Type="char" MaxLength="10" />
+          <Property Name="Comp" Type="varchar" MaxLength="100" />
+          <Property Name="EmpAssignType" Type="char" MaxLength="1" />
+          <Property Name="EmpAtDesc" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="EmpIsMarriage" Type="char" MaxLength="1" />
+          <Property Name="EmpEngReadExam" Type="int" />
+          <Property Name="EmpEngHearExam" Type="int" />
+          <Property Name="EmpEngNewTOEFLExam" Type="int" />
+          <Property Name="EmpEngTOEFLExam" Type="int" />
+          <Property Name="EmpEngTOEICExam" Type="int" />
+          <Property Name="EmpEngIELTSExam" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmpEngGEPTExam" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmpAge" Type="int" />
+          <Property Name="ProfitCenter" Type="nvarchar" MaxLength="10" />
+          <Property Name="ProfitCenterDesc" Type="nvarchar" MaxLength="40" />
+          <Property Name="CostCenter" Type="nvarchar" MaxLength="30" />
+          <Property Name="CostCenterDesc" Type="nvarchar" MaxLength="40" />
+          <Property Name="EmpWorkType" Type="varchar" MaxLength="100" />
+          <Property Name="EmpManager" Type="nvarchar" MaxLength="100" />
+          <Property Name="EmpPostseries" Type="nvarchar" MaxLength="300" />
+          <Property Name="JobPost" Type="nvarchar" MaxLength="4" />
+          <Property Name="InsertTime" Type="datetime" Nullable="false" />
+          <Property Name="InsertUser" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <!--產生期間發現錯誤:
 警告 6002: 資料表/檢視 'ERP_PROXY_DB.dbo.VIEW_MATERIAL_ByComp' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="VIEW_MATERIAL_ByComp">
           <Key>
@@ -410,6 +459,50 @@
     [VIEW_CUSTOMER_WithAddress].[TEL] AS [TEL]
     FROM [dbo].[VIEW_CUSTOMER_WithAddress] AS [VIEW_CUSTOMER_WithAddress]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="VIEW_DW_Emp" EntityType="Self.VIEW_DW_Emp" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VIEW_DW_Emp].[EmployeeID] AS [EmployeeID], 
+    [VIEW_DW_Emp].[Employee] AS [Employee], 
+    [VIEW_DW_Emp].[EmpBirthday] AS [EmpBirthday], 
+    [VIEW_DW_Emp].[EmpSex] AS [EmpSex], 
+    [VIEW_DW_Emp].[EmpSexDesc] AS [EmpSexDesc], 
+    [VIEW_DW_Emp].[EmpADAccount] AS [EmpADAccount], 
+    [VIEW_DW_Emp].[EmpEmail] AS [EmpEmail], 
+    [VIEW_DW_Emp].[EmpRegestDate] AS [EmpRegestDate], 
+    [VIEW_DW_Emp].[DeptID] AS [DeptID], 
+    [VIEW_DW_Emp].[DeptDesc] AS [DeptDesc], 
+    [VIEW_DW_Emp].[EmpTitleDesc] AS [EmpTitleDesc], 
+    [VIEW_DW_Emp].[EmpWorkPlace] AS [EmpWorkPlace], 
+    [VIEW_DW_Emp].[EmpConstellation] AS [EmpConstellation], 
+    [VIEW_DW_Emp].[EmpNation] AS [EmpNation], 
+    [VIEW_DW_Emp].[EmpBloodType] AS [EmpBloodType], 
+    [VIEW_DW_Emp].[EmpLeaveDate] AS [EmpLeaveDate], 
+    [VIEW_DW_Emp].[EmpLeaveReason] AS [EmpLeaveReason], 
+    [VIEW_DW_Emp].[CompID] AS [CompID], 
+    [VIEW_DW_Emp].[Comp] AS [Comp], 
+    [VIEW_DW_Emp].[EmpAssignType] AS [EmpAssignType], 
+    [VIEW_DW_Emp].[EmpAtDesc] AS [EmpAtDesc], 
+    [VIEW_DW_Emp].[EmpIsMarriage] AS [EmpIsMarriage], 
+    [VIEW_DW_Emp].[EmpEngReadExam] AS [EmpEngReadExam], 
+    [VIEW_DW_Emp].[EmpEngHearExam] AS [EmpEngHearExam], 
+    [VIEW_DW_Emp].[EmpEngNewTOEFLExam] AS [EmpEngNewTOEFLExam], 
+    [VIEW_DW_Emp].[EmpEngTOEFLExam] AS [EmpEngTOEFLExam], 
+    [VIEW_DW_Emp].[EmpEngTOEICExam] AS [EmpEngTOEICExam], 
+    [VIEW_DW_Emp].[EmpEngIELTSExam] AS [EmpEngIELTSExam], 
+    [VIEW_DW_Emp].[EmpEngGEPTExam] AS [EmpEngGEPTExam], 
+    [VIEW_DW_Emp].[EmpAge] AS [EmpAge], 
+    [VIEW_DW_Emp].[ProfitCenter] AS [ProfitCenter], 
+    [VIEW_DW_Emp].[ProfitCenterDesc] AS [ProfitCenterDesc], 
+    [VIEW_DW_Emp].[CostCenter] AS [CostCenter], 
+    [VIEW_DW_Emp].[CostCenterDesc] AS [CostCenterDesc], 
+    [VIEW_DW_Emp].[EmpWorkType] AS [EmpWorkType], 
+    [VIEW_DW_Emp].[EmpManager] AS [EmpManager], 
+    [VIEW_DW_Emp].[EmpPostseries] AS [EmpPostseries], 
+    [VIEW_DW_Emp].[JobPost] AS [JobPost], 
+    [VIEW_DW_Emp].[InsertTime] AS [InsertTime], 
+    [VIEW_DW_Emp].[InsertUser] AS [InsertUser]
+    FROM [dbo].[VIEW_DW_Emp] AS [VIEW_DW_Emp]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="VIEW_MATERIAL_ByComp" EntityType="Self.VIEW_MATERIAL_ByComp" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [VIEW_MATERIAL_ByComp].[MARA_MATNR] AS [MARA_MATNR], 
@@ -451,6 +544,7 @@
           <EntitySet Name="F0005" EntityType="ERP_PROXY_DBModel.F0005" />
           <EntitySet Name="CUSTOMER_Contact" EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" />
           <EntitySet Name="CUSTOMER_ContactTemp" EntityType="ERP_PROXY_DBModel.CUSTOMER_ContactTemp" />
+          <EntitySet Name="VIEW_DW_Emp" EntityType="ERP_PROXY_DBModel.VIEW_DW_Emp" />
         </EntityContainer>
         <EntityType Name="VIEW_MATERIAL_ByComp">
           <Key>
@@ -809,6 +903,53 @@
           <Property Name="MainModifiedUserID" Type="Guid" />
           <Property Name="MainModifiedUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MainModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="VIEW_DW_Emp">
+          <Key>
+            <PropertyRef Name="EmpAtDesc" />
+            <PropertyRef Name="InsertTime" />
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Employee" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmpBirthday" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EmpSex" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EmpSexDesc" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="EmpADAccount" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmpEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmpRegestDate" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="DeptID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DeptDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmpTitleDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmpWorkPlace" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="EmpConstellation" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="EmpNation" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="EmpBloodType" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="EmpLeaveDate" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EmpLeaveReason" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompID" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="Comp" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EmpAssignType" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EmpAtDesc" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="EmpIsMarriage" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EmpEngReadExam" Type="Int32" />
+          <Property Name="EmpEngHearExam" Type="Int32" />
+          <Property Name="EmpEngNewTOEFLExam" Type="Int32" />
+          <Property Name="EmpEngTOEFLExam" Type="Int32" />
+          <Property Name="EmpEngTOEICExam" Type="Int32" />
+          <Property Name="EmpEngIELTSExam" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmpEngGEPTExam" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmpAge" Type="Int32" />
+          <Property Name="ProfitCenter" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ProfitCenterDesc" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="CostCenter" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CostCenterDesc" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="EmpWorkType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EmpManager" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmpPostseries" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="JobPost" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="InsertTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InsertUser" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1184,6 +1325,52 @@
                 <ScalarProperty Name="KNA1_NAME1" ColumnName="KNA1_NAME1" />
                 <ScalarProperty Name="KNA1_KUNNR" ColumnName="KNA1_KUNNR" />
                 <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VIEW_DW_Emp">
+            <EntityTypeMapping TypeName="ERP_PROXY_DBModel.VIEW_DW_Emp">
+              <MappingFragment StoreEntitySet="VIEW_DW_Emp">
+                <ScalarProperty Name="InsertUser" ColumnName="InsertUser" />
+                <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+                <ScalarProperty Name="JobPost" ColumnName="JobPost" />
+                <ScalarProperty Name="EmpPostseries" ColumnName="EmpPostseries" />
+                <ScalarProperty Name="EmpManager" ColumnName="EmpManager" />
+                <ScalarProperty Name="EmpWorkType" ColumnName="EmpWorkType" />
+                <ScalarProperty Name="CostCenterDesc" ColumnName="CostCenterDesc" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="ProfitCenterDesc" ColumnName="ProfitCenterDesc" />
+                <ScalarProperty Name="ProfitCenter" ColumnName="ProfitCenter" />
+                <ScalarProperty Name="EmpAge" ColumnName="EmpAge" />
+                <ScalarProperty Name="EmpEngGEPTExam" ColumnName="EmpEngGEPTExam" />
+                <ScalarProperty Name="EmpEngIELTSExam" ColumnName="EmpEngIELTSExam" />
+                <ScalarProperty Name="EmpEngTOEICExam" ColumnName="EmpEngTOEICExam" />
+                <ScalarProperty Name="EmpEngTOEFLExam" ColumnName="EmpEngTOEFLExam" />
+                <ScalarProperty Name="EmpEngNewTOEFLExam" ColumnName="EmpEngNewTOEFLExam" />
+                <ScalarProperty Name="EmpEngHearExam" ColumnName="EmpEngHearExam" />
+                <ScalarProperty Name="EmpEngReadExam" ColumnName="EmpEngReadExam" />
+                <ScalarProperty Name="EmpIsMarriage" ColumnName="EmpIsMarriage" />
+                <ScalarProperty Name="EmpAtDesc" ColumnName="EmpAtDesc" />
+                <ScalarProperty Name="EmpAssignType" ColumnName="EmpAssignType" />
+                <ScalarProperty Name="Comp" ColumnName="Comp" />
+                <ScalarProperty Name="CompID" ColumnName="CompID" />
+                <ScalarProperty Name="EmpLeaveReason" ColumnName="EmpLeaveReason" />
+                <ScalarProperty Name="EmpLeaveDate" ColumnName="EmpLeaveDate" />
+                <ScalarProperty Name="EmpBloodType" ColumnName="EmpBloodType" />
+                <ScalarProperty Name="EmpNation" ColumnName="EmpNation" />
+                <ScalarProperty Name="EmpConstellation" ColumnName="EmpConstellation" />
+                <ScalarProperty Name="EmpWorkPlace" ColumnName="EmpWorkPlace" />
+                <ScalarProperty Name="EmpTitleDesc" ColumnName="EmpTitleDesc" />
+                <ScalarProperty Name="DeptDesc" ColumnName="DeptDesc" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="EmpRegestDate" ColumnName="EmpRegestDate" />
+                <ScalarProperty Name="EmpEmail" ColumnName="EmpEmail" />
+                <ScalarProperty Name="EmpADAccount" ColumnName="EmpADAccount" />
+                <ScalarProperty Name="EmpSexDesc" ColumnName="EmpSexDesc" />
+                <ScalarProperty Name="EmpSex" ColumnName="EmpSex" />
+                <ScalarProperty Name="EmpBirthday" ColumnName="EmpBirthday" />
+                <ScalarProperty Name="Employee" ColumnName="Employee" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

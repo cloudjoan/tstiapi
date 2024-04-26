@@ -39,5 +39,6 @@ namespace TSTI_API.Models
         public virtual DbSet<F0005> F0005 { get; set; }
         public virtual DbSet<CUSTOMER_Contact> CUSTOMER_Contact { get; set; }
         public virtual DbSet<CUSTOMER_ContactTemp> CUSTOMER_ContactTemp { get; set; }
+        public virtual DbSet<VIEW_DW_Emp> VIEW_DW_Emp { get; set; }
     }
 }
