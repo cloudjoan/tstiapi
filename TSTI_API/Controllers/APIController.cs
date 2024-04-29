@@ -5475,7 +5475,7 @@ namespace TSTI_API.Controllers
             public string IV_SRID { get; set; }
             /// <summary>服務工程師ERPID/技術主管ERPID</summary>
             public string IV_EMPNO { get; set; }
-            /// <summary>接單時間</summary>
+            /// <summary>回應時間</summary>
             public string IV_ReceiveTime { get; set; }
             /// <summary>出發時間</summary>
             public string IV_StartTime { get; set; }
@@ -8947,7 +8947,7 @@ namespace TSTI_API.Controllers
             public string IV_SRID { get; set; }
             /// <summary>服務工程師ERPID/技術主管ERPID</summary>
             public string IV_EMPNO { get; set; }
-            /// <summary>接單時間</summary>
+            /// <summary>回應時間</summary>
             public string IV_ReceiveTime { get; set; }
             /// <summary>出發時間</summary>
             public string IV_StartTime { get; set; }
@@ -14134,7 +14134,7 @@ namespace TSTI_API.Controllers
         public string ENGNAME { get; set; }
         /// <summary>服務工程師聯絡電話/技術主管聯絡電話</summary>
         public string ENGPHONE { get; set; }
-        /// <summary>接單時間</summary>
+        /// <summary>回應時間</summary>
         public string ReceiveTime { get; set; }
         /// <summary>出發時間</summary>
         public string StartTime { get; set; }

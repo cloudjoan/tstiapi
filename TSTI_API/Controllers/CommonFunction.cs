@@ -5143,7 +5143,7 @@ namespace TSTI_API.Controllers
         {
             #region 格式
             //[處理與工時紀錄資料]												
-            //服務工程師姓名	接單時間	         出發時間	         到場時間	         完成時間	        工時(分鐘)	處理紀錄	             服務報告書/附件
+            //服務工程師姓名	回應時間	         出發時間	         到場時間	         完成時間	        工時(分鐘)	處理紀錄	             服務報告書/附件
             //OOO	         2023-01-19 21:20	2023-01-19 21:25	2023-01-19 21:50	2023-01-19 22:55	65	         TEST處理紀錄03100945	URL
             #endregion
 
@@ -5159,7 +5159,7 @@ namespace TSTI_API.Controllers
                 strHTML.AppendLine("    <table style='width:100%;font-family:微軟正黑體;' align='left' border='1'>");
                 strHTML.AppendLine("        <tr>");
                 strHTML.AppendLine("            <td>服務工程師姓名</td>");
-                strHTML.AppendLine("            <td>接單時間</td>");
+                strHTML.AppendLine("            <td>回應時間</td>");
                 strHTML.AppendLine("            <td>出發時間</td>");
                 strHTML.AppendLine("            <td>到場時間</td>");
                 strHTML.AppendLine("            <td>完成時間</td>");
