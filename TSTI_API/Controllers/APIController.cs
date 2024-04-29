@@ -3,6 +3,7 @@
 注意：若要更新正式區，webconfig要調整
 
 2023/12/04:elvis:Jordan請MIS調整把report的電話去掉，只留0800就好
+2024/04/29:elvis:接單時間改成「回應時間」
 
 */
 #endregion
