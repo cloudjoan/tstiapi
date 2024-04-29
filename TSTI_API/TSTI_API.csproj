@@ -587,6 +587,9 @@
     <Compile Include="Models\VIEW_DEPT_MGR.cs">
       <DependentUpon>ModelEIPDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VIEW_DW_Emp.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\VIEW_EMP_INFO.cs">
       <DependentUpon>ModelEIPDB.tt</DependentUpon>
     </Compile>
