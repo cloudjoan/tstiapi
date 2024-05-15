@@ -13770,6 +13770,18 @@ namespace TSTI_API.Controllers
 			return Json(beans, JsonRequestBehavior.AllowGet);
 		}
 
+        #endregion
+
+        #region 取得匯率
+
+        [HttpPost]
+        public ActionResult GetExchangeRate()
+        {
+            String yesterday = DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd");
+            var beans = dbProxy.TB_ExchangeRate.Where(x => x.CR_Date == yesterday);
+			return Json(beans);
+		}
+
 		#endregion
 	}
 

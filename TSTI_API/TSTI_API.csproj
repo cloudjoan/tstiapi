@@ -443,6 +443,9 @@
     <Compile Include="Models\TB_CAR_PHOTOS.cs">
       <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_ExchangeRate.cs">
+      <DependentUpon>ModelProxy.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_LIVE_MESSAGE.cs">
       <DependentUpon>ModelAPP_DATA.tt</DependentUpon>
     </Compile>

@@ -328,6 +328,23 @@
           <Property Name="UP_USER" Type="varchar" MaxLength="20" />
           <Property Name="UP_DATE" Type="datetime" />
         </EntityType>
+        <EntityType Name="TB_ExchangeRate">
+          <Key>
+            <PropertyRef Name="Currency" />
+            <PropertyRef Name="CR_Date" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CR_Date" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Buy" Type="numeric" Precision="18" Scale="3" />
+          <Property Name="Sell" Type="numeric" Precision="18" Scale="3" />
+          <Property Name="CashBuy" Type="numeric" Precision="18" Scale="3" />
+          <Property Name="CashSell" Type="numeric" Precision="18" Scale="3" />
+          <Property Name="RangeA" Type="numeric" Precision="18" Scale="3" />
+          <Property Name="RangeB" Type="numeric" Precision="18" Scale="3" />
+          <Property Name="SAP_Exchange" Type="numeric" Precision="18" Scale="3" />
+          <Property Name="CR_USER" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="TB_MAIL_CONTENT">
           <Key>
             <PropertyRef Name="ID" />
@@ -367,6 +384,8 @@
 警告 6002: 資料表/檢視 'ERP_PROXY_DB.dbo.VIEW_DW_Emp' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="VIEW_DW_Emp">
           <Key>
+            
+            
             <PropertyRef Name="EmpAtDesc" />
             <PropertyRef Name="InsertTime" />
             <PropertyRef Name="EmployeeID" />
@@ -439,6 +458,7 @@
           <EntitySet Name="STOCKIN" EntityType="Self.STOCKIN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="STOCKOUT" EntityType="Self.STOCKOUT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="STOCKWTY" EntityType="Self.STOCKWTY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_ExchangeRate" EntityType="Self.TB_ExchangeRate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_MAIL_CONTENT" EntityType="Self.TB_MAIL_CONTENT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VIEW_CUSTOMER_2" EntityType="Self.VIEW_CUSTOMER_2" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -545,6 +565,7 @@
           <EntitySet Name="CUSTOMER_Contact" EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" />
           <EntitySet Name="CUSTOMER_ContactTemp" EntityType="ERP_PROXY_DBModel.CUSTOMER_ContactTemp" />
           <EntitySet Name="VIEW_DW_Emp" EntityType="ERP_PROXY_DBModel.VIEW_DW_Emp" />
+          <EntitySet Name="TB_ExchangeRate" EntityType="ERP_PROXY_DBModel.TB_ExchangeRate" />
         </EntityContainer>
         <EntityType Name="VIEW_MATERIAL_ByComp">
           <Key>
@@ -950,6 +971,23 @@
           <Property Name="JobPost" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="InsertTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="InsertUser" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_ExchangeRate">
+          <Key>
+            <PropertyRef Name="Currency" />
+            <PropertyRef Name="CR_Date" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Currency" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CR_Date" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Buy" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="Sell" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="CashBuy" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="CashSell" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="RangeA" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="RangeB" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="SAP_Exchange" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="CR_USER" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1371,6 +1409,23 @@
                 <ScalarProperty Name="EmpBirthday" ColumnName="EmpBirthday" />
                 <ScalarProperty Name="Employee" ColumnName="Employee" />
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_ExchangeRate">
+            <EntityTypeMapping TypeName="ERP_PROXY_DBModel.TB_ExchangeRate">
+              <MappingFragment StoreEntitySet="TB_ExchangeRate">
+                <ScalarProperty Name="CR_USER" ColumnName="CR_USER" />
+                <ScalarProperty Name="SAP_Exchange" ColumnName="SAP_Exchange" />
+                <ScalarProperty Name="RangeB" ColumnName="RangeB" />
+                <ScalarProperty Name="RangeA" ColumnName="RangeA" />
+                <ScalarProperty Name="CashSell" ColumnName="CashSell" />
+                <ScalarProperty Name="CashBuy" ColumnName="CashBuy" />
+                <ScalarProperty Name="Sell" ColumnName="Sell" />
+                <ScalarProperty Name="Buy" ColumnName="Buy" />
+                <ScalarProperty Name="CR_Date" ColumnName="CR_Date" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
