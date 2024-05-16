@@ -13765,7 +13765,7 @@ namespace TSTI_API.Controllers
 		#region 取得全體業務（不包含主管）
 		public ActionResult GetAllSalesExcludeManager()
 		{
-			var beans = dbProxy.VIEW_DW_Emp.Where(x => x.JobPost == "業務" && x.EmpPostseries == "業務" && x.Comp == "大同世界科技" && (x.EmpTitleDesc == "業務代表" || x.EmpTitleDesc.Contains("專案")));
+			var beans = dbProxy.VIEW_DW_Emp.Where(x => x.JobPost == "業務" && x.EmpPostseries == "業務" && x.Comp == "大同世界科技" && (x.EmpTitleDesc == "業務代表" || x.EmpTitleDesc.Contains("專案")) && x.EmpLeaveDate == null && x.EmpLeaveReason == null);
 
 			return Json(beans, JsonRequestBehavior.AllowGet);
 		}
@@ -13778,7 +13778,8 @@ namespace TSTI_API.Controllers
         public ActionResult GetExchangeRate()
         {
             String yesterday = DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd");
-            var beans = dbProxy.TB_ExchangeRate.Where(x => x.CR_Date == yesterday);
+			var currencyOrder = new List<string> { "USD", "RMB", "JPY", "EUR" , "HKD" };
+			var beans = dbProxy.TB_ExchangeRate.Where(x => x.CR_Date == yesterday).ToList().OrderBy(x => currencyOrder.IndexOf(x.Currency));
 			return Json(beans);
 		}
 
