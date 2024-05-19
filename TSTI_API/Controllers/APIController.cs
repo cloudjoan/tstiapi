@@ -13765,7 +13765,12 @@ namespace TSTI_API.Controllers
 		#region 取得全體業務（不包含主管）
 		public ActionResult GetAllSalesExcludeManager()
 		{
-			var beans = dbProxy.VIEW_DW_Emp.Where(x => x.JobPost == "業務" && x.EmpPostseries == "業務" && x.Comp == "大同世界科技" && (x.EmpTitleDesc == "業務代表" || x.EmpTitleDesc.Contains("專案")) && x.EmpLeaveDate == null && x.EmpLeaveReason == null);
+            string[] exclude = { "Lydia.Chen" };
+
+			var beans = dbProxy.VIEW_DW_Emp.Where(x => x.JobPost == "業務" && x.EmpPostseries == "業務" && x.Comp == "大同世界科技" 
+            && !exclude.Contains(x.EmpADAccount)
+            && (x.EmpTitleDesc == "業務代表" || x.EmpTitleDesc.Contains("專案")) 
+            && x.EmpLeaveDate == null && x.EmpLeaveReason == null);
 
 			return Json(beans, JsonRequestBehavior.AllowGet);
 		}
