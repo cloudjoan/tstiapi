@@ -419,6 +419,9 @@
     <Compile Include="Models\TB_APP_DEVICE_TOKEN.cs">
       <DependentUpon>ModelEIPDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TB_APP_INFO.cs">
+      <DependentUpon>ModelEIPDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TB_APP_PUSH_NOTICE_MESSAGES.cs">
       <DependentUpon>ModelEIPDB.tt</DependentUpon>
     </Compile>

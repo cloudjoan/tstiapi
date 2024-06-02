@@ -13765,10 +13765,11 @@ namespace TSTI_API.Controllers
 		#region 取得全體業務（不包含主管）
 		public ActionResult GetAllSalesExcludeManager()
 		{
-            string[] exclude = { "Lydia.Chen" };
+            var appInfoBean = dbEIP.TB_APP_INFO.Where(x => x.INFO_TYPE == "EX_ACC").FirstOrDefault();
+            string[] exclude = appInfoBean.INFO_VALUE.Split(',');
 
 			var beans = dbProxy.VIEW_DW_Emp.Where(x => x.JobPost == "業務" && x.EmpPostseries == "業務" && x.Comp == "大同世界科技" 
-            && !exclude.Contains(x.EmpADAccount)
+            && !exclude.Contains(x.EmployeeID)
             && (x.EmpTitleDesc == "業務代表" || x.EmpTitleDesc.Contains("專案")) 
             && x.EmpLeaveDate == null && x.EmpLeaveReason == null);
 

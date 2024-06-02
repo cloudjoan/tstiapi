@@ -141,6 +141,16 @@
           <Property Name="ERP_ID" Type="nvarchar" MaxLength="20" />
           <Property Name="DEVICE_TOKENS" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="TB_APP_INFO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="INFO_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="INFO_VALUE" Type="nvarchar" MaxLength="2000" />
+          <Property Name="MEMO" Type="nvarchar" MaxLength="100" />
+          <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+        </EntityType>
         <EntityType Name="TB_APP_PUSH_NOTICE_MESSAGES">
           <Key>
             <PropertyRef Name="ID" />
@@ -258,6 +268,7 @@
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_APP_DEVICE_TOKEN" EntityType="Self.TB_APP_DEVICE_TOKEN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_APP_INFO" EntityType="Self.TB_APP_INFO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_APP_PUSH_NOTICE_MESSAGES" EntityType="Self.TB_APP_PUSH_NOTICE_MESSAGES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_SERVICES_APP_INSTALL" EntityType="Self.TB_SERVICES_APP_INSTALL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TB_SERVICES_APP_INSTALLTEMP" EntityType="Self.TB_SERVICES_APP_INSTALLTEMP" Schema="dbo" store:Type="Tables" />
@@ -434,6 +445,7 @@
           <EntitySet Name="TB_APP_DEVICE_TOKEN" EntityType="MCSWorkflowModel.TB_APP_DEVICE_TOKEN" />
           <EntitySet Name="TB_APP_PUSH_NOTICE_MESSAGES" EntityType="MCSWorkflowModel.TB_APP_PUSH_NOTICE_MESSAGES" />
           <EntitySet Name="VIEW_EMP_INFO" EntityType="MCSWorkflowModel.VIEW_EMP_INFO" />
+          <EntitySet Name="TB_APP_INFO" EntityType="MCSWorkflowModel.TB_APP_INFO" />
         </EntityContainer>
         <EntityType Name="TB_SERVICES_APP_STATE">
           <Key>
@@ -577,6 +589,16 @@
           <Property Name="DEPT_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CONSTELLATION" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
           <Property Name="REGIST_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="TB_APP_INFO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="INFO_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="INFO_VALUE" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="MEMO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -828,6 +850,17 @@
                 <ScalarProperty Name="COMP_NAME" ColumnName="COMP_NAME" />
                 <ScalarProperty Name="ACCOUNT" ColumnName="ACCOUNT" />
                 <ScalarProperty Name="ERP_ID" ColumnName="ERP_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_APP_INFO">
+            <EntityTypeMapping TypeName="MCSWorkflowModel.TB_APP_INFO">
+              <MappingFragment StoreEntitySet="TB_APP_INFO">
+                <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+                <ScalarProperty Name="MEMO" ColumnName="MEMO" />
+                <ScalarProperty Name="INFO_VALUE" ColumnName="INFO_VALUE" />
+                <ScalarProperty Name="INFO_TYPE" ColumnName="INFO_TYPE" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
