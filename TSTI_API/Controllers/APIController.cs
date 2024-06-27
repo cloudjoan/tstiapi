@@ -9228,14 +9228,149 @@ namespace TSTI_API.Controllers
             /// <summary>系統ID</summary>
             public string EV_CID { get; set; }
         }
-        #endregion
+		#endregion
 
-        #endregion -----↑↑↑↑↑異動序號回報資訊相關查詢接口 ↑↑↑↑↑-----  
+		#endregion -----↑↑↑↑↑異動序號回報資訊相關查詢接口 ↑↑↑↑↑-----  
 
-        #region -----↓↓↓↓↓裝機現況資訊相關接口 ↓↓↓↓↓-----        
+		#region -----↓↓↓↓↓更新回應客戶時間資訊 ↓↓↓↓↓-----
 
-        #region 查詢裝機現況資訊相關接口
-        [HttpPost]
+		#region ONE SERVICE更新回應客戶時間資訊接口
+		/// <summary>
+		/// ONE SERVICE更新回應客戶時間資訊接口
+		/// </summary>
+		/// <param name="beanIN"></param>
+		/// <returns></returns>
+		[HttpPost]
+		public ActionResult API_SRRESPONSETIME_UPDATE(SRMain_SRRESPONSETIME_INPUT beanIN)
+		{
+			#region Json範列格式
+			//{
+			//     "IV_LOGINEMPNO": "99120894",			
+			//     "IV_SRID": "612212070001"            
+			//}
+			#endregion
+
+			SRMain_SRRESPONSETIME_OUTPUT SROUT = new SRMain_SRRESPONSETIME_OUTPUT();
+
+			SROUT = SRRESPONSETIME_UPDATE(beanIN);
+
+			return Json(SROUT);
+		}
+		#endregion
+
+		#region ONE SERVICE更新回應客戶時間
+		private SRMain_SRRESPONSETIME_OUTPUT SRRESPONSETIME_UPDATE(SRMain_SRRESPONSETIME_INPUT bean)
+		{
+			SRMain_SRRESPONSETIME_OUTPUT SROUT = new SRMain_SRRESPONSETIME_OUTPUT();
+
+			string tEventname = string.Empty;
+			string tExcType = string.Empty;
+			string pLoginName = string.Empty;
+			string tAPIURLName = string.Empty;
+			string tONEURLName = string.Empty;
+			string tBPMURLName = string.Empty;
+			string tPSIPURLName = string.Empty;
+			string tAttachURLName = string.Empty;
+			string tAttachPath = string.Empty;
+			string tOldValue = string.Empty;
+
+			string IV_LOGINEMPNO = string.IsNullOrEmpty(bean.IV_LOGINEMPNO) ? "" : bean.IV_LOGINEMPNO.Trim();
+			string IV_SRID = string.IsNullOrEmpty(bean.IV_SRID) ? "" : bean.IV_SRID.Trim();
+
+			EmployeeBean EmpBean = new EmployeeBean();
+			EmpBean = CMF.findEmployeeInfoByERPID(IV_LOGINEMPNO);
+
+			if (string.IsNullOrEmpty(EmpBean.EmployeeCName))
+			{
+				pLoginName = IV_LOGINEMPNO;
+			}
+			else
+			{
+				pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
+			}
+
+			try
+			{
+				bool tIsExist = CMF.checkIsSRMainResponse(IV_SRID);
+
+				if (!tIsExist) //回應時間不存在才更新
+				{
+					var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
+
+					if (beanM != null)
+					{
+						beanM.cResponseDate = DateTime.Now;
+						beanM.ModifiedDate = DateTime.Now;
+						beanM.ModifiedUserName = pLoginName;
+
+						int result = dbOne.SaveChanges();
+
+						if (result <= 0)
+						{
+							pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！" + Environment.NewLine;
+							CMF.writeToLog(IV_SRID, "SRRESPONSETIME_UPDATE_API", pMsg, pLoginName);
+
+							SROUT.EV_MSGT = "E";
+							SROUT.EV_MSG = pMsg;
+						}
+						else
+						{
+							SROUT.EV_MSGT = "Y";
+							SROUT.EV_MSG = "";
+
+							CMF.writeToLog(IV_SRID, "SRRESPONSETIME_UPDATE_API", "更新成功！", pLoginName);
+						}
+					}
+				}
+				else
+				{
+					SROUT.EV_MSGT = "Y";
+					SROUT.EV_MSG = "";
+				}
+			}
+			catch (Exception ex)
+			{
+				pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+				pMsg += " 失敗行數：" + ex.ToString();
+
+				CMF.writeToLog(IV_SRID, "SRRESPONSETIME_UPDATE_API", pMsg, pLoginName);
+
+				SROUT.EV_MSGT = "E";
+				SROUT.EV_MSG = ex.Message;
+			}
+
+			return SROUT;
+		}
+		#endregion
+
+		#region 更新回應客戶時間INPUT資訊
+		/// <summary>更新回應客戶時間INPUT資訊</summary>
+		public struct SRMain_SRRESPONSETIME_INPUT
+		{
+			/// <summary>修改者員工編號ERPID</summary>
+			public string IV_LOGINEMPNO { get; set; }
+			/// <summary>服務案件ID</summary>
+			public string IV_SRID { get; set; }
+		}
+		#endregion
+
+		#region 更新回應客戶時間OUTPUT資訊
+		/// <summary>更新回應客戶時間OUTPUT資訊</summary>
+		public struct SRMain_SRRESPONSETIME_OUTPUT
+		{
+			/// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+			public string EV_MSGT { get; set; }
+			/// <summary>消息內容</summary>
+			public string EV_MSG { get; set; }
+		}
+		#endregion
+
+		#endregion -----↑↑↑↑↑更新回應客戶時間資訊 ↑↑↑↑↑-----    
+
+		#region -----↓↓↓↓↓裝機現況資訊相關接口 ↓↓↓↓↓-----        
+
+		#region 查詢裝機現況資訊相關接口
+		[HttpPost]
         public ActionResult API_CURRENTINSTALLINFO_GET(INSTALLLIST_INPUT beanIN)
         {
             #region Json範列格式(傳入格式)

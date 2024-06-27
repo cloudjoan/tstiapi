@@ -156,6 +156,7 @@
     <Property Name="cSalesNo" Type="nvarchar" MaxLength="30" />
     <Property Name="cShipmentNo" Type="nvarchar" MaxLength="30" />
     <Property Name="cSerialID" Type="nvarchar" MaxLength="40" />
+    <Property Name="cNotes" Type="nvarchar" MaxLength="2000" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="CreatedUserName" Type="nvarchar" MaxLength="50" />
   </EntityType>
@@ -450,6 +451,7 @@
     <Property Name="cFaultSpecNoteOther" Type="nvarchar" MaxLength="100" />
     <Property Name="cPerCallSLARESP" Type="nvarchar" MaxLength="10" />
     <Property Name="cPerCallSLASRV" Type="nvarchar" MaxLength="10" />
+    <Property Name="cResponseDate" Type="datetime" />
     <Property Name="cRemark" Type="nvarchar(max)" />
     <Property Name="cCustomerUnitType" Type="nvarchar" MaxLength="3" />
     <Property Name="cSystemGUID" Type="uniqueidentifier" />

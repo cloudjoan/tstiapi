@@ -249,5 +249,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TB_APP_INFO">
+      <EntityTypeMapping TypeName="MCSWorkflowModel.TB_APP_INFO">
+        <MappingFragment StoreEntitySet="TB_APP_INFO">
+          <ScalarProperty Name="INSERT_TIME" ColumnName="INSERT_TIME" />
+          <ScalarProperty Name="MEMO" ColumnName="MEMO" />
+          <ScalarProperty Name="INFO_VALUE" ColumnName="INFO_VALUE" />
+          <ScalarProperty Name="INFO_TYPE" ColumnName="INFO_TYPE" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -136,6 +136,16 @@
     <Property Name="ERP_ID" Type="nvarchar" MaxLength="20" />
     <Property Name="DEVICE_TOKENS" Type="nvarchar(max)" />
   </EntityType>
+  <EntityType Name="TB_APP_INFO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="INFO_TYPE" Type="nvarchar" MaxLength="50" />
+    <Property Name="INFO_VALUE" Type="nvarchar" MaxLength="2000" />
+    <Property Name="MEMO" Type="nvarchar" MaxLength="100" />
+    <Property Name="INSERT_TIME" Type="nvarchar" MaxLength="22" />
+  </EntityType>
   <EntityType Name="TB_APP_PUSH_NOTICE_MESSAGES">
     <Key>
       <PropertyRef Name="ID" />
@@ -253,6 +263,7 @@
     <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_APP_DEVICE_TOKEN" EntityType="Self.TB_APP_DEVICE_TOKEN" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TB_APP_INFO" EntityType="Self.TB_APP_INFO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_APP_PUSH_NOTICE_MESSAGES" EntityType="Self.TB_APP_PUSH_NOTICE_MESSAGES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_SERVICES_APP_INSTALL" EntityType="Self.TB_SERVICES_APP_INSTALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TB_SERVICES_APP_INSTALLTEMP" EntityType="Self.TB_SERVICES_APP_INSTALLTEMP" Schema="dbo" store:Type="Tables" />

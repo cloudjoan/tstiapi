@@ -3650,17 +3650,38 @@ namespace TSTI_API.Controllers
 
             return reValue;
         }
-        #endregion
+		#endregion
 
-        #region 判斷是否為滿意度調查排除的客戶或客戶聯絡人E-Mail(true.是 false.否)
-        /// <summary>
-        /// 判斷是否為滿意度調查排除的客戶或客戶聯絡人E-Mail(true.是 false.否)
-        /// </summary>
-        /// <param name="cDimension">依據維度(0.依客戶、1.依聯絡人)</param>
-        /// <param name="cCustomerID">客戶ID</param>
-        /// <param name="cContactEmail">客戶聯絡人E-Mail</param>
-        /// <returns></returns>
-        public bool checkIsExistsSRSatisfactionSurveyRemove(string cDimension, string cCustomerID, string cContactEmail)
+		#region 判斷SRMain主檔的回應時間是否已存在(true.存在 false.不存在)
+		/// <summary>
+		/// 判斷SRMain主檔的回應時間是否已存在(true.存在 false.不存在)
+		/// </summary>
+		/// <param name="cSRID">SRID</param>		
+		/// <returns></returns>
+		public bool checkIsSRMainResponse(string cSRID)
+		{
+			bool reValue = false;
+
+			var bean = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == cSRID && x.cResponseDate != null);
+
+			if (bean != null)
+			{
+				reValue = true;
+			}
+
+			return reValue;
+		}
+		#endregion
+
+		#region 判斷是否為滿意度調查排除的客戶或客戶聯絡人E-Mail(true.是 false.否)
+		/// <summary>
+		/// 判斷是否為滿意度調查排除的客戶或客戶聯絡人E-Mail(true.是 false.否)
+		/// </summary>
+		/// <param name="cDimension">依據維度(0.依客戶、1.依聯絡人)</param>
+		/// <param name="cCustomerID">客戶ID</param>
+		/// <param name="cContactEmail">客戶聯絡人E-Mail</param>
+		/// <returns></returns>
+		public bool checkIsExistsSRSatisfactionSurveyRemove(string cDimension, string cCustomerID, string cContactEmail)
         {
             bool reValue = false;
 

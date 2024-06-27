@@ -111,6 +111,7 @@
     <EntitySet Name="TB_APP_DEVICE_TOKEN" EntityType="MCSWorkflowModel.TB_APP_DEVICE_TOKEN" />
     <EntitySet Name="TB_APP_PUSH_NOTICE_MESSAGES" EntityType="MCSWorkflowModel.TB_APP_PUSH_NOTICE_MESSAGES" />
     <EntitySet Name="VIEW_EMP_INFO" EntityType="MCSWorkflowModel.VIEW_EMP_INFO" />
+    <EntitySet Name="TB_APP_INFO" EntityType="MCSWorkflowModel.TB_APP_INFO" />
   </EntityContainer>
   <EntityType Name="TB_SERVICES_APP_STATE">
     <Key>
@@ -254,5 +255,15 @@
     <Property Name="DEPT_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="CONSTELLATION" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
     <Property Name="REGIST_DATE" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="TB_APP_INFO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="INFO_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="INFO_VALUE" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="MEMO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="INSERT_TIME" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

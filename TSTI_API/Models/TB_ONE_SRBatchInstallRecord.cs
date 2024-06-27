@@ -35,5 +35,6 @@ namespace TSTI_API.Models
         public string cSerialID { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string CreatedUserName { get; set; }
+        public string cNotes { get; set; }
     }
 }
