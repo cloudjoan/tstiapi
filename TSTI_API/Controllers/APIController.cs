@@ -55,7 +55,7 @@ namespace TSTI_API.Controllers
         string pSysOperationID = "F8EFC55F-FA77-4731-BB45-2F2147244A2D";
 
         /// <summary>
-        /// 程式作業編號檔系統ID(一般服務)
+        /// 程式作業編號檔系統ID(一般服務) 
         /// </summary>
         string pOperationID_GenerallySR = "869FC989-1049-4266-ABDE-69A9B07BCD0A";
 
