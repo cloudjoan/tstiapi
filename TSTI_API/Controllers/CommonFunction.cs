@@ -6786,7 +6786,9 @@ namespace TSTI_API.Controllers
                 }
             }
 
-            NameValueCollection postParams = HttpUtility.ParseQueryString(string.Empty);
+			sender = "Tsti_OneService@etatung.com|OneService"; //寄件者改用OneService取代
+
+			NameValueCollection postParams = HttpUtility.ParseQueryString(string.Empty);
             postParams.Add("eventName", eventName);
             postParams.Add("sender", sender);
             postParams.Add("recipients", recipients);
