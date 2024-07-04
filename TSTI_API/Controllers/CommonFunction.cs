@@ -2,6 +2,8 @@
 /*
 注意：若要更新正式區，webconfig要調整
 
+2024/07/04:elvis:調整合約主數據裡的訂單說明，改抓「用印申請單或內部轉撥服務申請單」裡的文件名稱(案名)
+
 
 */
 #endregion
@@ -7765,18 +7767,30 @@ namespace TSTI_API.Controllers
                         beanM.IV_CUSTOMER = "";
                     }
 
-                    if (beanM.IV_ContractVendor == "1") //供應商
-                    {
-                        beanM.IV_SODESC = string.IsNullOrEmpty(bean.cContent_ContractDesc) ? bean.cContent_ContractUser : bean.cContent_ContractDesc;
-                        beanM.IV_SUBNUMBER = bean.cContent_ContractUserID;
-                        beanM.IV_ContractUser = bean.cContent_ContractUser;
-                    }
-                    else
-                    {
-                        beanM.IV_SODESC = bean.cContent_ContractDesc;
-                    }
+					//edit by elvis 2024/07/04 Start
+					#region 註解
+					//if (beanM.IV_ContractVendor == "1") //供應商
+					//{
+					//    beanM.IV_SODESC = string.IsNullOrEmpty(bean.cContent_ContractDesc) ? bean.cContent_ContractUser : bean.cContent_ContractDesc;
+					//    beanM.IV_SUBNUMBER = bean.cContent_ContractUserID;
+					//    beanM.IV_ContractUser = bean.cContent_ContractUser;
+					//}
+					//else
+					//{
+					//    beanM.IV_SODESC = bean.cContent_ContractDesc;
+					//}
+					#endregion
 
-                    beanM.IV_SDATE = Convert.ToDateTime(IV_SDATE);
+					if (beanM.IV_ContractVendor == "1") //供應商
+					{						
+						beanM.IV_SUBNUMBER = bean.cContent_ContractUserID;
+						beanM.IV_ContractUser = bean.cContent_ContractUser;
+					}					
+
+					beanM.IV_SODESC = bean.cContent_ContractName;
+					//edit by elvis 2024/07/04 End
+
+					beanM.IV_SDATE = Convert.ToDateTime(IV_SDATE);
                     beanM.IV_EDATE = Convert.ToDateTime(IV_EDATE);
                     beanM.IV_REQPAY = bean.cContent_ContractInfo_MakeMoney;
                     beanM.IV_CYCLE = bean.cContent_ContractInfo_Maintain;
@@ -7803,29 +7817,54 @@ namespace TSTI_API.Controllers
                 {
                     beanM.IV_ContractVendor = bean.cContent_ContractVendor.ToString();
 
-                    if (beanM.IV_ContractVendor == "0") //客戶
-                    {
-                        beanM.IV_CUSTOMER = bean.cContent_ContractUserID;
-                        beanM.IV_SODESC = string.IsNullOrEmpty(bean.cContent_ContractDesc) ? bean.cContent_ContractUser : bean.cContent_ContractDesc;
-                        beanM.IV_SALES = findEmployeeInCludeLeaveEByERP_ID(bean.cContent_MainUser_EmployeeNO); //主約業務
-                        
-                    }
-                    else if (beanM.IV_ContractVendor == "1") //供應商
-                    {
-                        beanM.IV_CUSTOMER = "";
-                        beanM.IV_SODESC = string.IsNullOrEmpty(bean.cContent_ContractDesc) ? bean.cContent_ContractUser : bean.cContent_ContractDesc;
-                        beanM.IV_SUBNUMBER = bean.cContent_ContractUserID;
-                        beanM.IV_ContractUser = bean.cContent_ContractUser;
-                        beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO); //維護業務
-                    }
-                    else //其他
-                    {
-                        beanM.IV_CUSTOMER = "";
-                        beanM.IV_SODESC = string.IsNullOrEmpty(bean.cContent_ContractDesc) ? bean.cContent_ContractUser : bean.cContent_ContractDesc;
-                        beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO); //維護業務
-                    }
+					//edit by elvis 2024/07/04 Start
+					#region 註解
+					//if (beanM.IV_ContractVendor == "0") //客戶
+					//               {
+					//                   beanM.IV_CUSTOMER = bean.cContent_ContractUserID;
+					//                   beanM.IV_SODESC = string.IsNullOrEmpty(bean.cContent_ContractDesc) ? bean.cContent_ContractUser : bean.cContent_ContractDesc;
+					//                   beanM.IV_SALES = findEmployeeInCludeLeaveEByERP_ID(bean.cContent_MainUser_EmployeeNO); //主約業務
 
-                    beanM.IV_CONTACT = bean.cContent_ContractID;
+					//               }
+					//               else if (beanM.IV_ContractVendor == "1") //供應商
+					//               {
+					//                   beanM.IV_CUSTOMER = "";
+					//                   beanM.IV_SODESC = string.IsNullOrEmpty(bean.cContent_ContractDesc) ? bean.cContent_ContractUser : bean.cContent_ContractDesc;
+					//                   beanM.IV_SUBNUMBER = bean.cContent_ContractUserID;
+					//                   beanM.IV_ContractUser = bean.cContent_ContractUser;
+					//                   beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO); //維護業務
+					//               }
+					//               else //其他
+					//               {
+					//                   beanM.IV_CUSTOMER = "";
+					//                   beanM.IV_SODESC = string.IsNullOrEmpty(bean.cContent_ContractDesc) ? bean.cContent_ContractUser : bean.cContent_ContractDesc;
+					//                   beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO); //維護業務
+					//               }
+					#endregion
+
+					if (beanM.IV_ContractVendor == "0") //客戶
+					{
+						beanM.IV_CUSTOMER = bean.cContent_ContractUserID;						
+						beanM.IV_SALES = findEmployeeInCludeLeaveEByERP_ID(bean.cContent_MainUser_EmployeeNO); //主約業務
+
+					}
+					else if (beanM.IV_ContractVendor == "1") //供應商
+					{
+						beanM.IV_CUSTOMER = "";						
+						beanM.IV_SUBNUMBER = bean.cContent_ContractUserID;
+						beanM.IV_ContractUser = bean.cContent_ContractUser;
+						beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO); //維護業務
+					}
+					else //其他
+					{
+						beanM.IV_CUSTOMER = "";						
+						beanM.IV_SALES = findEmployeeByERP_ID(bean.cApplyUser_EmployeeNO); //維護業務
+					}
+
+					beanM.IV_SODESC = bean.cContent_ContractName;
+					//edit by elvis 2024/07/04 End
+
+					beanM.IV_CONTACT = bean.cContent_ContractID;
                     beanM.IV_SUBCONTACT = bean.cContent_ContractInfo_MainNo;
                     beanM.IV_SONO = "";                    
                     beanM.IV_ASSITANCE = bean.cContent_Secretary;
