@@ -14196,7 +14196,9 @@ namespace TSTI_API.Controllers
         public string SalesEmail { get; set; }
         /// <summary>業務祕書Email</summary>
         public string SecretaryEmail { get; set; }
-    }
+		/// <summary>合約中心單位管理者Email</summary>
+		public string ContractCenterEMPEmail { get; set; }
+	}
     #endregion
 
     #region 服務案件客戶聯絡人資訊

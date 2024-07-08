@@ -3,6 +3,7 @@
 注意：若要更新正式區，webconfig要調整
 
 2024/07/04:elvis:調整合約主數據裡的訂單說明，改抓「用印申請單或內部轉撥服務申請單」裡的文件名稱(案名)
+2024/07/08:elvis:新增加(一般、裝機、定維)新建時，多抓中心單位管理者相關資訊
 
 
 */
@@ -24,6 +25,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using SAP.Middleware.Connector;
 using TSTI_API.Models;
+using System.Security.Principal;
 
 namespace TSTI_API.Controllers
 {
@@ -1285,15 +1287,46 @@ namespace TSTI_API.Controllers
 
             return tList;
         }
-        #endregion
+		#endregion
 
-        #region 取得服務團隊名稱
-        /// <summary>
-        /// 取得服務團隊名稱
-        /// </summary>
-        /// <param name="SRTeam">服務團隊對照組織相關資訊清單</param>
-        /// <returns></returns>
-        public string findSRTeamName(List<SRTEAMORGINFO> SRTeam)
+		#region 取得服務團隊所對應的組織利潤中心
+		/// <summary>
+		/// 取得服務團隊所對應的組織利潤中心
+		/// </summary>
+		/// <param name="SRTeam">服務團隊對照組織相關資訊清單</param>
+		/// <returns></returns>
+		public string findSRTeamProfitCenterID(List<SRTEAMORGINFO> SRTeam)
+		{
+			string reValue = string.Empty;
+            string ProfitCenterID = string.Empty;
+
+			List<string> tList = new List<string>();
+
+			foreach (var bean in SRTeam)
+			{
+                ProfitCenterID = bean.DEPTID.Substring(0, 4);
+
+				if (!tList.Contains(ProfitCenterID))
+				{
+					reValue += ProfitCenterID + ";";
+
+					tList.Add(ProfitCenterID);
+				}
+			}
+
+			reValue = reValue.TrimEnd(';');
+
+			return reValue;
+		}
+		#endregion
+
+		#region 取得服務團隊名稱
+		/// <summary>
+		/// 取得服務團隊名稱
+		/// </summary>
+		/// <param name="SRTeam">服務團隊對照組織相關資訊清單</param>
+		/// <returns></returns>
+		public string findSRTeamName(List<SRTEAMORGINFO> SRTeam)
         {
             string reValue = string.Empty;
 
@@ -5546,7 +5579,8 @@ namespace TSTI_API.Controllers
             string cCreateUserEmail = string.Empty;     //派單人員Email
             string cModifiedUser = string.Empty;        //異動人員
             string cModifiedUserEmail = string.Empty;   //異動人員Email
-            string cTeamName = string.Empty;            //服務團隊
+			string cTeamProfitCenterID = string.Empty;  //服務團隊對應的利潤中心ID
+			string cTeamName = string.Empty;            //服務團隊
             string cTeamMGR = string.Empty;             //服務團隊主管
             string cTeamMGREmail = string.Empty;        //服務團隊主管Email
             string cMainENG = string.Empty;             //主要工程師
@@ -5561,9 +5595,12 @@ namespace TSTI_API.Controllers
             string cSalesEMP = string.Empty;            //業務人員
             string cSalesEMPEmail = string.Empty;       //業務人員Email
             string cSecretaryEMP = string.Empty;        //業務祕書
-            string cSecretaryEMPEmail = string.Empty;   //業務祕書Email           
+            string cSecretaryEMPEmail = string.Empty;   //業務祕書Email
+            string cContractCenterEMPID = string.Empty;      //中心單位管理者ERPID
+			string cContractCenterEMP = string.Empty;        //中心單位管理者
+			string cContractCenterEMPEmail = string.Empty;   //中心單位管理者Email           
 
-            string cStatus = string.Empty;              //狀態
+			string cStatus = string.Empty;              //狀態
             string cStatusDesc = string.Empty;          //狀態說明            
             string cCreatedDate = string.Empty;         //派單時間
             string cModifiedDate = string.Empty;        //異動時間
@@ -5595,8 +5632,9 @@ namespace TSTI_API.Controllers
                 List<SREMPINFO> SRTechMGR_List = new List<SREMPINFO>();
                 List<SREMPINFO> SRSalesEMP_List = new List<SREMPINFO>();
                 List<SREMPINFO> SRSecretaryEMP_List = new List<SREMPINFO>();
+				List<SREMPINFO> SRContractCenterEMP_List = new List<SREMPINFO>();
 
-                List<SRCONTACTINFO> SRRepair_List = new List<SRCONTACTINFO>();
+				List<SRCONTACTINFO> SRRepair_List = new List<SRCONTACTINFO>();
                 List<SRCONTACTINFO> SRContact_List = new List<SRCONTACTINFO>();
                 List<SRRECORDINFO> SRRecord_List = new List<SRRECORDINFO>();
 
@@ -5664,7 +5702,8 @@ namespace TSTI_API.Controllers
                     cCompanyName = findCompanyNameByTeamID(beanM.cTeamID);
                     SRTeam_List = findSRTEAMORGINFO(beanM.cTeamID);
                     cSRCase = findSRIDType(cSRID);
-                    cTeamName = findSRTeamName(SRTeam_List);
+					cTeamProfitCenterID = findSRTeamProfitCenterID(SRTeam_List);
+					cTeamName = findSRTeamName(SRTeam_List);
                     cTeamMGR = findSRTeamMGRName(SRTeam_List);
                     cTeamMGREmail = findSRTeamMGREmail(SRTeam_List);
                     #endregion
@@ -5700,8 +5739,15 @@ namespace TSTI_API.Controllers
                     cSecretaryEMPEmail = findSREMPEmail(SRSecretaryEMP_List);
                     #endregion
 
-                    #region 客戶報修窗口資料
-                    cCusName = beanM.cCustomerName;
+                    #region 中心單位管理者相關		
+                    cContractCenterEMPID = getContractCenterERPID(cTeamProfitCenterID, pSysOperationID, cBUKRS, "CONTRACTCenterManager_");
+					SRContractCenterEMP_List = findSREMPINFO(cContractCenterEMPID);
+					cContractCenterEMP = findSREMPName(SRContractCenterEMP_List);
+					cContractCenterEMPEmail = findSREMPEmail(SRContractCenterEMP_List);
+					#endregion
+
+					#region 客戶報修窗口資料
+					cCusName = beanM.cCustomerName;
                     cRepairName = beanM.cRepairName;
                     cRepairPhone = beanM.cRepairPhone;
                     cRepairMobile = beanM.cRepairMobile;
@@ -5787,10 +5833,11 @@ namespace TSTI_API.Controllers
                     SRMain.TechMGREmail = cTechMGREmail;
                     SRMain.SalesEmail = cSalesEMPEmail;
                     SRMain.SecretaryEmail = cSecretaryEMPEmail;
-                    #endregion -----↑↑↑↑↑Mail相關 ↑↑↑↑↑-----  
+                    SRMain.ContractCenterEMPEmail = cContractCenterEMPEmail;
+					#endregion -----↑↑↑↑↑Mail相關 ↑↑↑↑↑-----  
 
-                    #region -----↓↓↓↓↓客戶報修窗口資料 ↓↓↓↓↓-----
-                    SRRepair_List = findSRREPAIRINFO(cSRID, cRepairName, cRepairPhone, cRepairMobile, cRepairAddress, cRepairEmail);
+					#region -----↓↓↓↓↓客戶報修窗口資料 ↓↓↓↓↓-----
+					SRRepair_List = findSRREPAIRINFO(cSRID, cRepairName, cRepairPhone, cRepairMobile, cRepairAddress, cRepairEmail);
                     #endregion -----↑↑↑↑↑客戶報修窗口資料 ↑↑↑↑↑----- 
 
                     #region -----↓↓↓↓↓客戶聯絡窗口資料 ↓↓↓↓↓-----
@@ -6049,11 +6096,21 @@ namespace TSTI_API.Controllers
                     if (SRMain.SecretaryEmail != "")
                     {
                         tMailCcTemp += SRMain.SecretaryEmail;
-                    }
-                }
+                    }					
+				}
 
-                //若為(61.一般)才要取派單人員
-                if (cSRID.Substring(0, 2) == "61")
+				//若為(63.裝機)才要取合約中心單位管理者
+				if (cSRID.Substring(0, 2) == "63")
+				{
+					//合約中心單位管理者
+					if (SRMain.ContractCenterEMPEmail != "")
+					{
+						tMailCcTemp += SRMain.ContractCenterEMPEmail;
+					}
+				}
+
+				//若為(61.一般)才要取派單人員
+				if (cSRID.Substring(0, 2) == "61")
                 {
                     if (SRMain.CreateUserEmail != "") //派單人員Email
                     {
@@ -6756,22 +6813,68 @@ namespace TSTI_API.Controllers
                 SendMailByAPI("SendReport_API", null, "elvis.chang@etatung.com", "", "", "發送服務報告書report給客戶錯誤 - " + SRID, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "<br>" + ex.ToString(), null, null);
             }
         }
-        #endregion
+		#endregion
 
-        #region 以訊息中心發送Mail(新版)
-        /// <summary>
-        /// Email寄送 API
-        /// </summary>
-        /// <param name="eventName">事件名稱 </param>
-        /// <param name="sender">設定寄件者：如為空或 null，則預設用 IC@etatung.com為寄件者 </param>
-        /// <param name="recipients">收件者：用 ;分隔 </param>
-        /// <param name="ccs">副本：用 ;分隔。如果沒有，就給空值或 null</param>
-        /// <param name="bccs">密碼副本：用 ;分隔。如果沒有，就給空值或 null</param>
-        /// <param name="subject">標題 </param>
-        /// <param name="content">內容 </param>
-        /// <param name="attachFileNames">附檔檔名：用 ;分隔 (※項目必需跟附檔路徑匹配 )。如果沒有，就給空值或 null</param>
-        /// <param name="attachFilePaths">附檔路徑：用 ;分隔 (※項目必需跟附檔檔名匹配 )。如果沒有，就給空值或 null</param>
-        public void SendMailByAPI(string eventName, string sender, string recipients, string ccs, string bccs, string subject, string content, string attachFileNames, string attachFilePaths)
+		#region 取得中心單位管理者ERPID
+		/// <summary>
+		/// 取得中心單位管理者ERPID
+		/// </summary>
+		/// <param name="cTeamProfitCenterID">服務團隊對應的組織利潤中心ID</param>
+		/// <param name="tSysOperationID">程式作業編號檔系統ID</param>
+		/// <param name="cCompanyID">公司別(ALL、T012、T016、C069、T022)</param>
+		/// <param name="cNo">參數</param>
+		/// <returns></returns>
+		public string getContractCenterERPID(string cTeamProfitCenterID, string tSysOperationID, string cCompanyID, string cNo)
+		{
+            string reValue = string.Empty;
+
+			List<string> tTempAccountList = new List<string>();
+			string cCenterID = string.Empty;
+
+			Guid tcID = new Guid(tSysOperationID);
+
+			var beans = dbPSIP.TB_ONE_SysParameter.Where(x => x.Disabled == 0 && x.cOperationID == tcID && x.cFunctionID == "ACCOUNT" && x.cCompanyID == cCompanyID && x.cNo.Contains(cNo));
+
+			foreach (var bean in beans)
+			{
+				cCenterID = bean.cNo.Replace(cNo, "");
+
+                string[] AryPorfictCenterID = cTeamProfitCenterID.Split(';');
+
+                foreach(string tValue in AryPorfictCenterID)
+                {
+                    if (cCenterID.ToLower() == tValue.ToLower())
+                    {
+						if (!tTempAccountList.Contains(bean.cValue))
+						{
+							EmployeeBean empBean = findEmployeeInfoByAccount(bean.cValue);
+							
+							reValue += empBean.EmployeeERPID + ";";
+							tTempAccountList.Add(bean.cValue);
+						}
+					}
+                }				
+			}
+
+            reValue = reValue.TrimEnd(';');
+			return reValue;
+		}
+		#endregion
+
+		#region 以訊息中心發送Mail(新版)
+		/// <summary>
+		/// Email寄送 API
+		/// </summary>
+		/// <param name="eventName">事件名稱 </param>
+		/// <param name="sender">設定寄件者：如為空或 null，則預設用 IC@etatung.com為寄件者 </param>
+		/// <param name="recipients">收件者：用 ;分隔 </param>
+		/// <param name="ccs">副本：用 ;分隔。如果沒有，就給空值或 null</param>
+		/// <param name="bccs">密碼副本：用 ;分隔。如果沒有，就給空值或 null</param>
+		/// <param name="subject">標題 </param>
+		/// <param name="content">內容 </param>
+		/// <param name="attachFileNames">附檔檔名：用 ;分隔 (※項目必需跟附檔路徑匹配 )。如果沒有，就給空值或 null</param>
+		/// <param name="attachFilePaths">附檔路徑：用 ;分隔 (※項目必需跟附檔檔名匹配 )。如果沒有，就給空值或 null</param>
+		public void SendMailByAPI(string eventName, string sender, string recipients, string ccs, string bccs, string subject, string content, string attachFileNames, string attachFilePaths)
         {
             WebRequest browser = WebRequest.Create("http://psip-prd-ap:8080/Ajax/SendMailAPI");
             browser.Method = "POST";
