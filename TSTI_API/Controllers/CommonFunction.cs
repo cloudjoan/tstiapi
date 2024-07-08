@@ -6099,14 +6099,17 @@ namespace TSTI_API.Controllers
                     }					
 				}
 
-				//若為(63.裝機)才要取合約中心單位管理者
+				//若為(63.裝機)且為新建的，才要取合約中心單位管理者
 				if (cSRID.Substring(0, 2) == "63")
 				{
-					//合約中心單位管理者
-					if (SRMain.ContractCenterEMPEmail != "")
-					{
-						tMailCcTemp += SRMain.ContractCenterEMPEmail;
-					}
+                    if (cCondition == SRCondition.ADD) 
+                    {
+                        //合約中心單位管理者
+                        if (SRMain.ContractCenterEMPEmail != "")
+                        {
+                            tMailCcTemp += SRMain.ContractCenterEMPEmail;
+                        }
+                    }
 				}
 
 				//若為(61.一般)才要取派單人員
