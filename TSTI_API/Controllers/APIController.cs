@@ -13918,9 +13918,11 @@ namespace TSTI_API.Controllers
         [HttpPost]
         public ActionResult GetExchangeRate()
         {
-            String yesterday = DateTime.Now.AddDays(-1).ToString("yyyy/MM/dd");
+            //抓取CR_Date最大的一筆
+            var bean = dbProxy.TB_ExchangeRate.OrderByDescending(x => x.CR_Date).FirstOrDefault();
+
 			var currencyOrder = new List<string> { "USD", "RMB", "JPY", "EUR" , "HKD" };
-			var beans = dbProxy.TB_ExchangeRate.Where(x => x.CR_Date == yesterday).ToList().OrderBy(x => currencyOrder.IndexOf(x.Currency));
+			var beans = dbProxy.TB_ExchangeRate.Where(x => x.CR_Date == bean.CR_Date).ToList().OrderBy(x => currencyOrder.IndexOf(x.Currency));
 			return Json(beans);
 		}
 
