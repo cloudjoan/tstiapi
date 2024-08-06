@@ -20,7 +20,7 @@
         <EntityTypeShape EntityType="ERP_PROXY_DBModel.CUSTOMER_Contact" Width="2.25" PointX="5.5" PointY="1.25" IsExpanded="false" />
         <EntityTypeShape EntityType="ERP_PROXY_DBModel.CUSTOMER_ContactTemp" Width="2.125" PointX="0.75" PointY="4.875" IsExpanded="false" />
         <EntityTypeShape EntityType="ERP_PROXY_DBModel.VIEW_DW_Emp" Width="1.5" PointX="3.25" PointY="3.875" />
-        <EntityTypeShape EntityType="ERP_PROXY_DBModel.TB_ExchangeRate" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="ERP_PROXY_DBModel.TB_ExchangeRate" Width="1.5" PointX="0.75" PointY="6.375" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

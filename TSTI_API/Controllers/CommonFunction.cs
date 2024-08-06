@@ -4843,7 +4843,7 @@ namespace TSTI_API.Controllers
             SqlCommand cmd = new SqlCommand(tSQL);
             cmd.Connection = con;
             SqlDataAdapter sda = new SqlDataAdapter(cmd);
-            sda.SelectCommand.CommandTimeout = 600; //設定timeout為600秒
+            sda.SelectCommand.CommandTimeout = 60; //設定timeout為60秒
             sda.Fill(dt);
 
             return dt;
@@ -4888,7 +4888,7 @@ namespace TSTI_API.Controllers
 
                 SqlCommand command = cn.CreateCommand();
                 command.Connection = cn;
-                command.CommandTimeout = 600; //設定timeout為600秒
+                command.CommandTimeout = 60; //設定timeout為60秒
                 command.CommandText = tSQL;
 
                 int result = command.ExecuteNonQuery();
