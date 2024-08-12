@@ -539,8 +539,9 @@ namespace TSTI_API.Controllers
 
             var qPjRec = dbProxy.CUSTOMER_Contact.OrderByDescending(x => x.ModifiedDate).
                                                Where(x => (x.Disabled == null || x.Disabled != 1) &&
-                                                          x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&                                                          
-                                                          (string.IsNullOrEmpty(CustomerID) ? true : (x.KNA1_KUNNR.Contains(CustomerID) || x.KNA1_NAME1.Contains(CustomerID))) &&
+                                                          x.ContactName != "" && x.ContactCity != "" && x.ContactAddress != "" &&
+														  (string.IsNullOrEmpty(COMPID) ? true : x.KNB1_BUKRS == COMPID) &&
+														  (string.IsNullOrEmpty(CustomerID) ? true : (x.KNA1_KUNNR.Contains(CustomerID) || x.KNA1_NAME1.Contains(CustomerID))) &&
                                                           (string.IsNullOrEmpty(CONTACTNAME) ? true : x.ContactName.Contains(CONTACTNAME)) &&
                                                           (string.IsNullOrEmpty(CONTACTTEL) ? true : (x.ContactPhone.Contains(CONTACTTEL) || x.ContactMobile.Contains(CONTACTTEL))) &&                                                          
                                                           (string.IsNullOrEmpty(CONTACTEMAIL) ? true : x.ContactEmail.Contains(CONTACTEMAIL))).ToList();
@@ -555,7 +556,7 @@ namespace TSTI_API.Controllers
             {
                 foreach (var prBean in qPjRec)
                 {
-                    tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + prBean.ContactName.Trim().Replace(" ", "");
+                    tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + COMPID + "|" + prBean.ContactName.Trim().Replace(" ", "");
 
                     if (!tTempList.Contains(tTempValue)) //判斷客戶ID、聯絡人姓名不重覆才要顯示
                     {
