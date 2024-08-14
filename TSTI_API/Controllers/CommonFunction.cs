@@ -558,8 +558,8 @@ namespace TSTI_API.Controllers
                 {
                     tTempValue = prBean.KNA1_KUNNR.Trim().Replace(" ", "") + "|" + COMPID + "|" + prBean.ContactName.Trim().Replace(" ", "");
 
-                    if (!tTempList.Contains(tTempValue)) //判斷客戶ID、聯絡人姓名不重覆才要顯示
-                    {
+                    if (!tTempList.Contains(tTempValue)) //判斷客戶ID、公司別、聯絡人姓名不重覆才要顯示
+					{
                         tTempList.Add(tTempValue);
 
                         ContactMobile = string.IsNullOrEmpty(prBean.ContactMobile) ? "" : prBean.ContactMobile.Trim().Replace(" ", "");                        

@@ -4,6 +4,7 @@
 
 2023/12/04:elvis:Jordan請MIS調整把report的電話去掉，只留0800就好
 2024/04/29:elvis:接單時間改成「回應時間」
+2024/08/14:elvis:某幾個方法新增加「timeout時間為60秒」，避免timeout
 
 */
 #endregion
@@ -29,6 +30,8 @@ using FirebaseAdmin.Messaging;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using System.Threading;
+using System.Data.Entity;
+using System.Xml;
 
 namespace TSTI_API.Controllers
 {
@@ -80,9 +83,12 @@ namespace TSTI_API.Controllers
         /// <summary>全域變數</summary>
         string pMsg = "";
 
-        #region 範例API
-        // GET: API
-        [HttpGet]
+		
+
+
+		#region 範例API
+		// GET: API
+		[HttpGet]
         public ActionResult Index()
         {
             return Json("Hello World!", JsonRequestBehavior.AllowGet);
@@ -105,8 +111,10 @@ namespace TSTI_API.Controllers
         [HttpPost]
         public ActionResult SaveData(TB_MVC_CUST bean)
         {
+            dbOne.Database.CommandTimeout = 60; //預設timeout時間為60秒
 
-            testDB.TB_MVC_CUST.Add(bean);
+
+			testDB.TB_MVC_CUST.Add(bean);
             var result = testDB.SaveChanges();
 
             if (result == 1)
@@ -2484,7 +2492,9 @@ namespace TSTI_API.Controllers
         {
             SRMain_SREMPCHANGE_OUTPUT SROUT = new SRMain_SREMPCHANGE_OUTPUT();
 
-            bool tIsFormal = false;
+			dbOne.Database.CommandTimeout = 60; //預設timeout時間為60秒 edit by elvis 2024/08/14
+
+			bool tIsFormal = false;
             
             string tLog = string.Empty;
             string tEventname = string.Empty;
@@ -5543,7 +5553,9 @@ namespace TSTI_API.Controllers
         {
             SRSIGNPDFINFO_OUTPUT OUTBean = new SRSIGNPDFINFO_OUTPUT();
 
-            string IV_FileName = string.Empty;
+            dbOne.Database.CommandTimeout = 60; //預設timeout時間為60秒 edit by elvis 2024/08/14
+
+			string IV_FileName = string.Empty;
             string cSRReport = string.Empty;
             string cReportID = string.Empty;
             string cPDFPath = string.Empty;         //服務報告書路徑
@@ -9262,6 +9274,8 @@ namespace TSTI_API.Controllers
 		private SRMain_SRRESPONSETIME_OUTPUT SRRESPONSETIME_UPDATE(SRMain_SRRESPONSETIME_INPUT bean)
 		{
 			SRMain_SRRESPONSETIME_OUTPUT SROUT = new SRMain_SRRESPONSETIME_OUTPUT();
+
+			dbOne.Database.CommandTimeout = 60; //預設timeout時間為60秒 edit by elvis 2024/08/14
 
 			string tEventname = string.Empty;
 			string tExcType = string.Empty;
