@@ -14,7 +14,7 @@
         <EntityTypeShape EntityType="MCSWorkflowModel.VIEW_DEPT_MGR" Width="1.5" PointX="3.375" PointY="3.75" />
         <EntityTypeShape EntityType="MCSWorkflowModel.TB_APP_DEVICE_TOKEN" Width="1.5" PointX="4.375" PointY="0.75" />
         <EntityTypeShape EntityType="MCSWorkflowModel.TB_APP_PUSH_NOTICE_MESSAGES" Width="1.5" PointX="5.375" PointY="3.75" />
-        <EntityTypeShape EntityType="MCSWorkflowModel.VIEW_EMP_INFO" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="MCSWorkflowModel.VIEW_EMP_INFO" Width="1.5" PointX="7.75" PointY="0.875" />
         <EntityTypeShape EntityType="MCSWorkflowModel.TB_APP_INFO" Width="1.5" PointX="7.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>

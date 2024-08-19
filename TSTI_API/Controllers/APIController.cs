@@ -2490,9 +2490,7 @@ namespace TSTI_API.Controllers
         #region 人員異動(一般/裝機/定維)狀態
         private SRMain_SREMPCHANGE_OUTPUT SREMPCHANGE_CHANGE(SRMain_SREMPCHANGE_INPUT bean)
         {
-            SRMain_SREMPCHANGE_OUTPUT SROUT = new SRMain_SREMPCHANGE_OUTPUT();
-
-			dbOne.Database.CommandTimeout = 60; //預設timeout時間為60秒 edit by elvis 2024/08/14
+            SRMain_SREMPCHANGE_OUTPUT SROUT = new SRMain_SREMPCHANGE_OUTPUT();			
 
 			bool tIsFormal = false;
             
@@ -2526,163 +2524,168 @@ namespace TSTI_API.Controllers
                 pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
             }
 
-            try
+            using (var dbOne = new TSTIONEEntities())
             {
-                #region 取得系統位址參數相關資訊
-                SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+				dbOne.Database.CommandTimeout = 60; //預設timeout時間為60秒 edit by elvis 2024/08/14
 
-                tIsFormal = ParaBean.IsFormal;
-
-                tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
-                tONEURLName = ParaBean.ONEURLName;
-                tBPMURLName = ParaBean.BPMURLName;
-                tPSIPURLName = ParaBean.PSIPURLName;
-                tAttachURLName = ParaBean.AttachURLName;
-                tAttachPath = Server.MapPath("~/REPORT");
-                #endregion
-
-                SRCondition tCondition = new SRCondition();
-
-                var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
-
-                if (beanM != null)
+				try
                 {
-                    #region 判斷寄送Mail的狀態
-                    switch (IV_STATUS)
-                    {
-                        case "E0002": //L2處理中(一般)
-                        case "E0003": //報價中(一般)
-                        case "E0005": //L1處理中(一般)
-                        case "E0008": //裝機中(裝機)
-                            tCondition = SRCondition.SAVE;
-                            break;
+                    #region 取得系統位址參數相關資訊
+                    SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
 
-                        case "E0004": //3rd Party處理中(一般)                            
-                            tCondition = SRCondition.THRPARTY;
-                            break;
+                    tIsFormal = ParaBean.IsFormal;
 
-                        case "E0006": //完修(一般)                   
-                            tCondition = SRCondition.DONE;
-                            break;
-
-                        case "E0007": //技術支援升級(一般)           
-                            tCondition = SRCondition.SUPPORT;
-                            break;
-
-                        case "E0009": //維修/DOA(裝機)           
-                            tCondition = SRCondition.DOA;
-                            break;
-
-                        case "E0010": //裝機完成(裝機)           
-                            tCondition = SRCondition.INSTALLDONE;
-                            break;
-
-                        case "E0012": //HPGCSN 申請(一般)           
-                            tCondition = SRCondition.HPGCSN;
-                            break;
-
-                        case "E0013": //HPGCSN 完成(一般)
-                            tCondition = SRCondition.HPGCSNDONE;
-                            break;
-
-                        case "E0014": //駁回(共用)       
-                            tCondition = SRCondition.REJECT;
-                            break;
-
-                        case "E0015": //取消(共用)
-                            tCondition = SRCondition.CANCEL;
-                            break;
-
-                        default:
-                            tCondition = SRCondition.SAVE;
-                            break;
-                    }
+                    tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+                    tONEURLName = ParaBean.ONEURLName;
+                    tBPMURLName = ParaBean.BPMURLName;
+                    tPSIPURLName = ParaBean.PSIPURLName;
+                    tAttachURLName = ParaBean.AttachURLName;
+                    tAttachPath = Server.MapPath("~/REPORT");
                     #endregion
 
-                    if (IV_TRANSEMPNO != "")
+                    SRCondition tCondition = new SRCondition();
+
+                    var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
+
+                    if (beanM != null)
                     {
-                        if (IV_TRANSTYPE == "TECH")
+                        #region 判斷寄送Mail的狀態
+                        switch (IV_STATUS)
                         {
-                            tOldValue = beanM.cTechManagerID;
-                            beanM.cTechManagerID = IV_TRANSEMPNO;
+                            case "E0002": //L2處理中(一般)
+                            case "E0003": //報價中(一般)
+                            case "E0005": //L1處理中(一般)
+                            case "E0008": //裝機中(裝機)
+                                tCondition = SRCondition.SAVE;
+                                break;
 
-                            tLog = CMF.getNewAndOldLog("技術主管", tOldValue, beanM.cTechManagerID);
+                            case "E0004": //3rd Party處理中(一般)                            
+                                tCondition = SRCondition.THRPARTY;
+                                break;
+
+                            case "E0006": //完修(一般)                   
+                                tCondition = SRCondition.DONE;
+                                break;
+
+                            case "E0007": //技術支援升級(一般)           
+                                tCondition = SRCondition.SUPPORT;
+                                break;
+
+                            case "E0009": //維修/DOA(裝機)           
+                                tCondition = SRCondition.DOA;
+                                break;
+
+                            case "E0010": //裝機完成(裝機)           
+                                tCondition = SRCondition.INSTALLDONE;
+                                break;
+
+                            case "E0012": //HPGCSN 申請(一般)           
+                                tCondition = SRCondition.HPGCSN;
+                                break;
+
+                            case "E0013": //HPGCSN 完成(一般)
+                                tCondition = SRCondition.HPGCSNDONE;
+                                break;
+
+                            case "E0014": //駁回(共用)       
+                                tCondition = SRCondition.REJECT;
+                                break;
+
+                            case "E0015": //取消(共用)
+                                tCondition = SRCondition.CANCEL;
+                                break;
+
+                            default:
+                                tCondition = SRCondition.SAVE;
+                                break;
                         }
-                        else if (IV_TRANSTYPE == "MAIN")
-                        {
-                            tOldValue = beanM.cMainEngineerName;
-
-                            beanM.cMainEngineerID = IV_TRANSEMPNO;
-                            beanM.cMainEngineerName = CMF.findEmployeeName(IV_TRANSEMPNO);
-                            tCondition = SRCondition.TRANS; //轉派主要工程師
-
-                            tLog = CMF.getNewAndOldLog("主要工程師", tOldValue, beanM.cMainEngineerName);
-                        }
-                        else if (IV_TRANSTYPE == "ASS")
-                        {
-                            tOldValue = beanM.cAssEngineerID;
-                            beanM.cAssEngineerID = IV_TRANSEMPNO;
-
-                            tLog = CMF.getNewAndOldLog("協助工程師", tOldValue, beanM.cAssEngineerID);
-                        }
-                    }
-
-                    if (IV_STATUS != "")
-                    {
-                        beanM.cStatus = IV_STATUS;
-                    }
-
-                    beanM.ModifiedDate = DateTime.Now;
-                    beanM.ModifiedUserName = pLoginName;
-
-                    int result = dbOne.SaveChanges();
-
-                    if (result <= 0)
-                    {
-                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！" + Environment.NewLine;
-                        CMF.writeToLog(IV_SRID, "SREMPCHANGE_CHANGE_API", pMsg, pLoginName);
-
-                        SROUT.EV_MSGT = "E";
-                        SROUT.EV_MSG = pMsg;
-                    }
-                    else
-                    {
-                        SROUT.EV_MSGT = "Y";
-                        SROUT.EV_MSG = "";
-
-                        if (!string.IsNullOrEmpty(tLog))
-                        {
-                            if (IV_SRID.Substring(0, 2) == "61")
-                            {
-                                tEventname = "SaveGenerallySR";
-                            }
-                            else if (IV_SRID.Substring(0, 2) == "63")
-                            {
-                                tEventname = "SaveInstallSR";
-                            }
-                            else if (IV_SRID.Substring(0, 2) == "65")
-                            {
-                                tEventname = "SaveMaintainSR";
-                            }
-
-                            CMF.writeToLog(IV_SRID, tEventname, tLog, pLoginName);
-                        }
-
-                        #region 寄送Mail通知
-                        CMF.SetSRMailContent(tCondition, pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, EmpBean.BUKRS, IV_SRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
                         #endregion
+
+                        if (IV_TRANSEMPNO != "")
+                        {
+                            if (IV_TRANSTYPE == "TECH")
+                            {
+                                tOldValue = beanM.cTechManagerID;
+                                beanM.cTechManagerID = IV_TRANSEMPNO;
+
+                                tLog = CMF.getNewAndOldLog("技術主管", tOldValue, beanM.cTechManagerID);
+                            }
+                            else if (IV_TRANSTYPE == "MAIN")
+                            {
+                                tOldValue = beanM.cMainEngineerName;
+
+                                beanM.cMainEngineerID = IV_TRANSEMPNO;
+                                beanM.cMainEngineerName = CMF.findEmployeeName(IV_TRANSEMPNO);
+                                tCondition = SRCondition.TRANS; //轉派主要工程師
+
+                                tLog = CMF.getNewAndOldLog("主要工程師", tOldValue, beanM.cMainEngineerName);
+                            }
+                            else if (IV_TRANSTYPE == "ASS")
+                            {
+                                tOldValue = beanM.cAssEngineerID;
+                                beanM.cAssEngineerID = IV_TRANSEMPNO;
+
+                                tLog = CMF.getNewAndOldLog("協助工程師", tOldValue, beanM.cAssEngineerID);
+                            }
+                        }
+
+                        if (IV_STATUS != "")
+                        {
+                            beanM.cStatus = IV_STATUS;
+                        }
+
+                        beanM.ModifiedDate = DateTime.Now;
+                        beanM.ModifiedUserName = pLoginName;
+
+                        int result = dbOne.SaveChanges();
+
+                        if (result <= 0)
+                        {
+                            pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！" + Environment.NewLine;
+                            CMF.writeToLog(IV_SRID, "SREMPCHANGE_CHANGE_API", pMsg, pLoginName);
+
+                            SROUT.EV_MSGT = "E";
+                            SROUT.EV_MSG = pMsg;
+                        }
+                        else
+                        {
+                            SROUT.EV_MSGT = "Y";
+                            SROUT.EV_MSG = "";
+
+                            if (!string.IsNullOrEmpty(tLog))
+                            {
+                                if (IV_SRID.Substring(0, 2) == "61")
+                                {
+                                    tEventname = "SaveGenerallySR";
+                                }
+                                else if (IV_SRID.Substring(0, 2) == "63")
+                                {
+                                    tEventname = "SaveInstallSR";
+                                }
+                                else if (IV_SRID.Substring(0, 2) == "65")
+                                {
+                                    tEventname = "SaveMaintainSR";
+                                }
+
+                                CMF.writeToLog(IV_SRID, tEventname, tLog, pLoginName);
+                            }
+
+                            #region 寄送Mail通知
+                            CMF.SetSRMailContent(tCondition, pOperationID_GenerallySR, pOperationID_InstallSR, pOperationID_MaintainSR, EmpBean.BUKRS, IV_SRID, tONEURLName, tAttachURLName, tAttachPath, pLoginName, tIsFormal);
+                            #endregion
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
-                pMsg += " 失敗行數：" + ex.ToString();
+                catch (Exception ex)
+                {
+                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                    pMsg += " 失敗行數：" + ex.ToString();
 
-                CMF.writeToLog(IV_SRID, "SREMPCHANGE_CHANGE_API", pMsg, pLoginName);
+                    CMF.writeToLog(IV_SRID, "SREMPCHANGE_CHANGE_API", pMsg, pLoginName);
 
-                SROUT.EV_MSGT = "E";
-                SROUT.EV_MSG = ex.Message;
+                    SROUT.EV_MSGT = "E";
+                    SROUT.EV_MSG = ex.Message;
+                }
             }
 
             return SROUT;
@@ -5551,9 +5554,7 @@ namespace TSTI_API.Controllers
         #region 客戶手寫簽名圖片上傳並產生服務報告書pdf        
         public SRSIGNPDFINFO_OUTPUT UploadSignToPdf(SRSIGNPDFINFO_INPUT beanIN)
         {
-            SRSIGNPDFINFO_OUTPUT OUTBean = new SRSIGNPDFINFO_OUTPUT();
-
-            dbOne.Database.CommandTimeout = 60; //預設timeout時間為60秒 edit by elvis 2024/08/14
+            SRSIGNPDFINFO_OUTPUT OUTBean = new SRSIGNPDFINFO_OUTPUT();            
 
 			string IV_FileName = string.Empty;
             string cSRReport = string.Empty;
@@ -5631,1629 +5632,1081 @@ namespace TSTI_API.Controllers
             string TestEmail = "";
             string firstEgnrName = "";
 
-            try
+            using (var dbOne = new TSTIONEEntities())
             {
-                if (IV_SRReportType == SRReportType.SIGN || IV_SRReportType == SRReportType.ONLINE || IV_SRReportType == SRReportType.REMOTE) //有簽名檔、線上、遠端
+				dbOne.Database.CommandTimeout = 60; //預設timeout時間為60秒 edit by elvis 2024/08/14
+
+				try
                 {
-                    #region 有簽名檔、線上、遠端
-
-                    #region -- 服務案件工時更新(前面已更新，此處僅設定呈現資料) --
-                    //測試用
-                    //IV_StartTime = "2023/01/15 08:00:00";
-                    //IV_ArriveTime = "2023/01/15 08:30:00";
-                    //IV_FinishTime = "2023/01/15 10:10:00";
-
-                    JsonResult jsonResult;
-
-                    string YYYYMMDDHHMMSS = "";
-                    string ARRIVE = "";
-                    string COMPT = "";
-                    string DEPART = "";
-                    string ENGINEER = "";
-                    string LABOR = "";
-                    string SRVDESC = "";
-                    string CLIENTDESC = "";
-                    string CSRID = "";
-                    string OWNER = "";
-                    string EMAIL = "";
-                    string IV_CSR = "";
-                    string IV_COUNTERIN = "";
-                    string IV_COUNTEROUT = "";
-                    string IV_LABOR = "";
-
-                    try
+                    if (IV_SRReportType == SRReportType.SIGN || IV_SRReportType == SRReportType.ONLINE || IV_SRReportType == SRReportType.REMOTE) //有簽名檔、線上、遠端
                     {
-                        if (!string.IsNullOrEmpty(IV_ArriveTime) && !string.IsNullOrEmpty(IV_FinishTime))
-                        {
-                            TimeSpan Ts = Convert.ToDateTime(IV_FinishTime) - Convert.ToDateTime(IV_ArriveTime);
-                            IV_LABOR = Ts.TotalMinutes.ToString();
-                        }
+                        #region 有簽名檔、線上、遠端
 
-                        DEPART = IV_StartTime;
-                        ARRIVE = IV_ArriveTime;
-                        COMPT = IV_FinishTime;
-                        ENGINEER = string.IsNullOrEmpty(IV_EMPNONAME) ? srdetail["EV_MAINENG"].ToString() : IV_EMPNONAME;
-                        firstEgnrName = ENGINEER;
-                        LABOR = IV_LABOR;
-                    }
-                    catch (Exception ex)
-                    {
-                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因(必要參數有缺):" + ex.Message + Environment.NewLine;
-                        pMsg += " 失敗行數：" + ex.ToString();
+                        #region -- 服務案件工時更新(前面已更新，此處僅設定呈現資料) --
+                        //測試用
+                        //IV_StartTime = "2023/01/15 08:00:00";
+                        //IV_ArriveTime = "2023/01/15 08:30:00";
+                        //IV_FinishTime = "2023/01/15 10:10:00";
 
-                        CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
-                        CMF.SendMailByAPI("UploadSignToPdf_API", null, "elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
-                    }
-                    #endregion
+                        JsonResult jsonResult;
 
-                    bool haveSignature = false;
-                    string pngPath = "";
+                        string YYYYMMDDHHMMSS = "";
+                        string ARRIVE = "";
+                        string COMPT = "";
+                        string DEPART = "";
+                        string ENGINEER = "";
+                        string LABOR = "";
+                        string SRVDESC = "";
+                        string CLIENTDESC = "";
+                        string CSRID = "";
+                        string OWNER = "";
+                        string EMAIL = "";
+                        string IV_CSR = "";
+                        string IV_COUNTERIN = "";
+                        string IV_COUNTEROUT = "";
+                        string IV_LABOR = "";
 
-                    if (IV_SRReportType == SRReportType.SIGN)
-                    {
-                        #region -- 上傳簽名檔 --
                         try
                         {
-                            if (upload != null && upload.ContentLength > 0)
+                            if (!string.IsNullOrEmpty(IV_ArriveTime) && !string.IsNullOrEmpty(IV_FinishTime))
                             {
-                                haveSignature = true;
-
-                                string fileName = upload.FileName.Replace(Path.GetExtension(upload.FileName), "") + ".png";
-                                pngPath = Path.Combine(Server.MapPath("~/REPORT"), fileName);
-                                upload.SaveAs(pngPath);
-                            }
-                            else
-                            {
-                                string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + ".png";
-                                haveSignature = true; //測試用(因為沒有上傳圖片，所以upload = null。haveSignature要是true，才會跑產生pdf)
-                                pngPath = Path.Combine(Server.MapPath("~/img"), "white.png");
+                                TimeSpan Ts = Convert.ToDateTime(IV_FinishTime) - Convert.ToDateTime(IV_ArriveTime);
+                                IV_LABOR = Ts.TotalMinutes.ToString();
                             }
 
-                            pMsg += "File Uploaded Successfully!!";
+                            DEPART = IV_StartTime;
+                            ARRIVE = IV_ArriveTime;
+                            COMPT = IV_FinishTime;
+                            ENGINEER = string.IsNullOrEmpty(IV_EMPNONAME) ? srdetail["EV_MAINENG"].ToString() : IV_EMPNONAME;
+                            firstEgnrName = ENGINEER;
+                            LABOR = IV_LABOR;
                         }
                         catch (Exception ex)
                         {
-                            pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因(File upload failed):PDF沒產生QQ" + Environment.NewLine;
+                            pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因(必要參數有缺):" + ex.Message + Environment.NewLine;
                             pMsg += " 失敗行數：" + ex.ToString();
 
                             CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
-                            CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
+                            CMF.SendMailByAPI("UploadSignToPdf_API", null, "elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
                         }
                         #endregion
-                    }
-                    else if (IV_SRReportType == SRReportType.ONLINE || IV_SRReportType == SRReportType.REMOTE)
-                    {
-                        haveSignature = true;
-                    }
 
-                    // TEST GET URL
-                    // haveSignature = true;
-                    var maintain_type = string.Empty; //20221005-用來記錄問卷類型
+                        bool haveSignature = false;
+                        string pngPath = "";
 
-                    if (haveSignature)
-                    {
-                        #region // 產生 PDF
-
-                        #region // 字型設定
-                        BaseFont bfChinese = null;
-                        try
+                        if (IV_SRReportType == SRReportType.SIGN)
                         {
-                            bfChinese = BaseFont.CreateFont(Server.MapPath("~/fonts/") + "msjh.ttc,0", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-                        }
-                        catch (Exception ex)
-                        {
-                            pMsg += "Windows seems to lack font:" + ex.StackTrace;
-                            bfChinese = BaseFont.CreateFont(Server.MapPath("~/fonts/") + "msjh.ttc,0", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-                        }
-
-                        iTextSharp.text.Font ChFont6 = new iTextSharp.text.Font(bfChinese, 6);
-                        iTextSharp.text.Font ChFont8 = new iTextSharp.text.Font(bfChinese, 8);
-                        iTextSharp.text.Font ChFont8U = new iTextSharp.text.Font(bfChinese, 8, iTextSharp.text.Font.UNDERLINE);
-                        iTextSharp.text.Font ChFont8Blue = new iTextSharp.text.Font(bfChinese, 8, iTextSharp.text.Font.NORMAL, new iTextSharp.text.BaseColor(0, 112, 192));
-                        iTextSharp.text.Font ChFont8Red = new iTextSharp.text.Font(bfChinese, 8, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.RED);
-
-                        iTextSharp.text.Font ChFont10 = new iTextSharp.text.Font(bfChinese, 10);
-                        iTextSharp.text.Font ChFont10U = new iTextSharp.text.Font(bfChinese, 10, iTextSharp.text.Font.UNDERLINE);
-                        iTextSharp.text.Font ChFont10Blue = new iTextSharp.text.Font(bfChinese, 10, iTextSharp.text.Font.NORMAL, new iTextSharp.text.BaseColor(0, 112, 192));
-                        iTextSharp.text.Font ChFont10Red = new iTextSharp.text.Font(bfChinese, 10, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.RED);
-
-                        iTextSharp.text.Font ChFont12 = new iTextSharp.text.Font(bfChinese, 12);
-                        iTextSharp.text.Font ChFont12B = new iTextSharp.text.Font(bfChinese, 12, iTextSharp.text.Font.BOLD);
-
-                        iTextSharp.text.Font ChFont16B = new iTextSharp.text.Font(bfChinese, 16, iTextSharp.text.Font.BOLD);
-                        iTextSharp.text.Font ChFont16I = new iTextSharp.text.Font(bfChinese, 16, iTextSharp.text.Font.ITALIC);
-
-                        // 打勾
-                        BaseFont bfSymbol = null;
-                        try
-                        {
-                            bfSymbol = BaseFont.CreateFont(Server.MapPath("~/fonts/") + "WINGDNG2.TTF", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-                        }
-                        catch (Exception ex)
-                        {
-                            pMsg += "Windows seems to lack font:" + ex.StackTrace;
-                            bfSymbol = BaseFont.CreateFont(Server.MapPath("~/fonts/") + "msjh.ttc,0", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-                        }
-                        iTextSharp.text.Font checkSymbol = new iTextSharp.text.Font(bfSymbol, 12);
-                        #endregion
-
-                        #region // 標頭
-                        PdfPTable hTable = new PdfPTable(new float[] { 4, 15, 4 });
-                        hTable.WidthPercentage = 92;
-
-                        hTable.DefaultCell.Border = iTextSharp.text.Rectangle.NO_BORDER; // 無邊框
-
-                        PdfPCell hcell1 = new PdfPCell(new iTextSharp.text.Phrase("NO." + IV_SRID, ChFont10U));
-                        hcell1.Border = PdfPCell.NO_BORDER;
-                        hTable.AddCell(hcell1);
-
-                        // EV_DEPARTMENT 判斷是大世科還是群輝
-                        string EV_DEPARTMENT = srdetail["EV_DEPARTMENT"].ToString();
-
-                        bool isTSTI = true; //這邊都固定為T012-大世科
-
-                        if (isTSTI)
-                        {
-                            // 組成 tsti 大同世界股份有限公司
-                            iTextSharp.text.Chunk hchunk1 = new iTextSharp.text.Chunk("tst", ChFont16B);
-                            iTextSharp.text.Chunk hchunk2 = new iTextSharp.text.Chunk("i", ChFont16I);
-                            iTextSharp.text.Chunk hchunk3 = new iTextSharp.text.Chunk(" 大同世界股份有限公司", ChFont16B);
-                            iTextSharp.text.Chunk hchunk4 = new iTextSharp.text.Chunk(Environment.NewLine + "www.etatung.com", ChFont10);
-                            iTextSharp.text.Phrase hphrase1 = new iTextSharp.text.Phrase();
-                            hphrase1.Add(hchunk1);
-                            hphrase1.Add(hchunk2);
-                            hphrase1.Add(hchunk3);
-                            hphrase1.Add(hchunk4);
-                            PdfPCell hcell2 = new PdfPCell(hphrase1);
-                            hcell2.Border = PdfPCell.NO_BORDER;
-                            hcell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                            hcell2.Rowspan = 2;
-                            hTable.AddCell(hcell2);
-                        }
-                        else
-                        {
-                            // 簽名圖檔
-                            string chclogoPath = Server.MapPath("~/Images/chcti.png");
-                            iTextSharp.text.Image chclogo = iTextSharp.text.Image.GetInstance(chclogoPath);
-                            chclogo.ScalePercent(60);
-
-                            PdfPCell hcell2 = new PdfPCell(chclogo);
-                            hcell2.Border = PdfPCell.NO_BORDER;
-                            hcell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                            hcell2.Rowspan = 2;
-                            hTable.AddCell(hcell2);
-                        }
-
-                        PdfPCell hcell3 = new PdfPCell();
-                        hcell3.Border = PdfPCell.NO_BORDER;
-                        hTable.AddCell(hcell3);
-
-                        PdfPCell hcell4 = new PdfPCell(new iTextSharp.text.Phrase("客服專線", ChFont10));
-                        hcell4.Border = PdfPCell.NO_BORDER;
-                        hTable.AddCell(hcell4);
-
-                        PdfPCell hcell5 = new PdfPCell(new iTextSharp.text.Phrase("報修網址", ChFont10));
-                        hcell5.Border = PdfPCell.NO_BORDER;
-                        hTable.AddCell(hcell5);
-
-                        PdfPCell hcell6 = new PdfPCell(new iTextSharp.text.Phrase("0800-066038", ChFont8Blue));
-                        hcell6.Border = PdfPCell.NO_BORDER;
-                        hTable.AddCell(hcell6);
-
-                        PdfPCell hcell7 = new PdfPCell(new iTextSharp.text.Phrase("客戶服務報告", ChFont12B));
-                        hcell7.Border = PdfPCell.NO_BORDER;
-                        hcell7.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        hcell7.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        hcell7.Rowspan = 2;
-                        hTable.AddCell(hcell7);
-
-                        PdfPCell hcell8 = new PdfPCell(new iTextSharp.text.Phrase("0800.etatung.com", ChFont8Blue));
-                        hcell8.Border = PdfPCell.NO_BORDER;
-                        hTable.AddCell(hcell8);
-
-                        //PdfPCell hcell9 = new PdfPCell(new iTextSharp.text.Phrase("(02)2598-5738", ChFont8Blue)); //edit by elvis 2023/12/04
-                        PdfPCell hcell9 = new PdfPCell(new iTextSharp.text.Phrase("     ", ChFont8Blue));
-                        hcell9.Border = PdfPCell.NO_BORDER;
-                        hTable.AddCell(hcell9);
-
-                        PdfPCell hcell10 = new PdfPCell();
-                        hcell10.Border = PdfPCell.NO_BORDER;
-                        hTable.AddCell(hcell10);
-                        #endregion
-
-                        #region // 需求單內容
-                        PdfPTable pTable = new PdfPTable(new float[] { 2, 2, 1, 2, 3, 2, 1, 3 });
-                        pTable.WidthPercentage = 92;
-                        pTable.SpacingBefore = 2;
-                        pTable.DefaultCell.Border = 2;
-                        pTable.DefaultCell.Padding = 4;
-
-                        // 第一列
-                        PdfPCell pcell1 = new PdfPCell(new iTextSharp.text.Phrase("客 戶 資 料", ChFont12B));
-                        pcell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell1.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell1.BorderWidthLeft = 1;
-                        pcell1.BorderWidthRight = 1;
-                        pcell1.BorderWidthTop = 1;
-                        pcell1.Colspan = 5;
-                        pcell1.Padding = 4;
-                        pTable.AddCell(pcell1);
-
-                        PdfPCell pcell2 = new PdfPCell(new iTextSharp.text.Phrase("服 務 編 號", ChFont12B));
-                        pcell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell2.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell2.BorderWidthLeft = 0;
-                        pcell2.BorderWidthRight = 1;
-                        pcell2.BorderWidthTop = 1;
-                        pcell2.Colspan = 3;
-                        pcell2.Padding = 4;
-                        pTable.AddCell(pcell2);
-
-                        // 第二列
-                        PdfPCell pcell3 = new PdfPCell(new iTextSharp.text.Phrase("公司名稱", ChFont10));
-                        pcell3.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell3.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell3.BorderWidthLeft = 1;
-                        pcell3.BorderWidthRight = 0;
-                        pcell3.BorderWidthTop = 0;
-                        pcell3.Padding = 4;
-                        pTable.AddCell(pcell3);
-
-                        string CUSTOMER = srdetail["EV_CUSTOMER"].ToString();
-                        PdfPCell pcell4 = new PdfPCell(new iTextSharp.text.Phrase(CUSTOMER, ChFont10));
-                        pcell4.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                        pcell4.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell4.BorderWidthRight = 1;
-                        pcell4.BorderWidthTop = 0;
-                        pcell4.Colspan = 4;
-                        pcell4.Padding = 4;
-                        pTable.AddCell(pcell4);
-
-                        PdfPCell pcell5 = new PdfPCell(new iTextSharp.text.Phrase(IV_SRID, ChFont10));
-                        pcell5.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell5.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell5.BorderWidthLeft = 0;
-                        pcell5.BorderWidthRight = 1;
-                        pcell5.BorderWidthTop = 0;
-                        pcell5.Colspan = 3;
-                        pcell5.Padding = 4;
-                        pTable.AddCell(pcell5);
-
-                        // 第三列
-                        PdfPCell pcell6 = new PdfPCell(new iTextSharp.text.Phrase("部門 (單位)", ChFont10));
-                        pcell6.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell6.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell6.BorderWidthLeft = 1;
-                        pcell6.BorderWidthRight = 0;
-                        pcell6.BorderWidthTop = 0;
-                        pcell6.Padding = 4;
-                        pTable.AddCell(pcell6);
-
-                        PdfPCell pcell7 = new PdfPCell(new iTextSharp.text.Phrase("", ChFont10));
-                        pcell7.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                        pcell7.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell7.BorderWidthRight = 1;
-                        pcell7.BorderWidthTop = 0;
-                        pcell7.Colspan = 4;
-                        pcell7.Padding = 4;
-                        pTable.AddCell(pcell7);
-
-                        PdfPCell pcell8 = new PdfPCell(new iTextSharp.text.Phrase("服 務 種 類", ChFont12B));
-                        pcell8.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell8.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell8.BorderWidthLeft = 0;
-                        pcell8.BorderWidthRight = 1;
-                        pcell8.BorderWidthTop = 0;
-                        pcell8.Colspan = 3;
-                        pcell8.Padding = 4;
-                        pTable.AddCell(pcell8);
-
-                        // 第四列
-                        PdfPCell pcell9 = new PdfPCell(new iTextSharp.text.Phrase("地址", ChFont10));
-                        pcell9.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell9.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell9.BorderWidthLeft = 1;
-                        pcell9.BorderWidthRight = 0;
-                        pcell9.BorderWidthTop = 0;
-                        pcell9.Padding = 4;
-                        pTable.AddCell(pcell9);
-
-                        PdfPCell pcell10 = new PdfPCell(new iTextSharp.text.Phrase(srdetail["EV_RADDR"].ToString(), ChFont10));
-                        pcell10.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                        pcell10.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell10.BorderWidthRight = 1;
-                        pcell10.BorderWidthTop = 0;
-                        pcell10.Colspan = 4;
-                        pcell10.Padding = 4;
-                        pTable.AddCell(pcell10);
-
-                        //ZSR1 一般
-                        //ZSR4 Survey
-                        //ZSR5 定保
-                        //ZSR3 裝機
-                        string ZSR1 = "";
-                        string ZSR5 = "";
-                        string ZSR3 = "";
-                        string EV_TYPE = srdetail.ContainsKey("EV_TYPE") ? srdetail["EV_TYPE"].ToString() : "ZSR1";
-                        switch (EV_TYPE)
-                        {
-                            case "ZSR1":
-                                ZSR1 = "R";
-                                break;
-                            case "ZSR5":
-                                ZSR5 = "R";
-                                break;
-                            case "ZSR3":
-                                ZSR3 = "R";
-                                break;
-                            default:
-                                ZSR1 = "R";
-                                break;
-                        }
-
-                        iTextSharp.text.Chunk pchunk1 = new iTextSharp.text.Chunk("維 修 ", ChFont10);
-                        iTextSharp.text.Chunk pchunk2 = new iTextSharp.text.Chunk(ZSR1, checkSymbol);
-                        iTextSharp.text.Chunk pchunk3 = new iTextSharp.text.Chunk("　 定 期 維 護 ", ChFont10);
-                        iTextSharp.text.Chunk pchunk4 = new iTextSharp.text.Chunk(ZSR5, checkSymbol);
-                        iTextSharp.text.Phrase pphrase1 = new iTextSharp.text.Phrase();
-                        pphrase1.Add(pchunk1);
-                        pphrase1.Add(pchunk2);
-                        pphrase1.Add(pchunk3);
-                        pphrase1.Add(pchunk4);
-                        PdfPCell pcell11 = new PdfPCell(pphrase1);
-
-                        pcell11.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell11.BorderWidthLeft = 0;
-                        pcell11.BorderWidthRight = 1;
-                        pcell11.BorderWidthTop = 0;
-                        pcell11.BorderWidthBottom = 0;
-                        pcell11.Colspan = 3;
-                        pcell11.Padding = 4;
-                        pTable.AddCell(pcell11);
-
-                        // 第五列
-                        PdfPCell pcell12 = new PdfPCell(new iTextSharp.text.Phrase("聯絡人", ChFont10));
-                        pcell12.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell12.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell12.BorderWidthLeft = 1;
-                        pcell12.BorderWidthRight = 0;
-                        pcell12.BorderWidthTop = 0;
-                        pcell12.BorderWidthBottom = 1;
-                        pcell12.Rowspan = 3;
-                        pcell12.Padding = 4;
-                        pTable.AddCell(pcell12);
-
-                        PdfPCell pcell13 = new PdfPCell(new iTextSharp.text.Phrase(srdetail["EV_REPORT"].ToString(), ChFont10));
-                        pcell13.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell13.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell13.BorderWidthTop = 0;
-                        pcell13.BorderWidthBottom = 1;
-                        pcell13.Colspan = 2;
-                        pcell13.Rowspan = 3;
-                        pcell13.Padding = 4;
-                        pTable.AddCell(pcell13);
-
-                        PdfPCell pcell14 = new PdfPCell(new iTextSharp.text.Phrase("聯絡電話", ChFont10));
-                        pcell14.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell14.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell14.BorderWidthLeft = 0;
-                        pcell14.BorderWidthTop = 0;
-                        pcell14.BorderWidthBottom = 1;
-                        pcell14.Rowspan = 3;
-                        pcell14.Padding = 4;
-                        pTable.AddCell(pcell14);
-
-                        PdfPCell pcell15 = new PdfPCell(new iTextSharp.text.Phrase(srdetail["EV_RTEL"].ToString(), ChFont10));
-                        pcell15.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell15.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell15.BorderWidthLeft = 0;
-                        pcell15.BorderWidthRight = 1;
-                        pcell15.BorderWidthTop = 0;
-                        pcell15.BorderWidthBottom = 1;
-                        pcell15.Rowspan = 3;
-                        pcell15.Padding = 4;
-                        pTable.AddCell(pcell15);
-
-                        iTextSharp.text.Chunk pchunk5 = new iTextSharp.text.Chunk("裝 機 ", ChFont10);
-                        iTextSharp.text.Chunk pchunk6 = new iTextSharp.text.Chunk(ZSR3, checkSymbol);
-                        iTextSharp.text.Phrase pphrase2 = new iTextSharp.text.Phrase();
-                        pphrase2.Add(pchunk5);
-                        pphrase2.Add(pchunk6);
-                        PdfPCell pcell16 = new PdfPCell(pphrase2);
-
-                        pcell16.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell16.BorderWidthLeft = 0;
-                        pcell16.BorderWidthRight = 0;
-                        pcell16.BorderWidthTop = 0;
-                        pcell16.BorderWidthBottom = 1;
-                        pcell16.Rowspan = 3;
-                        pcell16.PaddingLeft = 5;
-                        pcell16.PaddingRight = 0;
-                        pcell16.PaddingTop = 5;
-                        pcell16.PaddingBottom = 10;
-                        pTable.AddCell(pcell16);
-
-                        iTextSharp.text.Chunk pchunk7 = new iTextSharp.text.Chunk("訂單號碼 ", ChFont8);
-                        iTextSharp.text.Chunk pchunk8 = new iTextSharp.text.Chunk(":　　　　　　　　　　　", ChFont8U);
-                        iTextSharp.text.Chunk pchunk9 = new iTextSharp.text.Chunk("\n\n備料單號 ", ChFont8);
-                        iTextSharp.text.Chunk pchunk10 = new iTextSharp.text.Chunk(":　　　　　　　　　　　", ChFont8U);
-                        iTextSharp.text.Phrase pphrase3 = new iTextSharp.text.Phrase();
-                        pphrase3.Add(pchunk7);
-                        pphrase3.Add(pchunk8);
-                        pphrase3.Add(pchunk9);
-                        pphrase3.Add(pchunk10);
-                        PdfPCell pcell17 = new PdfPCell(pphrase3);
-
-                        pcell17.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                        pcell17.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell17.BorderWidthLeft = 0;
-                        pcell17.BorderWidthRight = 1;
-                        pcell17.BorderWidthTop = 0;
-                        pcell17.BorderWidthBottom = 1;
-                        pcell17.Colspan = 2;
-                        pcell17.Rowspan = 3;
-                        pcell17.PaddingLeft = 0;
-                        pcell17.PaddingRight = 0;
-                        pcell17.PaddingTop = 5;
-                        pcell17.PaddingBottom = 10;
-                        pTable.AddCell(pcell17);
-                        #endregion
-
-                        #region // 產品訊息
-                        // 第六列 -- 中間
-                        PdfPCell pcell18 = new PdfPCell(new iTextSharp.text.Phrase("服 務 需 求", ChFont12B));
-                        pcell18.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell18.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell18.BorderWidthLeft = 1;
-                        pcell18.BorderWidthRight = 1;
-                        pcell18.BorderWidthTop = 0;
-                        pcell18.Colspan = 8;
-                        pcell18.Padding = 4;
-                        pTable.AddCell(pcell18);
-
-                        // 第七列
-                        // 取第一筆 Product 名稱
-                        string PRDID = "";
-                        string SNNO = "";
-                        string PRDNUMBER = "";
-
-                        if (EV_TYPE == "ZSR1") //一般
-                        {
-                            List<SNLIST> products = srdetail.ContainsKey("table_ET_SNLIST") ? (List<SNLIST>)srdetail["table_ET_SNLIST"] : null;
-
-                            if (products.Count > 0)
+                            #region -- 上傳簽名檔 --
+                            try
                             {
-                                //取第一筆機器序號
-                                PRDID = products[0].PRDID;
-                                SNNO = products[0].SNNO;
-                                PRDNUMBER = products[0].PRDNUMBER;
-                            }
-                        }
-                        else if (EV_TYPE == "ZSR3") //裝機
-                        {
-                            List<SFSNLIST> products = srdetail.ContainsKey("table_ET_SFSNLIST") ? (List<SFSNLIST>)srdetail["table_ET_SFSNLIST"] : null;
-
-                            if (products.Count > 0)
-                            {
-                                foreach(var prod in products)
+                                if (upload != null && upload.ContentLength > 0)
                                 {
-                                    SNNO += prod.SNNO + ";";
+                                    haveSignature = true;
+
+                                    string fileName = upload.FileName.Replace(Path.GetExtension(upload.FileName), "") + ".png";
+                                    pngPath = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+                                    upload.SaveAs(pngPath);
+                                }
+                                else
+                                {
+                                    string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + ".png";
+                                    haveSignature = true; //測試用(因為沒有上傳圖片，所以upload = null。haveSignature要是true，才會跑產生pdf)
+                                    pngPath = Path.Combine(Server.MapPath("~/img"), "white.png");
                                 }
 
-                                SNNO = SNNO.TrimEnd(';');                                
+                                pMsg += "File Uploaded Successfully!!";
                             }
-                        }
-
-                        PdfPCell pcell19 = new PdfPCell(new iTextSharp.text.Phrase("產品名稱", ChFont10));
-                        pcell19.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell19.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell19.BorderWidthLeft = 1;
-                        pcell19.BorderWidthRight = 0;
-                        pcell19.BorderWidthTop = 0;
-                        pcell19.Padding = 4;
-                        pcell19.FixedHeight = (18 * pcell19.Rowspan) + 10;
-                        pTable.AddCell(pcell19);
-
-                        PdfPCell pcell20 = new PdfPCell(new iTextSharp.text.Phrase(PRDID, ChFont10));
-                        pcell20.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                        pcell20.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell20.BorderWidthRight = 1;
-                        pcell20.BorderWidthTop = 0;
-                        pcell20.Colspan = (isTSTI) ? 7 : 4;
-                        pcell20.Padding = 4;
-                        pTable.AddCell(pcell20);
-
-                        if (!isTSTI) // 群輝
-                        {
-                            PdfPCell pcell21 = new PdfPCell(new iTextSharp.text.Phrase("計數器\n（進）", ChFont10));
-                            pcell21.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                            pcell21.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                            pcell21.BorderWidthLeft = 0;
-                            pcell21.BorderWidthTop = 0;
-                            pcell21.Padding = 4;
-                            pTable.AddCell(pcell21);
-
-                            string cin = srdetail["EV_COUNTIN"] != null ? srdetail["EV_COUNTIN"].ToString() : "";
-
-                            PdfPCell pcell22 = new PdfPCell(new iTextSharp.text.Phrase(cin, ChFont10));
-                            pcell22.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                            pcell22.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                            pcell22.BorderWidthLeft = 0;
-                            pcell22.BorderWidthRight = 1;
-                            pcell22.BorderWidthTop = 0;
-                            pcell22.Colspan = 2;
-                            pcell22.Padding = 4;
-                            pTable.AddCell(pcell22);
-                        }
-
-                        // 第八列
-                        iTextSharp.text.Chunk pck1 = new iTextSharp.text.Chunk("型號", ChFont10);
-                        iTextSharp.text.Chunk pck2 = new iTextSharp.text.Chunk("(P/N)", ChFont10Red);
-                        iTextSharp.text.Chunk pck3 = new iTextSharp.text.Chunk("\n\n序號", ChFont10);
-                        iTextSharp.text.Chunk pck4 = new iTextSharp.text.Chunk("(S/N)", ChFont10Red);
-                        iTextSharp.text.Phrase pph1 = new iTextSharp.text.Phrase();
-                        pph1.Add(pck1);
-                        pph1.Add(pck2);
-                        pph1.Add(pck3);
-                        pph1.Add(pck4);
-
-                        PdfPCell pcell23 = new PdfPCell(pph1);
-                        pcell23.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell23.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell23.BorderWidthLeft = 1;
-                        pcell23.BorderWidthRight = 0;
-                        pcell23.BorderWidthTop = 0;
-                        pcell23.Padding = 4;
-                        pcell23.FixedHeight = (18 * pcell23.Rowspan) + 10;
-                        pTable.AddCell(pcell23);
-
-                        PdfPCell pcell24 = new PdfPCell(new iTextSharp.text.Phrase(PRDNUMBER + "\n\n" + SNNO, ChFont10));
-                        pcell24.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                        pcell24.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell24.BorderWidthRight = 1;
-                        pcell24.BorderWidthTop = 0;
-                        pcell24.Colspan = (isTSTI) ? 7 : 4;
-                        pcell24.Padding = 4;
-                        pTable.AddCell(pcell24);
-
-                        if (!isTSTI) // 群輝
-                        {
-                            PdfPCell pcell25 = new PdfPCell(new iTextSharp.text.Phrase("計數器\n（出）", ChFont10));
-                            pcell25.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                            pcell25.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                            pcell25.BorderWidthLeft = 0;
-                            pcell25.BorderWidthTop = 0;
-                            pcell25.Padding = 4;
-                            pTable.AddCell(pcell25);
-
-                            string cout = srdetail["EV_COUNTOUT"] != null ? srdetail["EV_COUNTOUT"].ToString() : "";
-
-                            PdfPCell pcell26 = new PdfPCell(new iTextSharp.text.Phrase(cout, ChFont10));
-                            pcell26.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                            pcell26.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                            pcell26.BorderWidthLeft = 0;
-                            pcell26.BorderWidthRight = 1;
-                            pcell26.BorderWidthTop = 0;
-                            pcell26.Colspan = 2;
-                            pcell26.Padding = 4;
-                            pTable.AddCell(pcell26);
-                        }
-                        #endregion
-
-                        #region --CRM上說明
-                        // 第九列
-                        string PROBLEM = srdetail.ContainsKey("EV_PROBLEM") ? srdetail["EV_PROBLEM"].ToString() : "";
-                        string CONTACT = srdetail["EV_CONTACT"].ToString();
-                        string TEL = srdetail["EV_TEL"].ToString();
-                        string ADDR = srdetail["EV_ADDR"].ToString();
-                        string DESC_TEST = srdetail.ContainsKey("EV_DESC") ? srdetail["EV_DESC"].ToString() : ""; //抓說明
-
-                        string tmp = "";
-                        tmp += (!String.IsNullOrEmpty(PROBLEM)) ? PROBLEM : "";
-                        tmp += (!String.IsNullOrEmpty(CONTACT)) ? " -- " + CONTACT : "";
-                        tmp += (!String.IsNullOrEmpty(TEL)) ? " -- " + TEL : "";
-                        tmp += (!String.IsNullOrEmpty(ADDR)) ? " -- " + ADDR : "";
-
-                        //如果problem是空值，且EV_TYPE=ZSR-5(代表定維)，要去抓說明
-                        if (EV_TYPE == "ZSR5" && PROBLEM == "")
-                        {
-                            tmp += (!String.IsNullOrEmpty(DESC_TEST)) ? DESC_TEST : "";
-                        }
-                        #endregion
-
-                        #region  --需求事項
-                        PdfPCell pcell27 = new PdfPCell(new iTextSharp.text.Phrase("需求事項", ChFont10));
-                        pcell27.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        pcell27.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        pcell27.BorderWidthLeft = 1;
-                        pcell27.BorderWidthRight = 0;
-                        pcell27.BorderWidthTop = 0;
-                        pcell27.Rowspan = 4;
-                        pcell27.Padding = 4;
-                        pcell27.FixedHeight = (14 * pcell27.Rowspan) + 5;
-                        pTable.AddCell(pcell27);
-
-                        PdfPCell pcell28 = new PdfPCell(new iTextSharp.text.Phrase(tmp, ChFont10));
-                        pcell28.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                        pcell28.BorderWidthRight = 1;
-                        pcell28.BorderWidthTop = 0;
-                        pcell28.Rowspan = 4;
-                        pcell28.Colspan = (isTSTI) ? 7 : 4;
-                        pcell28.Padding = 4;
-                        pTable.AddCell(pcell28);
-
-                        if (!isTSTI) // 群輝
-                        {
-                            PdfPCell pcell29 = new PdfPCell(new iTextSharp.text.Phrase("", ChFont10));
-                            pcell29.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                            pcell29.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                            pcell29.BorderWidthLeft = 0;
-                            pcell29.BorderWidthTop = 0;
-                            pcell29.Rowspan = 2;
-                            pcell29.Padding = 4;
-                            pTable.AddCell(pcell29);
-
-                            PdfPCell pcell30 = new PdfPCell(new iTextSharp.text.Phrase("", ChFont10));
-                            pcell30.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                            pcell30.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                            pcell30.BorderWidthLeft = 0;
-                            pcell30.BorderWidthRight = 1;
-                            pcell30.BorderWidthTop = 0;
-                            pcell30.Colspan = 2;
-                            pcell30.Rowspan = 2;
-                            pcell30.Padding = 4;
-                            pTable.AddCell(pcell30);
-
-                            PdfPCell pcell31 = new PdfPCell(new iTextSharp.text.Phrase("", ChFont10));
-                            pcell31.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                            pcell31.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                            pcell31.BorderWidthLeft = 0;
-                            pcell31.BorderWidthTop = 0;
-                            pcell31.Rowspan = 2;
-                            pcell31.Padding = 4;
-                            pTable.AddCell(pcell31);
-
-                            PdfPCell pcell32 = new PdfPCell(new iTextSharp.text.Phrase("", ChFont10));
-                            pcell32.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                            pcell32.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                            pcell32.BorderWidthLeft = 0;
-                            pcell32.BorderWidthRight = 1;
-                            pcell32.BorderWidthTop = 0;
-                            pcell32.Colspan = 2;
-                            pcell32.Rowspan = 2;
-                            pcell32.Padding = 4;
-                            pTable.AddCell(pcell32);
-                        }
-                        #endregion
-
-                        #region // 工時
-                        PdfPCell tcell1 = new PdfPCell(new iTextSharp.text.Phrase("服務日期", ChFont10));
-                        tcell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        tcell1.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        tcell1.BorderWidthLeft = 1;
-                        tcell1.BorderWidthRight = 0;
-                        tcell1.BorderWidthTop = 0;
-                        tcell1.Colspan = 2;
-                        tcell1.Padding = 4;
-                        pTable.AddCell(tcell1);
-
-                        PdfPCell tcell2 = new PdfPCell(new iTextSharp.text.Phrase("出發", ChFont10));
-                        tcell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        tcell2.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        tcell2.BorderWidthTop = 0;
-                        tcell2.Colspan = 2;
-                        tcell2.Padding = 4;
-                        pTable.AddCell(tcell2);
-
-                        PdfPCell tcell3 = new PdfPCell(new iTextSharp.text.Phrase("到場", ChFont10));
-                        tcell3.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        tcell3.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        tcell3.BorderWidthLeft = 0;
-                        tcell3.BorderWidthTop = 0;
-                        tcell3.Padding = 4;
-                        pTable.AddCell(tcell3);
-
-                        PdfPCell tcell4 = new PdfPCell(new iTextSharp.text.Phrase("完成", ChFont10));
-                        tcell4.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        tcell4.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        tcell4.BorderWidthLeft = 0;
-                        tcell4.BorderWidthRight = 0;
-                        tcell4.BorderWidthTop = 0;
-                        tcell4.Colspan = 2;
-                        tcell4.Padding = 4;
-                        pTable.AddCell(tcell4);
-
-                        PdfPCell tcell5 = new PdfPCell(new iTextSharp.text.Phrase("處理時間", ChFont10));
-                        tcell5.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        tcell5.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        tcell5.BorderWidthRight = 1;
-                        tcell5.BorderWidthTop = 0;
-                        tcell5.Padding = 4;
-                        pTable.AddCell(tcell5);
-
-                        string strDEPARTDate = (DEPART != null && DEPART.Length >= 10) ? ARRIVE.Substring(0, 10).Replace("-", "／") : "";
-
-                        // 工時部份 -- 內容列
-                        PdfPCell tcell6 = new PdfPCell(new iTextSharp.text.Phrase(strDEPARTDate, ChFont10));
-                        tcell6.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        tcell6.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        tcell6.BorderWidthLeft = 1;
-                        tcell6.BorderWidthRight = 0;
-                        tcell6.BorderWidthTop = 0;
-                        tcell6.Colspan = 2;
-                        tcell6.Padding = 4;
-                        pTable.AddCell(tcell6);
-
-                        string strDEPART = (DEPART != null && DEPART.Length >= 16) ? DEPART.Substring(11, 5).Replace("-", "／") : "";
-
-                        PdfPCell tcell7 = new PdfPCell(new iTextSharp.text.Phrase(strDEPART, ChFont10));
-                        tcell7.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        tcell7.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        tcell7.BorderWidthTop = 0;
-                        tcell7.Colspan = 2;
-                        tcell7.Padding = 4;
-                        pTable.AddCell(tcell7);
-
-                        string strARRIVE = (ARRIVE != null && ARRIVE.Length >= 16) ? ARRIVE.Substring(11, 5).Replace("-", "／") : "";
-
-                        PdfPCell tcell8 = new PdfPCell(new iTextSharp.text.Phrase(strARRIVE, ChFont10));
-                        tcell8.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        tcell8.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        tcell8.BorderWidthLeft = 0;
-                        tcell8.BorderWidthTop = 0;
-                        tcell8.Padding = 4;
-                        pTable.AddCell(tcell8);
-
-                        string strCOMPT = (COMPT != null && COMPT.Length >= 16) ? COMPT.Substring(11, 5).Replace("-", "／") : "";
-
-                        PdfPCell tcell9 = new PdfPCell(new iTextSharp.text.Phrase(strCOMPT, ChFont10));
-                        tcell9.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        tcell9.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        tcell9.BorderWidthLeft = 0;
-                        tcell9.BorderWidthRight = 0;
-                        tcell9.BorderWidthTop = 0;
-                        tcell9.Colspan = 2;
-                        tcell9.Padding = 4;
-                        pTable.AddCell(tcell9);
-
-                        // 處理工時字串
-                        double hours = Math.Floor(float.Parse(LABOR) / 60);
-                        double minutes = Math.Floor(float.Parse(LABOR) % 60);
-
-                        string LABORTIME = "";
-                        if (hours > 0) LABORTIME += Convert.ToInt32(hours) + "小時";
-                        if (minutes > 0) LABORTIME += Convert.ToInt32(minutes) + "分";
-                        if (hours == 0 && minutes == 0) LABORTIME += "1分";
-
-                        PdfPCell tcell10 = new PdfPCell(new iTextSharp.text.Phrase(LABORTIME, ChFont10));
-                        tcell10.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        tcell10.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        tcell10.BorderWidthRight = 1;
-                        tcell10.BorderWidthTop = 0;
-                        tcell10.Padding = 4;
-                        pTable.AddCell(tcell10);
-                        #endregion
-
-                        #region // 服務說明
-                        bool isOver1Survey = false;
-                        PdfPTable _pTable = new PdfPTable(new float[] { 2, 2, 1, 2, 3, 2, 1, 3 });
-                        _pTable.WidthPercentage = 92;
-                        _pTable.SpacingBefore = 2;
-                        _pTable.DefaultCell.Border = 2;
-                        _pTable.DefaultCell.Padding = 4;
-
-                        //先取出問券的svid、hash
-                        string svid = "";
-                        string hash = "";
-                        int surveyCount = 0; //20221005更新
-                        if (IV_SRID.Substring(0, 2) == "65")
-                        {
-                            var qSurveyInfo = appDB.TB_SURVEY_ANS_MAINTAIN.Where(x => x.srid == IV_SRID).OrderByDescending(x => x.UpdateTime);
-                            if (qSurveyInfo != null && qSurveyInfo.Count() > 0)
+                            catch (Exception ex)
                             {
-                                surveyCount = 0;//20221005更新
-                                List<PdfPTable> liPdfPTable = new List<PdfPTable>();
-                                var int_totalreports = qSurveyInfo.Count() + 1; //20221007-共幾份報告+1=頁數
+                                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因(File upload failed):PDF沒產生QQ" + Environment.NewLine;
+                                pMsg += " 失敗行數：" + ex.ToString();
 
-                                foreach (var surveyBean in qSurveyInfo)
+                                CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
+                                CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
+                            }
+                            #endregion
+                        }
+                        else if (IV_SRReportType == SRReportType.ONLINE || IV_SRReportType == SRReportType.REMOTE)
+                        {
+                            haveSignature = true;
+                        }
+
+                        // TEST GET URL
+                        // haveSignature = true;
+                        var maintain_type = string.Empty; //20221005-用來記錄問卷類型
+
+                        if (haveSignature)
+                        {
+                            #region // 產生 PDF
+
+                            #region // 字型設定
+                            BaseFont bfChinese = null;
+                            try
+                            {
+                                bfChinese = BaseFont.CreateFont(Server.MapPath("~/fonts/") + "msjh.ttc,0", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                            }
+                            catch (Exception ex)
+                            {
+                                pMsg += "Windows seems to lack font:" + ex.StackTrace;
+                                bfChinese = BaseFont.CreateFont(Server.MapPath("~/fonts/") + "msjh.ttc,0", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                            }
+
+                            iTextSharp.text.Font ChFont6 = new iTextSharp.text.Font(bfChinese, 6);
+                            iTextSharp.text.Font ChFont8 = new iTextSharp.text.Font(bfChinese, 8);
+                            iTextSharp.text.Font ChFont8U = new iTextSharp.text.Font(bfChinese, 8, iTextSharp.text.Font.UNDERLINE);
+                            iTextSharp.text.Font ChFont8Blue = new iTextSharp.text.Font(bfChinese, 8, iTextSharp.text.Font.NORMAL, new iTextSharp.text.BaseColor(0, 112, 192));
+                            iTextSharp.text.Font ChFont8Red = new iTextSharp.text.Font(bfChinese, 8, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.RED);
+
+                            iTextSharp.text.Font ChFont10 = new iTextSharp.text.Font(bfChinese, 10);
+                            iTextSharp.text.Font ChFont10U = new iTextSharp.text.Font(bfChinese, 10, iTextSharp.text.Font.UNDERLINE);
+                            iTextSharp.text.Font ChFont10Blue = new iTextSharp.text.Font(bfChinese, 10, iTextSharp.text.Font.NORMAL, new iTextSharp.text.BaseColor(0, 112, 192));
+                            iTextSharp.text.Font ChFont10Red = new iTextSharp.text.Font(bfChinese, 10, iTextSharp.text.Font.NORMAL, iTextSharp.text.BaseColor.RED);
+
+                            iTextSharp.text.Font ChFont12 = new iTextSharp.text.Font(bfChinese, 12);
+                            iTextSharp.text.Font ChFont12B = new iTextSharp.text.Font(bfChinese, 12, iTextSharp.text.Font.BOLD);
+
+                            iTextSharp.text.Font ChFont16B = new iTextSharp.text.Font(bfChinese, 16, iTextSharp.text.Font.BOLD);
+                            iTextSharp.text.Font ChFont16I = new iTextSharp.text.Font(bfChinese, 16, iTextSharp.text.Font.ITALIC);
+
+                            // 打勾
+                            BaseFont bfSymbol = null;
+                            try
+                            {
+                                bfSymbol = BaseFont.CreateFont(Server.MapPath("~/fonts/") + "WINGDNG2.TTF", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                            }
+                            catch (Exception ex)
+                            {
+                                pMsg += "Windows seems to lack font:" + ex.StackTrace;
+                                bfSymbol = BaseFont.CreateFont(Server.MapPath("~/fonts/") + "msjh.ttc,0", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                            }
+                            iTextSharp.text.Font checkSymbol = new iTextSharp.text.Font(bfSymbol, 12);
+                            #endregion
+
+                            #region // 標頭
+                            PdfPTable hTable = new PdfPTable(new float[] { 4, 15, 4 });
+                            hTable.WidthPercentage = 92;
+
+                            hTable.DefaultCell.Border = iTextSharp.text.Rectangle.NO_BORDER; // 無邊框
+
+                            PdfPCell hcell1 = new PdfPCell(new iTextSharp.text.Phrase("NO." + IV_SRID, ChFont10U));
+                            hcell1.Border = PdfPCell.NO_BORDER;
+                            hTable.AddCell(hcell1);
+
+                            // EV_DEPARTMENT 判斷是大世科還是群輝
+                            string EV_DEPARTMENT = srdetail["EV_DEPARTMENT"].ToString();
+
+                            bool isTSTI = true; //這邊都固定為T012-大世科
+
+                            if (isTSTI)
+                            {
+                                // 組成 tsti 大同世界股份有限公司
+                                iTextSharp.text.Chunk hchunk1 = new iTextSharp.text.Chunk("tst", ChFont16B);
+                                iTextSharp.text.Chunk hchunk2 = new iTextSharp.text.Chunk("i", ChFont16I);
+                                iTextSharp.text.Chunk hchunk3 = new iTextSharp.text.Chunk(" 大同世界股份有限公司", ChFont16B);
+                                iTextSharp.text.Chunk hchunk4 = new iTextSharp.text.Chunk(Environment.NewLine + "www.etatung.com", ChFont10);
+                                iTextSharp.text.Phrase hphrase1 = new iTextSharp.text.Phrase();
+                                hphrase1.Add(hchunk1);
+                                hphrase1.Add(hchunk2);
+                                hphrase1.Add(hchunk3);
+                                hphrase1.Add(hchunk4);
+                                PdfPCell hcell2 = new PdfPCell(hphrase1);
+                                hcell2.Border = PdfPCell.NO_BORDER;
+                                hcell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                hcell2.Rowspan = 2;
+                                hTable.AddCell(hcell2);
+                            }
+                            else
+                            {
+                                // 簽名圖檔
+                                string chclogoPath = Server.MapPath("~/Images/chcti.png");
+                                iTextSharp.text.Image chclogo = iTextSharp.text.Image.GetInstance(chclogoPath);
+                                chclogo.ScalePercent(60);
+
+                                PdfPCell hcell2 = new PdfPCell(chclogo);
+                                hcell2.Border = PdfPCell.NO_BORDER;
+                                hcell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                hcell2.Rowspan = 2;
+                                hTable.AddCell(hcell2);
+                            }
+
+                            PdfPCell hcell3 = new PdfPCell();
+                            hcell3.Border = PdfPCell.NO_BORDER;
+                            hTable.AddCell(hcell3);
+
+                            PdfPCell hcell4 = new PdfPCell(new iTextSharp.text.Phrase("客服專線", ChFont10));
+                            hcell4.Border = PdfPCell.NO_BORDER;
+                            hTable.AddCell(hcell4);
+
+                            PdfPCell hcell5 = new PdfPCell(new iTextSharp.text.Phrase("報修網址", ChFont10));
+                            hcell5.Border = PdfPCell.NO_BORDER;
+                            hTable.AddCell(hcell5);
+
+                            PdfPCell hcell6 = new PdfPCell(new iTextSharp.text.Phrase("0800-066038", ChFont8Blue));
+                            hcell6.Border = PdfPCell.NO_BORDER;
+                            hTable.AddCell(hcell6);
+
+                            PdfPCell hcell7 = new PdfPCell(new iTextSharp.text.Phrase("客戶服務報告", ChFont12B));
+                            hcell7.Border = PdfPCell.NO_BORDER;
+                            hcell7.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            hcell7.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            hcell7.Rowspan = 2;
+                            hTable.AddCell(hcell7);
+
+                            PdfPCell hcell8 = new PdfPCell(new iTextSharp.text.Phrase("0800.etatung.com", ChFont8Blue));
+                            hcell8.Border = PdfPCell.NO_BORDER;
+                            hTable.AddCell(hcell8);
+
+                            //PdfPCell hcell9 = new PdfPCell(new iTextSharp.text.Phrase("(02)2598-5738", ChFont8Blue)); //edit by elvis 2023/12/04
+                            PdfPCell hcell9 = new PdfPCell(new iTextSharp.text.Phrase("     ", ChFont8Blue));
+                            hcell9.Border = PdfPCell.NO_BORDER;
+                            hTable.AddCell(hcell9);
+
+                            PdfPCell hcell10 = new PdfPCell();
+                            hcell10.Border = PdfPCell.NO_BORDER;
+                            hTable.AddCell(hcell10);
+                            #endregion
+
+                            #region // 需求單內容
+                            PdfPTable pTable = new PdfPTable(new float[] { 2, 2, 1, 2, 3, 2, 1, 3 });
+                            pTable.WidthPercentage = 92;
+                            pTable.SpacingBefore = 2;
+                            pTable.DefaultCell.Border = 2;
+                            pTable.DefaultCell.Padding = 4;
+
+                            // 第一列
+                            PdfPCell pcell1 = new PdfPCell(new iTextSharp.text.Phrase("客 戶 資 料", ChFont12B));
+                            pcell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell1.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell1.BorderWidthLeft = 1;
+                            pcell1.BorderWidthRight = 1;
+                            pcell1.BorderWidthTop = 1;
+                            pcell1.Colspan = 5;
+                            pcell1.Padding = 4;
+                            pTable.AddCell(pcell1);
+
+                            PdfPCell pcell2 = new PdfPCell(new iTextSharp.text.Phrase("服 務 編 號", ChFont12B));
+                            pcell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell2.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell2.BorderWidthLeft = 0;
+                            pcell2.BorderWidthRight = 1;
+                            pcell2.BorderWidthTop = 1;
+                            pcell2.Colspan = 3;
+                            pcell2.Padding = 4;
+                            pTable.AddCell(pcell2);
+
+                            // 第二列
+                            PdfPCell pcell3 = new PdfPCell(new iTextSharp.text.Phrase("公司名稱", ChFont10));
+                            pcell3.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell3.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell3.BorderWidthLeft = 1;
+                            pcell3.BorderWidthRight = 0;
+                            pcell3.BorderWidthTop = 0;
+                            pcell3.Padding = 4;
+                            pTable.AddCell(pcell3);
+
+                            string CUSTOMER = srdetail["EV_CUSTOMER"].ToString();
+                            PdfPCell pcell4 = new PdfPCell(new iTextSharp.text.Phrase(CUSTOMER, ChFont10));
+                            pcell4.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                            pcell4.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell4.BorderWidthRight = 1;
+                            pcell4.BorderWidthTop = 0;
+                            pcell4.Colspan = 4;
+                            pcell4.Padding = 4;
+                            pTable.AddCell(pcell4);
+
+                            PdfPCell pcell5 = new PdfPCell(new iTextSharp.text.Phrase(IV_SRID, ChFont10));
+                            pcell5.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell5.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell5.BorderWidthLeft = 0;
+                            pcell5.BorderWidthRight = 1;
+                            pcell5.BorderWidthTop = 0;
+                            pcell5.Colspan = 3;
+                            pcell5.Padding = 4;
+                            pTable.AddCell(pcell5);
+
+                            // 第三列
+                            PdfPCell pcell6 = new PdfPCell(new iTextSharp.text.Phrase("部門 (單位)", ChFont10));
+                            pcell6.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell6.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell6.BorderWidthLeft = 1;
+                            pcell6.BorderWidthRight = 0;
+                            pcell6.BorderWidthTop = 0;
+                            pcell6.Padding = 4;
+                            pTable.AddCell(pcell6);
+
+                            PdfPCell pcell7 = new PdfPCell(new iTextSharp.text.Phrase("", ChFont10));
+                            pcell7.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                            pcell7.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell7.BorderWidthRight = 1;
+                            pcell7.BorderWidthTop = 0;
+                            pcell7.Colspan = 4;
+                            pcell7.Padding = 4;
+                            pTable.AddCell(pcell7);
+
+                            PdfPCell pcell8 = new PdfPCell(new iTextSharp.text.Phrase("服 務 種 類", ChFont12B));
+                            pcell8.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell8.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell8.BorderWidthLeft = 0;
+                            pcell8.BorderWidthRight = 1;
+                            pcell8.BorderWidthTop = 0;
+                            pcell8.Colspan = 3;
+                            pcell8.Padding = 4;
+                            pTable.AddCell(pcell8);
+
+                            // 第四列
+                            PdfPCell pcell9 = new PdfPCell(new iTextSharp.text.Phrase("地址", ChFont10));
+                            pcell9.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell9.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell9.BorderWidthLeft = 1;
+                            pcell9.BorderWidthRight = 0;
+                            pcell9.BorderWidthTop = 0;
+                            pcell9.Padding = 4;
+                            pTable.AddCell(pcell9);
+
+                            PdfPCell pcell10 = new PdfPCell(new iTextSharp.text.Phrase(srdetail["EV_RADDR"].ToString(), ChFont10));
+                            pcell10.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                            pcell10.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell10.BorderWidthRight = 1;
+                            pcell10.BorderWidthTop = 0;
+                            pcell10.Colspan = 4;
+                            pcell10.Padding = 4;
+                            pTable.AddCell(pcell10);
+
+                            //ZSR1 一般
+                            //ZSR4 Survey
+                            //ZSR5 定保
+                            //ZSR3 裝機
+                            string ZSR1 = "";
+                            string ZSR5 = "";
+                            string ZSR3 = "";
+                            string EV_TYPE = srdetail.ContainsKey("EV_TYPE") ? srdetail["EV_TYPE"].ToString() : "ZSR1";
+                            switch (EV_TYPE)
+                            {
+                                case "ZSR1":
+                                    ZSR1 = "R";
+                                    break;
+                                case "ZSR5":
+                                    ZSR5 = "R";
+                                    break;
+                                case "ZSR3":
+                                    ZSR3 = "R";
+                                    break;
+                                default:
+                                    ZSR1 = "R";
+                                    break;
+                            }
+
+                            iTextSharp.text.Chunk pchunk1 = new iTextSharp.text.Chunk("維 修 ", ChFont10);
+                            iTextSharp.text.Chunk pchunk2 = new iTextSharp.text.Chunk(ZSR1, checkSymbol);
+                            iTextSharp.text.Chunk pchunk3 = new iTextSharp.text.Chunk("　 定 期 維 護 ", ChFont10);
+                            iTextSharp.text.Chunk pchunk4 = new iTextSharp.text.Chunk(ZSR5, checkSymbol);
+                            iTextSharp.text.Phrase pphrase1 = new iTextSharp.text.Phrase();
+                            pphrase1.Add(pchunk1);
+                            pphrase1.Add(pchunk2);
+                            pphrase1.Add(pchunk3);
+                            pphrase1.Add(pchunk4);
+                            PdfPCell pcell11 = new PdfPCell(pphrase1);
+
+                            pcell11.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell11.BorderWidthLeft = 0;
+                            pcell11.BorderWidthRight = 1;
+                            pcell11.BorderWidthTop = 0;
+                            pcell11.BorderWidthBottom = 0;
+                            pcell11.Colspan = 3;
+                            pcell11.Padding = 4;
+                            pTable.AddCell(pcell11);
+
+                            // 第五列
+                            PdfPCell pcell12 = new PdfPCell(new iTextSharp.text.Phrase("聯絡人", ChFont10));
+                            pcell12.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell12.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell12.BorderWidthLeft = 1;
+                            pcell12.BorderWidthRight = 0;
+                            pcell12.BorderWidthTop = 0;
+                            pcell12.BorderWidthBottom = 1;
+                            pcell12.Rowspan = 3;
+                            pcell12.Padding = 4;
+                            pTable.AddCell(pcell12);
+
+                            PdfPCell pcell13 = new PdfPCell(new iTextSharp.text.Phrase(srdetail["EV_REPORT"].ToString(), ChFont10));
+                            pcell13.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell13.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell13.BorderWidthTop = 0;
+                            pcell13.BorderWidthBottom = 1;
+                            pcell13.Colspan = 2;
+                            pcell13.Rowspan = 3;
+                            pcell13.Padding = 4;
+                            pTable.AddCell(pcell13);
+
+                            PdfPCell pcell14 = new PdfPCell(new iTextSharp.text.Phrase("聯絡電話", ChFont10));
+                            pcell14.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell14.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell14.BorderWidthLeft = 0;
+                            pcell14.BorderWidthTop = 0;
+                            pcell14.BorderWidthBottom = 1;
+                            pcell14.Rowspan = 3;
+                            pcell14.Padding = 4;
+                            pTable.AddCell(pcell14);
+
+                            PdfPCell pcell15 = new PdfPCell(new iTextSharp.text.Phrase(srdetail["EV_RTEL"].ToString(), ChFont10));
+                            pcell15.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell15.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell15.BorderWidthLeft = 0;
+                            pcell15.BorderWidthRight = 1;
+                            pcell15.BorderWidthTop = 0;
+                            pcell15.BorderWidthBottom = 1;
+                            pcell15.Rowspan = 3;
+                            pcell15.Padding = 4;
+                            pTable.AddCell(pcell15);
+
+                            iTextSharp.text.Chunk pchunk5 = new iTextSharp.text.Chunk("裝 機 ", ChFont10);
+                            iTextSharp.text.Chunk pchunk6 = new iTextSharp.text.Chunk(ZSR3, checkSymbol);
+                            iTextSharp.text.Phrase pphrase2 = new iTextSharp.text.Phrase();
+                            pphrase2.Add(pchunk5);
+                            pphrase2.Add(pchunk6);
+                            PdfPCell pcell16 = new PdfPCell(pphrase2);
+
+                            pcell16.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell16.BorderWidthLeft = 0;
+                            pcell16.BorderWidthRight = 0;
+                            pcell16.BorderWidthTop = 0;
+                            pcell16.BorderWidthBottom = 1;
+                            pcell16.Rowspan = 3;
+                            pcell16.PaddingLeft = 5;
+                            pcell16.PaddingRight = 0;
+                            pcell16.PaddingTop = 5;
+                            pcell16.PaddingBottom = 10;
+                            pTable.AddCell(pcell16);
+
+                            iTextSharp.text.Chunk pchunk7 = new iTextSharp.text.Chunk("訂單號碼 ", ChFont8);
+                            iTextSharp.text.Chunk pchunk8 = new iTextSharp.text.Chunk(":　　　　　　　　　　　", ChFont8U);
+                            iTextSharp.text.Chunk pchunk9 = new iTextSharp.text.Chunk("\n\n備料單號 ", ChFont8);
+                            iTextSharp.text.Chunk pchunk10 = new iTextSharp.text.Chunk(":　　　　　　　　　　　", ChFont8U);
+                            iTextSharp.text.Phrase pphrase3 = new iTextSharp.text.Phrase();
+                            pphrase3.Add(pchunk7);
+                            pphrase3.Add(pchunk8);
+                            pphrase3.Add(pchunk9);
+                            pphrase3.Add(pchunk10);
+                            PdfPCell pcell17 = new PdfPCell(pphrase3);
+
+                            pcell17.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                            pcell17.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell17.BorderWidthLeft = 0;
+                            pcell17.BorderWidthRight = 1;
+                            pcell17.BorderWidthTop = 0;
+                            pcell17.BorderWidthBottom = 1;
+                            pcell17.Colspan = 2;
+                            pcell17.Rowspan = 3;
+                            pcell17.PaddingLeft = 0;
+                            pcell17.PaddingRight = 0;
+                            pcell17.PaddingTop = 5;
+                            pcell17.PaddingBottom = 10;
+                            pTable.AddCell(pcell17);
+                            #endregion
+
+                            #region // 產品訊息
+                            // 第六列 -- 中間
+                            PdfPCell pcell18 = new PdfPCell(new iTextSharp.text.Phrase("服 務 需 求", ChFont12B));
+                            pcell18.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell18.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell18.BorderWidthLeft = 1;
+                            pcell18.BorderWidthRight = 1;
+                            pcell18.BorderWidthTop = 0;
+                            pcell18.Colspan = 8;
+                            pcell18.Padding = 4;
+                            pTable.AddCell(pcell18);
+
+                            // 第七列
+                            // 取第一筆 Product 名稱
+                            string PRDID = "";
+                            string SNNO = "";
+                            string PRDNUMBER = "";
+
+                            if (EV_TYPE == "ZSR1") //一般
+                            {
+                                List<SNLIST> products = srdetail.ContainsKey("table_ET_SNLIST") ? (List<SNLIST>)srdetail["table_ET_SNLIST"] : null;
+
+                                if (products.Count > 0)
                                 {
-                                    surveyCount++;
-                                    svid = surveyBean.svid;
-                                    hash = surveyBean.hash;
-                                    List<string> surveyQnA = GetSurveyMaintainQnA(svid, hash);
+                                    //取第一筆機器序號
+                                    PRDID = products[0].PRDID;
+                                    SNNO = products[0].SNNO;
+                                    PRDNUMBER = products[0].PRDNUMBER;
+                                }
+                            }
+                            else if (EV_TYPE == "ZSR3") //裝機
+                            {
+                                List<SFSNLIST> products = srdetail.ContainsKey("table_ET_SFSNLIST") ? (List<SFSNLIST>)srdetail["table_ET_SFSNLIST"] : null;
 
-                                    //20220719-有溫度、濕度的單位嗎?-->先確定是通訊類單有這種問題
-                                    maintain_type = surveyBean.maintain_type;//20221005
-                                    var opinions_from_engineer = surveyBean.opinions_from_engineer;
-
-                                    //第一筆顯示在第一頁report
-                                    if (surveyCount == 1)
+                                if (products.Count > 0)
+                                {
+                                    foreach (var prod in products)
                                     {
-                                        //方框:、方框帶勾:R
-                                        iTextSharp.text.Phrase proPhraseQus = new iTextSharp.text.Phrase();
-                                        iTextSharp.text.Phrase proPhraseAns = new iTextSharp.text.Phrase();
+                                        SNNO += prod.SNNO + ";";
+                                    }
 
-                                        #region --20220715-只有一筆調查，但是題目+答案數>38，空間太小印不出來
+                                    SNNO = SNNO.TrimEnd(';');
+                                }
+                            }
 
-                                        //太多內容給第二頁用的
-                                        iTextSharp.text.Phrase proPhraseQus2 = new iTextSharp.text.Phrase();
-                                        iTextSharp.text.Phrase proPhraseAns2 = new iTextSharp.text.Phrase();
+                            PdfPCell pcell19 = new PdfPCell(new iTextSharp.text.Phrase("產品名稱", ChFont10));
+                            pcell19.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell19.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell19.BorderWidthLeft = 1;
+                            pcell19.BorderWidthRight = 0;
+                            pcell19.BorderWidthTop = 0;
+                            pcell19.Padding = 4;
+                            pcell19.FixedHeight = (18 * pcell19.Rowspan) + 10;
+                            pTable.AddCell(pcell19);
 
-                                        var int_totalquestions = surveyQnA.Count;
+                            PdfPCell pcell20 = new PdfPCell(new iTextSharp.text.Phrase(PRDID, ChFont10));
+                            pcell20.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                            pcell20.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell20.BorderWidthRight = 1;
+                            pcell20.BorderWidthTop = 0;
+                            pcell20.Colspan = (isTSTI) ? 7 : 4;
+                            pcell20.Padding = 4;
+                            pTable.AddCell(pcell20);
 
-                                        //20220804-改採用問卷類別來判斷，不用int_totalquestions
-                                        if (maintain_type != "communication")
+                            if (!isTSTI) // 群輝
+                            {
+                                PdfPCell pcell21 = new PdfPCell(new iTextSharp.text.Phrase("計數器\n（進）", ChFont10));
+                                pcell21.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                pcell21.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                pcell21.BorderWidthLeft = 0;
+                                pcell21.BorderWidthTop = 0;
+                                pcell21.Padding = 4;
+                                pTable.AddCell(pcell21);
+
+                                string cin = srdetail["EV_COUNTIN"] != null ? srdetail["EV_COUNTIN"].ToString() : "";
+
+                                PdfPCell pcell22 = new PdfPCell(new iTextSharp.text.Phrase(cin, ChFont10));
+                                pcell22.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                pcell22.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                pcell22.BorderWidthLeft = 0;
+                                pcell22.BorderWidthRight = 1;
+                                pcell22.BorderWidthTop = 0;
+                                pcell22.Colspan = 2;
+                                pcell22.Padding = 4;
+                                pTable.AddCell(pcell22);
+                            }
+
+                            // 第八列
+                            iTextSharp.text.Chunk pck1 = new iTextSharp.text.Chunk("型號", ChFont10);
+                            iTextSharp.text.Chunk pck2 = new iTextSharp.text.Chunk("(P/N)", ChFont10Red);
+                            iTextSharp.text.Chunk pck3 = new iTextSharp.text.Chunk("\n\n序號", ChFont10);
+                            iTextSharp.text.Chunk pck4 = new iTextSharp.text.Chunk("(S/N)", ChFont10Red);
+                            iTextSharp.text.Phrase pph1 = new iTextSharp.text.Phrase();
+                            pph1.Add(pck1);
+                            pph1.Add(pck2);
+                            pph1.Add(pck3);
+                            pph1.Add(pck4);
+
+                            PdfPCell pcell23 = new PdfPCell(pph1);
+                            pcell23.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell23.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell23.BorderWidthLeft = 1;
+                            pcell23.BorderWidthRight = 0;
+                            pcell23.BorderWidthTop = 0;
+                            pcell23.Padding = 4;
+                            pcell23.FixedHeight = (18 * pcell23.Rowspan) + 10;
+                            pTable.AddCell(pcell23);
+
+                            PdfPCell pcell24 = new PdfPCell(new iTextSharp.text.Phrase(PRDNUMBER + "\n\n" + SNNO, ChFont10));
+                            pcell24.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                            pcell24.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell24.BorderWidthRight = 1;
+                            pcell24.BorderWidthTop = 0;
+                            pcell24.Colspan = (isTSTI) ? 7 : 4;
+                            pcell24.Padding = 4;
+                            pTable.AddCell(pcell24);
+
+                            if (!isTSTI) // 群輝
+                            {
+                                PdfPCell pcell25 = new PdfPCell(new iTextSharp.text.Phrase("計數器\n（出）", ChFont10));
+                                pcell25.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                pcell25.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                pcell25.BorderWidthLeft = 0;
+                                pcell25.BorderWidthTop = 0;
+                                pcell25.Padding = 4;
+                                pTable.AddCell(pcell25);
+
+                                string cout = srdetail["EV_COUNTOUT"] != null ? srdetail["EV_COUNTOUT"].ToString() : "";
+
+                                PdfPCell pcell26 = new PdfPCell(new iTextSharp.text.Phrase(cout, ChFont10));
+                                pcell26.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                pcell26.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                pcell26.BorderWidthLeft = 0;
+                                pcell26.BorderWidthRight = 1;
+                                pcell26.BorderWidthTop = 0;
+                                pcell26.Colspan = 2;
+                                pcell26.Padding = 4;
+                                pTable.AddCell(pcell26);
+                            }
+                            #endregion
+
+                            #region --CRM上說明
+                            // 第九列
+                            string PROBLEM = srdetail.ContainsKey("EV_PROBLEM") ? srdetail["EV_PROBLEM"].ToString() : "";
+                            string CONTACT = srdetail["EV_CONTACT"].ToString();
+                            string TEL = srdetail["EV_TEL"].ToString();
+                            string ADDR = srdetail["EV_ADDR"].ToString();
+                            string DESC_TEST = srdetail.ContainsKey("EV_DESC") ? srdetail["EV_DESC"].ToString() : ""; //抓說明
+
+                            string tmp = "";
+                            tmp += (!String.IsNullOrEmpty(PROBLEM)) ? PROBLEM : "";
+                            tmp += (!String.IsNullOrEmpty(CONTACT)) ? " -- " + CONTACT : "";
+                            tmp += (!String.IsNullOrEmpty(TEL)) ? " -- " + TEL : "";
+                            tmp += (!String.IsNullOrEmpty(ADDR)) ? " -- " + ADDR : "";
+
+                            //如果problem是空值，且EV_TYPE=ZSR-5(代表定維)，要去抓說明
+                            if (EV_TYPE == "ZSR5" && PROBLEM == "")
+                            {
+                                tmp += (!String.IsNullOrEmpty(DESC_TEST)) ? DESC_TEST : "";
+                            }
+                            #endregion
+
+                            #region  --需求事項
+                            PdfPCell pcell27 = new PdfPCell(new iTextSharp.text.Phrase("需求事項", ChFont10));
+                            pcell27.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            pcell27.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            pcell27.BorderWidthLeft = 1;
+                            pcell27.BorderWidthRight = 0;
+                            pcell27.BorderWidthTop = 0;
+                            pcell27.Rowspan = 4;
+                            pcell27.Padding = 4;
+                            pcell27.FixedHeight = (14 * pcell27.Rowspan) + 5;
+                            pTable.AddCell(pcell27);
+
+                            PdfPCell pcell28 = new PdfPCell(new iTextSharp.text.Phrase(tmp, ChFont10));
+                            pcell28.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                            pcell28.BorderWidthRight = 1;
+                            pcell28.BorderWidthTop = 0;
+                            pcell28.Rowspan = 4;
+                            pcell28.Colspan = (isTSTI) ? 7 : 4;
+                            pcell28.Padding = 4;
+                            pTable.AddCell(pcell28);
+
+                            if (!isTSTI) // 群輝
+                            {
+                                PdfPCell pcell29 = new PdfPCell(new iTextSharp.text.Phrase("", ChFont10));
+                                pcell29.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                pcell29.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                pcell29.BorderWidthLeft = 0;
+                                pcell29.BorderWidthTop = 0;
+                                pcell29.Rowspan = 2;
+                                pcell29.Padding = 4;
+                                pTable.AddCell(pcell29);
+
+                                PdfPCell pcell30 = new PdfPCell(new iTextSharp.text.Phrase("", ChFont10));
+                                pcell30.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                pcell30.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                pcell30.BorderWidthLeft = 0;
+                                pcell30.BorderWidthRight = 1;
+                                pcell30.BorderWidthTop = 0;
+                                pcell30.Colspan = 2;
+                                pcell30.Rowspan = 2;
+                                pcell30.Padding = 4;
+                                pTable.AddCell(pcell30);
+
+                                PdfPCell pcell31 = new PdfPCell(new iTextSharp.text.Phrase("", ChFont10));
+                                pcell31.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                pcell31.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                pcell31.BorderWidthLeft = 0;
+                                pcell31.BorderWidthTop = 0;
+                                pcell31.Rowspan = 2;
+                                pcell31.Padding = 4;
+                                pTable.AddCell(pcell31);
+
+                                PdfPCell pcell32 = new PdfPCell(new iTextSharp.text.Phrase("", ChFont10));
+                                pcell32.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                pcell32.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                pcell32.BorderWidthLeft = 0;
+                                pcell32.BorderWidthRight = 1;
+                                pcell32.BorderWidthTop = 0;
+                                pcell32.Colspan = 2;
+                                pcell32.Rowspan = 2;
+                                pcell32.Padding = 4;
+                                pTable.AddCell(pcell32);
+                            }
+                            #endregion
+
+                            #region // 工時
+                            PdfPCell tcell1 = new PdfPCell(new iTextSharp.text.Phrase("服務日期", ChFont10));
+                            tcell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            tcell1.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            tcell1.BorderWidthLeft = 1;
+                            tcell1.BorderWidthRight = 0;
+                            tcell1.BorderWidthTop = 0;
+                            tcell1.Colspan = 2;
+                            tcell1.Padding = 4;
+                            pTable.AddCell(tcell1);
+
+                            PdfPCell tcell2 = new PdfPCell(new iTextSharp.text.Phrase("出發", ChFont10));
+                            tcell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            tcell2.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            tcell2.BorderWidthTop = 0;
+                            tcell2.Colspan = 2;
+                            tcell2.Padding = 4;
+                            pTable.AddCell(tcell2);
+
+                            PdfPCell tcell3 = new PdfPCell(new iTextSharp.text.Phrase("到場", ChFont10));
+                            tcell3.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            tcell3.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            tcell3.BorderWidthLeft = 0;
+                            tcell3.BorderWidthTop = 0;
+                            tcell3.Padding = 4;
+                            pTable.AddCell(tcell3);
+
+                            PdfPCell tcell4 = new PdfPCell(new iTextSharp.text.Phrase("完成", ChFont10));
+                            tcell4.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            tcell4.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            tcell4.BorderWidthLeft = 0;
+                            tcell4.BorderWidthRight = 0;
+                            tcell4.BorderWidthTop = 0;
+                            tcell4.Colspan = 2;
+                            tcell4.Padding = 4;
+                            pTable.AddCell(tcell4);
+
+                            PdfPCell tcell5 = new PdfPCell(new iTextSharp.text.Phrase("處理時間", ChFont10));
+                            tcell5.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            tcell5.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            tcell5.BorderWidthRight = 1;
+                            tcell5.BorderWidthTop = 0;
+                            tcell5.Padding = 4;
+                            pTable.AddCell(tcell5);
+
+                            string strDEPARTDate = (DEPART != null && DEPART.Length >= 10) ? ARRIVE.Substring(0, 10).Replace("-", "／") : "";
+
+                            // 工時部份 -- 內容列
+                            PdfPCell tcell6 = new PdfPCell(new iTextSharp.text.Phrase(strDEPARTDate, ChFont10));
+                            tcell6.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            tcell6.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            tcell6.BorderWidthLeft = 1;
+                            tcell6.BorderWidthRight = 0;
+                            tcell6.BorderWidthTop = 0;
+                            tcell6.Colspan = 2;
+                            tcell6.Padding = 4;
+                            pTable.AddCell(tcell6);
+
+                            string strDEPART = (DEPART != null && DEPART.Length >= 16) ? DEPART.Substring(11, 5).Replace("-", "／") : "";
+
+                            PdfPCell tcell7 = new PdfPCell(new iTextSharp.text.Phrase(strDEPART, ChFont10));
+                            tcell7.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            tcell7.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            tcell7.BorderWidthTop = 0;
+                            tcell7.Colspan = 2;
+                            tcell7.Padding = 4;
+                            pTable.AddCell(tcell7);
+
+                            string strARRIVE = (ARRIVE != null && ARRIVE.Length >= 16) ? ARRIVE.Substring(11, 5).Replace("-", "／") : "";
+
+                            PdfPCell tcell8 = new PdfPCell(new iTextSharp.text.Phrase(strARRIVE, ChFont10));
+                            tcell8.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            tcell8.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            tcell8.BorderWidthLeft = 0;
+                            tcell8.BorderWidthTop = 0;
+                            tcell8.Padding = 4;
+                            pTable.AddCell(tcell8);
+
+                            string strCOMPT = (COMPT != null && COMPT.Length >= 16) ? COMPT.Substring(11, 5).Replace("-", "／") : "";
+
+                            PdfPCell tcell9 = new PdfPCell(new iTextSharp.text.Phrase(strCOMPT, ChFont10));
+                            tcell9.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            tcell9.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            tcell9.BorderWidthLeft = 0;
+                            tcell9.BorderWidthRight = 0;
+                            tcell9.BorderWidthTop = 0;
+                            tcell9.Colspan = 2;
+                            tcell9.Padding = 4;
+                            pTable.AddCell(tcell9);
+
+                            // 處理工時字串
+                            double hours = Math.Floor(float.Parse(LABOR) / 60);
+                            double minutes = Math.Floor(float.Parse(LABOR) % 60);
+
+                            string LABORTIME = "";
+                            if (hours > 0) LABORTIME += Convert.ToInt32(hours) + "小時";
+                            if (minutes > 0) LABORTIME += Convert.ToInt32(minutes) + "分";
+                            if (hours == 0 && minutes == 0) LABORTIME += "1分";
+
+                            PdfPCell tcell10 = new PdfPCell(new iTextSharp.text.Phrase(LABORTIME, ChFont10));
+                            tcell10.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            tcell10.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            tcell10.BorderWidthRight = 1;
+                            tcell10.BorderWidthTop = 0;
+                            tcell10.Padding = 4;
+                            pTable.AddCell(tcell10);
+                            #endregion
+
+                            #region // 服務說明
+                            bool isOver1Survey = false;
+                            PdfPTable _pTable = new PdfPTable(new float[] { 2, 2, 1, 2, 3, 2, 1, 3 });
+                            _pTable.WidthPercentage = 92;
+                            _pTable.SpacingBefore = 2;
+                            _pTable.DefaultCell.Border = 2;
+                            _pTable.DefaultCell.Padding = 4;
+
+                            //先取出問券的svid、hash
+                            string svid = "";
+                            string hash = "";
+                            int surveyCount = 0; //20221005更新
+                            if (IV_SRID.Substring(0, 2) == "65")
+                            {
+                                var qSurveyInfo = appDB.TB_SURVEY_ANS_MAINTAIN.Where(x => x.srid == IV_SRID).OrderByDescending(x => x.UpdateTime);
+                                if (qSurveyInfo != null && qSurveyInfo.Count() > 0)
+                                {
+                                    surveyCount = 0;//20221005更新
+                                    List<PdfPTable> liPdfPTable = new List<PdfPTable>();
+                                    var int_totalreports = qSurveyInfo.Count() + 1; //20221007-共幾份報告+1=頁數
+
+                                    foreach (var surveyBean in qSurveyInfo)
+                                    {
+                                        surveyCount++;
+                                        svid = surveyBean.svid;
+                                        hash = surveyBean.hash;
+                                        List<string> surveyQnA = GetSurveyMaintainQnA(svid, hash);
+
+                                        //20220719-有溫度、濕度的單位嗎?-->先確定是通訊類單有這種問題
+                                        maintain_type = surveyBean.maintain_type;//20221005
+                                        var opinions_from_engineer = surveyBean.opinions_from_engineer;
+
+                                        //第一筆顯示在第一頁report
+                                        if (surveyCount == 1)
                                         {
-                                            //印一頁就可以印完
-                                            //非通訊類的問卷
-                                            for (var i = 0; i < surveyQnA.Count; i++)
+                                            //方框:、方框帶勾:R
+                                            iTextSharp.text.Phrase proPhraseQus = new iTextSharp.text.Phrase();
+                                            iTextSharp.text.Phrase proPhraseAns = new iTextSharp.text.Phrase();
+
+                                            #region --20220715-只有一筆調查，但是題目+答案數>38，空間太小印不出來
+
+                                            //太多內容給第二頁用的
+                                            iTextSharp.text.Phrase proPhraseQus2 = new iTextSharp.text.Phrase();
+                                            iTextSharp.text.Phrase proPhraseAns2 = new iTextSharp.text.Phrase();
+
+                                            var int_totalquestions = surveyQnA.Count;
+
+                                            //20220804-改採用問卷類別來判斷，不用int_totalquestions
+                                            if (maintain_type != "communication")
                                             {
-                                                //i是偶數 → 題目
-                                                if (i % 2 == 0)
+                                                //印一頁就可以印完
+                                                //非通訊類的問卷
+                                                for (var i = 0; i < surveyQnA.Count; i++)
                                                 {
-                                                    //產品名稱、型號/序號合併成一欄
-                                                    if (i == 0)
-                                                    {
-                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("產品資訊：\n\n", ChFont10);
-                                                        iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
-                                                        proPhraseQus.Add(proChunk1);
-                                                        proPhraseQus.Add(proChunk2);
-                                                    }
-                                                    else if (i == 2) continue;
-                                                    else
-                                                    {
-                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i] + "\n", ChFont10);
-                                                        iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
-                                                        proPhraseQus.Add(proChunk1);
-                                                        proPhraseQus.Add(proChunk2);
-                                                    }
-                                                }
-                                                //i是奇數 → 答案
-                                                else
-                                                {
-                                                    if (i == 1)
+                                                    //i是偶數 → 題目
+                                                    if (i % 2 == 0)
                                                     {
                                                         //產品名稱、型號/序號合併成一欄
-                                                        iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                        string productName = string.IsNullOrEmpty(surveyQnA[3]) ? surveyQnA[1] + "\n\n" : surveyQnA[1] + " (" + surveyQnA[3] + ")\n\n";
-                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(productName, ChFont10);
-                                                        proPhraseAns.Add(proChunk0);
-                                                        proPhraseAns.Add(proChunk1);
-                                                    }
-                                                    else if (i == 3) continue;
-                                                    else
-                                                    {
-                                                        if (surveyQnA[i].Contains("正常"))
+                                                        if (i == 0)
                                                         {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                            proPhraseAns.Add(proChunk3);
-                                                            proPhraseAns.Add(proChunk4);
-                                                            proPhraseAns.Add(proChunk5);
-                                                            proPhraseAns.Add(proChunk6);
-                                                            proPhraseAns.Add(proChunk7);
+                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("產品資訊：\n\n", ChFont10);
+                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
+                                                            proPhraseQus.Add(proChunk1);
+                                                            proPhraseQus.Add(proChunk2);
                                                         }
-                                                        else if (surveyQnA[i].Contains("異常"))
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                            proPhraseAns.Add(proChunk3);
-                                                            proPhraseAns.Add(proChunk4);
-                                                            proPhraseAns.Add(proChunk5);
-                                                            proPhraseAns.Add(proChunk6);
-                                                            proPhraseAns.Add(proChunk7);
-                                                        }
-                                                        else if (surveyQnA[i].Contains("無"))
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                            proPhraseAns.Add(proChunk3);
-                                                            proPhraseAns.Add(proChunk4);
-                                                            proPhraseAns.Add(proChunk5);
-                                                            proPhraseAns.Add(proChunk6);
-                                                            proPhraseAns.Add(proChunk7);
-                                                        }
+                                                        else if (i == 2) continue;
                                                         else
                                                         {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i].Replace("\n", "\n　 "), ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
+                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i] + "\n", ChFont10);
+                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
+                                                            proPhraseQus.Add(proChunk1);
+                                                            proPhraseQus.Add(proChunk2);
                                                         }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            //一筆調查，內容太多，印到兩頁
-                                            //通訊類問卷是這樣的
-                                            //先印18題前面的
-                                            for (var i = 0; i < 38; i++)
-                                            {
-
-                                                //i是偶數 → 題目
-                                                if (i % 2 == 0)
-                                                {
-                                                    //產品名稱、型號/序號合併成一欄
-                                                    if (i == 0)
-                                                    {
-                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("產品資訊：\n\n", ChFont10);
-                                                        iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
-                                                        proPhraseQus.Add(proChunk1);
-                                                        proPhraseQus.Add(proChunk2);
-                                                    }
-                                                    else if (i == 2) continue;
-                                                    else
-                                                    {
-                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i] + "\n", ChFont10);
-                                                        iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
-                                                        proPhraseQus.Add(proChunk1);
-                                                        proPhraseQus.Add(proChunk2);
-                                                    }
-                                                }
-                                                //i是奇數 → 答案
-                                                else
-                                                {
-                                                    if (i == 1)
-                                                    {
-                                                        //產品名稱、型號/序號合併成一欄
-                                                        iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                        string productName = string.IsNullOrEmpty(surveyQnA[3]) ? surveyQnA[1] + "\n\n" : surveyQnA[1] + " (" + surveyQnA[3] + ")\n\n";
-                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(productName, ChFont10);
-                                                        proPhraseAns.Add(proChunk0);
-                                                        proPhraseAns.Add(proChunk1);
-                                                    }
-                                                    else if (i == 3) continue;
-                                                    else
-                                                    {
-                                                        if (surveyQnA[i].Contains("正常"))
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                            proPhraseAns.Add(proChunk3);
-                                                            proPhraseAns.Add(proChunk4);
-                                                            proPhraseAns.Add(proChunk5);
-                                                            proPhraseAns.Add(proChunk6);
-                                                            proPhraseAns.Add(proChunk7);
-                                                        }
-                                                        else if (surveyQnA[i].Contains("異常"))
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                            proPhraseAns.Add(proChunk3);
-                                                            proPhraseAns.Add(proChunk4);
-                                                            proPhraseAns.Add(proChunk5);
-                                                            proPhraseAns.Add(proChunk6);
-                                                            proPhraseAns.Add(proChunk7);
-                                                        }
-                                                        else if (surveyQnA[i].Contains("無"))
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                            proPhraseAns.Add(proChunk3);
-                                                            proPhraseAns.Add(proChunk4);
-                                                            proPhraseAns.Add(proChunk5);
-                                                            proPhraseAns.Add(proChunk6);
-                                                            proPhraseAns.Add(proChunk7);
-                                                        }
-                                                        else
-                                                        {
-
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-
-                                                            //20220719-通訊類定維單，有溫度和濕度，希望pdf加上單位
-                                                            var scale = string.Empty;
-
-                                                            if (maintain_type == "communication")
-                                                            {
-                                                                if (i == 5)
-                                                                {
-                                                                    scale = "  度C";
-
-                                                                }
-                                                                else if (i == 7)
-                                                                {
-                                                                    scale = "  %";
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-
-                                                            }
-
-
-                                                            //iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i].Replace("\n", "\n　 ") + scale, ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-
-
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                            //超出頁面的(page2)
-                                            if (surveyQnA.Count > 38)
-                                            {
-                                                isOver1Survey = true;
-
-                                                //太多內容，第二頁的題目和答案
-                                                for (var j = 38; j < surveyQnA.Count; j++)
-                                                {
-                                                    //j是偶數 → 題目
-                                                    if (j % 2 == 0)
-                                                    {
-                                                        //20220718-因為第一行會自動不對齊，所以加入文字
-                                                        if (j == 38)
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk3title = new iTextSharp.text.Chunk("產品資訊：\n\n", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4title = new iTextSharp.text.Chunk(" ", checkSymbol);
-                                                            proPhraseQus2.Add(proChunk3title);
-                                                            proPhraseQus2.Add(proChunk4title);
-                                                        }
-
-                                                        iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk(surveyQnA[j] + "\n", ChFont10);
-                                                        iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk(" ", checkSymbol);
-                                                        proPhraseQus2.Add(proChunk3);
-                                                        proPhraseQus2.Add(proChunk4);
-
                                                     }
                                                     //i是奇數 → 答案
                                                     else
                                                     {
-
-                                                        //20220718-因為第一行會自動不對齊，所以加入文字
-                                                        //奇數題                                            
-                                                        if (j == 39)
+                                                        if (i == 1)
                                                         {
                                                             //產品名稱、型號/序號合併成一欄
-                                                            iTextSharp.text.Chunk proChunk0title = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
                                                             string productName = string.IsNullOrEmpty(surveyQnA[3]) ? surveyQnA[1] + "\n\n" : surveyQnA[1] + " (" + surveyQnA[3] + ")\n\n";
-
-                                                            iTextSharp.text.Chunk proChunk1title = new iTextSharp.text.Chunk(productName, ChFont10);
-                                                            proPhraseAns2.Add(proChunk0title);
-                                                            proPhraseAns2.Add(proChunk1title);
+                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(productName, ChFont10);
+                                                            proPhraseAns.Add(proChunk0);
+                                                            proPhraseAns.Add(proChunk1);
                                                         }
-
-                                                        var item = surveyQnA[j];
-
-                                                        ///20220719-定維表-通訊類，檢查者的意見，有一個選項是【本次定期保養均無問題】，會符合原條件
-                                                        ///surveyQnA[j].Contains("無")，導致出錯
-                                                        ///而且，如果要載入自行填寫，也可能會用到無、異常、正常等國字
-                                                        ///修改(surveyQnA[j].Contains("正常")改為(surveyQnA[j]=="正常")
-
-
-                                                        if (surveyQnA[j] == "正常")
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns2.Add(proChunk0);
-                                                            proPhraseAns2.Add(proChunk1);
-                                                            proPhraseAns2.Add(proChunk2);
-                                                            proPhraseAns2.Add(proChunk3);
-                                                            proPhraseAns2.Add(proChunk4);
-                                                            proPhraseAns2.Add(proChunk5);
-                                                            proPhraseAns2.Add(proChunk6);
-                                                            proPhraseAns2.Add(proChunk7);
-                                                        }
-                                                        else if (surveyQnA[j] == "異常")
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns2.Add(proChunk0);
-                                                            proPhraseAns2.Add(proChunk1);
-                                                            proPhraseAns2.Add(proChunk2);
-                                                            proPhraseAns2.Add(proChunk3);
-                                                            proPhraseAns2.Add(proChunk4);
-                                                            proPhraseAns2.Add(proChunk5);
-                                                            proPhraseAns2.Add(proChunk6);
-                                                            proPhraseAns2.Add(proChunk7);
-                                                        }
-                                                        else if (surveyQnA[j] == "無")
-                                                        {
-
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns2.Add(proChunk0);
-                                                            proPhraseAns2.Add(proChunk1);
-                                                            proPhraseAns2.Add(proChunk2);
-                                                            proPhraseAns2.Add(proChunk3);
-                                                            proPhraseAns2.Add(proChunk4);
-                                                            proPhraseAns2.Add(proChunk5);
-                                                            proPhraseAns2.Add(proChunk6);
-                                                            proPhraseAns2.Add(proChunk7);
-                                                        }
+                                                        else if (i == 3) continue;
                                                         else
                                                         {
-
-                                                            //20220722-通訊類(題目和答案數總和>38)最後一個項目，輸入大量文字，格式與其他不同 (首張問卷的後面)
-                                                            if (j == (int_totalquestions - 1))
+                                                            if (surveyQnA[i].Contains("正常"))
                                                             {
-                                                                if (maintain_type == "communication" && opinions_from_engineer == "於下方顯示維護查修內容")
-                                                                {
-
-                                                                }
-                                                                else
-                                                                {
-                                                                    iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                                    iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[j].Replace("\n", "\n　 "), ChFont10);
-                                                                    iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                                    proPhraseAns2.Add(proChunk0);
-                                                                    proPhraseAns2.Add(proChunk1);
-                                                                    proPhraseAns2.Add(proChunk2);
-                                                                }
-
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                                proPhraseAns.Add(proChunk3);
+                                                                proPhraseAns.Add(proChunk4);
+                                                                proPhraseAns.Add(proChunk5);
+                                                                proPhraseAns.Add(proChunk6);
+                                                                proPhraseAns.Add(proChunk7);
+                                                            }
+                                                            else if (surveyQnA[i].Contains("異常"))
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                                proPhraseAns.Add(proChunk3);
+                                                                proPhraseAns.Add(proChunk4);
+                                                                proPhraseAns.Add(proChunk5);
+                                                                proPhraseAns.Add(proChunk6);
+                                                                proPhraseAns.Add(proChunk7);
+                                                            }
+                                                            else if (surveyQnA[i].Contains("無"))
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                                proPhraseAns.Add(proChunk3);
+                                                                proPhraseAns.Add(proChunk4);
+                                                                proPhraseAns.Add(proChunk5);
+                                                                proPhraseAns.Add(proChunk6);
+                                                                proPhraseAns.Add(proChunk7);
                                                             }
                                                             else
                                                             {
-                                                                //不是最後一題
-                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[j].Replace("\n", "\n　 "), ChFont10);
-                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                                proPhraseAns2.Add(proChunk0);
-                                                                proPhraseAns2.Add(proChunk1);
-                                                                proPhraseAns2.Add(proChunk2);
-                                                            }
-
-
-                                                        }
-
-                                                    }
-                                                }
-
-                                            }
-
-
-                                        }
-
-                                        #endregion
-
-                                        //iTextSharp.text.Chunk proChunkStart = new iTextSharp.text.Chunk("\n\n服務說明：\n\n", ChFont10);
-                                        iTextSharp.text.Chunk proChunkStart = new iTextSharp.text.Chunk("\n\n", ChFont10);
-                                        proPhraseQus.Add(proChunkStart);
-                                        iTextSharp.text.Chunk proChunkDown = new iTextSharp.text.Chunk(IV_Desc, ChFont10);
-                                        proPhraseQus.Add(proChunkDown);
-
-
-                                        //題目
-                                        PdfPCell scell1 = new PdfPCell(proPhraseQus);
-                                        scell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                                        scell1.BorderWidthLeft = 1;
-                                        scell1.BorderWidthRight = 0;
-                                        scell1.BorderWidthTop = 0;
-                                        scell1.Colspan = 5;
-                                        scell1.Rowspan = 13;
-                                        scell1.Padding = 8;
-                                        scell1.FixedHeight = (18 * scell1.Rowspan) + 8;
-                                        pTable.AddCell(scell1);
-
-                                        //答案
-                                        PdfPCell scell2 = new PdfPCell(proPhraseAns);
-                                        scell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                                        scell2.BorderWidthLeft = 0;
-                                        scell2.BorderWidthRight = 1;
-                                        scell2.BorderWidthTop = 0;
-                                        scell2.Colspan = 4;
-                                        scell2.Rowspan = 13;
-                                        scell2.Padding = 8;
-                                        scell2.FixedHeight = (18 * scell2.Rowspan) + 8;
-                                        pTable.AddCell(scell2);
-
-                                        ///--20220715-只有一筆調查，但是題目+答案數>38，存到第二頁的table (_pTable)
-                                        ///--20220804-改採用問卷類別來判斷，不用int_totalquestions
-                                        ///--20221005-加入頁碼設計
-                                        #region --20220715-只有一筆調查，但是題目+答案數>38，存到第二頁的table (_pTable)
-                                        if (maintain_type == "communication")
-                                        {
-                                            if (opinions_from_engineer == "於下方顯示維護查修內容")
-                                            {
-                                                //20220722-通訊類題目和答案太多，且最後一題答案，需要呈現大量文字
-                                                iTextSharp.text.Chunk proChunkDown2 = new iTextSharp.text.Chunk(surveyQnA[surveyQnA.Count - 1].Replace("\n", "\n　 "), ChFont10);
-                                                proPhraseQus2.Add(proChunkDown2);
-
-                                            }
-
-                                            ///--20220718--只有一筆調查，但是題目+答案數>38，導致服務說明印不出來
-                                            ///--20220804-改採用問卷類別來判斷，不用int_totalquestions
-                                            #region --服務說明
-
-                                            //iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n服務說明：\n\n", ChFont10);
-                                            iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n", ChFont10);
-                                            proPhraseQus2.Add(proChunkStart);
-                                            iTextSharp.text.Chunk proChunkDown3 = new iTextSharp.text.Chunk(IV_Desc, ChFont10);
-                                            proPhraseQus2.Add(proChunkDown);
-
-                                            #endregion
-
-                                            #region 頁碼設計 --20221005
-                                            var pagenumber = surveyCount + 1;
-                                            var row = string.Empty;
-
-                                            if (int_totalquestions <= 50)
-                                            {
-                                                row = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + "\n\n\n\n\n\n\n\n\n" + "\n\n\n\n\n\n\n\n\n";
-                                            }
-                                            else
-                                            {
-                                                row = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + "\n\n\n\n\n\n";
-                                            }
-
-                                            iTextSharp.text.Chunk proChunkDown4 = new iTextSharp.text.Chunk(row + "                【服務編號" + IV_SRID + "】第" + pagenumber + "頁，共" + int_totalreports + "頁\n", ChFont8);
-                                            proPhraseAns2.Add(proChunkDown4);
-                                            #endregion
-
-                                            //題目
-                                            PdfPCell scell3 = new PdfPCell(proPhraseQus2);
-                                            //PdfPCell scell1 = new PdfPCell(new iTextSharp.text.Phrase("服務說明：\n\n" + processDetail, ChFont10));
-                                            scell3.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                                            scell3.BorderWidthLeft = 1;
-                                            scell3.BorderWidthRight = 0;
-                                            scell3.BorderWidthTop = 1;
-                                            scell3.BorderWidthBottom = 1;
-                                            scell3.Colspan = 5;//5改為10會超出範圍
-                                            ///20220804-因使用者可能會寫大量紀錄，將Rowspan 從13->16-->改為25 
-                                            scell3.Rowspan = 25;//13改為16
-                                            scell3.Padding = 8;
-                                            scell3.FixedHeight = (18 * scell3.Rowspan) + 8;
-                                            _pTable.AddCell(scell3);
-
-                                            //答案
-                                            PdfPCell scell4 = new PdfPCell(proPhraseAns2);
-                                            scell4.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                                            scell4.BorderWidthLeft = 0;
-                                            scell4.BorderWidthRight = 1;
-                                            scell4.BorderWidthTop = 1;
-                                            scell4.BorderWidthBottom = 1;
-                                            scell4.Colspan = 4;
-                                            ///20220804-因使用者可能會寫大量紀錄，將Rowspan 從13->16-->改為25 
-                                            scell4.Rowspan = 25;
-                                            scell4.Padding = 8;
-                                            scell4.FixedHeight = (18 * scell4.Rowspan) + 8;
-                                            _pTable.AddCell(scell4);
-
-                                            if (surveyCount % 3 == 2)
-                                            {
-                                                liPdfPTable.Add(_pTable);
-                                            }
-                                        }
-                                        #endregion
-
-                                    }
-                                    //超過一筆的放到第二頁
-                                    else
-                                    {
-                                        //一頁放三筆維護紀錄(第2、5、8筆要另開頁面)
-                                        //方框:、方框帶勾:R
-                                        iTextSharp.text.Phrase proPhraseQus = new iTextSharp.text.Phrase();
-                                        iTextSharp.text.Phrase proPhraseAns = new iTextSharp.text.Phrase();
-
-                                        #region --20220725-太多內容給第二頁、通訊類意見題-Pharse
-                                        //太多內容給第二頁用的
-                                        iTextSharp.text.Phrase proPhraseQus2 = new iTextSharp.text.Phrase();
-                                        iTextSharp.text.Phrase proPhraseAns2 = new iTextSharp.text.Phrase();
-
-                                        //20220722-給通訊類最後一題
-                                        iTextSharp.text.Phrase proPhraseAnsUnder = new iTextSharp.text.Phrase();
-                                        #endregion
-
-                                        ///--20220804-改採用問卷類別來判斷，不用int_totalquestions
-                                        ///若以後有其他問卷超過19題(int_totalquestions>38)，會需要再調整
-                                        #region --20220725-假如第2或第3筆的維護紀錄很長
-                                        var int_totalquestions = surveyQnA.Count;
-                                        if (maintain_type != "communication")
-                                        {
-                                            //印一頁就可以印完
-                                            for (var i = 0; i < surveyQnA.Count; i++)
-                                            {
-                                                //i是偶數 → 題目
-                                                if (i % 2 == 0)
-                                                {
-                                                    //產品名稱、型號/序號合併成一欄
-                                                    if (i == 0)
-                                                    {
-                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("產品資訊：\n\n", ChFont10);
-                                                        iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
-                                                        proPhraseQus.Add(proChunk1);
-                                                        proPhraseQus.Add(proChunk2);
-                                                    }
-                                                    else if (i == 2) continue;
-                                                    else
-                                                    {
-                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i] + "\n", ChFont10);
-                                                        iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
-                                                        proPhraseQus.Add(proChunk1);
-                                                        proPhraseQus.Add(proChunk2);
-                                                    }
-                                                }
-                                                //i是奇數 → 答案
-                                                else
-                                                {
-                                                    if (i == 1)
-                                                    {
-                                                        //產品名稱、型號/序號合併成一欄
-                                                        iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                        string productName = string.IsNullOrEmpty(surveyQnA[3]) ? surveyQnA[1] + "\n\n" : surveyQnA[1] + " (" + surveyQnA[3] + ")\n\n";
-                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(productName, ChFont10);
-                                                        proPhraseAns.Add(proChunk0);
-                                                        proPhraseAns.Add(proChunk1);
-                                                    }
-                                                    else if (i == 3) continue;
-                                                    else
-                                                    {
-                                                        if (surveyQnA[i].Contains("正常"))
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                            proPhraseAns.Add(proChunk3);
-                                                            proPhraseAns.Add(proChunk4);
-                                                            proPhraseAns.Add(proChunk5);
-                                                            proPhraseAns.Add(proChunk6);
-                                                            proPhraseAns.Add(proChunk7);
-                                                        }
-                                                        else if (surveyQnA[i].Contains("異常"))
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                            proPhraseAns.Add(proChunk3);
-                                                            proPhraseAns.Add(proChunk4);
-                                                            proPhraseAns.Add(proChunk5);
-                                                            proPhraseAns.Add(proChunk6);
-                                                            proPhraseAns.Add(proChunk7);
-                                                        }
-                                                        else if (surveyQnA[i].Contains("無"))
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                            proPhraseAns.Add(proChunk3);
-                                                            proPhraseAns.Add(proChunk4);
-                                                            proPhraseAns.Add(proChunk5);
-                                                            proPhraseAns.Add(proChunk6);
-                                                            proPhraseAns.Add(proChunk7);
-                                                        }
-                                                        else
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i].Replace("\n", "\n　 "), ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            //一筆調查，內容很多
-                                            for (var i = 0; i < int_totalquestions; i++)
-                                            {
-                                                //i是偶數 → 題目
-                                                if (i % 2 == 0)
-                                                {
-                                                    //產品名稱、型號/序號合併成一欄
-                                                    if (i == 0)
-                                                    {
-                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("產品資訊：\n\n", ChFont10);
-                                                        iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
-                                                        proPhraseQus.Add(proChunk1);
-                                                        proPhraseQus.Add(proChunk2);
-                                                    }
-                                                    else if (i == 2) continue;
-                                                    else
-                                                    {
-                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i] + "\n", ChFont10);
-                                                        iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
-                                                        proPhraseQus.Add(proChunk1);
-                                                        proPhraseQus.Add(proChunk2);
-                                                    }
-                                                }
-                                                //i是奇數 → 答案
-                                                else
-                                                {
-                                                    if (i == 1)
-                                                    {
-                                                        //產品名稱、型號/序號合併成一欄
-                                                        iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                        string productName = string.IsNullOrEmpty(surveyQnA[3]) ? surveyQnA[1] + "\n\n" : surveyQnA[1] + " (" + surveyQnA[3] + ")\n\n";
-                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(productName, ChFont10);
-                                                        proPhraseAns.Add(proChunk0);
-                                                        proPhraseAns.Add(proChunk1);
-                                                    }
-                                                    else if (i == 3) continue;
-                                                    else
-                                                    {
-
-                                                        ///20220719-定維表-通訊類，檢查者的意見，有一個選項是【本次定期保養均無問題】，會符合原條件
-                                                        ///surveyQnA[j].Contains("無")，導致出錯
-                                                        ///而且，如果要載入自行填寫，也可能會用到無、異常、正常等國字
-                                                        ///修改(surveyQnA[j].Contains("正常")改為(surveyQnA[j]=="正常")
-                                                        ///
-
-                                                        if (surveyQnA[i] == "正常")
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                            proPhraseAns.Add(proChunk3);
-                                                            proPhraseAns.Add(proChunk4);
-                                                            proPhraseAns.Add(proChunk5);
-                                                            proPhraseAns.Add(proChunk6);
-                                                            proPhraseAns.Add(proChunk7);
-                                                        }
-                                                        else if (surveyQnA[i] == "異常")
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                            proPhraseAns.Add(proChunk3);
-                                                            proPhraseAns.Add(proChunk4);
-                                                            proPhraseAns.Add(proChunk5);
-                                                            proPhraseAns.Add(proChunk6);
-                                                            proPhraseAns.Add(proChunk7);
-                                                        }
-                                                        else if (surveyQnA[i] == "無")
-                                                        {
-                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
-                                                            iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("R", checkSymbol);
-                                                            iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
-                                                            proPhraseAns.Add(proChunk0);
-                                                            proPhraseAns.Add(proChunk1);
-                                                            proPhraseAns.Add(proChunk2);
-                                                            proPhraseAns.Add(proChunk3);
-                                                            proPhraseAns.Add(proChunk4);
-                                                            proPhraseAns.Add(proChunk5);
-                                                            proPhraseAns.Add(proChunk6);
-                                                            proPhraseAns.Add(proChunk7);
-                                                        }
-                                                        else
-                                                        {
-
-                                                            //20220719-通訊類定維單，有溫度和濕度，希望pdf加上單位
-                                                            var scale = string.Empty;
-
-                                                            if (maintain_type != "communication")
-                                                            {
-                                                                //非通訊類問卷
                                                                 iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
                                                                 iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i].Replace("\n", "\n　 "), ChFont10);
                                                                 iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
                                                                 proPhraseAns.Add(proChunk0);
                                                                 proPhraseAns.Add(proChunk1);
                                                                 proPhraseAns.Add(proChunk2);
-
                                                             }
-                                                            else if (maintain_type == "communication")
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                //一筆調查，內容太多，印到兩頁
+                                                //通訊類問卷是這樣的
+                                                //先印18題前面的
+                                                for (var i = 0; i < 38; i++)
+                                                {
+
+                                                    //i是偶數 → 題目
+                                                    if (i % 2 == 0)
+                                                    {
+                                                        //產品名稱、型號/序號合併成一欄
+                                                        if (i == 0)
+                                                        {
+                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("產品資訊：\n\n", ChFont10);
+                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
+                                                            proPhraseQus.Add(proChunk1);
+                                                            proPhraseQus.Add(proChunk2);
+                                                        }
+                                                        else if (i == 2) continue;
+                                                        else
+                                                        {
+                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i] + "\n", ChFont10);
+                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
+                                                            proPhraseQus.Add(proChunk1);
+                                                            proPhraseQus.Add(proChunk2);
+                                                        }
+                                                    }
+                                                    //i是奇數 → 答案
+                                                    else
+                                                    {
+                                                        if (i == 1)
+                                                        {
+                                                            //產品名稱、型號/序號合併成一欄
+                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                            string productName = string.IsNullOrEmpty(surveyQnA[3]) ? surveyQnA[1] + "\n\n" : surveyQnA[1] + " (" + surveyQnA[3] + ")\n\n";
+                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(productName, ChFont10);
+                                                            proPhraseAns.Add(proChunk0);
+                                                            proPhraseAns.Add(proChunk1);
+                                                        }
+                                                        else if (i == 3) continue;
+                                                        else
+                                                        {
+                                                            if (surveyQnA[i].Contains("正常"))
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                                proPhraseAns.Add(proChunk3);
+                                                                proPhraseAns.Add(proChunk4);
+                                                                proPhraseAns.Add(proChunk5);
+                                                                proPhraseAns.Add(proChunk6);
+                                                                proPhraseAns.Add(proChunk7);
+                                                            }
+                                                            else if (surveyQnA[i].Contains("異常"))
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                                proPhraseAns.Add(proChunk3);
+                                                                proPhraseAns.Add(proChunk4);
+                                                                proPhraseAns.Add(proChunk5);
+                                                                proPhraseAns.Add(proChunk6);
+                                                                proPhraseAns.Add(proChunk7);
+                                                            }
+                                                            else if (surveyQnA[i].Contains("無"))
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                                proPhraseAns.Add(proChunk3);
+                                                                proPhraseAns.Add(proChunk4);
+                                                                proPhraseAns.Add(proChunk5);
+                                                                proPhraseAns.Add(proChunk6);
+                                                                proPhraseAns.Add(proChunk7);
+                                                            }
+                                                            else
                                                             {
 
-                                                                //通訊類問卷
-                                                                if (i != (int_totalquestions - 1))
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+
+                                                                //20220719-通訊類定維單，有溫度和濕度，希望pdf加上單位
+                                                                var scale = string.Empty;
+
+                                                                if (maintain_type == "communication")
                                                                 {
                                                                     if (i == 5)
                                                                     {
@@ -7264,525 +6717,964 @@ namespace TSTI_API.Controllers
                                                                     {
                                                                         scale = "  %";
                                                                     }
+                                                                }
+                                                                else
+                                                                {
 
+                                                                }
+
+
+                                                                //iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i].Replace("\n", "\n　 ") + scale, ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+
+
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                //超出頁面的(page2)
+                                                if (surveyQnA.Count > 38)
+                                                {
+                                                    isOver1Survey = true;
+
+                                                    //太多內容，第二頁的題目和答案
+                                                    for (var j = 38; j < surveyQnA.Count; j++)
+                                                    {
+                                                        //j是偶數 → 題目
+                                                        if (j % 2 == 0)
+                                                        {
+                                                            //20220718-因為第一行會自動不對齊，所以加入文字
+                                                            if (j == 38)
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk3title = new iTextSharp.text.Chunk("產品資訊：\n\n", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4title = new iTextSharp.text.Chunk(" ", checkSymbol);
+                                                                proPhraseQus2.Add(proChunk3title);
+                                                                proPhraseQus2.Add(proChunk4title);
+                                                            }
+
+                                                            iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk(surveyQnA[j] + "\n", ChFont10);
+                                                            iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk(" ", checkSymbol);
+                                                            proPhraseQus2.Add(proChunk3);
+                                                            proPhraseQus2.Add(proChunk4);
+
+                                                        }
+                                                        //i是奇數 → 答案
+                                                        else
+                                                        {
+
+                                                            //20220718-因為第一行會自動不對齊，所以加入文字
+                                                            //奇數題                                            
+                                                            if (j == 39)
+                                                            {
+                                                                //產品名稱、型號/序號合併成一欄
+                                                                iTextSharp.text.Chunk proChunk0title = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                string productName = string.IsNullOrEmpty(surveyQnA[3]) ? surveyQnA[1] + "\n\n" : surveyQnA[1] + " (" + surveyQnA[3] + ")\n\n";
+
+                                                                iTextSharp.text.Chunk proChunk1title = new iTextSharp.text.Chunk(productName, ChFont10);
+                                                                proPhraseAns2.Add(proChunk0title);
+                                                                proPhraseAns2.Add(proChunk1title);
+                                                            }
+
+                                                            var item = surveyQnA[j];
+
+                                                            ///20220719-定維表-通訊類，檢查者的意見，有一個選項是【本次定期保養均無問題】，會符合原條件
+                                                            ///surveyQnA[j].Contains("無")，導致出錯
+                                                            ///而且，如果要載入自行填寫，也可能會用到無、異常、正常等國字
+                                                            ///修改(surveyQnA[j].Contains("正常")改為(surveyQnA[j]=="正常")
+
+
+                                                            if (surveyQnA[j] == "正常")
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns2.Add(proChunk0);
+                                                                proPhraseAns2.Add(proChunk1);
+                                                                proPhraseAns2.Add(proChunk2);
+                                                                proPhraseAns2.Add(proChunk3);
+                                                                proPhraseAns2.Add(proChunk4);
+                                                                proPhraseAns2.Add(proChunk5);
+                                                                proPhraseAns2.Add(proChunk6);
+                                                                proPhraseAns2.Add(proChunk7);
+                                                            }
+                                                            else if (surveyQnA[j] == "異常")
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns2.Add(proChunk0);
+                                                                proPhraseAns2.Add(proChunk1);
+                                                                proPhraseAns2.Add(proChunk2);
+                                                                proPhraseAns2.Add(proChunk3);
+                                                                proPhraseAns2.Add(proChunk4);
+                                                                proPhraseAns2.Add(proChunk5);
+                                                                proPhraseAns2.Add(proChunk6);
+                                                                proPhraseAns2.Add(proChunk7);
+                                                            }
+                                                            else if (surveyQnA[j] == "無")
+                                                            {
+
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns2.Add(proChunk0);
+                                                                proPhraseAns2.Add(proChunk1);
+                                                                proPhraseAns2.Add(proChunk2);
+                                                                proPhraseAns2.Add(proChunk3);
+                                                                proPhraseAns2.Add(proChunk4);
+                                                                proPhraseAns2.Add(proChunk5);
+                                                                proPhraseAns2.Add(proChunk6);
+                                                                proPhraseAns2.Add(proChunk7);
+                                                            }
+                                                            else
+                                                            {
+
+                                                                //20220722-通訊類(題目和答案數總和>38)最後一個項目，輸入大量文字，格式與其他不同 (首張問卷的後面)
+                                                                if (j == (int_totalquestions - 1))
+                                                                {
+                                                                    if (maintain_type == "communication" && opinions_from_engineer == "於下方顯示維護查修內容")
+                                                                    {
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                        iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[j].Replace("\n", "\n　 "), ChFont10);
+                                                                        iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                        proPhraseAns2.Add(proChunk0);
+                                                                        proPhraseAns2.Add(proChunk1);
+                                                                        proPhraseAns2.Add(proChunk2);
+                                                                    }
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    //不是最後一題
                                                                     iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
-                                                                    iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i].Replace("\n", "\n　 ") + scale, ChFont10);
+                                                                    iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[j].Replace("\n", "\n　 "), ChFont10);
+                                                                    iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                    proPhraseAns2.Add(proChunk0);
+                                                                    proPhraseAns2.Add(proChunk1);
+                                                                    proPhraseAns2.Add(proChunk2);
+                                                                }
+
+
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                }
+
+
+                                            }
+
+                                            #endregion
+
+                                            //iTextSharp.text.Chunk proChunkStart = new iTextSharp.text.Chunk("\n\n服務說明：\n\n", ChFont10);
+                                            iTextSharp.text.Chunk proChunkStart = new iTextSharp.text.Chunk("\n\n", ChFont10);
+                                            proPhraseQus.Add(proChunkStart);
+                                            iTextSharp.text.Chunk proChunkDown = new iTextSharp.text.Chunk(IV_Desc, ChFont10);
+                                            proPhraseQus.Add(proChunkDown);
+
+
+                                            //題目
+                                            PdfPCell scell1 = new PdfPCell(proPhraseQus);
+                                            scell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                                            scell1.BorderWidthLeft = 1;
+                                            scell1.BorderWidthRight = 0;
+                                            scell1.BorderWidthTop = 0;
+                                            scell1.Colspan = 5;
+                                            scell1.Rowspan = 13;
+                                            scell1.Padding = 8;
+                                            scell1.FixedHeight = (18 * scell1.Rowspan) + 8;
+                                            pTable.AddCell(scell1);
+
+                                            //答案
+                                            PdfPCell scell2 = new PdfPCell(proPhraseAns);
+                                            scell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                                            scell2.BorderWidthLeft = 0;
+                                            scell2.BorderWidthRight = 1;
+                                            scell2.BorderWidthTop = 0;
+                                            scell2.Colspan = 4;
+                                            scell2.Rowspan = 13;
+                                            scell2.Padding = 8;
+                                            scell2.FixedHeight = (18 * scell2.Rowspan) + 8;
+                                            pTable.AddCell(scell2);
+
+                                            ///--20220715-只有一筆調查，但是題目+答案數>38，存到第二頁的table (_pTable)
+                                            ///--20220804-改採用問卷類別來判斷，不用int_totalquestions
+                                            ///--20221005-加入頁碼設計
+                                            #region --20220715-只有一筆調查，但是題目+答案數>38，存到第二頁的table (_pTable)
+                                            if (maintain_type == "communication")
+                                            {
+                                                if (opinions_from_engineer == "於下方顯示維護查修內容")
+                                                {
+                                                    //20220722-通訊類題目和答案太多，且最後一題答案，需要呈現大量文字
+                                                    iTextSharp.text.Chunk proChunkDown2 = new iTextSharp.text.Chunk(surveyQnA[surveyQnA.Count - 1].Replace("\n", "\n　 "), ChFont10);
+                                                    proPhraseQus2.Add(proChunkDown2);
+
+                                                }
+
+                                                ///--20220718--只有一筆調查，但是題目+答案數>38，導致服務說明印不出來
+                                                ///--20220804-改採用問卷類別來判斷，不用int_totalquestions
+                                                #region --服務說明
+
+                                                //iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n服務說明：\n\n", ChFont10);
+                                                iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n", ChFont10);
+                                                proPhraseQus2.Add(proChunkStart);
+                                                iTextSharp.text.Chunk proChunkDown3 = new iTextSharp.text.Chunk(IV_Desc, ChFont10);
+                                                proPhraseQus2.Add(proChunkDown);
+
+                                                #endregion
+
+                                                #region 頁碼設計 --20221005
+                                                var pagenumber = surveyCount + 1;
+                                                var row = string.Empty;
+
+                                                if (int_totalquestions <= 50)
+                                                {
+                                                    row = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + "\n\n\n\n\n\n\n\n\n" + "\n\n\n\n\n\n\n\n\n";
+                                                }
+                                                else
+                                                {
+                                                    row = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + "\n\n\n\n\n\n";
+                                                }
+
+                                                iTextSharp.text.Chunk proChunkDown4 = new iTextSharp.text.Chunk(row + "                【服務編號" + IV_SRID + "】第" + pagenumber + "頁，共" + int_totalreports + "頁\n", ChFont8);
+                                                proPhraseAns2.Add(proChunkDown4);
+                                                #endregion
+
+                                                //題目
+                                                PdfPCell scell3 = new PdfPCell(proPhraseQus2);
+                                                //PdfPCell scell1 = new PdfPCell(new iTextSharp.text.Phrase("服務說明：\n\n" + processDetail, ChFont10));
+                                                scell3.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                                                scell3.BorderWidthLeft = 1;
+                                                scell3.BorderWidthRight = 0;
+                                                scell3.BorderWidthTop = 1;
+                                                scell3.BorderWidthBottom = 1;
+                                                scell3.Colspan = 5;//5改為10會超出範圍
+                                                ///20220804-因使用者可能會寫大量紀錄，將Rowspan 從13->16-->改為25 
+                                                scell3.Rowspan = 25;//13改為16
+                                                scell3.Padding = 8;
+                                                scell3.FixedHeight = (18 * scell3.Rowspan) + 8;
+                                                _pTable.AddCell(scell3);
+
+                                                //答案
+                                                PdfPCell scell4 = new PdfPCell(proPhraseAns2);
+                                                scell4.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                                                scell4.BorderWidthLeft = 0;
+                                                scell4.BorderWidthRight = 1;
+                                                scell4.BorderWidthTop = 1;
+                                                scell4.BorderWidthBottom = 1;
+                                                scell4.Colspan = 4;
+                                                ///20220804-因使用者可能會寫大量紀錄，將Rowspan 從13->16-->改為25 
+                                                scell4.Rowspan = 25;
+                                                scell4.Padding = 8;
+                                                scell4.FixedHeight = (18 * scell4.Rowspan) + 8;
+                                                _pTable.AddCell(scell4);
+
+                                                if (surveyCount % 3 == 2)
+                                                {
+                                                    liPdfPTable.Add(_pTable);
+                                                }
+                                            }
+                                            #endregion
+
+                                        }
+                                        //超過一筆的放到第二頁
+                                        else
+                                        {
+                                            //一頁放三筆維護紀錄(第2、5、8筆要另開頁面)
+                                            //方框:、方框帶勾:R
+                                            iTextSharp.text.Phrase proPhraseQus = new iTextSharp.text.Phrase();
+                                            iTextSharp.text.Phrase proPhraseAns = new iTextSharp.text.Phrase();
+
+                                            #region --20220725-太多內容給第二頁、通訊類意見題-Pharse
+                                            //太多內容給第二頁用的
+                                            iTextSharp.text.Phrase proPhraseQus2 = new iTextSharp.text.Phrase();
+                                            iTextSharp.text.Phrase proPhraseAns2 = new iTextSharp.text.Phrase();
+
+                                            //20220722-給通訊類最後一題
+                                            iTextSharp.text.Phrase proPhraseAnsUnder = new iTextSharp.text.Phrase();
+                                            #endregion
+
+                                            ///--20220804-改採用問卷類別來判斷，不用int_totalquestions
+                                            ///若以後有其他問卷超過19題(int_totalquestions>38)，會需要再調整
+                                            #region --20220725-假如第2或第3筆的維護紀錄很長
+                                            var int_totalquestions = surveyQnA.Count;
+                                            if (maintain_type != "communication")
+                                            {
+                                                //印一頁就可以印完
+                                                for (var i = 0; i < surveyQnA.Count; i++)
+                                                {
+                                                    //i是偶數 → 題目
+                                                    if (i % 2 == 0)
+                                                    {
+                                                        //產品名稱、型號/序號合併成一欄
+                                                        if (i == 0)
+                                                        {
+                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("產品資訊：\n\n", ChFont10);
+                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
+                                                            proPhraseQus.Add(proChunk1);
+                                                            proPhraseQus.Add(proChunk2);
+                                                        }
+                                                        else if (i == 2) continue;
+                                                        else
+                                                        {
+                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i] + "\n", ChFont10);
+                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
+                                                            proPhraseQus.Add(proChunk1);
+                                                            proPhraseQus.Add(proChunk2);
+                                                        }
+                                                    }
+                                                    //i是奇數 → 答案
+                                                    else
+                                                    {
+                                                        if (i == 1)
+                                                        {
+                                                            //產品名稱、型號/序號合併成一欄
+                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                            string productName = string.IsNullOrEmpty(surveyQnA[3]) ? surveyQnA[1] + "\n\n" : surveyQnA[1] + " (" + surveyQnA[3] + ")\n\n";
+                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(productName, ChFont10);
+                                                            proPhraseAns.Add(proChunk0);
+                                                            proPhraseAns.Add(proChunk1);
+                                                        }
+                                                        else if (i == 3) continue;
+                                                        else
+                                                        {
+                                                            if (surveyQnA[i].Contains("正常"))
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                                proPhraseAns.Add(proChunk3);
+                                                                proPhraseAns.Add(proChunk4);
+                                                                proPhraseAns.Add(proChunk5);
+                                                                proPhraseAns.Add(proChunk6);
+                                                                proPhraseAns.Add(proChunk7);
+                                                            }
+                                                            else if (surveyQnA[i].Contains("異常"))
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                                proPhraseAns.Add(proChunk3);
+                                                                proPhraseAns.Add(proChunk4);
+                                                                proPhraseAns.Add(proChunk5);
+                                                                proPhraseAns.Add(proChunk6);
+                                                                proPhraseAns.Add(proChunk7);
+                                                            }
+                                                            else if (surveyQnA[i].Contains("無"))
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                                proPhraseAns.Add(proChunk3);
+                                                                proPhraseAns.Add(proChunk4);
+                                                                proPhraseAns.Add(proChunk5);
+                                                                proPhraseAns.Add(proChunk6);
+                                                                proPhraseAns.Add(proChunk7);
+                                                            }
+                                                            else
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i].Replace("\n", "\n　 "), ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                //一筆調查，內容很多
+                                                for (var i = 0; i < int_totalquestions; i++)
+                                                {
+                                                    //i是偶數 → 題目
+                                                    if (i % 2 == 0)
+                                                    {
+                                                        //產品名稱、型號/序號合併成一欄
+                                                        if (i == 0)
+                                                        {
+                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("產品資訊：\n\n", ChFont10);
+                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
+                                                            proPhraseQus.Add(proChunk1);
+                                                            proPhraseQus.Add(proChunk2);
+                                                        }
+                                                        else if (i == 2) continue;
+                                                        else
+                                                        {
+                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i] + "\n", ChFont10);
+                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk(" ", checkSymbol);
+                                                            proPhraseQus.Add(proChunk1);
+                                                            proPhraseQus.Add(proChunk2);
+                                                        }
+                                                    }
+                                                    //i是奇數 → 答案
+                                                    else
+                                                    {
+                                                        if (i == 1)
+                                                        {
+                                                            //產品名稱、型號/序號合併成一欄
+                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                            string productName = string.IsNullOrEmpty(surveyQnA[3]) ? surveyQnA[1] + "\n\n" : surveyQnA[1] + " (" + surveyQnA[3] + ")\n\n";
+                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(productName, ChFont10);
+                                                            proPhraseAns.Add(proChunk0);
+                                                            proPhraseAns.Add(proChunk1);
+                                                        }
+                                                        else if (i == 3) continue;
+                                                        else
+                                                        {
+
+                                                            ///20220719-定維表-通訊類，檢查者的意見，有一個選項是【本次定期保養均無問題】，會符合原條件
+                                                            ///surveyQnA[j].Contains("無")，導致出錯
+                                                            ///而且，如果要載入自行填寫，也可能會用到無、異常、正常等國字
+                                                            ///修改(surveyQnA[j].Contains("正常")改為(surveyQnA[j]=="正常")
+                                                            ///
+
+                                                            if (surveyQnA[i] == "正常")
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                                proPhraseAns.Add(proChunk3);
+                                                                proPhraseAns.Add(proChunk4);
+                                                                proPhraseAns.Add(proChunk5);
+                                                                proPhraseAns.Add(proChunk6);
+                                                                proPhraseAns.Add(proChunk7);
+                                                            }
+                                                            else if (surveyQnA[i] == "異常")
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                                proPhraseAns.Add(proChunk3);
+                                                                proPhraseAns.Add(proChunk4);
+                                                                proPhraseAns.Add(proChunk5);
+                                                                proPhraseAns.Add(proChunk6);
+                                                                proPhraseAns.Add(proChunk7);
+                                                            }
+                                                            else if (surveyQnA[i] == "無")
+                                                            {
+                                                                iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk("正 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk3 = new iTextSharp.text.Chunk("　 異 常 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk4 = new iTextSharp.text.Chunk("", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk5 = new iTextSharp.text.Chunk("　 無 ", ChFont10);
+                                                                iTextSharp.text.Chunk proChunk6 = new iTextSharp.text.Chunk("R", checkSymbol);
+                                                                iTextSharp.text.Chunk proChunk7 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                proPhraseAns.Add(proChunk0);
+                                                                proPhraseAns.Add(proChunk1);
+                                                                proPhraseAns.Add(proChunk2);
+                                                                proPhraseAns.Add(proChunk3);
+                                                                proPhraseAns.Add(proChunk4);
+                                                                proPhraseAns.Add(proChunk5);
+                                                                proPhraseAns.Add(proChunk6);
+                                                                proPhraseAns.Add(proChunk7);
+                                                            }
+                                                            else
+                                                            {
+
+                                                                //20220719-通訊類定維單，有溫度和濕度，希望pdf加上單位
+                                                                var scale = string.Empty;
+
+                                                                if (maintain_type != "communication")
+                                                                {
+                                                                    //非通訊類問卷
+                                                                    iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                    iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i].Replace("\n", "\n　 "), ChFont10);
                                                                     iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
                                                                     proPhraseAns.Add(proChunk0);
                                                                     proPhraseAns.Add(proChunk1);
                                                                     proPhraseAns.Add(proChunk2);
 
                                                                 }
-                                                                else if (i == (int_totalquestions - 1))
+                                                                else if (maintain_type == "communication")
                                                                 {
-                                                                    //20220722-通訊類(題目和答案數總和>38)最後一個項目，有可能輸入大量文字，導致格式與其他不同
 
-                                                                    if (opinions_from_engineer == "於下方顯示維護查修內容")
+                                                                    //通訊類問卷
+                                                                    if (i != (int_totalquestions - 1))
                                                                     {
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        //opinions_from_engineer==本次定期保養均無問題
+                                                                        if (i == 5)
+                                                                        {
+                                                                            scale = "  度C";
+
+                                                                        }
+                                                                        else if (i == 7)
+                                                                        {
+                                                                            scale = "  %";
+                                                                        }
+
                                                                         iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
                                                                         iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i].Replace("\n", "\n　 ") + scale, ChFont10);
                                                                         iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
                                                                         proPhraseAns.Add(proChunk0);
                                                                         proPhraseAns.Add(proChunk1);
                                                                         proPhraseAns.Add(proChunk2);
+
+                                                                    }
+                                                                    else if (i == (int_totalquestions - 1))
+                                                                    {
+                                                                        //20220722-通訊類(題目和答案數總和>38)最後一個項目，有可能輸入大量文字，導致格式與其他不同
+
+                                                                        if (opinions_from_engineer == "於下方顯示維護查修內容")
+                                                                        {
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            //opinions_from_engineer==本次定期保養均無問題
+                                                                            iTextSharp.text.Chunk proChunk0 = new iTextSharp.text.Chunk(" ", checkSymbol); //加這行才可以跟題目的行高一樣
+                                                                            iTextSharp.text.Chunk proChunk1 = new iTextSharp.text.Chunk(surveyQnA[i].Replace("\n", "\n　 ") + scale, ChFont10);
+                                                                            iTextSharp.text.Chunk proChunk2 = new iTextSharp.text.Chunk("\n", ChFont10);
+                                                                            proPhraseAns.Add(proChunk0);
+                                                                            proPhraseAns.Add(proChunk1);
+                                                                            proPhraseAns.Add(proChunk2);
+                                                                        }
                                                                     }
                                                                 }
+
+
+
                                                             }
-
-
-
                                                         }
                                                     }
                                                 }
-                                            }
-
-                                        }
-                                        #endregion
-
-
-                                        ///--20220804-改採用問卷類別來判斷，不用int_totalquestions
-                                        ///若以後有其他問卷超過19題(int_totalquestions>38)，會需要再調整
-                                        #region --20220725-修改第2.3頁pdf格式
-                                        //題目、答案格式設定
-                                        if (maintain_type != "communication")
-                                        {
-                                            //題目
-                                            PdfPCell scell1 = new PdfPCell(proPhraseQus);
-                                            //PdfPCell scell1 = new PdfPCell(new iTextSharp.text.Phrase("服務說明：\n\n" + processDetail, ChFont10));
-                                            scell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                                            scell1.BorderWidthLeft = 1;
-                                            scell1.BorderWidthRight = 0;
-                                            scell1.BorderWidthTop = 1;
-                                            scell1.BorderWidthBottom = 1;
-                                            scell1.Colspan = 5;
-                                            scell1.Rowspan = 13;
-                                            scell1.Padding = 8;
-                                            scell1.FixedHeight = (18 * scell1.Rowspan) + 8;
-                                            _pTable.AddCell(scell1);
-
-                                            //答案
-                                            PdfPCell scell2 = new PdfPCell(proPhraseAns);
-                                            scell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                                            scell2.BorderWidthLeft = 0;
-                                            scell2.BorderWidthRight = 1;
-                                            scell2.BorderWidthTop = 1;
-                                            scell2.BorderWidthBottom = 1;
-                                            scell2.Colspan = 4;
-                                            scell2.Rowspan = 13;
-                                            scell2.Padding = 8;
-                                            scell2.FixedHeight = (18 * scell2.Rowspan) + 8;
-                                            _pTable.AddCell(scell2);
-                                        }
-                                        else
-                                        {
-                                            if (maintain_type == "communication" && opinions_from_engineer == "於下方顯示維護查修內容")
-                                            {
-                                                //20220722-通訊類題目和答案太多，且最後一題答案，需要呈現大量文字
-                                                iTextSharp.text.Chunk proChunkDown2 = new iTextSharp.text.Chunk(surveyQnA[surveyQnA.Count - 1].Replace("\n", "\n　 "), ChFont10);
-                                                proPhraseQus.Add(proChunkDown2);
 
                                             }
+                                            #endregion
 
-                                            ///--20220718--只有一筆調查，但是題目+答案數>38，導致服務說明印不出來
+
                                             ///--20220804-改採用問卷類別來判斷，不用int_totalquestions
-                                            ///--20221005--加入頁碼
-                                            #region --服務說明
-                                            var pagenumber = surveyCount + 1;
-                                            var row = string.Empty;
-
-                                            //iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n服務說明：\n\n", ChFont10);
-                                            iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n", ChFont10);
-                                            proPhraseQus.Add(proChunkStart3);
-                                            iTextSharp.text.Chunk proChunkDown3 = new iTextSharp.text.Chunk(IV_Desc, ChFont10);
-                                            proPhraseQus.Add(proChunkDown3);
-                                            if (int_totalquestions <= 50)
+                                            ///若以後有其他問卷超過19題(int_totalquestions>38)，會需要再調整
+                                            #region --20220725-修改第2.3頁pdf格式
+                                            //題目、答案格式設定
+                                            if (maintain_type != "communication")
                                             {
-                                                row = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + "\n\n\n\n\n\n\n\n\n" + "\n\n\n\n\n\n\n\n\n";
+                                                //題目
+                                                PdfPCell scell1 = new PdfPCell(proPhraseQus);
+                                                //PdfPCell scell1 = new PdfPCell(new iTextSharp.text.Phrase("服務說明：\n\n" + processDetail, ChFont10));
+                                                scell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                                                scell1.BorderWidthLeft = 1;
+                                                scell1.BorderWidthRight = 0;
+                                                scell1.BorderWidthTop = 1;
+                                                scell1.BorderWidthBottom = 1;
+                                                scell1.Colspan = 5;
+                                                scell1.Rowspan = 13;
+                                                scell1.Padding = 8;
+                                                scell1.FixedHeight = (18 * scell1.Rowspan) + 8;
+                                                _pTable.AddCell(scell1);
+
+                                                //答案
+                                                PdfPCell scell2 = new PdfPCell(proPhraseAns);
+                                                scell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                                                scell2.BorderWidthLeft = 0;
+                                                scell2.BorderWidthRight = 1;
+                                                scell2.BorderWidthTop = 1;
+                                                scell2.BorderWidthBottom = 1;
+                                                scell2.Colspan = 4;
+                                                scell2.Rowspan = 13;
+                                                scell2.Padding = 8;
+                                                scell2.FixedHeight = (18 * scell2.Rowspan) + 8;
+                                                _pTable.AddCell(scell2);
                                             }
                                             else
                                             {
-                                                row = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + "\n\n\n\n\n\n\n";
+                                                if (maintain_type == "communication" && opinions_from_engineer == "於下方顯示維護查修內容")
+                                                {
+                                                    //20220722-通訊類題目和答案太多，且最後一題答案，需要呈現大量文字
+                                                    iTextSharp.text.Chunk proChunkDown2 = new iTextSharp.text.Chunk(surveyQnA[surveyQnA.Count - 1].Replace("\n", "\n　 "), ChFont10);
+                                                    proPhraseQus.Add(proChunkDown2);
+
+                                                }
+
+                                                ///--20220718--只有一筆調查，但是題目+答案數>38，導致服務說明印不出來
+                                                ///--20220804-改採用問卷類別來判斷，不用int_totalquestions
+                                                ///--20221005--加入頁碼
+                                                #region --服務說明
+                                                var pagenumber = surveyCount + 1;
+                                                var row = string.Empty;
+
+                                                //iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n服務說明：\n\n", ChFont10);
+                                                iTextSharp.text.Chunk proChunkStart3 = new iTextSharp.text.Chunk("\n\n", ChFont10);
+                                                proPhraseQus.Add(proChunkStart3);
+                                                iTextSharp.text.Chunk proChunkDown3 = new iTextSharp.text.Chunk(IV_Desc, ChFont10);
+                                                proPhraseQus.Add(proChunkDown3);
+                                                if (int_totalquestions <= 50)
+                                                {
+                                                    row = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + "\n\n\n\n\n\n\n\n\n" + "\n\n\n\n\n\n\n\n\n";
+                                                }
+                                                else
+                                                {
+                                                    row = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + "\n\n\n\n\n\n\n";
+                                                }
+
+                                                iTextSharp.text.Chunk proChunkDown4 = new iTextSharp.text.Chunk(row + "                【服務編號" + IV_SRID + "】第" + pagenumber + "頁，共" + int_totalreports + "頁\n", ChFont8);
+                                                proPhraseAns.Add(proChunkDown4);
+                                                #endregion
+
+                                                //題目
+                                                PdfPCell scell1 = new PdfPCell(proPhraseQus);
+                                                scell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                                                scell1.BorderWidthLeft = 1;
+                                                scell1.BorderWidthRight = 0;
+                                                scell1.BorderWidthTop = 1;
+                                                scell1.BorderWidthBottom = 1;
+                                                scell1.Colspan = 5;
+
+                                                ///20220718-pdf長度FixedHeight有限制，若把Rowspan = int_totalquestions=66; FixedHeight最終=1196會看不到文字
+                                                ///把RowSpan=26，會比較剛好
+                                                ///假若有天題目+答案數>66，會需要再調
+                                                ///20220804-因使用者可能會寫大量紀錄，將Rowspan 從13->26-->改為40 ///
+                                                scell1.Rowspan = 40;
+                                                scell1.Padding = 8;
+                                                scell1.FixedHeight = (18 * scell1.Rowspan) + 8;
+                                                _pTable.AddCell(scell1);
+
+                                                //答案
+                                                PdfPCell scell2 = new PdfPCell(proPhraseAns);
+                                                scell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                                                scell2.BorderWidthLeft = 0;
+                                                scell2.BorderWidthRight = 1;
+                                                scell2.BorderWidthTop = 1;
+                                                scell2.BorderWidthBottom = 1;
+                                                scell2.Colspan = 4;
+                                                scell2.Rowspan = 40;
+                                                scell2.Padding = 8;
+                                                scell2.FixedHeight = (18 * scell2.Rowspan) + 8;
+                                                _pTable.AddCell(scell2);
                                             }
 
-                                            iTextSharp.text.Chunk proChunkDown4 = new iTextSharp.text.Chunk(row + "                【服務編號" + IV_SRID + "】第" + pagenumber + "頁，共" + int_totalreports + "頁\n", ChFont8);
-                                            proPhraseAns.Add(proChunkDown4);
                                             #endregion
 
-                                            //題目
-                                            PdfPCell scell1 = new PdfPCell(proPhraseQus);
-                                            scell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                                            scell1.BorderWidthLeft = 1;
-                                            scell1.BorderWidthRight = 0;
-                                            scell1.BorderWidthTop = 1;
-                                            scell1.BorderWidthBottom = 1;
-                                            scell1.Colspan = 5;
-
-                                            ///20220718-pdf長度FixedHeight有限制，若把Rowspan = int_totalquestions=66; FixedHeight最終=1196會看不到文字
-                                            ///把RowSpan=26，會比較剛好
-                                            ///假若有天題目+答案數>66，會需要再調
-                                            ///20220804-因使用者可能會寫大量紀錄，將Rowspan 從13->26-->改為40 ///
-                                            scell1.Rowspan = 40;
-                                            scell1.Padding = 8;
-                                            scell1.FixedHeight = (18 * scell1.Rowspan) + 8;
-                                            _pTable.AddCell(scell1);
-
-                                            //答案
-                                            PdfPCell scell2 = new PdfPCell(proPhraseAns);
-                                            scell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                                            scell2.BorderWidthLeft = 0;
-                                            scell2.BorderWidthRight = 1;
-                                            scell2.BorderWidthTop = 1;
-                                            scell2.BorderWidthBottom = 1;
-                                            scell2.Colspan = 4;
-                                            scell2.Rowspan = 40;
-                                            scell2.Padding = 8;
-                                            scell2.FixedHeight = (18 * scell2.Rowspan) + 8;
-                                            _pTable.AddCell(scell2);
-                                        }
-
-                                        #endregion
-
-                                        if (surveyCount % 3 == 2)
-                                        {
-                                            liPdfPTable.Add(_pTable);
+                                            if (surveyCount % 3 == 2)
+                                            {
+                                                liPdfPTable.Add(_pTable);
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
-                        //定維case且有問券ID及問券答案ID
-                        if (IV_SRID.Substring(0, 2) == "65" && !string.IsNullOrEmpty(svid) && !string.IsNullOrEmpty(hash))
-                        {
-
-                        }
-                        //其他照舊，單純顯示處理過程
-                        else
-                        {
-                            //PdfPCell scell1 = new PdfPCell(new iTextSharp.text.Phrase("服務說明：\n\n" + IV_Desc, ChFont10));
-                            PdfPCell scell1 = new PdfPCell(new iTextSharp.text.Phrase("\n\n" + IV_Desc, ChFont10));
-                            scell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                            scell1.BorderWidthLeft = 1;
-                            scell1.BorderWidthRight = 1;
-                            scell1.BorderWidthTop = 0;
-                            scell1.Colspan = 8;
-                            scell1.Rowspan = 13;
-                            scell1.Padding = 8;
-
-                            #region 調整若處理記錄超過20行，就不固定高度
-                            var AryDesc = IV_Desc.Split(new[] { '\r', '\n' });
-
-                            if (AryDesc.Length <= 20)
+                            //定維case且有問券ID及問券答案ID
+                            if (IV_SRID.Substring(0, 2) == "65" && !string.IsNullOrEmpty(svid) && !string.IsNullOrEmpty(hash))
                             {
-                                scell1.FixedHeight = (18 * scell1.Rowspan) + 8;
-                            }                            
+
+                            }
+                            //其他照舊，單純顯示處理過程
+                            else
+                            {
+                                //PdfPCell scell1 = new PdfPCell(new iTextSharp.text.Phrase("服務說明：\n\n" + IV_Desc, ChFont10));
+                                PdfPCell scell1 = new PdfPCell(new iTextSharp.text.Phrase("\n\n" + IV_Desc, ChFont10));
+                                scell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                                scell1.BorderWidthLeft = 1;
+                                scell1.BorderWidthRight = 1;
+                                scell1.BorderWidthTop = 0;
+                                scell1.Colspan = 8;
+                                scell1.Rowspan = 13;
+                                scell1.Padding = 8;
+
+                                #region 調整若處理記錄超過20行，就不固定高度
+                                var AryDesc = IV_Desc.Split(new[] { '\r', '\n' });
+
+                                if (AryDesc.Length <= 20)
+                                {
+                                    scell1.FixedHeight = (18 * scell1.Rowspan) + 8;
+                                }
+                                #endregion
+
+                                pTable.AddCell(scell1);
+                            }
                             #endregion
 
-                            pTable.AddCell(scell1);
-                        }
-                        #endregion
+                            #region // 零件、料號、客戶意見
+                            PdfPCell ccell1 = new PdfPCell(new iTextSharp.text.Phrase("更換零件名稱", ChFont10));
+                            ccell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            ccell1.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            ccell1.BorderWidthLeft = 1;
+                            ccell1.BorderWidthRight = 0;
+                            ccell1.BorderWidthTop = 0;
+                            ccell1.Colspan = 2;
+                            ccell1.Padding = 4;
+                            pTable.AddCell(ccell1);
 
-                        #region // 零件、料號、客戶意見
-                        PdfPCell ccell1 = new PdfPCell(new iTextSharp.text.Phrase("更換零件名稱", ChFont10));
-                        ccell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        ccell1.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        ccell1.BorderWidthLeft = 1;
-                        ccell1.BorderWidthRight = 0;
-                        ccell1.BorderWidthTop = 0;
-                        ccell1.Colspan = 2;
-                        ccell1.Padding = 4;
-                        pTable.AddCell(ccell1);
+                            PdfPCell ccell2 = new PdfPCell(new iTextSharp.text.Phrase("料號或序號", ChFont10));
+                            ccell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            ccell2.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            ccell2.BorderWidthRight = 0;
+                            ccell2.BorderWidthTop = 0;
+                            ccell2.Colspan = 2;
+                            ccell2.Padding = 4;
+                            pTable.AddCell(ccell2);
 
-                        PdfPCell ccell2 = new PdfPCell(new iTextSharp.text.Phrase("料號或序號", ChFont10));
-                        ccell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        ccell2.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        ccell2.BorderWidthRight = 0;
-                        ccell2.BorderWidthTop = 0;
-                        ccell2.Colspan = 2;
-                        ccell2.Padding = 4;
-                        pTable.AddCell(ccell2);
-
-                        string tProcessWay = string.Empty;
-                        if (IV_SRReportType == SRReportType.ONLINE || IV_SRReportType == SRReportType.REMOTE)
-                        {
-                            tProcessWay = IV_SRReportType == SRReportType.ONLINE ? "線上" : "遠端";
-                            tProcessWay = "處理方式-" + tProcessWay + "\n\n";
-                        }
-
-                        IV_CusOpinion = (String.IsNullOrEmpty(IV_CusOpinion) || String.Compare(IV_CusOpinion, "null", true) == 0) ? "" : IV_CusOpinion + "\n\n";
-
-                        string SLARESP = (srdetail["EV_SLARESP"] != null) ? srdetail["EV_SLARESP"].ToString() : "";
-                        string SLASRV = (srdetail["EV_SLASRV"] != null) ? srdetail["EV_SLASRV"].ToString() : "";
-                        string WTYKIND = (srdetail["EV_WTYKIND"] != null) ? srdetail["EV_WTYKIND"].ToString() : "";
-                        string Remark = (srdetail["EV_Remark"] != null) ? srdetail["EV_Remark"].ToString() : "";
-
-                        string TempSLA = string.IsNullOrEmpty(SLASRV) ? "" : SLARESP + "_" + SLASRV + "  ";
-                        string TempWTYKIND = string.IsNullOrEmpty(WTYKIND) ? "" : WTYKIND + "\n\n";
-                        string tTempNotes = TempSLA + TempWTYKIND + Remark;
-
-                        PdfPCell ccell3 = new PdfPCell(new iTextSharp.text.Phrase("客戶意見 / 備註：\n\n" + tProcessWay + IV_CusOpinion + tTempNotes, ChFont10));
-                        ccell3.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                        ccell3.BorderWidthRight = 0;
-                        ccell3.BorderWidthTop = 0;
-                        ccell3.BorderWidthBottom = 1;
-                        ccell3.Colspan = 2;
-                        ccell3.Rowspan = 8;
-                        ccell3.Padding = 4;
-                        pTable.AddCell(ccell3);
-
-                        PdfPCell ccell4 = new PdfPCell(new iTextSharp.text.Phrase("服務工程師", ChFont10));
-                        ccell4.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                        ccell4.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        ccell4.BorderWidthRight = 1;
-                        ccell4.BorderWidthTop = 0;
-                        ccell4.Colspan = 2;
-                        ccell4.Padding = 4;
-                        pTable.AddCell(ccell4);
-
-                        List<XCLIST> xclist = srdetail.ContainsKey("table_ET_XCLIST") ? (List<XCLIST>)srdetail["table_ET_XCLIST"] : new List<XCLIST>();
-
-                        for (int i = 0; i < 7; i++)
-                        {
-                            string CHANGEPART1 = (xclist != null && xclist.Count > i) ? xclist[i].CHANGEPARTNAME : "";  //更換零件名稱
-                            string CHANGEPART2 = (xclist != null && xclist.Count > i) ? xclist[i].CHANGEPART : "";      //料號或序號
-
-                            PdfPCell tmpcell1 = new PdfPCell(new iTextSharp.text.Phrase(CHANGEPART1, ChFont10));
-                            tmpcell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                            tmpcell1.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                            tmpcell1.BorderWidthLeft = 1;
-                            tmpcell1.BorderWidthRight = 0;
-                            tmpcell1.BorderWidthTop = 0;
-                            if (i == 6) tmpcell1.BorderWidthBottom = 1;
-                            tmpcell1.Colspan = 2;
-                            tmpcell1.Padding = 4;
-                            pTable.AddCell(tmpcell1);
-
-                            PdfPCell tmpcell2 = new PdfPCell(new iTextSharp.text.Phrase(CHANGEPART2, ChFont10));
-                            tmpcell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                            tmpcell2.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                            tmpcell2.BorderWidthRight = 0;
-                            tmpcell2.BorderWidthTop = 0;
-                            if (i == 6) tmpcell2.BorderWidthBottom = 1;
-                            tmpcell2.Colspan = 2;
-                            tmpcell2.Padding = 4;
-                            pTable.AddCell(tmpcell2);
-
-                            switch (i)
+                            string tProcessWay = string.Empty;
+                            if (IV_SRReportType == SRReportType.ONLINE || IV_SRReportType == SRReportType.REMOTE)
                             {
-                                case 0:
-                                    // HP 認證工程師 EV_SQ
-                                    string EV_SQ = srdetail["EV_SQ"].ToString();
-                                    ENGINEER += (String.IsNullOrEmpty(EV_SQ)) ? "" : "\n\n" + EV_SQ;
-
-                                    PdfPCell tmpcell3 = new PdfPCell(new iTextSharp.text.Phrase(ENGINEER, ChFont10));
-                                    tmpcell3.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                                    tmpcell3.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                                    tmpcell3.BorderWidthRight = 1;
-                                    tmpcell3.BorderWidthTop = 0;
-                                    tmpcell3.Colspan = 2;
-                                    tmpcell3.Rowspan = 2;
-                                    tmpcell3.Padding = 4;
-                                    pTable.AddCell(tmpcell3);
-
-                                    break;
-                                case 2:
-                                    PdfPCell tmpcell4 = new PdfPCell(new iTextSharp.text.Phrase("客戶簽章", ChFont10));
-                                    tmpcell4.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
-                                    tmpcell4.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                                    tmpcell4.BorderWidthRight = 1;
-                                    tmpcell4.BorderWidthTop = 0;
-                                    tmpcell4.Colspan = 2;
-                                    tmpcell4.Padding = 4;
-                                    pTable.AddCell(tmpcell4);
-
-                                    break;
-                                case 3:
-                                    // 簽名圖檔
-                                    if (IV_SRReportType == SRReportType.SIGN)
-                                    {
-                                        iTextSharp.text.Image img1 = iTextSharp.text.Image.GetInstance(pngPath); // 正式用
-                                        img1.RotationDegrees = 90; //counterclockwise                                                         
-                                        img1.ScaleAbsolute(60f, 124f);
-
-                                        PdfPCell tmpcell5 = new PdfPCell(img1);
-                                        tmpcell5.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                                        tmpcell5.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                                        tmpcell5.BorderWidthRight = 1;
-                                        tmpcell5.BorderWidthTop = 0;
-                                        tmpcell5.BorderWidthBottom = 1;
-                                        tmpcell5.Colspan = 2;
-                                        tmpcell5.Rowspan = 4;
-                                        tmpcell5.Padding = 4;
-                                        pTable.AddCell(tmpcell5);
-                                    }
-                                    else if (IV_SRReportType == SRReportType.ONLINE || IV_SRReportType == SRReportType.REMOTE)
-                                    {
-                                        #region 線上和遠端先不放在客戶簽章欄位
-                                        //string tShowText = IV_SRReportType == SRReportType.ONLINE ? "線上" : "遠端";
-                                        string tShowText = string.Empty;
-
-                                        PdfPCell tmpcell5 = new PdfPCell(new iTextSharp.text.Phrase(tShowText, ChFont10));
-                                        tmpcell5.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                                        tmpcell5.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                                        tmpcell5.BorderWidthRight = 1;
-                                        tmpcell5.BorderWidthTop = 0;
-                                        tmpcell5.BorderWidthBottom = 1;
-                                        tmpcell5.Colspan = 2;
-                                        tmpcell5.Rowspan = 4;
-                                        tmpcell5.Padding = 4;
-                                        tmpcell5.FixedHeight = 75;
-                                        pTable.AddCell(tmpcell5);
-                                        #endregion
-                                    }
-
-                                    break;
-                            }
-                        }
-
-                        #endregion
-
-                        #region // 表尾
-                        // 空白行
-                        PdfPCell espace = new PdfPCell(new iTextSharp.text.Phrase("　", new iTextSharp.text.Font(bfChinese, 1)));
-                        espace.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
-                        espace.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
-                        espace.Border = iTextSharp.text.Rectangle.NO_BORDER; // 無邊框                    
-                        espace.Colspan = 8;
-                        pTable.AddCell(espace);
-
-                        PdfPTable uTable = new PdfPTable(new float[] { 1 });
-                        uTable.SpacingBefore = 2;
-                        uTable.WidthPercentage = 92;
-                        uTable.DefaultCell.Border = iTextSharp.text.Rectangle.NO_BORDER; // 無邊框
-
-                        #region 20221005-通訊類問卷，第一頁加入頁碼
-                        var endof85 = string.Empty;
-                        var totalpage = surveyCount + 1;
-                        if (IV_SRID.Substring(0, 2) == "65")
-                        {
-                            if (maintain_type == "communication")
-                            {
-                                endof85 = "                                     " + "【服務編號" + IV_SRID + "】第1頁，共" + totalpage + "頁";
+                                tProcessWay = IV_SRReportType == SRReportType.ONLINE ? "線上" : "遠端";
+                                tProcessWay = "處理方式-" + tProcessWay + "\n\n";
                             }
 
-                        }
-                        #endregion
+                            IV_CusOpinion = (String.IsNullOrEmpty(IV_CusOpinion) || String.Compare(IV_CusOpinion, "null", true) == 0) ? "" : IV_CusOpinion + "\n\n";
 
+                            string SLARESP = (srdetail["EV_SLARESP"] != null) ? srdetail["EV_SLARESP"].ToString() : "";
+                            string SLASRV = (srdetail["EV_SLASRV"] != null) ? srdetail["EV_SLASRV"].ToString() : "";
+                            string WTYKIND = (srdetail["EV_WTYKIND"] != null) ? srdetail["EV_WTYKIND"].ToString() : "";
+                            string Remark = (srdetail["EV_Remark"] != null) ? srdetail["EV_Remark"].ToString() : "";
 
-                        PdfPCell ucell1 = new PdfPCell(new iTextSharp.text.Phrase("* 如果您對本此服務滿意，請您在後續的滿意度抽樣訪問中回答「非常滿意」，謝謝。" + endof85, ChFont8));
-                        ucell1.Border = PdfPCell.NO_BORDER;
-                        uTable.AddCell(ucell1);
+                            string TempSLA = string.IsNullOrEmpty(SLASRV) ? "" : SLARESP + "_" + SLASRV + "  ";
+                            string TempWTYKIND = string.IsNullOrEmpty(WTYKIND) ? "" : WTYKIND + "\n\n";
+                            string tTempNotes = TempSLA + TempWTYKIND + Remark;
 
-                        PdfPCell ucell2 = new PdfPCell(new iTextSharp.text.Phrase("** 如有任何建議，煩請提供服務編號及意見，傳送至0800@etatung.com，謝謝。", ChFont8));
-                        ucell2.Border = PdfPCell.NO_BORDER;
-                        uTable.AddCell(ucell2);
+                            PdfPCell ccell3 = new PdfPCell(new iTextSharp.text.Phrase("客戶意見 / 備註：\n\n" + tProcessWay + IV_CusOpinion + tTempNotes, ChFont10));
+                            ccell3.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                            ccell3.BorderWidthRight = 0;
+                            ccell3.BorderWidthTop = 0;
+                            ccell3.BorderWidthBottom = 1;
+                            ccell3.Colspan = 2;
+                            ccell3.Rowspan = 8;
+                            ccell3.Padding = 4;
+                            pTable.AddCell(ccell3);
 
-                        #endregion
+                            PdfPCell ccell4 = new PdfPCell(new iTextSharp.text.Phrase("服務工程師", ChFont10));
+                            ccell4.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                            ccell4.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            ccell4.BorderWidthRight = 1;
+                            ccell4.BorderWidthTop = 0;
+                            ccell4.Colspan = 2;
+                            ccell4.Padding = 4;
+                            pTable.AddCell(ccell4);
 
-                        pMsg += "PDF-Foot" + Environment.NewLine;
+                            List<XCLIST> xclist = srdetail.ContainsKey("table_ET_XCLIST") ? (List<XCLIST>)srdetail["table_ET_XCLIST"] : new List<XCLIST>();
 
-                        string fileOrgName = string.Empty;
-                        string fileName = string.Empty;
-                        string pdfPath = string.Empty;
+                            for (int i = 0; i < 7; i++)
+                            {
+                                string CHANGEPART1 = (xclist != null && xclist.Count > i) ? xclist[i].CHANGEPARTNAME : "";  //更換零件名稱
+                                string CHANGEPART2 = (xclist != null && xclist.Count > i) ? xclist[i].CHANGEPART : "";      //料號或序號
 
-                        // 產生 PDF
-                        var doc1 = new iTextSharp.text.Document();
+                                PdfPCell tmpcell1 = new PdfPCell(new iTextSharp.text.Phrase(CHANGEPART1, ChFont10));
+                                tmpcell1.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                tmpcell1.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                tmpcell1.BorderWidthLeft = 1;
+                                tmpcell1.BorderWidthRight = 0;
+                                tmpcell1.BorderWidthTop = 0;
+                                if (i == 6) tmpcell1.BorderWidthBottom = 1;
+                                tmpcell1.Colspan = 2;
+                                tmpcell1.Padding = 4;
+                                pTable.AddCell(tmpcell1);
 
-                        try
-                        {
-                            doc1 = new iTextSharp.text.Document(iTextSharp.text.PageSize.A4, 10, 10, 15, 15); // left, right, top, bottom
+                                PdfPCell tmpcell2 = new PdfPCell(new iTextSharp.text.Phrase(CHANGEPART2, ChFont10));
+                                tmpcell2.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                tmpcell2.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                tmpcell2.BorderWidthRight = 0;
+                                tmpcell2.BorderWidthTop = 0;
+                                if (i == 6) tmpcell2.BorderWidthBottom = 1;
+                                tmpcell2.Colspan = 2;
+                                tmpcell2.Padding = 4;
+                                pTable.AddCell(tmpcell2);
 
+                                switch (i)
+                                {
+                                    case 0:
+                                        // HP 認證工程師 EV_SQ
+                                        string EV_SQ = srdetail["EV_SQ"].ToString();
+                                        ENGINEER += (String.IsNullOrEmpty(EV_SQ)) ? "" : "\n\n" + EV_SQ;
 
-                            #region 設定pdf檔案相關路徑
-                            Guid fileGuid = Guid.NewGuid();
+                                        PdfPCell tmpcell3 = new PdfPCell(new iTextSharp.text.Phrase(ENGINEER, ChFont10));
+                                        tmpcell3.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                        tmpcell3.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                        tmpcell3.BorderWidthRight = 1;
+                                        tmpcell3.BorderWidthTop = 0;
+                                        tmpcell3.Colspan = 2;
+                                        tmpcell3.Rowspan = 2;
+                                        tmpcell3.Padding = 4;
+                                        pTable.AddCell(tmpcell3);
 
-                            cReportID = CMF.GetReportSerialID(IV_SRID);
+                                        break;
+                                    case 2:
+                                        PdfPCell tmpcell4 = new PdfPCell(new iTextSharp.text.Phrase("客戶簽章", ChFont10));
+                                        tmpcell4.HorizontalAlignment = iTextSharp.text.Element.ALIGN_LEFT;
+                                        tmpcell4.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                        tmpcell4.BorderWidthRight = 1;
+                                        tmpcell4.BorderWidthTop = 0;
+                                        tmpcell4.Colspan = 2;
+                                        tmpcell4.Padding = 4;
+                                        pTable.AddCell(tmpcell4);
 
-                            fileOrgName = cReportID + ".pdf";
-                            fileName = fileGuid.ToString() + ".pdf";
-                            pdfPath = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+                                        break;
+                                    case 3:
+                                        // 簽名圖檔
+                                        if (IV_SRReportType == SRReportType.SIGN)
+                                        {
+                                            iTextSharp.text.Image img1 = iTextSharp.text.Image.GetInstance(pngPath); // 正式用
+                                            img1.RotationDegrees = 90; //counterclockwise                                                         
+                                            img1.ScaleAbsolute(60f, 124f);
+
+                                            PdfPCell tmpcell5 = new PdfPCell(img1);
+                                            tmpcell5.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                            tmpcell5.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                            tmpcell5.BorderWidthRight = 1;
+                                            tmpcell5.BorderWidthTop = 0;
+                                            tmpcell5.BorderWidthBottom = 1;
+                                            tmpcell5.Colspan = 2;
+                                            tmpcell5.Rowspan = 4;
+                                            tmpcell5.Padding = 4;
+                                            pTable.AddCell(tmpcell5);
+                                        }
+                                        else if (IV_SRReportType == SRReportType.ONLINE || IV_SRReportType == SRReportType.REMOTE)
+                                        {
+                                            #region 線上和遠端先不放在客戶簽章欄位
+                                            //string tShowText = IV_SRReportType == SRReportType.ONLINE ? "線上" : "遠端";
+                                            string tShowText = string.Empty;
+
+                                            PdfPCell tmpcell5 = new PdfPCell(new iTextSharp.text.Phrase(tShowText, ChFont10));
+                                            tmpcell5.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                                            tmpcell5.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                                            tmpcell5.BorderWidthRight = 1;
+                                            tmpcell5.BorderWidthTop = 0;
+                                            tmpcell5.BorderWidthBottom = 1;
+                                            tmpcell5.Colspan = 2;
+                                            tmpcell5.Rowspan = 4;
+                                            tmpcell5.Padding = 4;
+                                            tmpcell5.FixedHeight = 75;
+                                            pTable.AddCell(tmpcell5);
+                                            #endregion
+                                        }
+
+                                        break;
+                                }
+                            }
+
                             #endregion
 
-                            #region table部份      
-                            TB_ONE_DOCUMENT bean = new TB_ONE_DOCUMENT();
+                            #region // 表尾
+                            // 空白行
+                            PdfPCell espace = new PdfPCell(new iTextSharp.text.Phrase("　", new iTextSharp.text.Font(bfChinese, 1)));
+                            espace.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
+                            espace.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                            espace.Border = iTextSharp.text.Rectangle.NO_BORDER; // 無邊框                    
+                            espace.Colspan = 8;
+                            pTable.AddCell(espace);
 
-                            bean.ID = fileGuid;
-                            bean.FILE_ORG_NAME = fileOrgName;
-                            bean.FILE_NAME = fileName;
-                            bean.FILE_EXT = ".pdf";
-                            bean.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                            PdfPTable uTable = new PdfPTable(new float[] { 1 });
+                            uTable.SpacingBefore = 2;
+                            uTable.WidthPercentage = 92;
+                            uTable.DefaultCell.Border = iTextSharp.text.Rectangle.NO_BORDER; // 無邊框
 
-                            dbOne.TB_ONE_DOCUMENT.Add(bean);
-                            dbOne.SaveChanges();
+                            #region 20221005-通訊類問卷，第一頁加入頁碼
+                            var endof85 = string.Empty;
+                            var totalpage = surveyCount + 1;
+                            if (IV_SRID.Substring(0, 2) == "65")
+                            {
+                                if (maintain_type == "communication")
+                                {
+                                    endof85 = "                                     " + "【服務編號" + IV_SRID + "】第1頁，共" + totalpage + "頁";
+                                }
+
+                            }
                             #endregion
 
-                            PdfWriter pdfwriter = PdfWriter.GetInstance(doc1, new FileStream(pdfPath, FileMode.Create));
 
-                            doc1.Open();
-                            doc1.Add(hTable);
-                            doc1.Add(pTable);
-                            doc1.Add(uTable);
-                            doc1.AddTitle("[大同世界科技 服務案件ID：" + IV_SRID + " 已處理通知]");
-                            doc1.AddAuthor("大同世界科技");
-                            doc1.AddSubject("服務報告書");
-                            doc1.AddKeywords("TSTI, SAP CRM, PDF");
-                            doc1.AddCreator("Using iTextSharp");
+                            PdfPCell ucell1 = new PdfPCell(new iTextSharp.text.Phrase("* 如果您對本此服務滿意，請您在後續的滿意度抽樣訪問中回答「非常滿意」，謝謝。" + endof85, ChFont8));
+                            ucell1.Border = PdfPCell.NO_BORDER;
+                            uTable.AddCell(ucell1);
 
-                            //超過一筆的定維紀錄，需要放到第二頁
-                            if (isOver1Survey)
-                            {
-                                doc1.NewPage();
-                                doc1.Add(_pTable);
-                            }
+                            PdfPCell ucell2 = new PdfPCell(new iTextSharp.text.Phrase("** 如有任何建議，煩請提供服務編號及意見，傳送至0800@etatung.com，謝謝。", ChFont8));
+                            ucell2.Border = PdfPCell.NO_BORDER;
+                            uTable.AddCell(ucell2);
 
-                            OUTBean.EV_MSGT = "Y";
-                            OUTBean.EV_MSG = "";
-                            OUTBean.EV_FILENAME = fileName;
-                        }
-                        catch (Exception ex)
-                        {
-                            pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因(Create PDF error):PDF沒產生QQ" + Environment.NewLine;
-                            pMsg += " 失敗行數：" + ex.ToString();
+                            #endregion
 
-                            CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
-                            CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
-                        }
-                        finally
-                        {
-                            if (doc1.IsOpen()) doc1.Close();
-                        }
-                        #endregion
+                            pMsg += "PDF-Foot" + Environment.NewLine;
 
-                        pMsg += "PDF產生並上傳成功！" + Environment.NewLine;
-                        CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
-                    }
-                    else
-                    {
-                        pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因(File upload failed):參數沒問題，但PDF沒產生QQ" + Environment.NewLine;
-
-                        CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
-                        CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
-                    }
-                    #endregion
-                }
-                else if (IV_SRReportType == SRReportType.NOSIGN) //無簽名檔
-                {
-                    #region 無簽名檔
-                    if (uploadFiles != null && uploadFiles.Length > 0)
-                    {
-                        try
-                        {
-                            TB_ONE_DOCUMENT bean = new TB_ONE_DOCUMENT();
-
-                            List<string> picPathList = new List<string>();
-
-                            Guid fileGuid = Guid.NewGuid();
-
-                            string fileId = string.Empty;
                             string fileOrgName = string.Empty;
                             string fileName = string.Empty;
-                            path = string.Empty;
+                            string pdfPath = string.Empty;
 
-                            foreach (var upload1 in uploadFiles)
+                            // 產生 PDF
+                            var doc1 = new iTextSharp.text.Document();
+
+                            try
                             {
-                                if (upload1 != null)
-                                {
-                                    fileGuid = Guid.NewGuid();
+                                doc1 = new iTextSharp.text.Document(iTextSharp.text.PageSize.A4, 10, 10, 15, 15); // left, right, top, bottom
 
-                                    fileId = fileGuid.ToString();
-                                    fileOrgName = upload1.FileName;
-                                    fileName = fileId + Path.GetExtension(upload1.FileName);
-                                    path = Path.Combine(Server.MapPath("~/REPORT"), fileName);
-                                    upload1.SaveAs(path);
 
-                                    picPathList.Add(path);
-                                }
-                            }
-
-                            #region 將圖片轉成一份pdf
-                            fileGuid = Guid.NewGuid();
-                            cSRReport = fileGuid.ToString() + ",";
-
-                            bool tIsOK = UploadMultPics(picPathList, fileGuid.ToString(), IV_SRID, IV_EMPNONAME);
-                            #endregion
-
-                            if (tIsOK)
-                            {
                                 #region 設定pdf檔案相關路徑
+                                Guid fileGuid = Guid.NewGuid();
+
                                 cReportID = CMF.GetReportSerialID(IV_SRID);
 
                                 fileOrgName = cReportID + ".pdf";
                                 fileName = fileGuid.ToString() + ".pdf";
-
-                                cPDFPath = Path.Combine(Server.MapPath("~/REPORT"), fileName);
-                                cPDFFileName = fileName;
+                                pdfPath = Path.Combine(Server.MapPath("~/REPORT"), fileName);
                                 #endregion
 
-                                #region table部份                                        
+                                #region table部份      
+                                TB_ONE_DOCUMENT bean = new TB_ONE_DOCUMENT();
+
                                 bean.ID = fileGuid;
                                 bean.FILE_ORG_NAME = fileOrgName;
                                 bean.FILE_NAME = fileName;
@@ -7793,102 +7685,216 @@ namespace TSTI_API.Controllers
                                 dbOne.SaveChanges();
                                 #endregion
 
+                                PdfWriter pdfwriter = PdfWriter.GetInstance(doc1, new FileStream(pdfPath, FileMode.Create));
+
+                                doc1.Open();
+                                doc1.Add(hTable);
+                                doc1.Add(pTable);
+                                doc1.Add(uTable);
+                                doc1.AddTitle("[大同世界科技 服務案件ID：" + IV_SRID + " 已處理通知]");
+                                doc1.AddAuthor("大同世界科技");
+                                doc1.AddSubject("服務報告書");
+                                doc1.AddKeywords("TSTI, SAP CRM, PDF");
+                                doc1.AddCreator("Using iTextSharp");
+
+                                //超過一筆的定維紀錄，需要放到第二頁
+                                if (isOver1Survey)
+                                {
+                                    doc1.NewPage();
+                                    doc1.Add(_pTable);
+                                }
+
                                 OUTBean.EV_MSGT = "Y";
                                 OUTBean.EV_MSG = "";
                                 OUTBean.EV_FILENAME = fileName;
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                OUTBean.EV_MSGT = "E";
-                                OUTBean.EV_MSG = "【無簽名檔】圖片轉PDF失敗！";
-                                OUTBean.EV_FILENAME = "";
+                                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因(Create PDF error):PDF沒產生QQ" + Environment.NewLine;
+                                pMsg += " 失敗行數：" + ex.ToString();
+
+                                CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
+                                CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "服務報告書/附件上傳失敗原因:" + ex.Message + Environment.NewLine;
-                            pMsg += " 失敗行數：" + ex.ToString() + Environment.NewLine;
-
-                            CMF.writeToLog(IV_SRID, "UploadSignToPdf_NOSIGN_API", pMsg, IV_EMPNONAME);
-                            CMF.SendMailByAPI("UploadSignToPdf_NOSIGN_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_NOSIGN_API錯誤 - " + IV_SRID, pMsg, null, null);
-                        }
-                    }
-                    #endregion
-                }
-                else //純附件
-                {
-                    #region 純附件
-                    if (uploadFiles != null && uploadFiles.Length > 0)
-                    {
-                        try
-                        {
-                            Guid fileGuid = Guid.NewGuid();
-
-                            string fileId = string.Empty;
-                            string fileOrgName = string.Empty;
-                            string fileName = string.Empty;
-                            string fileALLName = string.Empty;
-
-                            foreach (var upload1 in uploadFiles)
+                            finally
                             {
-                                if (upload1 != null)
+                                if (doc1.IsOpen()) doc1.Close();
+                            }
+                            #endregion
+
+                            pMsg += "PDF產生並上傳成功！" + Environment.NewLine;
+                            CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
+                        }
+                        else
+                        {
+                            pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因(File upload failed):參數沒問題，但PDF沒產生QQ" + Environment.NewLine;
+
+                            CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
+                            CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
+                        }
+                        #endregion
+                    }
+                    else if (IV_SRReportType == SRReportType.NOSIGN) //無簽名檔
+                    {
+                        #region 無簽名檔
+                        if (uploadFiles != null && uploadFiles.Length > 0)
+                        {
+                            try
+                            {
+                                TB_ONE_DOCUMENT bean = new TB_ONE_DOCUMENT();
+
+                                List<string> picPathList = new List<string>();
+
+                                Guid fileGuid = Guid.NewGuid();
+
+                                string fileId = string.Empty;
+                                string fileOrgName = string.Empty;
+                                string fileName = string.Empty;
+                                path = string.Empty;
+
+                                foreach (var upload1 in uploadFiles)
                                 {
-                                    #region 檔案部份
-                                    fileGuid = Guid.NewGuid();
+                                    if (upload1 != null)
+                                    {
+                                        fileGuid = Guid.NewGuid();
 
-                                    cSRReport += fileGuid.ToString() + ",";
+                                        fileId = fileGuid.ToString();
+                                        fileOrgName = upload1.FileName;
+                                        fileName = fileId + Path.GetExtension(upload1.FileName);
+                                        path = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+                                        upload1.SaveAs(path);
 
-                                    fileId = fileGuid.ToString();
-                                    fileOrgName = upload1.FileName;
-                                    fileName = fileId + Path.GetExtension(upload1.FileName);
-                                    path = Path.Combine(Server.MapPath("~/REPORT"), fileName);
-                                    upload1.SaveAs(path);
+                                        picPathList.Add(path);
+                                    }
+                                }
+
+                                #region 將圖片轉成一份pdf
+                                fileGuid = Guid.NewGuid();
+                                cSRReport = fileGuid.ToString() + ",";
+
+                                bool tIsOK = UploadMultPics(picPathList, fileGuid.ToString(), IV_SRID, IV_EMPNONAME);
+                                #endregion
+
+                                if (tIsOK)
+                                {
+                                    #region 設定pdf檔案相關路徑
+                                    cReportID = CMF.GetReportSerialID(IV_SRID);
+
+                                    fileOrgName = cReportID + ".pdf";
+                                    fileName = fileGuid.ToString() + ".pdf";
+
+                                    cPDFPath = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+                                    cPDFFileName = fileName;
                                     #endregion
 
                                     #region table部份                                        
-                                    TB_ONE_DOCUMENT bean = new TB_ONE_DOCUMENT();
-
                                     bean.ID = fileGuid;
                                     bean.FILE_ORG_NAME = fileOrgName;
                                     bean.FILE_NAME = fileName;
-                                    bean.FILE_EXT = Path.GetExtension(upload1.FileName);
+                                    bean.FILE_EXT = ".pdf";
                                     bean.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                                     dbOne.TB_ONE_DOCUMENT.Add(bean);
                                     dbOne.SaveChanges();
-
-                                    fileALLName += fileName + ",";
                                     #endregion
+
+                                    OUTBean.EV_MSGT = "Y";
+                                    OUTBean.EV_MSG = "";
+                                    OUTBean.EV_FILENAME = fileName;
+                                }
+                                else
+                                {
+                                    OUTBean.EV_MSGT = "E";
+                                    OUTBean.EV_MSG = "【無簽名檔】圖片轉PDF失敗！";
+                                    OUTBean.EV_FILENAME = "";
                                 }
                             }
+                            catch (Exception ex)
+                            {
+                                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "服務報告書/附件上傳失敗原因:" + ex.Message + Environment.NewLine;
+                                pMsg += " 失敗行數：" + ex.ToString() + Environment.NewLine;
 
-                            OUTBean.EV_MSGT = "Y";
-                            OUTBean.EV_MSG = "";
-                            OUTBean.EV_FILENAME = fileALLName.TrimEnd(',');
+                                CMF.writeToLog(IV_SRID, "UploadSignToPdf_NOSIGN_API", pMsg, IV_EMPNONAME);
+                                CMF.SendMailByAPI("UploadSignToPdf_NOSIGN_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_NOSIGN_API錯誤 - " + IV_SRID, pMsg, null, null);
+                            }
                         }
-                        catch (Exception ex)
-                        {
-                            pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "【ATTACH】服務報告書/附件上傳失敗原因:" + ex.Message + Environment.NewLine;
-                            pMsg += " 失敗行數：" + ex.ToString() + Environment.NewLine;
-
-                            CMF.writeToLog(IV_SRID, "UploadSignToPdf_ATTACH_API", pMsg, IV_EMPNONAME);
-                            CMF.SendMailByAPI("UploadSignToPdf_ATTACH_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_ATTACH_API錯誤 - " + IV_SRID, pMsg, null, null);
-                        }
+                        #endregion
                     }
-                    #endregion
+                    else //純附件
+                    {
+                        #region 純附件
+                        if (uploadFiles != null && uploadFiles.Length > 0)
+                        {
+                            try
+                            {
+                                Guid fileGuid = Guid.NewGuid();
+
+                                string fileId = string.Empty;
+                                string fileOrgName = string.Empty;
+                                string fileName = string.Empty;
+                                string fileALLName = string.Empty;
+
+                                foreach (var upload1 in uploadFiles)
+                                {
+                                    if (upload1 != null)
+                                    {
+                                        #region 檔案部份
+                                        fileGuid = Guid.NewGuid();
+
+                                        cSRReport += fileGuid.ToString() + ",";
+
+                                        fileId = fileGuid.ToString();
+                                        fileOrgName = upload1.FileName;
+                                        fileName = fileId + Path.GetExtension(upload1.FileName);
+                                        path = Path.Combine(Server.MapPath("~/REPORT"), fileName);
+                                        upload1.SaveAs(path);
+                                        #endregion
+
+                                        #region table部份                                        
+                                        TB_ONE_DOCUMENT bean = new TB_ONE_DOCUMENT();
+
+                                        bean.ID = fileGuid;
+                                        bean.FILE_ORG_NAME = fileOrgName;
+                                        bean.FILE_NAME = fileName;
+                                        bean.FILE_EXT = Path.GetExtension(upload1.FileName);
+                                        bean.INSERT_TIME = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                                        dbOne.TB_ONE_DOCUMENT.Add(bean);
+                                        dbOne.SaveChanges();
+
+                                        fileALLName += fileName + ",";
+                                        #endregion
+                                    }
+                                }
+
+                                OUTBean.EV_MSGT = "Y";
+                                OUTBean.EV_MSG = "";
+                                OUTBean.EV_FILENAME = fileALLName.TrimEnd(',');
+                            }
+                            catch (Exception ex)
+                            {
+                                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "【ATTACH】服務報告書/附件上傳失敗原因:" + ex.Message + Environment.NewLine;
+                                pMsg += " 失敗行數：" + ex.ToString() + Environment.NewLine;
+
+                                CMF.writeToLog(IV_SRID, "UploadSignToPdf_ATTACH_API", pMsg, IV_EMPNONAME);
+                                CMF.SendMailByAPI("UploadSignToPdf_ATTACH_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_ATTACH_API錯誤 - " + IV_SRID, pMsg, null, null);
+                            }
+                        }
+                        #endregion
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因(File upload failed):PDF沒產生QQ" + Environment.NewLine;
-                pMsg += " 失敗行數：" + ex.ToString();
+                catch (Exception ex)
+                {
+                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因(File upload failed):PDF沒產生QQ" + Environment.NewLine;
+                    pMsg += " 失敗行數：" + ex.ToString();
 
-                CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
-                CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
+                    CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
+                    CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
 
-                OUTBean.EV_MSGT = "E";
-                OUTBean.EV_MSG = ex.Message;
-                OUTBean.EV_FILENAME = "";
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = ex.Message;
+                    OUTBean.EV_FILENAME = "";
+                }
             }
 
             return OUTBean;
@@ -9275,8 +9281,6 @@ namespace TSTI_API.Controllers
 		{
 			SRMain_SRRESPONSETIME_OUTPUT SROUT = new SRMain_SRRESPONSETIME_OUTPUT();
 
-			dbOne.Database.CommandTimeout = 60; //預設timeout時間為60秒 edit by elvis 2024/08/14
-
 			string tEventname = string.Empty;
 			string tExcType = string.Empty;
 			string pLoginName = string.Empty;
@@ -9303,55 +9307,60 @@ namespace TSTI_API.Controllers
 				pLoginName = EmpBean.EmployeeCName + " " + EmpBean.EmployeeEName;
 			}
 
-			try
-			{
-				bool tIsExist = CMF.checkIsSRMainResponse(IV_SRID);
+            using (var dbOne = new TSTIONEEntities())
+            {
+				dbOne.Database.CommandTimeout = 60; //預設timeout時間為60秒 edit by elvis 2024/08/14
 
-				if (!tIsExist) //回應時間不存在才更新
-				{
-					var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
+				try
+                {
+                    bool tIsExist = CMF.checkIsSRMainResponse(IV_SRID);
 
-					if (beanM != null)
-					{
-						beanM.cResponseDate = DateTime.Now;
-						beanM.ModifiedDate = DateTime.Now;
-						beanM.ModifiedUserName = pLoginName;
+                    if (!tIsExist) //回應時間不存在才更新
+                    {
+                        var beanM = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == IV_SRID);
 
-						int result = dbOne.SaveChanges();
+                        if (beanM != null)
+                        {
+                            beanM.cResponseDate = DateTime.Now;
+                            beanM.ModifiedDate = DateTime.Now;
+                            beanM.ModifiedUserName = pLoginName;
 
-						if (result <= 0)
-						{
-							pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！" + Environment.NewLine;
-							CMF.writeToLog(IV_SRID, "SRRESPONSETIME_UPDATE_API", pMsg, pLoginName);
+                            int result = dbOne.SaveChanges();
 
-							SROUT.EV_MSGT = "E";
-							SROUT.EV_MSG = pMsg;
-						}
-						else
-						{
-							SROUT.EV_MSGT = "Y";
-							SROUT.EV_MSG = "";
+                            if (result <= 0)
+                            {
+                                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "更新失敗！" + Environment.NewLine;
+                                CMF.writeToLog(IV_SRID, "SRRESPONSETIME_UPDATE_API", pMsg, pLoginName);
 
-							CMF.writeToLog(IV_SRID, "SRRESPONSETIME_UPDATE_API", "更新成功！", pLoginName);
-						}
-					}
-				}
-				else
-				{
-					SROUT.EV_MSGT = "Y";
-					SROUT.EV_MSG = "";
-				}
-			}
-			catch (Exception ex)
-			{
-				pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
-				pMsg += " 失敗行數：" + ex.ToString();
+                                SROUT.EV_MSGT = "E";
+                                SROUT.EV_MSG = pMsg;
+                            }
+                            else
+                            {
+                                SROUT.EV_MSGT = "Y";
+                                SROUT.EV_MSG = "";
 
-				CMF.writeToLog(IV_SRID, "SRRESPONSETIME_UPDATE_API", pMsg, pLoginName);
+                                CMF.writeToLog(IV_SRID, "SRRESPONSETIME_UPDATE_API", "更新成功！", pLoginName);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SROUT.EV_MSGT = "Y";
+                        SROUT.EV_MSG = "";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                    pMsg += " 失敗行數：" + ex.ToString();
 
-				SROUT.EV_MSGT = "E";
-				SROUT.EV_MSG = ex.Message;
-			}
+                    CMF.writeToLog(IV_SRID, "SRRESPONSETIME_UPDATE_API", pMsg, pLoginName);
+
+                    SROUT.EV_MSGT = "E";
+                    SROUT.EV_MSG = ex.Message;
+                }
+            }
 
 			return SROUT;
 		}
