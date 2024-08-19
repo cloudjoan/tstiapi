@@ -9,12 +9,12 @@
         <EntityTypeShape EntityType="APP_DATAModel.TB_SURVEY_QUS_MAINTAIN" Width="2.25" PointX="0.5" PointY="1.125" IsExpanded="false" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_CHECKLIST" Width="1.5" PointX="3.125" PointY="1.125" IsExpanded="false" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_OWNER" Width="1.5" PointX="0.625" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_PHOTOS" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_PHOTOS" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_BOOKING" Width="1.5" PointX="5.75" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_CAR_DATA" Width="1.5" PointX="3.125" PointY="1.75" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_LIVE_MESSAGE" Width="1.5" PointX="5.375" PointY="7.75" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_LUCKYDRAW" Width="1.875" PointX="7.375" PointY="7.75" />
-        <EntityTypeShape EntityType="APP_DATAModel.TB_LUCKYDRAW_PRIZE" Width="2.625" PointX="8.125" PointY="0.75" />
+        <EntityTypeShape EntityType="APP_DATAModel.TB_LUCKYDRAW_PRIZE" Width="2.625" PointX="8.375" PointY="0.75" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_ANNIVERSARY_CHECK_IN" Width="1.5" PointX="0.75" PointY="9.75" />
         <EntityTypeShape EntityType="APP_DATAModel.TB_LUCKYDRAW_PRIZEWINNING" Width="1.5" PointX="3.375" PointY="10.75" />
         <EntityTypeShape EntityType="APP_DATAModel.VIEW_ANNIVERSARY_CHECK_IN" Width="1.5" PointX="10.125" PointY="6.875" />

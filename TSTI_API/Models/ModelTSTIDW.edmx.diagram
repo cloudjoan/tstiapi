@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="ef11b13840704bc1bf9cada71159d0aa" Name="Diagram1">
-        <EntityTypeShape EntityType="BIModel.MART_AnalyseRevenueAll" Width="2.25" PointX="0.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="BIModel.MART_AnalyseRevenueAll" Width="2.25" PointX="0.75" PointY="0.875" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
