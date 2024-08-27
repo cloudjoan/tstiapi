@@ -10443,7 +10443,7 @@ namespace TSTI_API.Controllers
                     var mailBean = dbProxy.TB_MAIL_CONTENT.FirstOrDefault(x => x.MAIL_TYPE == "ONE_SURVEY");
                     var srBean = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == bean.cSRID);
 					string _subject = "滿意度調查：" + srBean.cSRID;
-					string _content = mailBean.MAIL_CONTENT.Replace("[SR_ID]", srBean.cSRID).Replace("[SR_DESC]", srBean.cDesc).Replace("[ENG_NAME]", srBean.cMainEngineerName).Replace("[Q1]", bean.cQuestion1.ToString()).Replace("[Q2]", bean.cQuestion2.ToString()).Replace("[OPINION]", bean.cOpinion).Replace("[SOURCE]", "APP");
+					string _content = mailBean.MAIL_CONTENT.Replace("[SR_ID]", srBean.cSRID).Replace("[SR_DESC]", srBean.cDesc).Replace("[ENG_NAME]", srBean.cMainEngineerName).Replace("[Q1]", bean.cQuestion1.ToString()).Replace("[Q2]", bean.cQuestion2.ToString()).Replace("[OPINION]", bean.cOpinion).Replace("[SOURCE]", "APP").Replace("[CUSTOMER]", srBean.cCustomerName);
                     CMF.SendMailByAPI("滿意度調查", null, "jordan.chang@etatung.com", null, "elvis.chang@etatung.com", _subject, _content, null, null);
 				}
 
