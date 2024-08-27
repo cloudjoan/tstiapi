@@ -5722,7 +5722,7 @@ namespace TSTI_API.Controllers
                                 pMsg += " 失敗行數：" + ex.ToString();
 
                                 CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
-                                CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
+                                CMF.SendMailByAPI("UploadSignToPdf_API", null, "Joy.Chi@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
                             }
                             #endregion
                         }
@@ -7714,7 +7714,7 @@ namespace TSTI_API.Controllers
                                 pMsg += " 失敗行數：" + ex.ToString();
 
                                 CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
-                                CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
+                                CMF.SendMailByAPI("UploadSignToPdf_API", null, "Joy.Chi@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
                             }
                             finally
                             {
@@ -7730,7 +7730,7 @@ namespace TSTI_API.Controllers
                             pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因(File upload failed):參數沒問題，但PDF沒產生QQ" + Environment.NewLine;
 
                             CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
-                            CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
+                            CMF.SendMailByAPI("UploadSignToPdf_API", null, "Joy.Chi@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
                         }
                         #endregion
                     }
@@ -7815,7 +7815,7 @@ namespace TSTI_API.Controllers
                                 pMsg += " 失敗行數：" + ex.ToString() + Environment.NewLine;
 
                                 CMF.writeToLog(IV_SRID, "UploadSignToPdf_NOSIGN_API", pMsg, IV_EMPNONAME);
-                                CMF.SendMailByAPI("UploadSignToPdf_NOSIGN_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_NOSIGN_API錯誤 - " + IV_SRID, pMsg, null, null);
+                                CMF.SendMailByAPI("UploadSignToPdf_NOSIGN_API", null, "Joy.Chi@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_NOSIGN_API錯誤 - " + IV_SRID, pMsg, null, null);
                             }
                         }
                         #endregion
@@ -7877,7 +7877,7 @@ namespace TSTI_API.Controllers
                                 pMsg += " 失敗行數：" + ex.ToString() + Environment.NewLine;
 
                                 CMF.writeToLog(IV_SRID, "UploadSignToPdf_ATTACH_API", pMsg, IV_EMPNONAME);
-                                CMF.SendMailByAPI("UploadSignToPdf_ATTACH_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_ATTACH_API錯誤 - " + IV_SRID, pMsg, null, null);
+                                CMF.SendMailByAPI("UploadSignToPdf_ATTACH_API", null, "Joy.Chi@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_ATTACH_API錯誤 - " + IV_SRID, pMsg, null, null);
                             }
                         }
                         #endregion
@@ -7889,7 +7889,7 @@ namespace TSTI_API.Controllers
                     pMsg += " 失敗行數：" + ex.ToString();
 
                     CMF.writeToLog(IV_SRID, "UploadSignToPdf_API", pMsg, IV_EMPNONAME);
-                    CMF.SendMailByAPI("UploadSignToPdf_API", null, "leon.huang@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
+                    CMF.SendMailByAPI("UploadSignToPdf_API", null, "Joy.Chi@etatung.com;elvis.chang@etatung.com", "", "", "UploadSignToPdf_API錯誤 - " + IV_SRID, pMsg, null, null);
 
                     OUTBean.EV_MSGT = "E";
                     OUTBean.EV_MSG = ex.Message;
@@ -10444,7 +10444,7 @@ namespace TSTI_API.Controllers
                     var srBean = dbOne.TB_ONE_SRMain.FirstOrDefault(x => x.cSRID == bean.cSRID);
 					string _subject = "滿意度調查：" + srBean.cSRID;
 					string _content = mailBean.MAIL_CONTENT.Replace("[SR_ID]", srBean.cSRID).Replace("[SR_DESC]", srBean.cDesc).Replace("[ENG_NAME]", srBean.cMainEngineerName).Replace("[Q1]", bean.cQuestion1.ToString()).Replace("[Q2]", bean.cQuestion2.ToString()).Replace("[OPINION]", bean.cOpinion).Replace("[SOURCE]", "APP");
-                    CMF.SendMailByAPI("滿意度調查", null, "jordan.chang@etatung.com", null, "leon.huang@etatung.com", _subject, _content, null, null);
+                    CMF.SendMailByAPI("滿意度調查", null, "jordan.chang@etatung.com", null, "elvis.chang@etatung.com", _subject, _content, null, null);
 				}
 
                 OUTBean.EV_MSGT = "Y";
@@ -13098,7 +13098,7 @@ namespace TSTI_API.Controllers
                     //MailContent += MailList;
                     MailContent += "</span>";
 
-                    CMF.SendMailByAPI("SaveCarCheckList_API", null, MailList, "", "Joy.Chi@etatung.com;Leon.Huang@etatung.com", "APP公務車借用 - 車輛" + CarBookingInfo.LPN + "異常通知", MailContent, null, null);
+                    CMF.SendMailByAPI("SaveCarCheckList_API", null, MailList, "", "Joy.Chi@etatung.com", "APP公務車借用 - 車輛" + CarBookingInfo.LPN + "異常通知", MailContent, null, null);
                 }
 
                 
@@ -13127,7 +13127,7 @@ namespace TSTI_API.Controllers
             }
             else
             {
-                CMF.SendMailByAPI("SaveCarCheckList_API", null, "Joy.Chi@etatung.com;Leon.Huang@etatung.com", "", "", "APP公務車借用 - 查無BOOKING_ID:" + bean.BOOKING_ID, "", null, null);
+                CMF.SendMailByAPI("SaveCarCheckList_API", null, "Joy.Chi@etatung.com", "", "", "APP公務車借用 - 查無BOOKING_ID:" + bean.BOOKING_ID, "", null, null);
                 return Json("Fail");
             }
         }
