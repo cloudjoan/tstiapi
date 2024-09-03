@@ -160,25 +160,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="TB_ONE_SRDetail_Product">
-      <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_Product">
-        <MappingFragment StoreEntitySet="TB_ONE_SRDetail_Product">
-          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="Disabled" ColumnName="Disabled" />
-          <ScalarProperty Name="cInstallID" ColumnName="cInstallID" />
-          <ScalarProperty Name="cProductNumber" ColumnName="cProductNumber" />
-          <ScalarProperty Name="cMaterialName" ColumnName="cMaterialName" />
-          <ScalarProperty Name="cMaterialID" ColumnName="cMaterialID" />
-          <ScalarProperty Name="cNewSerialID" ColumnName="cNewSerialID" />
-          <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
-          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
-          <ScalarProperty Name="cID" ColumnName="cID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="TB_ONE_SRDetail_MaterialInfo">
       <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_MaterialInfo">
         <MappingFragment StoreEntitySet="TB_ONE_SRDetail_MaterialInfo">
@@ -220,23 +201,6 @@
           <ScalarProperty Name="cMaterialName" ColumnName="cMaterialName" />
           <ScalarProperty Name="cMaterialID" ColumnName="cMaterialID" />
           <ScalarProperty Name="cXCHP" ColumnName="cXCHP" />
-          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
-          <ScalarProperty Name="cID" ColumnName="cID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="TB_ONE_SRDetail_SerialFeedback">
-      <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_SerialFeedback">
-        <MappingFragment StoreEntitySet="TB_ONE_SRDetail_SerialFeedback">
-          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="Disabled" ColumnName="Disabled" />
-          <ScalarProperty Name="cConfigReport" ColumnName="cConfigReport" />
-          <ScalarProperty Name="cMaterialName" ColumnName="cMaterialName" />
-          <ScalarProperty Name="cMaterialID" ColumnName="cMaterialID" />
-          <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
           <ScalarProperty Name="cSRID" ColumnName="cSRID" />
           <ScalarProperty Name="cID" ColumnName="cID" />
         </MappingFragment>
@@ -567,6 +531,42 @@
           <ScalarProperty Name="cCustomerName" ColumnName="cCustomerName" />
           <ScalarProperty Name="cCustomerID" ColumnName="cCustomerID" />
           <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_SRDetail_Product">
+      <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_Product">
+        <MappingFragment StoreEntitySet="TB_ONE_SRDetail_Product">
+          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+          <ScalarProperty Name="cInstallID" ColumnName="cInstallID" />
+          <ScalarProperty Name="cProductNumber" ColumnName="cProductNumber" />
+          <ScalarProperty Name="cMaterialName" ColumnName="cMaterialName" />
+          <ScalarProperty Name="cMaterialID" ColumnName="cMaterialID" />
+          <ScalarProperty Name="cNewSerialID" ColumnName="cNewSerialID" />
+          <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
+          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_ONE_SRDetail_SerialFeedback">
+      <EntityTypeMapping TypeName="Model.TB_ONE_SRDetail_SerialFeedback">
+        <MappingFragment StoreEntitySet="TB_ONE_SRDetail_SerialFeedback">
+          <ScalarProperty Name="ModifiedUserName" ColumnName="ModifiedUserName" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+          <ScalarProperty Name="cConfigReport" ColumnName="cConfigReport" />
+          <ScalarProperty Name="cMaterialName" ColumnName="cMaterialName" />
+          <ScalarProperty Name="cMaterialID" ColumnName="cMaterialID" />
+          <ScalarProperty Name="cSerialID" ColumnName="cSerialID" />
+          <ScalarProperty Name="cSRID" ColumnName="cSRID" />
+          <ScalarProperty Name="cID" ColumnName="cID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
