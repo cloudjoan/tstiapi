@@ -2233,6 +2233,30 @@ namespace TSTI_API.Controllers
         }
         #endregion    
 
+        //edit by elvis 2024/10/07 Start
+        /// <summary>
+        /// 傳入序號，判斷序號回報資訊是否已存在(true.存在 false不存在)
+        /// </summary>
+        /// <param name="SERIALID"></param>
+        /// <returns></returns>
+        public bool checkIsExistSRSERIALFEEDBACK(string SERIALID)
+        {
+            bool reValue = false;
+
+            if (SERIALID != "")
+            {
+                var bean = dbOne.TB_ONE_SRDetail_SerialFeedback.FirstOrDefault(x => x.Disabled == 0 && x.cSerialID == SERIALID);
+
+                if (bean != null)
+                {
+                    reValue = true;
+                }
+            }
+
+            return reValue;
+        }
+        //edit by elvis 2024/10/07 End
+
         #region 取得序號回報資訊(傳AttachURL)
         /// <summary>
         /// 取得序號回報資訊(傳AttachURL)

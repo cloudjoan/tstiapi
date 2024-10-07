@@ -5,6 +5,7 @@
 2023/12/04:elvis:Jordan請MIS調整把report的電話去掉，只留0800就好
 2024/04/29:elvis:接單時間改成「回應時間」
 2024/08/14:elvis:某幾個方法新增加「timeout時間為60秒」，避免timeout
+2024/10/07:elvis:OneService「裝機自動派工」調整依據序號判斷是否有重覆
 
 */
 #endregion
@@ -1079,7 +1080,7 @@ namespace TSTI_API.Controllers
             //{
             //    "IV_LOGINEMPNO": "99120894",
             //     "IV_CUSTOMER": "D03251108",
-            //     "IV_SRTEAM": "SRV.12200006",
+            //     "IV_SRTEAM": "SRV.12300012",
             //     "IV_SALESNO": "201234567",
             //     "IV_SHIPMENTNO": "251234567",
             //     "IV_DESC": "251234567SAP系統自動派單",
@@ -1261,7 +1262,33 @@ namespace TSTI_API.Controllers
                         pMsg += "【客戶聯絡人地址】不得為空！" + Environment.NewLine;
                     }
                 }
-            }            
+            }
+
+            //edit by elvis 2024/10/07 Start
+            if (bean.CREATEFEEDBACK_LIST != null)
+            {
+                bool IsExist = false;
+
+                foreach (var beanFB in bean.CREATEFEEDBACK_LIST)
+                {
+                    string SERIALID = string.IsNullOrEmpty(beanFB.SERIALID) ? "" : beanFB.SERIALID.Trim();
+
+                    if (SERIALID != "")
+                    {
+                        IsExist = CMF.checkIsExistSRSERIALFEEDBACK(SERIALID); //傳入序號，判斷序號回報資訊是否已存在(true.存在 false不存在)
+
+                        if (IsExist)
+                        {
+                            pMsg += "序號回報資訊【" + SERIALID + "】序號已重覆，請重新確認！" + Environment.NewLine;
+                        }
+                    }
+                    else
+                    {
+                        pMsg += "序號回報資訊【序號】不得為空！" + Environment.NewLine;
+                    }
+                }
+            }
+            //edit by elvis 2024/10/07 End
             #endregion
 
             if (pMsg != "")
