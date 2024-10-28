@@ -26,6 +26,9 @@ using System.Collections.Specialized;
 using SAP.Middleware.Connector;
 using TSTI_API.Models;
 using System.Security.Principal;
+using static TSTI_API.Controllers.APIController;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using System.Web.UI.WebControls;
 
 namespace TSTI_API.Controllers
 {
@@ -4595,7 +4598,7 @@ namespace TSTI_API.Controllers
         public Dictionary<string, object> GetSRDetail(string IV_SRID, string pOperationID_GenerallySR)
         {
             Dictionary<string, object> results = new Dictionary<string, object>();
-
+            
             string EV_TYPE = "ZSR1";
             string EV_CONTACT = string.Empty;
             string EV_ADDR = string.Empty;
@@ -8053,6 +8056,284 @@ namespace TSTI_API.Controllers
         #endregion
 
         #endregion -----↑↑↑↑↑合約管理Mail相關 ↑↑↑↑↑-----  
+
+        #region -----↓↓↓↓↓ ibo.ai查詢One Service服務報告書PDF相關資訊接口 ↓↓↓↓↓----- 
+
+        #region 取得服務編號主檔相關資訊清單
+        /// <summary>
+        /// 取得服務編號主檔相關資訊清單
+        /// </summary>
+        /// <param name="IV_STARTDAY">起始日期</param>
+        /// <param name="IV_ENDDAY">結束日期</param>
+        /// <param name="IV_CASETYPE">服務案件種類</param>
+        /// <param name="IV_STATUS">案件狀態</param>
+        /// <param name="IV_SRKINDONE">報修類別-大類</param>
+        /// <param name="IV_SRKINDSEC">報修類別-中類</param>
+        /// <param name="IV_SRKINDTHR">報修類別-小類</param>
+        /// <param name="tAttachURLName">附件URL站台名稱</param>
+        /// <param name="pOperationID_GenerallySR">程式作業編號檔系統ID(一般服務)</param>
+        /// <returns></returns>
+        public List<SRMAIN_LIST> findSRREPORTINFO_IBO(string IV_STARTDAY, string IV_ENDDAY, string IV_CASETYPE, string IV_STATUS, string IV_SRKINDONE, string IV_SRKINDSEC, string IV_SRKINDTHR, string tAttachURLName, string pOperationID_GenerallySR)
+        {
+            List<SRMAIN_LIST> tMList = new List<SRMAIN_LIST>();
+            List<TB_ONE_SRDetail_Contact> tContactList = new List<TB_ONE_SRDetail_Contact>();
+            List<TB_ONE_SRDetail_Product> tProductList = new List<TB_ONE_SRDetail_Product>();
+            List<TB_ONE_SRDetail_Record> tRecordList = new List<TB_ONE_SRDetail_Record>();
+            List<TB_ONE_SRDetail_PartsReplace> tPartsList = new List<TB_ONE_SRDetail_PartsReplace>();
+            List<TB_ONE_SRDetail_SerialFeedback> tSerialFList = new List<TB_ONE_SRDetail_SerialFeedback>();
+            List<TB_ONE_SRDetail_Warranty> tWarrantyList = new List<TB_ONE_SRDetail_Warranty>();
+            List<string> tSRIDList = new List<string>();
+
+            string CASETYPE = string.Empty;            
+
+            DateTime dtS = new DateTime();
+            DateTime dtE = new DateTime();
+
+            try
+            {
+                dtS = Convert.ToDateTime(IV_STARTDAY);
+                dtE = Convert.ToDateTime(IV_ENDDAY + " 23:59:59");
+
+                switch (IV_CASETYPE)
+                {
+                    case "ZSR1": //一般服務
+                        CASETYPE = "61";
+                        break;
+                    case "ZSR3": //裝機服務
+                        CASETYPE = "63";
+                        break;
+                    case "ZSR5": //定維服務
+                        CASETYPE = "65";
+                        break;
+                }
+
+                var beansM = dbOne.TB_ONE_SRMain.Where(x => (x.CreatedDate >= dtS && x.CreatedDate <= dtE) && x.cSRID.Substring(0, 2) == CASETYPE &&
+                                                              (string.IsNullOrEmpty(IV_STATUS) ? true : x.cStatus == IV_STATUS) &&
+                                                              (string.IsNullOrEmpty(IV_SRKINDONE) ? true : x.cSRTypeOne == IV_SRKINDONE) &&
+                                                              (string.IsNullOrEmpty(IV_SRKINDSEC) ? true : x.cSRTypeSec == IV_SRKINDSEC) &&
+                                                              (string.IsNullOrEmpty(IV_SRKINDTHR) ? true : x.cSRTypeThr == IV_SRKINDTHR)).ToList();
+                #region 取得所有SRID
+                foreach (var beanM in beansM)
+                {
+                    if (!tSRIDList.Contains(beanM.cSRID))
+                    {
+                        tSRIDList.Add(beanM.cSRID);
+                    }
+                }
+                #endregion
+
+                #region 傳入所有SRID並取得客戶聯絡窗口資訊
+                tContactList = dbOne.TB_ONE_SRDetail_Contact.Where(x => x.Disabled == 0 && tSRIDList.Contains(x.cSRID)).ToList();
+                #endregion
+
+                #region 傳入所有SRID並取得產品序號資訊
+                tProductList = dbOne.TB_ONE_SRDetail_Product.Where(x => x.Disabled == 0 && tSRIDList.Contains(x.cSRID)).ToList();
+                #endregion
+
+                #region 傳入所有SRID並取得處理與工時紀錄資訊
+                tRecordList = dbOne.TB_ONE_SRDetail_Record.Where(x => x.Disabled == 0 && tSRIDList.Contains(x.cSRID)).ToList();
+                #endregion
+
+                #region 傳入所有SRID並取得零件更換資訊
+                tPartsList = dbOne.TB_ONE_SRDetail_PartsReplace.Where(x => x.Disabled == 0 && tSRIDList.Contains(x.cSRID)).ToList();
+                #endregion
+
+                #region 傳入所有SRID並取得序號回報資訊(裝機)
+                tSerialFList = dbOne.TB_ONE_SRDetail_SerialFeedback.Where(x => x.Disabled == 0 && tSRIDList.Contains(x.cSRID)).ToList();
+                #endregion
+
+                #region 傳入所有SRID並取得保固SLA資訊
+                tWarrantyList = dbOne.TB_ONE_SRDetail_Warranty.Where(x => x.cUsed == "Y" && tSRIDList.Contains(x.cSRID)).ToList();
+                #endregion
+
+                foreach (var beanM in beansM)
+                {
+                    SRMAIN_LIST srMain = new SRMAIN_LIST();
+                   
+                    srMain.SRID = beanM.cSRID;
+                    srMain.CUSTOMERID = beanM.cCustomerID;
+                    srMain.CUSTOMERNAME = beanM.cCustomerName;
+
+                    switch (IV_CASETYPE)
+                    {
+                        case "ZSR1": //一般服務
+                            srMain.CASETYPE = "一般服務";
+                            break;
+                        case "ZSR3": //裝機服務
+                            srMain.CASETYPE = "裝機服務";
+                            break;
+                        case "ZSR5": //定維服務
+                            srMain.CASETYPE = "定維服務";
+                            break;
+                    }                    
+
+                    #region 取得聯絡人相關
+                    var beanCon = tContactList.FirstOrDefault(x => x.cSRID == beanM.cSRID);
+                    if (beanCon != null)
+                    {
+                        srMain.CONTACTNAME = beanCon.cContactName;
+                        srMain.CONTADDR = beanCon.cContactAddress;
+                        srMain.CONTTEL = beanCon.cContactPhone;
+                    }
+                    #endregion
+
+                    #region 取得序號相關
+                    if (IV_CASETYPE == "ZSR1")
+                    {
+                        #region 取得產品序號相關
+                        var beanPro = tProductList.FirstOrDefault(x => x.cSRID == beanM.cSRID);
+                        if (beanPro != null)
+                        {
+                            srMain.PRODUCTMODEL = beanPro.cMaterialName;
+                            srMain.PRODUCTNUMBER = beanPro.cProductNumber;
+                            srMain.SERIALID = beanPro.cSerialID;
+                        }
+                        #endregion
+                    }
+                    else if (IV_CASETYPE == "ZSR3")
+                    {
+                        #region 取得序號回報(裝機)相關
+                        string SNNO = string.Empty;
+                        var beansSerialF = tSerialFList.Where(x => x.cSRID == beanM.cSRID);
+                        foreach(var beanSerialF in beansSerialF)
+                        {                            
+                            SNNO += beanSerialF.cSerialID + ";";
+                        }
+
+                        srMain.PRODUCTMODEL = "";
+                        srMain.PRODUCTNUMBER = "";
+                        srMain.SERIALID = SNNO.TrimEnd(';');
+                        #endregion
+                    }
+                    #endregion
+
+                    #region 需求事項
+                    string tMATTER = string.Empty;
+                    tMATTER += (!string.IsNullOrEmpty(beanM.cNotes)) ? beanM.cNotes : "";
+                    tMATTER += (!string.IsNullOrEmpty(beanM.cRepairName)) ? " -- " + beanM.cRepairName : "";
+                    tMATTER += (!string.IsNullOrEmpty(beanM.cRepairPhone)) ? " -- " + beanM.cRepairPhone : "";
+                    tMATTER += (!string.IsNullOrEmpty(beanM.cRepairAddress)) ? " -- " + beanM.cRepairAddress : "";
+
+                    //如果problem是空值，且EV_TYPE=ZSR-5(代表定維)，要去抓說明
+                    if (IV_CASETYPE == "ZSR5" && string.IsNullOrEmpty(beanM.cNotes))
+                    {
+                        tMATTER += (!string.IsNullOrEmpty(beanM.cDesc)) ? beanM.cDesc : "";
+                    }
+
+                    srMain.MATTER = tMATTER;
+                    #endregion
+
+                    #region 取得零件更換資訊相關
+                    string MATERIALNAME = string.Empty;
+                    string MATERIALID = string.Empty;
+                    var beansPart = tPartsList.Where(x => x.cSRID == beanM.cSRID);
+                    foreach(var beanPart in beansPart)
+                    {
+                        MATERIALNAME += beanPart.cMaterialName + ";";
+                        MATERIALID += beanPart.cMaterialID + ";";
+                    }
+
+                    srMain.MATERIALNAME = MATERIALNAME.TrimEnd(';');
+                    srMain.MATERIALID = MATERIALID.TrimEnd(';');
+                    #endregion
+
+                    #region 客戶意見/備註
+
+                    #region 處理方式
+                    string tProcessWay = string.Empty;
+                    if (!string.IsNullOrEmpty(beanM.cSRProcessWay))
+                    {
+                        if (beanM.cSRProcessWay == "Z01" || beanM.cSRProcessWay == "Z02")
+                        {
+                            tProcessWay = beanM.cSRProcessWay == "Z01" ? "線上" : "遠端";
+                            tProcessWay = "處理方式-" + tProcessWay + "\n\n";
+                        }
+                    }
+                    #endregion
+
+                    #region 保固SLA相關
+                    string EV_SLARESP = string.Empty;
+                    string EV_SLASRV = string.Empty;
+                    var beanWarranty = tWarrantyList.FirstOrDefault(x => x.cSRID == beanM.cSRID);
+                    if (beanWarranty != null)
+                    {
+                        #region 有保固SLA
+                        EV_SLARESP = beanWarranty.cSLARESP;
+                        EV_SLASRV = beanWarranty.cSLASRV;
+                        #endregion
+                    }
+                    else
+                    {
+                        #region 若沒有保固SLA資訊，則抓SLA(單筆per call)
+                        if (string.IsNullOrEmpty(EV_SLARESP))
+                        {
+                            EV_SLARESP = string.IsNullOrEmpty(beanM.cPerCallSLARESP) ? "" : beanM.cPerCallSLARESP;
+                        }
+
+                        if (string.IsNullOrEmpty(EV_SLASRV))
+                        {
+                            EV_SLASRV = string.IsNullOrEmpty(beanM.cPerCallSLASRV) ? "" : beanM.cPerCallSLASRV;
+                        }
+                        #endregion
+                    }
+                    #endregion
+
+                    #region 取得維護服務種類
+                    string WTYKIND = string.Empty;
+                    if (!string.IsNullOrEmpty(beanM.cMAServiceType))
+                    {
+                         WTYKIND = findSysParameterDescription(pOperationID_GenerallySR, "OTHER", "T012", "SRMATYPE", beanM.cMAServiceType);
+                    }
+                    #endregion
+
+                    #region 備註
+                    string Remark = !string.IsNullOrEmpty(beanM.cRemark) ? beanM.cRemark : "";
+                    #endregion
+
+                    string TempSLA = string.IsNullOrEmpty(EV_SLASRV) ? "" : EV_SLARESP + "_" + EV_SLASRV + "  ";
+                    string TempWTYKIND = string.IsNullOrEmpty(WTYKIND) ? "" : WTYKIND + "\n\n";
+                    string tTempNotes = TempSLA + TempWTYKIND + Remark;
+
+                    srMain.NOTE = tProcessWay + tTempNotes;
+                    #endregion
+
+                    #region 處理與工時紀錄清單
+                    List<SRDETAIL_LIST> tDList = new List<SRDETAIL_LIST>();
+                    var beansRecord = tRecordList.Where(x => x.cSRID == beanM.cSRID);
+                    foreach(var beanRecord in beansRecord)
+                    {
+                        SRDETAIL_LIST srDetail = new SRDETAIL_LIST();
+
+                        srDetail.SRID = beanRecord.cSRID;
+                        srDetail.ENGINEERID = beanRecord.cEngineerID;
+                        srDetail.ENGINEERNAME = beanRecord.cEngineerName;
+                        srDetail.RECEIVETIME = Convert.ToDateTime(beanRecord.cReceiveTime).ToString("yyyy-MM-dd HH:mm");
+                        srDetail.STARTTIME = Convert.ToDateTime(beanRecord.cStartTime).ToString("yyyy-MM-dd HH:mm");
+                        srDetail.ARRIVETIME = Convert.ToDateTime(beanRecord.cArriveTime).ToString("yyyy-MM-dd HH:mm");
+                        srDetail.FINISHTIME = Convert.ToDateTime(beanRecord.cFinishTime).ToString("yyyy-MM-dd HH:mm");
+                        srDetail.WORKHOURS = Convert.ToDouble(beanRecord.cWorkHours);
+                        srDetail.DESC = beanRecord.cDesc;
+                        srDetail.SRREPORTURL = findAttachUrl(beanRecord.cSRReport, tAttachURLName).Replace(";", ",");
+
+                        tDList.Add(srDetail);
+                    }
+
+                    srMain.SRDETAIL_LIST = tDList;
+                    #endregion
+
+                    tMList.Add(srMain);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return tMList;
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑ ibo.ai查詢One Service服務報告書PDF相關資訊接口 ↑↑↑↑↑-----  
 
         #region log紀錄(新、舊值對照)
         /// <summary>

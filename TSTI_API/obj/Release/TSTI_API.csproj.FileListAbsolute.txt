@@ -144,4 +144,4 @@ D:\GIT\tstiapi\TSTI_API\bin\Google.Apis.Core.pdb
 D:\GIT\tstiapi\TSTI_API\bin\Google.Apis.Core.xml
 D:\GIT\tstiapi\TSTI_API\bin\System.Collections.Immutable.xml
 D:\GIT\tstiapi\TSTI_API\obj\Release\TSTI_API.csproj.AssemblyReference.cache
-D:\GIT\tstiapi\TSTI_API\obj\Release\TSTI_API.csproj.Up2Date
+D:\GIT\tstiapi\TSTI_API\obj\Release\TSTI_API.csproj.CopyComplete

@@ -6,6 +6,7 @@
 2024/04/29:elvis:接單時間改成「回應時間」
 2024/08/14:elvis:某幾個方法新增加「timeout時間為60秒」，避免timeout
 2024/10/07:elvis:OneService「裝機自動派工」調整依據序號判斷是否有重覆
+2024/10/28:elvis:新增查詢One Service服務報告書PDF相關資料接口
 
 */
 #endregion
@@ -12901,6 +12902,218 @@ namespace TSTI_API.Controllers
             return Json(OUTBean);
         }
         #endregion -----↓↓↓↓↓更新服務團隊新舊接口(一次性)  ↓↓↓↓↓-----
+
+        #region -----↓↓↓↓↓ ibo.ai查詢One Service服務報告書PDF相關資訊接口 ↓↓↓↓↓----- 
+
+        #region 查詢One Service服務報告書PDF相關資料接口
+        [HttpPost]
+        public ActionResult API_SRREPORTINFO_GET(SRREPORTINFO_INPUT beanIN)
+        {
+            #region Json範列格式(傳入格式)
+            //{
+            //   "IV_STARTDAY": "2024-10-22",
+            //   "IV_ENDDAY": "2024-10-24",
+            //   "IV_CASETYPE": "ZSR1",
+            //   "IV_STATUS": "",            
+            //   "IV_SRKINDONE": "",
+            //   "IV_SRKINDSEC": "",
+            //   "IV_SRKINDTHR": ""
+            //}
+            #endregion
+
+            SRREPORTINFO_OUTPUT ListOUT = new SRREPORTINFO_OUTPUT();
+
+            ListOUT = SRREPORTINFO_GET(beanIN);
+            
+            return Content(JsonConvert.SerializeObject(ListOUT), "application/json"); //JsonConvert效能較佳，且沒有字串長度上限
+        }
+        #endregion
+
+        #region 取得One Service服務報告書PDF相關資料
+        private SRREPORTINFO_OUTPUT SRREPORTINFO_GET(SRREPORTINFO_INPUT beanIN)
+        {
+            SRREPORTINFO_OUTPUT OUTBean = new SRREPORTINFO_OUTPUT();
+
+            bool tIsFormal = false;            
+            
+            string tAPIURLName = string.Empty;
+            string tONEURLName = string.Empty;
+            string tBPMURLName = string.Empty;
+            string tPSIPURLName = string.Empty;
+            string tAttachURLName = string.Empty;
+            string tAttachPath = string.Empty;
+
+            try
+            {
+                string IV_STARTDAY = string.IsNullOrEmpty(beanIN.IV_STARTDAY) ? "" : beanIN.IV_STARTDAY.Trim();
+                string IV_ENDDAY = string.IsNullOrEmpty(beanIN.IV_ENDDAY) ? "" : beanIN.IV_ENDDAY.Trim();
+                string IV_CASETYPE = string.IsNullOrEmpty(beanIN.IV_CASETYPE) ? "" : beanIN.IV_CASETYPE.Trim();
+                string IV_STATUS = string.IsNullOrEmpty(beanIN.IV_STATUS) ? "" : beanIN.IV_STATUS.Trim();
+                string IV_SRKINDONE = string.IsNullOrEmpty(beanIN.IV_SRKINDONE) ? "" : beanIN.IV_SRKINDONE.Trim();
+                string IV_SRKINDSEC = string.IsNullOrEmpty(beanIN.IV_SRKINDSEC) ? "" : beanIN.IV_SRKINDSEC.Trim();
+                string IV_SRKINDTHR = string.IsNullOrEmpty(beanIN.IV_SRKINDTHR) ? "" : beanIN.IV_SRKINDTHR.Trim();
+
+                #region 判斷必填欄位
+                if (IV_STARTDAY == "")
+                {
+                    pMsg += "【起始日期】不得為空！" + Environment.NewLine;
+                }
+                
+                if (IV_ENDDAY == "")
+                {
+                    pMsg += "【結束日期】不得為空！" + Environment.NewLine;
+                }
+
+                if (IV_CASETYPE == "")
+                {
+                    pMsg += "【服務案件種類】不得為空！" + Environment.NewLine;
+                }
+                #endregion
+
+                if (pMsg != "")
+                {                   
+                    OUTBean.EV_MSGT = "E";
+                    OUTBean.EV_MSG = pMsg;
+                }
+                else
+                {
+                    #region 取得系統位址參數相關資訊
+                    SRSYSPARAINFO ParaBean = CMF.findSRSYSPARAINFO(pOperationID_GenerallySR);
+
+                    tIsFormal = ParaBean.IsFormal;
+
+                    tAPIURLName = @"https://" + HttpContext.Request.Url.Authority;
+                    tONEURLName = ParaBean.ONEURLName;
+                    tBPMURLName = ParaBean.BPMURLName;
+                    tPSIPURLName = ParaBean.PSIPURLName;
+                    tAttachURLName = ParaBean.AttachURLName;
+                    tAttachPath = Server.MapPath("~/REPORT");
+                    #endregion
+
+                    var tList = CMF.findSRREPORTINFO_IBO(IV_STARTDAY, IV_ENDDAY, IV_CASETYPE, IV_STATUS, IV_SRKINDONE, IV_SRKINDSEC, IV_SRKINDTHR, tAttachURLName, pOperationID_GenerallySR);
+
+                    if (tList.Count == 0)
+                    {
+                        OUTBean.EV_MSGT = "E";
+                        OUTBean.EV_MSG = "查無相關服務報告書資料，請重新查詢！";
+                    }
+                    else
+                    {
+                        OUTBean.EV_MSGT = "Y";
+                        OUTBean.EV_MSG = "";
+                        OUTBean.SRMAIN_LIST = tList;                        
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg += DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "失敗原因:" + ex.Message + Environment.NewLine;
+                pMsg += " 失敗行數：" + ex.ToString();
+
+                CMF.writeToLog("", "SRREPORTINFO_GET_API", pMsg, "SYS");
+
+                OUTBean.EV_MSGT = "E";
+                OUTBean.EV_MSG = ex.Message;
+            }
+
+            return OUTBean;
+        }
+        #endregion
+
+        #region 查詢One Service服務報告書PDF相關INPUT資訊
+        /// <summary>查詢One Service服務報告書PDF相關資料INPUT資訊</summary>
+        public struct SRREPORTINFO_INPUT
+        {
+            /// <summary>起始日期</summary>
+            public string IV_STARTDAY { get; set; }
+            /// <summary>結束日期</summary>
+            public string IV_ENDDAY { get; set; }
+            /// <summary>服務案件種類</summary>
+            public string IV_CASETYPE { get; set; }
+            /// <summary>案件狀態</summary>
+            public string IV_STATUS { get; set; }
+            /// <summary>報修類別-大類</summary>
+            public string IV_SRKINDONE { get; set; }
+            /// <summary>報修類別-中類</summary>
+            public string IV_SRKINDSEC { get; set; }
+            /// <summary>報修類別-小類</summary>
+            public string IV_SRKINDTHR { get; set; }
+        }
+        #endregion
+
+        #region 查詢One Service服務報告書PDF相關OUTPUT資訊
+        /// <summary>查詢One Service服務報告書PDF相關OUTPUT資訊</summary>
+        public struct SRREPORTINFO_OUTPUT
+        {
+            /// <summary>消息類型(E.處理失敗 Y.處理成功)</summary>
+            public string EV_MSGT { get; set; }
+            /// <summary>消息內容</summary>
+            public string EV_MSG { get; set; }
+
+            /// <summary>服務編號主檔相關資訊清單</summary>
+            public List<SRMAIN_LIST> SRMAIN_LIST { get; set; }
+        }
+
+        public struct SRMAIN_LIST
+        {
+            /// <summary>服務編號</summary>
+            public string SRID { get; set; }
+            /// <summary>客戶公司代號</summary>
+            public string CUSTOMERID { get; set; }
+            /// <summary>客戶公司名稱</summary>
+            public string CUSTOMERNAME { get; set; }
+            /// <summary>聯絡人姓名</summary>
+            public string CONTACTNAME { get; set; }
+            /// <summary>聯絡人地址</summary>
+            public string CONTADDR { get; set; }
+            /// <summary>聯絡電話</summary>
+            public string CONTTEL { get; set; }
+            /// <summary>服務種類</summary>
+            public string CASETYPE { get; set; }
+            /// <summary>產品名稱</summary>
+            public string PRODUCTMODEL { get; set; }
+            /// <summary>型號(P/N)</summary>
+            public string PRODUCTNUMBER { get; set; }
+            /// <summary>序號(S/N)</summary>
+            public string SERIALID { get; set; }
+            /// <summary>需求事項</summary>
+            public string MATTER { get; set; }
+            /// <summary>更換零件</summary>
+            public string MATERIALNAME { get; set; }
+            /// <summary>料號或序號</summary>
+            public string MATERIALID { get; set; }
+            /// <summary>客戶意見/備註</summary>
+            public string NOTE { get; set; }
+            /// <summary>處理與工時紀錄清單</summary>
+            public List<SRDETAIL_LIST> SRDETAIL_LIST { get; set; }
+        }
+
+        public struct SRDETAIL_LIST
+        {
+            /// <summary>服務編號</summary>
+            public string SRID { get; set; }
+            /// <summary>服務工程師ERPID</summary>
+            public string ENGINEERID { get; set; }
+            /// <summary>服務工程師姓名</summary>
+            public string ENGINEERNAME { get; set; }
+            /// <summary>服務日期</summary>
+            public string RECEIVETIME { get; set; }
+            /// <summary>出發</summary>
+            public string STARTTIME { get; set; }
+            /// <summary>到場</summary>
+            public string ARRIVETIME { get; set; }
+            /// <summary>完成</summary>
+            public string FINISHTIME { get; set; }
+            /// <summary>處理時間</summary>
+            public double WORKHOURS { get; set; }
+            /// <summary>處理紀錄</summary>
+            public string DESC { get; set; }
+            /// <summary>服務報告書URL(多筆以逗號隔開)</summary>
+            public string SRREPORTURL { get; set; }           
+        }
+        #endregion
+
+        #endregion -----↑↑↑↑↑ ibo.ai查詢One Service服務報告書PDF相關資訊接口 ↑↑↑↑↑-----  
 
         #region 公務車借用相關
 
