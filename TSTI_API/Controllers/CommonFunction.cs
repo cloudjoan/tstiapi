@@ -8082,6 +8082,7 @@ namespace TSTI_API.Controllers
             List<TB_ONE_SRDetail_PartsReplace> tPartsList = new List<TB_ONE_SRDetail_PartsReplace>();
             List<TB_ONE_SRDetail_SerialFeedback> tSerialFList = new List<TB_ONE_SRDetail_SerialFeedback>();
             List<TB_ONE_SRDetail_Warranty> tWarrantyList = new List<TB_ONE_SRDetail_Warranty>();
+            List<TB_ONE_SRRepairType> tRepairTypeList = new List<TB_ONE_SRRepairType>();
             List<string> tSRIDList = new List<string>();
 
             string CASETYPE = string.Empty;            
@@ -8146,7 +8147,11 @@ namespace TSTI_API.Controllers
                 tWarrantyList = dbOne.TB_ONE_SRDetail_Warranty.Where(x => x.cUsed == "Y" && tSRIDList.Contains(x.cSRID)).ToList();
                 #endregion
 
-                foreach (var beanM in beansM)
+                #region 取得所有報修類別說明
+                tRepairTypeList = dbOne.TB_ONE_SRRepairType.Where(x => x.Disabled == 0).ToList();
+				#endregion
+
+				foreach (var beanM in beansM)
                 {
                     SRMAIN_LIST srMain = new SRMAIN_LIST();
                    
@@ -8295,10 +8300,39 @@ namespace TSTI_API.Controllers
                     string tTempNotes = TempSLA + TempWTYKIND + Remark;
 
                     srMain.NOTE = tProcessWay + tTempNotes;
-                    #endregion
+					#endregion
 
-                    #region 處理與工時紀錄清單
-                    List<SRDETAIL_LIST> tDList = new List<SRDETAIL_LIST>();
+					#region 取得報修類別(大、中、小)
+                    if (!string.IsNullOrEmpty(beanM.cSRTypeOne))
+                    {
+                        var One = tRepairTypeList.FirstOrDefault(x => x.cKIND_KEY == beanM.cSRTypeOne);
+                        if (One != null)
+                        {
+							srMain.SRKINDONE = beanM.cSRTypeOne + "_" + One.cKIND_NAME;
+						}						
+					}
+
+					if (!string.IsNullOrEmpty(beanM.cSRTypeSec))
+					{
+						var Sec = tRepairTypeList.FirstOrDefault(x => x.cKIND_KEY == beanM.cSRTypeSec);
+                        if (Sec != null)
+                        {
+                            srMain.SRKINDSEC = beanM.cSRTypeSec + "_" + Sec.cKIND_NAME;
+                        }
+					}
+
+					if (!string.IsNullOrEmpty(beanM.cSRTypeThr))
+					{
+						var Thr = tRepairTypeList.FirstOrDefault(x => x.cKIND_KEY == beanM.cSRTypeThr);
+                        if (Thr != null)
+                        {
+                            srMain.SRKINDTHR = beanM.cSRTypeThr + "_" + Thr.cKIND_NAME;
+                        }
+					}
+					#endregion
+
+					#region 處理與工時紀錄清單
+					List<SRDETAIL_LIST> tDList = new List<SRDETAIL_LIST>();
                     var beansRecord = tRecordList.Where(x => x.cSRID == beanM.cSRID);
                     foreach(var beanRecord in beansRecord)
                     {

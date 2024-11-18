@@ -7,6 +7,7 @@
 2024/08/14:elvis:某幾個方法新增加「timeout時間為60秒」，避免timeout
 2024/10/07:elvis:OneService「裝機自動派工」調整依據序號判斷是否有重覆
 2024/10/28:elvis:新增查詢One Service服務報告書PDF相關資料接口
+2024/11/18:elvis:查詢One Service服務報告書PDF相關資料接口，再增加報修類別(大、中、小)
 
 */
 #endregion
@@ -13084,8 +13085,14 @@ namespace TSTI_API.Controllers
             public string MATERIALID { get; set; }
             /// <summary>客戶意見/備註</summary>
             public string NOTE { get; set; }
-            /// <summary>處理與工時紀錄清單</summary>
-            public List<SRDETAIL_LIST> SRDETAIL_LIST { get; set; }
+			/// <summary>報修大類</summary>
+			public string SRKINDONE { get; set; }
+			/// <summary>報修中類</summary>
+			public string SRKINDSEC { get; set; }
+			/// <summary>報修小類</summary>
+			public string SRKINDTHR { get; set; }
+			/// <summary>處理與工時紀錄清單</summary>
+			public List<SRDETAIL_LIST> SRDETAIL_LIST { get; set; }
         }
 
         public struct SRDETAIL_LIST
